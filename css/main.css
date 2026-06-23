@@ -1,0 +1,75 @@
+/* Configuration de base et polices globales */
+body {
+	font-family: 'Inter', sans-serif;
+	background-color: #0b0f19; /* Mode sombre premium par défaut */
+	color: #f3f4f6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Outfit', sans-serif;
+}
+
+/* Animations et transitions douces */
+.transition-all-300 {
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Effets premium (Glassmorphism) */
+.glass-effect {
+	background: rgba(17, 24, 39, 0.7);
+	backdrop-filter: blur(12px);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-effect-hover {
+	background: rgba(17, 24, 39, 0.85);
+	border-color: rgba(255, 255, 255, 0.15);
+	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Protection des médias */
+.protected-media-container {
+	position: relative;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+.protected-media-container::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+	pointer-events: all;
+	z-index: 10;
+}
+
+/* Filigrane discret */
+.watermark {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) rotate(-30deg);
+	font-size: 3rem;
+	font-weight: 800;
+	color: rgba(255, 255, 255, 0.15);
+	letter-spacing: 0.2em;
+	pointer-events: none;
+	text-transform: uppercase;
+	z-index: 5;
+}
+
+/* Scrollbar premium */
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+::-webkit-scrollbar-track {
+	background: #0b0f19;
+}
+::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.15);
+	border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 255, 255, 0.3);
+}
