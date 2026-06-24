@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class( 'bg-[#0b0f19] text-gray-100 min-h-screen flex flex-col justify-between' ); ?>>
+<body <?php body_class( 'bg-[#0d0c0b] text-gray-100 min-h-screen flex flex-col justify-between' ); ?>>
 <?php wp_body_open(); ?>
 
 <?php
@@ -66,7 +66,7 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 	</header>
 
 	<!-- Menu Mobile (placé en dehors du header pour éviter les conflits de contenant de position:fixed) -->
-	<div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 bottom-0 top-20 z-[999] overflow-y-auto flex flex-col bg-[#0b0f19] border-t border-gray-900 px-6 pt-6 pb-8 space-y-6 shadow-2xl transition-all duration-300 transform scale-y-95 origin-top opacity-0">
+	<div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 bottom-0 top-20 z-[999] overflow-y-auto flex flex-col bg-[#0d0c0b] border-t border-gray-900 px-6 pt-6 pb-8 space-y-6 shadow-2xl transition-all duration-300 transform scale-y-95 origin-top opacity-0">
 		<nav class="flex flex-col space-y-3">
 			<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Explorer</a>
 			<a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Tarifs</a>

@@ -12,7 +12,7 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 ?>
 
 <?php if ( ! $is_dashboard_template ) : ?>
-	<footer class="bg-[#070a12] text-gray-400 pt-16 pb-8 border-t border-gray-900 mt-auto font-sans">
+	<footer class="bg-[#090808] text-gray-400 pt-16 pb-8 border-t border-gray-900 mt-auto font-sans">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">

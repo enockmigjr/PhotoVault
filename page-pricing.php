@@ -8,11 +8,11 @@
 get_header();
 ?>
 
-<div class="py-20 bg-[#0b0f19] min-h-screen">
+<div class="py-20 bg-[#0d0c0b] min-h-screen">
 	<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
 		<header class="space-y-4">
 			<h1 class="text-4xl sm:text-6xl font-extrabold text-white">Des prestations adaptées à vos <span class="text-indigo-500">projets</span></h1>
-			<p class="text-gray-400 text-lg max-w-xl mx-auto">Découvrez nos formules pour vos séances photo privées ou l'accès à nos collections exclusives.</p>
+			<p class="text-gray-400 text-lg max-w-xl mx-auto">Découvrez nos formules pour vos séances photo privées ou pour acquérir nos tirages en édition limitée.</p>
 		</header>
 
 		<!-- Grille des Offres -->

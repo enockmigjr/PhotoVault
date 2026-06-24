@@ -1,8 +1,28 @@
+@theme {
+  --color-indigo-400: #dcc094;
+  --color-indigo-500: #c5a572;
+  --color-indigo-600: #b39360;
+  --color-indigo-700: #987b4e;
+  --color-indigo-950: #201a11;
+
+  --color-gray-50: #fbfbfb;
+  --color-gray-100: #f5f5f4;
+  --color-gray-200: #e7e5e4;
+  --color-gray-300: #d6d3d1;
+  --color-gray-400: #a8a29e;
+  --color-gray-500: #78716c;
+  --color-gray-600: #57534e;
+  --color-gray-700: #44403c;
+  --color-gray-800: #292524;
+  --color-gray-900: #1c1917;
+  --color-gray-950: #0d0c0b;
+}
+
 /* Configuration de base et polices globales */
 body {
 	font-family: 'Inter', sans-serif;
-	background-color: #0b0f19; /* Mode sombre premium par défaut */
-	color: #f3f4f6;
+	background-color: #0d0c0b; /* Fond noir chaud et raffiné */
+	color: #e7e5e4;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -14,17 +34,17 @@ h1, h2, h3, h4, h5, h6 {
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Effets premium (Glassmorphism) */
+/* Effets premium (Glassmorphism chaleureux) */
 .glass-effect {
-	background: rgba(17, 24, 39, 0.7);
-	backdrop-filter: blur(12px);
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	background: rgba(20, 19, 18, 0.75);
+	backdrop-filter: blur(16px);
+	border: 1px solid rgba(197, 165, 114, 0.1);
 }
 
 .glass-effect-hover {
-	background: rgba(17, 24, 39, 0.85);
-	border-color: rgba(255, 255, 255, 0.15);
-	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+	background: rgba(20, 19, 18, 0.9);
+	border-color: rgba(197, 165, 114, 0.22);
+	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* Protection des médias */
@@ -38,7 +58,7 @@ h1, h2, h3, h4, h5, h6 {
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+	background: linear-gradient(135deg, rgba(197, 165, 114, 0.02) 0%, rgba(197, 165, 114, 0) 100%);
 	pointer-events: all;
 	z-index: 10;
 }
@@ -51,7 +71,7 @@ h1, h2, h3, h4, h5, h6 {
 	transform: translate(-50%, -50%) rotate(-30deg);
 	font-size: 3rem;
 	font-weight: 800;
-	color: rgba(255, 255, 255, 0.15);
+	color: rgba(197, 165, 114, 0.12);
 	letter-spacing: 0.2em;
 	pointer-events: none;
 	text-transform: uppercase;
@@ -64,14 +84,14 @@ h1, h2, h3, h4, h5, h6 {
 	height: 6px;
 }
 ::-webkit-scrollbar-track {
-	background: #0b0f19;
+	background: #0d0c0b;
 }
 ::-webkit-scrollbar-thumb {
-	background: rgba(255, 255, 255, 0.15);
+	background: rgba(197, 165, 114, 0.2);
 	border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: rgba(255, 255, 255, 0.3);
+	background: rgba(197, 165, 114, 0.35);
 }
 
 /* Style de la pagination professionnelle */
@@ -98,9 +118,9 @@ ul.page-numbers .page-numbers {
 	padding: 0 0.875rem;
 	font-size: 0.875rem;
 	font-weight: 700;
-	color: #94a3b8;
-	background: rgba(17, 24, 39, 0.4);
-	border: 1px solid rgba(255, 255, 255, 0.05);
+	color: #a8a29e;
+	background: rgba(28, 25, 23, 0.4);
+	border: 1px solid rgba(197, 165, 114, 0.08);
 	border-radius: 0.75rem;
 	text-decoration: none;
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -108,16 +128,16 @@ ul.page-numbers .page-numbers {
 
 ul.page-numbers a.page-numbers:hover {
 	color: #ffffff;
-	background: rgba(79, 70, 229, 0.15);
-	border-color: rgba(79, 70, 229, 0.3);
-	box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+	background: rgba(197, 165, 114, 0.15);
+	border-color: rgba(197, 165, 114, 0.3);
+	box-shadow: 0 4px 12px rgba(197, 165, 114, 0.1);
 }
 
 ul.page-numbers .page-numbers.current {
-	color: #ffffff;
-	background: #4f46e5;
-	border-color: #4f46e5;
-	box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+	color: #0d0c0b;
+	background: #c5a572;
+	border-color: #c5a572;
+	box-shadow: 0 4px 12px rgba(197, 165, 114, 0.25);
 }
 
 ul.page-numbers .prev,
