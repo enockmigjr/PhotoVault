@@ -20,13 +20,34 @@ get_header();
 				Rejoindre <span class="text-indigo-500">PhotoVault</span>
 			</h2>
 			<p class="mt-2 text-center text-sm text-gray-400">
-				Créez votre profil de photographe professionnel
+				Créez votre compte pour accéder à nos galeries de photographies
 			</p>
 		</div>
-
-		<?php if ( isset( $_GET['register'] ) && 'failed' === $_GET['register'] ) : ?>
+ 
+		<?php if ( isset( $_GET['register'] ) && 'failed' === $_GET['register'] ) : 
+			$error_message = esc_html__( 'Erreur d\'inscription.', 'photovault' );
+			if ( isset( $_GET['err'] ) ) {
+				switch ( sanitize_text_field( $_GET['err'] ) ) {
+					case 'fields_required':
+						$error_message = esc_html__( 'Veuillez remplir tous les champs obligatoires.', 'photovault' );
+						break;
+					case 'password_mismatch':
+						$error_message = esc_html__( 'Les mots de passe ne correspondent pas.', 'photovault' );
+						break;
+					case 'email_exists':
+						$error_message = esc_html__( 'Cette adresse e-mail est déjà utilisée.', 'photovault' );
+						break;
+					case 'username_exists':
+						$error_message = esc_html__( 'Ce nom d\'utilisateur est déjà pris.', 'photovault' );
+						break;
+					case 'failed':
+						$error_message = esc_html__( 'Une erreur s\'est produite lors de l\'inscription.', 'photovault' );
+						break;
+				}
+			}
+		?>
 			<div class="bg-red-900/30 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm text-center">
-				<?php echo isset( $_GET['msg'] ) ? esc_html( urldecode( $_GET['msg'] ) ) : esc_html__( 'Erreur d\'inscription.', 'photovault' ); ?>
+				<?php echo $error_message; ?>
 			</div>
 		<?php endif; ?>
 

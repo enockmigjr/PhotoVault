@@ -15,67 +15,91 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param int $user_id ID de l'utilisateur.
  * @return array Tableau de statistiques.
  */
-function photovault_get_photographer_stats( $user_id ) {
-	$stats = array(
-		'total'     => 0,
-		'public'    => 0,
-		'private'   => 0,
-		'protected' => 0,
-		'folders'   => 0,
-	);
+function photovault_get_photographer_stats( $user_id = 0 ) {
+	$cache_key = $user_id > 0 ? 'pv_stats_' . $user_id : 'pv_stats_global';
+	$stats = get_transient( $cache_key );
 
-	// Compter le nombre de dossiers créés (ou total du système pour simplifier).
-	$folders = get_terms( array(
-		'taxonomy'   => 'media_folder',
-		'hide_empty' => false,
-	) );
-	$stats['folders'] = ! is_wp_error( $folders ) ? count( $folders ) : 0;
+	if ( false === $stats ) {
+		$stats = array(
+			'total'      => 0,
+			'public'     => 0,
+			'private'    => 0,
+			'protected'  => 0,
+			'folders'    => 0,
+			'categories' => 0,
+			'downloads'  => 0,
+			'views'      => 0,
+		);
 
-	// Nombre total de médias (publics et privés).
-	$args_all = array(
-		'post_type'      => 'media_item',
-		'post_status'    => array( 'publish', 'private' ),
-		'author'         => $user_id,
-		'posts_per_page' => -1,
-		'fields'         => 'ids',
-	);
-	$query_all = new WP_Query( $args_all );
-	$stats['total'] = $query_all->post_count;
+		// Compter le nombre de dossiers
+		$folders = get_terms( array(
+			'taxonomy'   => 'media_folder',
+			'hide_empty' => false,
+		) );
+		$stats['folders'] = ! is_wp_error( $folders ) ? count( $folders ) : 0;
 
-	// Nombre de médias privés.
-	$args_private = array(
-		'post_type'      => 'media_item',
-		'post_status'    => 'private',
-		'author'         => $user_id,
-		'posts_per_page' => -1,
-		'fields'         => 'ids',
-	);
-	$query_private = new WP_Query( $args_private );
-	$stats['private'] = $query_private->post_count;
+		// Compter le nombre de catégories
+		$categories = get_terms( array(
+			'taxonomy'   => 'media_category',
+			'hide_empty' => false,
+		) );
+		$stats['categories'] = ! is_wp_error( $categories ) ? count( $categories ) : 0;
 
-	// Nombre de médias publics.
-	$stats['public'] = $stats['total'] - $stats['private'];
-
-	// Nombre de médias protégés.
-	$args_protected = array(
-		'post_type'      => 'media_item',
-		'post_status'    => array( 'publish', 'private' ),
-		'author'         => $user_id,
-		'posts_per_page' => -1,
-		'fields'         => 'ids',
-		'meta_query'     => array(
-			array(
-				'key'     => 'is_protected',
-				'value'   => '1',
-				'compare' => '=',
-			),
-		),
-	);
-	$query_protected = new WP_Query( $args_protected );
-	$stats['protected'] = $query_protected->post_count;
+		// Requête globale ou par utilisateur
+		$args_all = array(
+			'post_type'      => 'media_item',
+			'post_status'    => array( 'publish', 'private' ),
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		);
+		
+		// Si un ID utilisateur est spécifié et n'est pas un administrateur, on filtre par auteur
+		if ( $user_id > 0 && ! user_can( $user_id, 'manage_options' ) ) {
+			$args_all['author'] = $user_id;
+		}
+		
+		$query_all = new WP_Query( $args_all );
+		
+		if ( $query_all->have_posts() ) {
+			$stats['total'] = $query_all->post_count;
+			
+			foreach ( $query_all->posts as $pid ) {
+				$status = get_post_status( $pid );
+				if ( 'private' === $status ) {
+					$stats['private']++;
+				} else {
+					$stats['public']++;
+				}
+				
+				if ( get_post_meta( $pid, 'is_protected', true ) === '1' ) {
+					$stats['protected']++;
+				}
+				
+				$stats['downloads'] += (int) get_post_meta( $pid, 'photovault_downloads_count', true );
+				$stats['views'] += (int) get_post_meta( $pid, 'photovault_views_count', true );
+			}
+		}
+		
+		set_transient( $cache_key, $stats, 300 ); // Cache pendant 5 minutes
+	}
 
 	return $stats;
 }
+
+/**
+ * Invalider le cache des statistiques sur sauvegarde, modification ou suppression de média.
+ */
+function photovault_clean_stats_cache( $post_id ) {
+	if ( 'media_item' === get_post_type( $post_id ) ) {
+		delete_transient( 'pv_stats_global' );
+		$post = get_post( $post_id );
+		if ( $post ) {
+			delete_transient( 'pv_stats_' . $post->post_author );
+		}
+	}
+}
+add_action( 'save_post', 'photovault_clean_stats_cache' );
+add_action( 'before_delete_post', 'photovault_clean_stats_cache' );
 
 /**
  * Injecter le script JS de protection anti-téléchargement si nécessaire.

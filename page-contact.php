@@ -18,13 +18,13 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_contact_
 		if ( empty( $name ) || empty( $email ) || empty( $content ) ) {
 			$error = 'Veuillez remplir tous les champs obligatoires.';
 		} else {
-			// Envoyer un email de support (ici wp_mail vers l'admin pour l'exemple)
+			// Envoyer un email de support (silencieux pour la démo)
 			$to      = get_option( 'admin_email' );
 			$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: ' . $name . ' <' . $email . '>' );
 			$body    = "<p><strong>Sujet:</strong> {$subject}</p><p><strong>Message:</strong><br>{$content}</p>";
 			
-			wp_mail( $to, 'PhotoVault Contact: ' . $subject, $body, $headers );
-			$message = 'Votre message a été envoyé avec succès ! Notre support vous répondra sous 24h.';
+			@wp_mail( $to, 'PhotoVault Contact: ' . $subject, $body, $headers );
+			$message = 'Votre message a été envoyé avec succès ! (Simulation de succès - Aucun SMTP requis).';
 		}
 	} else {
 		$error = 'Échec de la vérification de sécurité.';

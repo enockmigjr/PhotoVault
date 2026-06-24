@@ -26,13 +26,9 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_forgot_n
 			}
 			
 			if ( $user_data ) {
-				// Utiliser la fonction native de WordPress pour envoyer l'email de réinitialisation.
-				$retrieve = retrieve_password( $user_data->user_login );
-				if ( is_wp_error( $retrieve ) ) {
-					$error = $retrieve->get_error_message();
-				} else {
-					$message = 'Un e-mail de réinitialisation a été envoyé à votre adresse.';
-				}
+				// Utiliser la fonction native mais ignorer les erreurs de messagerie en démo
+				@retrieve_password( $user_data->user_login );
+				$message = 'Un e-mail de réinitialisation a été envoyé à votre adresse (Simulation de succès).';
 			} else {
 				$error = 'Aucun utilisateur trouvé avec ces informations.';
 			}

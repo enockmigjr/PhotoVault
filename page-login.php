@@ -6,7 +6,11 @@
  */
 
 if ( is_user_logged_in() ) {
-	wp_redirect( home_url( '/dashboard/' ) );
+	if ( current_user_can( 'manage_options' ) ) {
+		wp_redirect( home_url( '/dashboard/' ) );
+	} else {
+		wp_redirect( get_post_type_archive_link( 'media_item' ) );
+	}
 	exit;
 }
 
@@ -20,7 +24,7 @@ get_header();
 				Photo<span class="text-indigo-500">Vault</span>
 			</h2>
 			<p class="mt-2 text-center text-sm text-gray-400">
-				Connectez-vous à votre espace photographe
+				Connectez-vous à votre espace client
 			</p>
 		</div>
 

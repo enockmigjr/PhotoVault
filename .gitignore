@@ -1,3 +1,4 @@
 #ignore .agents and docs folder
 .agents/
 docs/
+plans/

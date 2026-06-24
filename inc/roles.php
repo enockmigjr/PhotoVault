@@ -10,48 +10,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Création et configuration du rôle "Photographe" et "Client" à l'activation du thème.
+ * Création et configuration du rôle "Client" à l'activation du thème.
  */
 function photovault_register_roles() {
-	// Supprimer le rôle s'il existe déjà pour éviter les duplications.
+	// Supprimer l'ancien rôle photographe s'il existe pour nettoyer.
 	remove_role( 'photographer' );
-	remove_role( 'client' );
 
-	// Ajouter le rôle photographe.
-	add_role( 'photographer', esc_html__( 'Photographe', 'photovault' ), array(
-		'read'                      => true,
-		'upload_files'              => true,
-		'publish_posts'             => false,
-		'edit_posts'                => false,
-		'delete_posts'              => false,
-		'edit_media_item'           => true,
-		'read_media_item'           => true,
-		'delete_media_item'         => true,
-		'edit_media_items'          => true,
-		'edit_others_media_items'   => false,
-		'publish_media_items'       => true,
-		'read_private_media_items'  => true,
-		'delete_media_items'        => true,
-		'delete_private_media_items'=> true,
-		'delete_published_media_items'=> true,
-		'delete_others_media_items' => false,
-		'edit_private_media_items'  => true,
-		'edit_published_media_items'=> true,
-	) );
-
-	// Ajouter le rôle client.
-	add_role( 'client', esc_html__( 'Client / Visiteur', 'photovault' ), array(
-		'read'                      => true,
-		'upload_files'              => false,
-		'publish_posts'             => false,
-		'edit_posts'                => false,
-		'delete_posts'              => false,
-	) );
+	// Vérifier si le rôle 'client' existe déjà avant de le créer (évite les pertes de privilèges personnalisés).
+	if ( null === get_role( 'client' ) ) {
+		add_role( 'client', esc_html__( 'Client', 'photovault' ), array(
+			'read'         => true,
+			'upload_files' => false,
+			'publish_posts'=> false,
+			'edit_posts'   => false,
+			'delete_posts' => false,
+		) );
+	}
 }
 add_action( 'after_switch_theme', 'photovault_register_roles' );
 
 /**
- * Bloquer l'accès à wp-admin et rediriger les photographes/clients vers leur dashboard/accueil.
+ * Bloquer l'accès à wp-admin et rediriger tout utilisateur non-administrateur.
  */
 function photovault_restrict_admin_access() {
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
@@ -59,12 +38,7 @@ function photovault_restrict_admin_access() {
 	}
 
 	if ( is_user_logged_in() ) {
-		$user = wp_get_current_user();
-		if ( in_array( 'photographer', (array) $user->roles ) ) {
-			wp_safe_redirect( home_url( '/dashboard/' ) );
-			exit;
-		}
-		if ( in_array( 'client', (array) $user->roles ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_safe_redirect( home_url() );
 			exit;
 		}
@@ -99,15 +73,10 @@ function photovault_redirect_login_page() {
 add_action( 'init', 'photovault_redirect_login_page' );
 
 /**
- * Cacher la barre d'administration pour les photographes, clients et visiteurs.
+ * Cacher la barre d'administration pour les utilisateurs non-administrateurs et visiteurs.
  */
 function photovault_hide_admin_bar() {
-	if ( is_user_logged_in() ) {
-		$user = wp_get_current_user();
-		if ( in_array( 'photographer', (array) $user->roles ) || in_array( 'client', (array) $user->roles ) ) {
-			show_admin_bar( false );
-		}
-	} else {
+	if ( ! current_user_can( 'manage_options' ) ) {
 		show_admin_bar( false );
 	}
 }

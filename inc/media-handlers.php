@@ -72,7 +72,7 @@ function photovault_handle_media_upload() {
 		photovault_create_media_post( 'media_files', $title, $description, $folder, $category, $visibility, $is_protected );
 	}
 
-	wp_redirect( add_query_arg( 'upload', 'success', home_url( '/my-media/' ) ) );
+	wp_redirect( admin_url( 'edit.php?post_type=media_item&upload=success' ) );
 	exit;
 }
 add_action( 'template_redirect', 'photovault_handle_media_upload' );
@@ -152,7 +152,7 @@ function photovault_handle_media_delete() {
 		// Supprimer le post.
 		wp_delete_post( $media_id, true );
 
-		wp_redirect( add_query_arg( 'delete', 'success', home_url( '/my-media/' ) ) );
+		wp_redirect( admin_url( 'edit.php?post_type=media_item&delete=success' ) );
 		exit;
 	}
 }

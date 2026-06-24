@@ -36,10 +36,10 @@ function photovault_handle_login() {
 	}
 
 	// Redirection en fonction du rôle
-	if ( in_array( 'photographer', (array) $user->roles ) ) {
+	if ( current_user_can( 'manage_options' ) ) {
 		wp_redirect( home_url( '/dashboard/' ) );
 	} else {
-		wp_redirect( home_url() );
+		wp_redirect( get_post_type_archive_link( 'media_item' ) );
 	}
 	exit;
 }
@@ -64,24 +64,20 @@ function photovault_handle_registration() {
 	$password   = $_POST['password'];
 	$password_c = $_POST['password_confirm'];
 
-	$errors = array();
+	$error_code = '';
 
 	if ( empty( $username ) || empty( $email ) || empty( $password ) ) {
-		$errors[] = 'Champs requis manquants.';
-	}
-	if ( $password !== $password_c ) {
-		$errors[] = 'Les mots de passe ne correspondent pas.';
-	}
-	if ( email_exists( $email ) ) {
-		$errors[] = 'Cet e-mail est déjà utilisé.';
-	}
-	if ( username_exists( $username ) ) {
-		$errors[] = 'Ce nom d\'utilisateur est déjà pris.';
+		$error_code = 'fields_required';
+	} elseif ( $password !== $password_c ) {
+		$error_code = 'password_mismatch';
+	} elseif ( email_exists( $email ) ) {
+		$error_code = 'email_exists';
+	} elseif ( username_exists( $username ) ) {
+		$error_code = 'username_exists';
 	}
 
-	if ( ! empty( $errors ) ) {
-		// Sauvegarde des erreurs en session ou en query arg (simple redirect pour l'exemple)
-		wp_redirect( add_query_arg( array( 'register' => 'failed', 'msg' => urlencode( implode( ', ', $errors ) ) ), home_url( '/register/' ) ) );
+	if ( ! empty( $error_code ) ) {
+		wp_redirect( add_query_arg( array( 'register' => 'failed', 'err' => $error_code ), home_url( '/register/' ) ) );
 		exit;
 	}
 
@@ -91,18 +87,18 @@ function photovault_handle_registration() {
 		'user_pass'  => $password,
 		'first_name' => $first_name,
 		'last_name'  => $last_name,
-		'role'       => 'photographer',
+		'role'       => 'client',
 	) );
 
 	if ( is_wp_error( $user_id ) ) {
-		wp_redirect( add_query_arg( 'register', 'failed', home_url( '/register/' ) ) );
+		wp_redirect( add_query_arg( array( 'register' => 'failed', 'err' => 'failed' ), home_url( '/register/' ) ) );
 		exit;
 	}
 
 	// Auto-connexion après inscription
 	wp_set_current_user( $user_id );
 	wp_set_auth_cookie( $user_id );
-	wp_redirect( home_url( '/dashboard/' ) );
+	wp_redirect( get_post_type_archive_link( 'media_item' ) );
 	exit;
 }
 add_action( 'template_redirect', 'photovault_handle_registration' );

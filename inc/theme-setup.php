@@ -36,9 +36,12 @@ function photovault_scripts() {
 
 	// Style CSS custom du thème.
 	wp_enqueue_style( 'photovault-style', PHOTOVAULT_URI . '/css/main.css', array(), PHOTOVAULT_VERSION );
+
+	// Script JS principal global.
+	wp_enqueue_script( 'photovault-main-js', PHOTOVAULT_URI . '/js/main.js', array(), PHOTOVAULT_VERSION, true );
 	
-	// Support d'AJAX pour le JS.
-	wp_localize_script( 'jquery', 'photovault_ajax', array(
+	// Support d'AJAX pour le JS (localisé sur notre script principal toujours chargé).
+	wp_localize_script( 'photovault-main-js', 'photovault_ajax', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'rest_url' => esc_url_raw( rest_url( 'photovault/v1' ) ),
 		'nonce'    => wp_create_nonce( 'photovault_nonce' ),
@@ -55,9 +58,6 @@ function photovault_create_app_pages() {
 		'register'        => array( 'title' => 'Inscription', 'template' => 'page-register.php' ),
 		'forgot-password' => array( 'title' => 'Mot de passe oublié', 'template' => 'page-forgot-password.php' ),
 		'dashboard'       => array( 'title' => 'Dashboard', 'template' => 'page-dashboard.php' ),
-		'my-media'        => array( 'title' => 'Mes Médias', 'template' => 'page-my-media.php' ),
-		'upload-media'    => array( 'title' => 'Ajouter Média', 'template' => 'page-upload-media.php' ),
-		'profile'         => array( 'title' => 'Mon Profil', 'template' => 'page-profile.php' ),
 		'pricing'         => array( 'title' => 'Tarifs', 'template' => 'page-pricing.php' ),
 		'about'           => array( 'title' => 'À Propos', 'template' => 'page-about.php' ),
 		'contact'         => array( 'title' => 'Contact', 'template' => 'page-contact.php' ),
