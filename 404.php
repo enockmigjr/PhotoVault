@@ -8,7 +8,7 @@
 get_header();
 ?>
 
-<div class="min-h-[85vh] flex flex-col items-center justify-center text-center px-4 bg-[#0b0f19] relative overflow-hidden">
+<div class="min-h-[85vh] flex flex-col items-center justify-center text-center px-4 bg-[#0d0c0b] relative overflow-hidden">
 	<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-950/20 via-transparent to-transparent pointer-events-none"></div>
 	
 	<div class="glass-effect p-12 rounded-3xl max-w-lg w-full space-y-6 shadow-2xl relative z-10 border border-gray-800">

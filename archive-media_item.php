@@ -25,7 +25,7 @@ $args = array(
 $query = new WP_Query( $args );
 ?>
 
-<div class="py-16 bg-[#0b0f19] min-h-screen text-gray-100 font-sans">
+<div class="py-16 bg-[#0d0c0b] min-h-screen text-gray-100 font-sans">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<!-- En-tête de section avec animation -->
 		<header class="mb-14 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6 border-b border-gray-900 pb-10">

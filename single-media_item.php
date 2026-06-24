@@ -19,7 +19,7 @@ if ( have_posts() ) :
 		// 1. Restriction d'accès stricte pour les posts privés.
 		if ( $is_private && ! $is_admin && ! $is_owner ) {
 			?>
-			<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#0b0f19]">
+			<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#0d0c0b]">
 				<div class="p-4 rounded-full bg-red-950/20 border border-red-500/20 text-red-500 mb-6 animate-pulse">
 					<svg class="h-14 w-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
 				</div>
@@ -44,7 +44,7 @@ if ( have_posts() ) :
 		}
 		?>
 
-		<div class="py-16 bg-[#0b0f19] min-h-screen text-gray-200">
+		<div class="py-16 bg-[#0d0c0b] min-h-screen text-gray-200">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				
 				<!-- Fil d'Ariane & Navigation entre médias -->

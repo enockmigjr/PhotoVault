@@ -8,7 +8,7 @@
 get_header();
 ?>
 
-<div class="py-12 bg-[#0b0f19] min-h-screen">
+<div class="py-12 bg-[#0d0c0b] min-h-screen">
 	<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 		<?php if ( have_posts() ) : ?>
 			<?php while ( have_posts() ) : the_post(); ?>

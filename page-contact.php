@@ -34,7 +34,7 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_contact_
 get_header();
 ?>
 
-<div class="py-20 bg-[#0b0f19] min-h-screen">
+<div class="py-20 bg-[#0d0c0b] min-h-screen">
 	<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 		<header class="text-center space-y-4">
 			<h1 class="text-4xl sm:text-6xl font-extrabold text-white">Contactez le <span class="text-indigo-500">Support</span></h1>

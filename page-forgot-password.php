@@ -41,7 +41,7 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_forgot_n
 get_header();
 ?>
 
-<div class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-[#0b0f19]">
+<div class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-[#0d0c0b]">
 	<div class="max-w-md w-full space-y-8 glass-effect p-8 rounded-2xl shadow-xl transition-all-300 hover:border-gray-700">
 		<div>
 			<h2 class="mt-6 text-center text-4xl font-extrabold text-white tracking-tight">

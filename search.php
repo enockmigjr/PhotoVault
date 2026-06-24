@@ -8,7 +8,7 @@
 get_header();
 ?>
 
-<div class="py-12 bg-[#0b0f19] min-h-screen">
+<div class="py-12 bg-[#0d0c0b] min-h-screen">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<header class="mb-10 pb-6 border-b border-gray-900">
 			<h1 class="text-4xl font-extrabold text-white">

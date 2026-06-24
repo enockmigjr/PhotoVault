@@ -98,7 +98,7 @@ $featured_media = new WP_Query( array(
 </section>
 
 <!-- Section CTA Inscription -->
-<section class="py-20 bg-indigo-950/20 border-t border-b border-indigo-900/30">
+<section class="py-20 bg-[#0d0c0b] border-b border-gray-900">
 	<div class="max-w-5xl mx-auto px-4 text-center">
 		<h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-6">Réservez votre séance ou explorez la galerie</h2>
 		<p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">Créez votre compte client gratuit pour débuter votre voyage visuel et accéder à vos dossiers. Pour toute collaboration artistique, shooting sur mesure ou licence d'utilisation exclusive, contactez-nous directement.</p>
