@@ -63,34 +63,35 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 			</div>
 		</div>
 
-		<!-- Menu Mobile -->
-		<div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 bottom-0 top-20 z-50 overflow-y-auto flex flex-col bg-[#0b0f19] border-t border-gray-900 px-6 pt-6 pb-8 space-y-6 shadow-2xl transition-all duration-300 transform scale-y-95 origin-top opacity-0">
-			<nav class="flex flex-col space-y-3">
-				<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Explorer</a>
-				<a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Tarifs</a>
-				<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">À Propos</a>
-				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Contact</a>
-			</nav>
-			
-			<div class="border-t border-gray-900 pt-4 flex flex-col gap-3 px-4">
-				<?php if ( is_user_logged_in() ) : ?>
-					<?php if ( current_user_can( 'manage_options' ) ) : ?>
-						<a href="<?php echo esc_url( home_url( '/dashboard/' ) ); ?>" class="w-full py-3 text-center text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-lg shadow-indigo-500/20 border border-indigo-400/20">
-							Dashboard
-						</a>
-					<?php endif; ?>
-					<a href="<?php echo esc_url( wp_logout_url( home_url( '/login/' ) ) ); ?>" class="w-full py-3 text-center text-sm font-semibold text-gray-400 hover:text-red-400 hover:bg-red-950/20 rounded-xl transition-all border border-gray-800/50">
-						Déconnexion
-					</a>
-				<?php else : ?>
-					<a href="<?php echo esc_url( home_url( '/login/' ) ); ?>" class="w-full py-3 text-center text-sm font-bold text-gray-300 hover:text-white rounded-xl transition-all">
-						Connexion
-					</a>
-					<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="w-full py-3 text-center text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-lg shadow-indigo-500/20 border border-indigo-400/20">
-						Rejoindre
+	</header>
+
+	<!-- Menu Mobile (placé en dehors du header pour éviter les conflits de contenant de position:fixed) -->
+	<div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 bottom-0 top-20 z-[999] overflow-y-auto flex flex-col bg-[#0b0f19] border-t border-gray-900 px-6 pt-6 pb-8 space-y-6 shadow-2xl transition-all duration-300 transform scale-y-95 origin-top opacity-0">
+		<nav class="flex flex-col space-y-3">
+			<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Explorer</a>
+			<a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Tarifs</a>
+			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">À Propos</a>
+			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Contact</a>
+		</nav>
+		
+		<div class="border-t border-gray-900 pt-4 flex flex-col gap-3 px-4">
+			<?php if ( is_user_logged_in() ) : ?>
+				<?php if ( current_user_can( 'manage_options' ) ) : ?>
+					<a href="<?php echo esc_url( home_url( '/dashboard/' ) ); ?>" class="w-full py-3 text-center text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-lg shadow-indigo-500/20 border border-indigo-400/20">
+						Dashboard
 					</a>
 				<?php endif; ?>
-			</div>
+				<a href="<?php echo esc_url( wp_logout_url( home_url( '/login/' ) ) ); ?>" class="w-full py-3 text-center text-sm font-semibold text-gray-400 hover:text-red-400 hover:bg-red-950/20 rounded-xl transition-all border border-gray-800/50">
+					Déconnexion
+				</a>
+			<?php else : ?>
+				<a href="<?php echo esc_url( home_url( '/login/' ) ); ?>" class="w-full py-3 text-center text-sm font-bold text-gray-300 hover:text-white rounded-xl transition-all">
+					Connexion
+				</a>
+				<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="w-full py-3 text-center text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-lg shadow-indigo-500/20 border border-indigo-400/20">
+					Rejoindre
+				</a>
+			<?php endif; ?>
 		</div>
-	</header>
+	</div>
 <?php endif; ?>

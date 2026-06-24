@@ -11,10 +11,15 @@ get_header();
 $folders = get_terms( array( 'taxonomy' => 'media_folder', 'hide_empty' => false ) );
 $categories = get_terms( array( 'taxonomy' => 'media_category', 'hide_empty' => false ) );
 
-// Requête initiale (médias publics). Seuls les publics sont vus par les visiteurs.
+// Requête initiale (médias publics). L'admin voit également ses images privées.
+$post_statuses = array( 'publish' );
+if ( current_user_can( 'manage_options' ) ) {
+	$post_statuses[] = 'private';
+}
+
 $args = array(
 	'post_type'      => 'media_item',
-	'post_status'    => 'publish',
+	'post_status'    => $post_statuses,
 	'posts_per_page' => 12,
 );
 $query = new WP_Query( $args );
