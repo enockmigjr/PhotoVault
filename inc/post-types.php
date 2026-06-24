@@ -102,17 +102,17 @@ function photovault_media_image_metabox_callback( $post ) {
 	wp_nonce_field( 'photovault_media_image_save', 'photovault_media_image_nonce' );
 	$thumbnail_id = get_post_thumbnail_id( $post->ID );
 	?>
-	<div id="photovault-media-uploader-container" style="text-align: center; padding: 25px 15px; border: 2px dashed #475569; border-radius: 8px; background: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif;">
+	<div id="photovault-media-uploader-container" style="text-align: center; padding: 20px; border: 2px dashed #ccd0d4; border-radius: 4px; background: #fbfbfb; color: #2c3338;">
 		<div id="photovault-media-preview" style="margin-bottom: 15px; display: flex; justify-content: center; align-items: center; min-height: 100px;">
 			<?php if ( $thumbnail_id ) : ?>
-				<?php echo wp_get_attachment_image( $thumbnail_id, 'medium', false, array( 'style' => 'max-width: 100%; max-height: 250px; height: auto; border-radius: 6px; border: 1px solid #334155;' ) ); ?>
+				<?php echo wp_get_attachment_image( $thumbnail_id, 'medium', false, array( 'style' => 'max-width: 100%; max-height: 250px; height: auto; border-radius: 4px; border: 1px solid #ccd0d4;' ) ); ?>
 			<?php else : ?>
-				<p style="color: #94a3b8; margin: 10px 0; font-size: 13px; font-weight: 500;"><?php _e( 'Aucune image sélectionnée. C\'est cette image qui sera affichée dans la galerie et protégée.', 'photovault' ); ?></p>
+				<p style="color: #646970; margin: 10px 0; font-size: 13px;"><?php _e( 'Aucune image sélectionnée. C\'est cette image qui sera affichée dans la galerie et protégée.', 'photovault' ); ?></p>
 			<?php endif; ?>
 		</div>
 		<input type="hidden" name="photovault_thumbnail_id" id="photovault_thumbnail_id" value="<?php echo esc_attr( $thumbnail_id ); ?>">
-		<button type="button" id="photovault-upload-btn" class="button button-primary" style="background: #4f46e5; border: none; font-weight: 600; padding: 8px 18px; height: auto; line-height: 1.5; border-radius: 6px; color: #ffffff; cursor: pointer; box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);"><?php _e( 'Sélectionner ou Téléverser une Image', 'photovault' ); ?></button>
-		<button type="button" id="photovault-remove-btn" class="button" style="margin-left: 10px; border: 1px solid #ef4444; background: transparent; color: #ef4444; font-weight: 600; padding: 8px 18px; height: auto; line-height: 1.5; border-radius: 6px; cursor: pointer; display: <?php echo $thumbnail_id ? 'inline-block' : 'none'; ?>;"><?php _e( 'Supprimer', 'photovault' ); ?></button>
+		<button type="button" id="photovault-upload-btn" class="button button-primary"><?php _e( 'Sélectionner ou Téléverser une Image', 'photovault' ); ?></button>
+		<button type="button" id="photovault-remove-btn" class="button" style="margin-left: 10px; color: #b32d2e; border-color: #b32d2e; display: <?php echo $thumbnail_id ? 'inline-block' : 'none'; ?>;"><?php _e( 'Supprimer', 'photovault' ); ?></button>
 	</div>
 	<script>
 	jQuery(document).ready(function($){
@@ -133,7 +133,7 @@ function photovault_media_image_metabox_callback( $post ) {
 			mediaUploader.on('select', function() {
 				var attachment = mediaUploader.state().get('selection').first().toJSON();
 				$('#photovault_thumbnail_id').val(attachment.id);
-				var imgHtml = '<img src="' + attachment.url + '" style="max-width: 100%; max-height: 250px; height: auto; border-radius: 6px; border: 1px solid #334155;" />';
+				var imgHtml = '<img src="' + attachment.url + '" style="max-width: 100%; max-height: 250px; height: auto; border-radius: 4px; border: 1px solid #ccd0d4;" />';
 				$('#photovault-media-preview').html(imgHtml);
 				$('#photovault-remove-btn').show();
 			});
@@ -142,7 +142,7 @@ function photovault_media_image_metabox_callback( $post ) {
 		$('#photovault-remove-btn').click(function(e) {
 			e.preventDefault();
 			$('#photovault_thumbnail_id').val('');
-			$('#photovault-media-preview').html('<p style="color: #94a3b8; margin: 10px 0; font-size: 13px; font-weight: 500;"><?php echo esc_js( __( 'Aucune image sélectionnée. C\'est cette image qui sera affichée dans la galerie et protégée.', 'photovault' ) ); ?></p>');
+			$('#photovault-media-preview').html('<p style="color: #646970; margin: 10px 0; font-size: 13px;"><?php echo esc_js( __( 'Aucune image sélectionnée. C\'est cette image qui sera affichée dans la galerie et protégée.', 'photovault' ) ); ?></p>');
 			$(this).hide();
 		});
 	});
@@ -233,28 +233,26 @@ function photovault_render_settings_page() {
 	global $title;
 	$title = __( 'Réglages PhotoVault', 'photovault' );
 	?>
-	<div class="wrap" style="padding: 20px; max-width: 800px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); background: #1e293b; color: #f8fafc; font-family: 'Inter', sans-serif;">
-		<h1 style="color: #f8fafc; font-weight: 800; border-bottom: 1px solid #475569; padding-bottom: 15px; font-size: 24px;"><?php echo esc_html( $title ); ?></h1>
+	<div class="wrap">
+		<h1><?php echo esc_html( $title ); ?></h1>
 		
-		<form method="post" action="options.php" style="margin-top: 20px;">
+		<form method="post" action="options.php">
 			<?php settings_fields( 'photovault-settings-group' ); ?>
 			<?php do_settings_sections( 'photovault-settings-group' ); ?>
 			
-			<table class="form-table" style="width: 100%; border-collapse: collapse;">
-				<tr style="border-bottom: 1px solid #334155;">
-					<th scope="row" style="padding: 20px 10px; width: 250px; font-weight: 600; text-align: left; vertical-align: middle; color: #f8fafc;">
+			<table class="form-table">
+				<tr>
+					<th scope="row">
 						<label for="photovault_watermark_text"><?php _e( 'Texte du filigrane', 'photovault' ); ?></label>
 					</th>
-					<td style="padding: 20px 10px;">
-						<input type="text" id="photovault_watermark_text" name="photovault_watermark_text" value="<?php echo esc_attr( get_option( 'photovault_watermark_text', 'PHOTOVAULT' ) ); ?>" class="regular-text" style="background: #0f172a; color: #f8fafc; border: 1px solid #475569; border-radius: 6px; padding: 8px 12px; width: 100%; max-width: 400px; font-size: 14px;">
-						<p class="description" style="color: #94a3b8; font-size: 12px; margin-top: 5px;"><?php _e( 'Ce texte s\'affichera de manière répétée en diagonale sur les aperçus d\'images protégées.', 'photovault' ); ?></p>
+					<td>
+						<input type="text" id="photovault_watermark_text" name="photovault_watermark_text" value="<?php echo esc_attr( get_option( 'photovault_watermark_text', 'PHOTOVAULT' ) ); ?>" class="regular-text">
+						<p class="description"><?php _e( 'Ce texte s\'affichera de manière répétée en diagonale sur les aperçus d\'images protégées.', 'photovault' ); ?></p>
 					</td>
 				</tr>
 			</table>
 			
-			<div style="margin-top: 30px;">
-				<?php submit_button( __( 'Enregistrer les réglages', 'photovault' ), 'primary', 'submit', true, array( 'style' => 'background: #4f46e5; border: none; border-radius: 6px; padding: 10px 24px; font-weight: 600; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); cursor: pointer; color: #ffffff;' ) ); ?>
-			</div>
+			<?php submit_button(); ?>
 		</form>
 	</div>
 	<?php
