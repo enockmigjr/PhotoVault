@@ -20,7 +20,7 @@ $featured_media = new WP_Query( array(
 	<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-950/20 via-transparent to-transparent pointer-events-none"></div>
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 		<h1 class="text-5xl sm:text-7xl font-extrabold text-white tracking-tight leading-none mb-6">
-			Sécurisez et partagez<br>vos <span class="text-indigo-500">créations visuelles</span>
+			Sécurisez et partagez<br>Mes <span class="text-indigo-500">créations visuelles</span>
 		</h1>
 		<p class="max-w-2xl mx-auto text-lg sm:text-xl text-gray-400 mb-10">
 			Le portfolio officiel de l'artiste. Rejoignez notre espace client pour explorer la galerie complète, télécharger librement les œuvres autorisées en haute définition, ou nous contacter pour vous abonner et accéder aux collections exclusives.
