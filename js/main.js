@@ -36,12 +36,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openMobileMenu() {
         mobileMenu.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
         // Ajouter un léger délai pour la transition d'opacité et de scale
         setTimeout(() => {
             mobileMenu.classList.remove('opacity-0', 'scale-y-95');
             mobileMenu.classList.add('opacity-100', 'scale-y-100');
         }, 10);
-        
+
         if (hamburgerIcon && closeIcon) {
             hamburgerIcon.classList.add('hidden');
             closeIcon.classList.remove('hidden');
@@ -51,7 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeMobileMenu() {
         mobileMenu.classList.remove('opacity-100', 'scale-y-100');
         mobileMenu.classList.add('opacity-0', 'scale-y-95');
-        
+        document.body.classList.remove('overflow-hidden');
+
         if (hamburgerIcon && closeIcon) {
             hamburgerIcon.classList.remove('hidden');
             closeIcon.classList.add('hidden');

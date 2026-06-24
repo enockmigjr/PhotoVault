@@ -44,7 +44,7 @@ function photovault_scripts() {
 	wp_localize_script( 'photovault-main-js', 'photovault_ajax', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'rest_url' => esc_url_raw( rest_url( 'photovault/v1' ) ),
-		'nonce'    => wp_create_nonce( 'photovault_nonce' ),
+		'nonce'    => wp_create_nonce( 'wp_rest' ),
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'photovault_scripts' );

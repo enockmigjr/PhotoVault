@@ -154,7 +154,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		grid.style.opacity = '0.3';
 		grid.style.filter = 'blur(4px)';
 
-		fetch(url)
+		fetch(url, {
+			headers: {
+				'X-WP-Nonce': pvAjax.nonce
+			}
+		})
 			.then(response => response.json())
 			.then(res => {
 				grid.style.opacity = '1';

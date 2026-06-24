@@ -23,13 +23,13 @@ $featured_media = new WP_Query( array(
 			Sécurisez et partagez<br>vos <span class="text-indigo-500">créations visuelles</span>
 		</h1>
 		<p class="max-w-2xl mx-auto text-lg sm:text-xl text-gray-400 mb-10">
-			La plateforme de gestion de médias de niveau professionnel conçue spécifiquement pour les photographes indépendants et les studios.
+			La galerie de portfolio de niveau professionnel conçue spécifiquement pour exposer et protéger les créations visuelles de l'artiste.
 		</p>
-		<div class="flex justify-center gap-4">
-			<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/20 border border-indigo-400/20 cursor-pointer">
+		<div class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-md mx-auto sm:max-w-none">
+			<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/20 border border-indigo-400/20 cursor-pointer text-center">
 				Commencer gratuitement
 			</a>
-			<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="px-8 py-4 bg-gray-900 hover:bg-gray-800 text-gray-300 font-semibold rounded-xl border border-gray-800 transition-all cursor-pointer">
+			<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="w-full sm:w-auto px-8 py-4 bg-gray-900 hover:bg-gray-800 text-gray-300 font-semibold rounded-xl border border-gray-800 transition-all cursor-pointer text-center">
 				Explorer les galeries
 			</a>
 		</div>
@@ -51,7 +51,7 @@ $featured_media = new WP_Query( array(
 					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
 				</div>
 				<h3 class="text-xl font-bold text-white mb-3">Contrôle de Visibilité</h3>
-				<p class="text-gray-400 text-sm leading-relaxed">Définissez vos images en mode public pour votre portfolio ou en mode privé pour vos clients ou archivage personnel.</p>
+				<p class="text-gray-400 text-sm leading-relaxed">Explorez des clichés artistiques publics ou accédez en tant que client à vos projets et photos privées partagées.</p>
 			</div>
 
 			<!-- Protection -->
@@ -60,7 +60,7 @@ $featured_media = new WP_Query( array(
 					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
 				</div>
 				<h3 class="text-xl font-bold text-white mb-3">Protection Avancée</h3>
-				<p class="text-gray-400 text-sm leading-relaxed">Activez la protection 🔒 pour désactiver les clics droits, empêcher les captures simples et superposer un filigrane de sécurité.</p>
+				<p class="text-gray-400 text-sm leading-relaxed">Toutes les images protégées 🔒 empêchent le clic droit et le téléchargement et comportent un filigrane de sécurité.</p>
 			</div>
 
 			<!-- Organisation -->
@@ -69,7 +69,7 @@ $featured_media = new WP_Query( array(
 					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
 				</div>
 				<h3 class="text-xl font-bold text-white mb-3">Dossiers & Catégories</h3>
-				<p class="text-gray-400 text-sm leading-relaxed">Classez vos photos dans des dossiers thématiques clairs pour simplifier la navigation de vos clients.</p>
+				<p class="text-gray-400 text-sm leading-relaxed">Des dossiers thématiques et catégories clairs pour simplifier la navigation et la recherche.</p>
 			</div>
 		</div>
 	</div>
@@ -80,7 +80,7 @@ $featured_media = new WP_Query( array(
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="text-center mb-16">
 			<h2 class="text-3xl sm:text-4xl font-extrabold text-white">Dernières publications</h2>
-			<p class="text-gray-400 mt-2">Découvrez les derniers travaux partagés par nos photographes.</p>
+			<p class="text-gray-400 mt-2">Découvrez les dernières créations visuelles ajoutées à la collection.</p>
 		</div>
 
 		<?php if ( $featured_media->have_posts() ) : ?>
@@ -101,8 +101,8 @@ $featured_media = new WP_Query( array(
 <section class="py-20 bg-indigo-950/20 border-t border-b border-indigo-900/30">
 	<div class="max-w-5xl mx-auto px-4 text-center">
 		<h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-6">Prêt à sublimer votre flux de travail ?</h2>
-		<p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">Rejoignez des centaines de photographes professionnels qui font confiance à PhotoVault pour stocker, protéger et exposer leurs clichés.</p>
-		<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg cursor-pointer">
+		<p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">Créez un compte client pour explorer la galerie complète et accéder à vos dossiers privés sécurisés.</p>
+		<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="inline-block w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg cursor-pointer text-center">
 			Créer un compte maintenant
 		</a>
 	</div>

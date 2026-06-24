@@ -18,8 +18,8 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
 				
 				<div class="space-y-4">
-					<div class="text-white text-xl font-black tracking-wider uppercase">
-						EXO<span class="text-indigo-500">PAUL</span>
+					<div class="text-white text-xl font-black tracking-tight">
+						Photo<span class="text-indigo-500">Vault</span>
 					</div>
 					<p class="text-xs leading-relaxed text-gray-500 font-medium">
 						Une plateforme moderne pensée pour l'avenir de l'intégration et du développement web. Sécurisée, rapide et intuitive.

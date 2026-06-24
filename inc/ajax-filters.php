@@ -107,6 +107,14 @@ function photovault_get_filtered_media( $request ) {
 }
 
 function photovault_serve_secure_image( $request ) {
+	// Authentification par cookie de secours pour les requêtes standard GET (ex: <img> ou téléchargement direct)
+	if ( 0 === get_current_user_id() ) {
+		$cookie_user_id = wp_validate_auth_cookie( '', 'logged_in' );
+		if ( $cookie_user_id ) {
+			wp_set_current_user( $cookie_user_id );
+		}
+	}
+
 	$media_id = intval( $request->get_param( 'id' ) );
 	$post = get_post( $media_id );
 	if ( ! $post || 'media_item' !== $post->post_type ) {

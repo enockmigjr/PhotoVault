@@ -14,7 +14,7 @@ $media_id = get_the_ID();
 $is_protected = get_post_meta( $media_id, 'is_protected', true ) === '1';
 $is_private = 'private' === get_post_status( $media_id );
 $author_name = get_the_author();
-$image_url = home_url( '/wp-json/photovault/v1/secure-image?id=' . $media_id );
+$image_url = home_url( '/wp-json/photovault/v1/secure-image?id=' . $media_id . '&_wpnonce=' . wp_create_nonce( 'wp_rest' ) );
 ?>
 
 <div class="glass-effect rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:shadow-indigo-950/20 border border-gray-800/80 group flex flex-col justify-between h-full bg-gray-900/30">

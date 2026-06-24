@@ -9,11 +9,11 @@ $message = '';
 $error   = '';
 
 if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_contact_nonce'] ) ) {
-	if ( wp_verify_nonce( $_POST['photovault_contact_nonce'], 'photovault_contact_action' ) ) {
-		$name    = sanitize_text_field( $_POST['name'] );
-		$email   = sanitize_email( $_POST['email'] );
-		$subject = sanitize_text_field( $_POST['subject'] );
-		$content = sanitize_textarea_field( $_POST['message'] );
+		if ( wp_verify_nonce( $_POST['photovault_contact_nonce'], 'photovault_contact_action' ) ) {
+			$name    = sanitize_text_field( $_POST['contact_name'] );
+			$email   = sanitize_email( $_POST['email'] );
+			$subject = sanitize_text_field( $_POST['contact_subject'] );
+			$content = sanitize_textarea_field( $_POST['contact_message'] );
 
 		if ( empty( $name ) || empty( $email ) || empty( $content ) ) {
 			$error = 'Veuillez remplir tous les champs obligatoires.';
@@ -74,7 +74,7 @@ get_header();
 					<div class="grid grid-cols-2 gap-4">
 						<div>
 							<label for="name" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Nom / Prénom</label>
-							<input id="name" name="name" type="text" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+							<input id="name" name="contact_name" type="text" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
 						</div>
 						<div>
 							<label for="email" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Adresse E-mail</label>
@@ -84,12 +84,12 @@ get_header();
 
 					<div>
 						<label for="subject" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Sujet</label>
-						<input id="subject" name="subject" type="text" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+						<input id="subject" name="contact_subject" type="text" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 
 					<div>
 						<label for="message" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Message</label>
-						<textarea id="message" name="message" rows="5" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+						<textarea id="message" name="contact_message" rows="5" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
 					</div>
 
 					<div class="pt-2">

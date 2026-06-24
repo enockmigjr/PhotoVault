@@ -11,8 +11,8 @@ get_header();
 <div class="py-20 bg-[#0b0f19] min-h-screen">
 	<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
 		<header class="space-y-4">
-			<h1 class="text-4xl sm:text-6xl font-extrabold text-white">Des forfaits adaptés à vos <span class="text-indigo-500">ambitions</span></h1>
-			<p class="text-gray-400 text-lg max-w-xl mx-auto">Choisissez le plan parfait pour stocker, exposer et sécuriser vos travaux photographiques.</p>
+			<h1 class="text-4xl sm:text-6xl font-extrabold text-white">Des prestations adaptées à vos <span class="text-indigo-500">projets</span></h1>
+			<p class="text-gray-400 text-lg max-w-xl mx-auto">Découvrez nos formules pour vos séances photo privées ou l'accès à nos collections exclusives.</p>
 		</header>
 
 		<!-- Grille des Offres -->
@@ -20,59 +20,59 @@ get_header();
 			<!-- Starter -->
 			<div class="glass-effect p-8 rounded-3xl border border-gray-800 text-left flex flex-col justify-between shadow-xl">
 				<div>
-					<h3 class="text-xl font-bold text-white mb-2">Starter</h3>
-					<p class="text-xs text-gray-500 mb-6">Idéal pour débuter et partager vos premières galeries.</p>
+					<h3 class="text-xl font-bold text-white mb-2">Séance Portrait</h3>
+					<p class="text-xs text-gray-500 mb-6">Idéal pour vos portraits professionnels et profils personnels.</p>
 					<div class="flex items-baseline mb-8">
-						<span class="text-4xl font-extrabold text-white">0€</span>
-						<span class="text-gray-500 text-sm ml-2">/ mois</span>
+						<span class="text-4xl font-extrabold text-white">149€</span>
+						<span class="text-gray-500 text-sm ml-2">/ séance</span>
 					</div>
 					<ul class="space-y-3 text-sm text-gray-400">
-						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Jusqu'à 100 médias</li>
-						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Visibilité publique/privée</li>
-						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Protection anti-copie basique</li>
-						<li class="text-gray-600 line-through flex items-center"><span class="mr-2">&times;</span> Filigranes personnalisés</li>
+						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> 1 heure de shooting en studio</li>
+						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> 10 photos retouchées HD</li>
+						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Galerie privée en ligne (6 mois)</li>
+						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Téléchargement direct inclus</li>
 					</ul>
 				</div>
-				<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="mt-8 w-full py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold rounded-xl text-center block transition-all cursor-pointer">Rejoindre</a>
+				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mt-8 w-full py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold rounded-xl text-center block transition-all cursor-pointer">Réserver la séance</a>
 			</div>
 
 			<!-- Pro (Mis en avant) -->
 			<div class="glass-effect p-8 rounded-3xl border-2 border-indigo-500 text-left flex flex-col justify-between shadow-2xl relative">
 				<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Le plus populaire</div>
 				<div>
-					<h3 class="text-xl font-bold text-white mb-2">Pro</h3>
-					<p class="text-xs text-gray-500 mb-6">Pour les photographes professionnels en activité.</p>
+					<h3 class="text-xl font-bold text-white mb-2">Shooting Corporate</h3>
+					<p class="text-xs text-gray-500 mb-6">Pour les entreprises et les professionnels en quête d'image de marque.</p>
 					<div class="flex items-baseline mb-8">
-						<span class="text-4xl font-extrabold text-white">19€</span>
-						<span class="text-gray-500 text-sm ml-2">/ mois</span>
+						<span class="text-4xl font-extrabold text-white">399€</span>
+						<span class="text-gray-500 text-sm ml-2">/ séance</span>
 					</div>
 					<ul class="space-y-3 text-sm text-gray-300">
-						<li class="flex items-center"><span class="text-indigo-400 mr-2">&checkmark;</span> Médias illimités</li>
-						<li class="flex items-center"><span class="text-indigo-400 mr-2">&checkmark;</span> Visibilité et dossiers clients</li>
-						<li class="flex items-center"><span class="text-indigo-400 mr-2">&checkmark;</span> Protection + Filigrane dynamique</li>
-						<li class="flex items-center"><span class="text-indigo-400 mr-2">&checkmark;</span> Support client prioritaire</li>
+						<li class="flex items-center"><span class="text-indigo-400 mr-2">&checkmark;</span> Demi-journée de reportage/shooting</li>
+						<li class="flex items-center"><span class="text-indigo-400 mr-2">&checkmark;</span> 50 photos retouchées HD</li>
+						<li class="flex items-center"><span class="text-indigo-400 mr-2">&checkmark;</span> Galerie privée sécurisée (1 an)</li>
+						<li class="flex items-center"><span class="text-indigo-400 mr-2">&checkmark;</span> Droits d'utilisation commerciale</li>
 					</ul>
 				</div>
-				<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="mt-8 w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-center block transition-all shadow-lg cursor-pointer">Commencer Pro</a>
+				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mt-8 w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-center block transition-all shadow-lg cursor-pointer">Réserver la séance</a>
 			</div>
 
 			<!-- Studio -->
 			<div class="glass-effect p-8 rounded-3xl border border-gray-800 text-left flex flex-col justify-between shadow-xl">
 				<div>
-					<h3 class="text-xl font-bold text-white mb-2">Studio</h3>
-					<p class="text-xs text-gray-500 mb-6">Pour les agences et les équipes de créateurs.</p>
+					<h3 class="text-xl font-bold text-white mb-2">Reportage Événementiel</h3>
+					<p class="text-xs text-gray-500 mb-6">Pour vos événements importants, mariages et lancements.</p>
 					<div class="flex items-baseline mb-8">
-						<span class="text-4xl font-extrabold text-white">49€</span>
-						<span class="text-gray-500 text-sm ml-2">/ mois</span>
+						<span class="text-4xl font-extrabold text-white">999€</span>
+						<span class="text-gray-500 text-sm ml-2">/ événement</span>
 					</div>
 					<ul class="space-y-3 text-sm text-gray-400">
-						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Tout le plan Pro</li>
-						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Gestion d'équipe (multi-comptes)</li>
-						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Nom de domaine personnalisé</li>
-						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Stockage RAW haute performance</li>
+						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Journée complète de présence</li>
+						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Photos illimitées en ligne</li>
+						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Galerie privée partagée invités</li>
+						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Clé USB & tirages physiques</li>
 					</ul>
 				</div>
-				<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="mt-8 w-full py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold rounded-xl text-center block transition-all cursor-pointer">Contacter le studio</a>
+				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mt-8 w-full py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold rounded-xl text-center block transition-all cursor-pointer">Demander un devis</a>
 			</div>
 		</div>
 	</div>

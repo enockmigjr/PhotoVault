@@ -44,8 +44,6 @@ function photovault_register_post_types() {
 		'menu_icon'          => 'dashicons-images-alt2',
 		'show_in_rest'       => true, // Essentiel pour l'API REST
 		'supports'           => array( 'title', 'editor', 'thumbnail', 'author' ),
-		'capability_type'     => array( 'media_item', 'media_items' ),
-		'map_meta_cap'        => true, // Laisse WP mapper automatiquement les capacités
 	);
 
 	register_post_type( 'media_item', $args );
@@ -53,9 +51,10 @@ function photovault_register_post_types() {
 add_action( 'init', 'photovault_register_post_types' );
 
 /**
- * Ajouter la Metabox "Protection du Média" dans l'éditeur de media_item.
+ * Ajouter les Metaboxes dans l'éditeur de media_item.
  */
 function photovault_add_protection_metabox() {
+	// Options de protection (sidebar)
 	add_meta_box(
 		'photovault_protection_meta',
 		__( 'Options de protection', 'photovault' ),
@@ -63,6 +62,16 @@ function photovault_add_protection_metabox() {
 		'media_item',
 		'side',
 		'default'
+	);
+
+	// Metabox d'upload centrale pour l'image principale
+	add_meta_box(
+		'photovault_media_image_meta',
+		__( 'Fichier Média (Image)', 'photovault' ),
+		'photovault_media_image_metabox_callback',
+		'media_item',
+		'normal',
+		'high'
 	);
 }
 add_action( 'add_meta_boxes', 'photovault_add_protection_metabox' );
@@ -87,15 +96,64 @@ function photovault_protection_metabox_callback( $post ) {
 }
 
 /**
- * Sauvegarder la valeur de protection.
+ * Rendu de la Metabox de sélection d'image principale.
+ */
+function photovault_media_image_metabox_callback( $post ) {
+	wp_nonce_field( 'photovault_media_image_save', 'photovault_media_image_nonce' );
+	$thumbnail_id = get_post_thumbnail_id( $post->ID );
+	?>
+	<div id="photovault-media-uploader-container" style="text-align: center; padding: 25px 15px; border: 2px dashed #475569; border-radius: 8px; background: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif;">
+		<div id="photovault-media-preview" style="margin-bottom: 15px; display: flex; justify-content: center; align-items: center; min-height: 100px;">
+			<?php if ( $thumbnail_id ) : ?>
+				<?php echo wp_get_attachment_image( $thumbnail_id, 'medium', false, array( 'style' => 'max-width: 100%; max-height: 250px; height: auto; border-radius: 6px; border: 1px solid #334155;' ) ); ?>
+			<?php else : ?>
+				<p style="color: #94a3b8; margin: 10px 0; font-size: 13px; font-weight: 500;"><?php _e( 'Aucune image sélectionnée. C\'est cette image qui sera affichée dans la galerie et protégée.', 'photovault' ); ?></p>
+			<?php endif; ?>
+		</div>
+		<input type="hidden" name="photovault_thumbnail_id" id="photovault_thumbnail_id" value="<?php echo esc_attr( $thumbnail_id ); ?>">
+		<button type="button" id="photovault-upload-btn" class="button button-primary" style="background: #4f46e5; border: none; font-weight: 600; padding: 8px 18px; height: auto; line-height: 1.5; border-radius: 6px; color: #ffffff; cursor: pointer; box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);"><?php _e( 'Sélectionner ou Téléverser une Image', 'photovault' ); ?></button>
+		<button type="button" id="photovault-remove-btn" class="button" style="margin-left: 10px; border: 1px solid #ef4444; background: transparent; color: #ef4444; font-weight: 600; padding: 8px 18px; height: auto; line-height: 1.5; border-radius: 6px; cursor: pointer; display: <?php echo $thumbnail_id ? 'inline-block' : 'none'; ?>;"><?php _e( 'Supprimer', 'photovault' ); ?></button>
+	</div>
+	<script>
+	jQuery(document).ready(function($){
+		var mediaUploader;
+		$('#photovault-upload-btn').click(function(e) {
+			e.preventDefault();
+			if (mediaUploader) {
+				mediaUploader.open();
+				return;
+			}
+			mediaUploader = wp.media({
+				title: '<?php echo esc_js( __( 'Choisir l\'image principale du média', 'photovault' ) ); ?>',
+				button: {
+					text: '<?php echo esc_js( __( 'Utiliser cette image', 'photovault' ) ); ?>'
+				},
+				multiple: false
+			});
+			mediaUploader.on('select', function() {
+				var attachment = mediaUploader.state().get('selection').first().toJSON();
+				$('#photovault_thumbnail_id').val(attachment.id);
+				var imgHtml = '<img src="' + attachment.url + '" style="max-width: 100%; max-height: 250px; height: auto; border-radius: 6px; border: 1px solid #334155;" />';
+				$('#photovault-media-preview').html(imgHtml);
+				$('#photovault-remove-btn').show();
+			});
+			mediaUploader.open();
+		});
+		$('#photovault-remove-btn').click(function(e) {
+			e.preventDefault();
+			$('#photovault_thumbnail_id').val('');
+			$('#photovault-media-preview').html('<p style="color: #94a3b8; margin: 10px 0; font-size: 13px; font-weight: 500;"><?php echo esc_js( __( 'Aucune image sélectionnée. C\'est cette image qui sera affichée dans la galerie et protégée.', 'photovault' ) ); ?></p>');
+			$(this).hide();
+		});
+	});
+	</script>
+	<?php
+}
+
+/**
+ * Enregistrer les images et options de protection à la sauvegarde du post.
  */
 function photovault_save_protection_metabox( $post_id ) {
-	if ( ! isset( $_POST['photovault_protection_nonce'] ) ) {
-		return;
-	}
-	if ( ! wp_verify_nonce( $_POST['photovault_protection_nonce'], 'photovault_protection_save' ) ) {
-		return;
-	}
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		return;
 	}
@@ -103,10 +161,47 @@ function photovault_save_protection_metabox( $post_id ) {
 		return;
 	}
 
-	$is_protected = isset( $_POST['photovault_is_protected'] ) ? '1' : '0';
-	update_post_meta( $post_id, 'is_protected', $is_protected );
+	// 1. Sauvegarde de la protection
+	if ( isset( $_POST['photovault_protection_nonce'] ) && wp_verify_nonce( $_POST['photovault_protection_nonce'], 'photovault_protection_save' ) ) {
+		$is_protected = isset( $_POST['photovault_is_protected'] ) ? '1' : '0';
+		update_post_meta( $post_id, 'is_protected', $is_protected );
+	}
+
+	// 2. Sauvegarde de l'image principale
+	if ( isset( $_POST['photovault_media_image_nonce'] ) && wp_verify_nonce( $_POST['photovault_media_image_nonce'], 'photovault_media_image_save' ) ) {
+		if ( isset( $_POST['photovault_thumbnail_id'] ) ) {
+			$thumbnail_id = sanitize_text_field( $_POST['photovault_thumbnail_id'] );
+			if ( ! empty( $thumbnail_id ) ) {
+				set_post_thumbnail( $post_id, intval( $thumbnail_id ) );
+			} else {
+				delete_post_thumbnail( $post_id );
+			}
+		}
+	}
 }
 add_action( 'save_post', 'photovault_save_protection_metabox' );
+
+/**
+ * Charger les scripts du sélecteur de média WP dans l'éditeur de PhotoVault.
+ */
+function photovault_enqueue_admin_media_scripts( $hook ) {
+	global $post_type;
+	if ( ( 'post.php' === $hook || 'post-new.php' === $hook ) && 'media_item' === $post_type ) {
+		wp_enqueue_media();
+	}
+}
+add_action( 'admin_enqueue_scripts', 'photovault_enqueue_admin_media_scripts' );
+
+/**
+ * Corriger le warning PHP Deprecated de strip_tags(null) en pré-initialisant le titre.
+ */
+function photovault_fix_settings_page_title() {
+	global $title;
+	if ( isset( $_GET['page'] ) && 'photovault-settings' === $_GET['page'] ) {
+		$title = __( 'Réglages PhotoVault', 'photovault' );
+	}
+}
+add_action( 'admin_init', 'photovault_fix_settings_page_title' );
 
 /**
  * Ajouter le sous-menu "Réglages" sous le menu PhotoVault dans wp-admin.
@@ -135,9 +230,11 @@ add_action( 'admin_init', 'photovault_register_settings_fields' );
  * Rendu de la page de réglages.
  */
 function photovault_render_settings_page() {
+	global $title;
+	$title = __( 'Réglages PhotoVault', 'photovault' );
 	?>
 	<div class="wrap" style="padding: 20px; max-width: 800px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); background: #1e293b; color: #f8fafc; font-family: 'Inter', sans-serif;">
-		<h1 style="color: #f8fafc; font-weight: 800; border-bottom: 1px solid #475569; padding-bottom: 15px; font-size: 24px;"><?php _e( 'Configuration du filigrane PhotoVault', 'photovault' ); ?></h1>
+		<h1 style="color: #f8fafc; font-weight: 800; border-bottom: 1px solid #475569; padding-bottom: 15px; font-size: 24px;"><?php echo esc_html( $title ); ?></h1>
 		
 		<form method="post" action="options.php" style="margin-top: 20px;">
 			<?php settings_fields( 'photovault-settings-group' ); ?>

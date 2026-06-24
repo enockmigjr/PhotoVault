@@ -1,6 +1,6 @@
 # Sécurité & Protection de la Propriété Intellectuelle — PhotoVault
 
-Ce document décrit en détail les mécanismes de protection implémentés dans PhotoVault pour garantir la confidentialité et empêcher le vol d'images de vos photographes.
+Ce document décrit en détail les mécanismes de protection implémentés dans PhotoVault pour garantir la confidentialité et empêcher le vol d'images de votre galerie.
 
 ---
 
@@ -13,27 +13,24 @@ Toutes les balises d'images du thème (`img src`) pointent vers un point de term
 `https://votre-site.com/wp-json/photovault/v1/secure-image?id=ID_DU_MEDIA`
 
 Lorsqu'une image est demandée par le navigateur :
-1. **Contrôle d'accès** : L'API REST valide que le visiteur effectuant la demande est connecté. Si ce n'est pas le cas, elle renvoie une erreur `401 Unauthorized` ou `403 Forbidden`.
+1. **Contrôle d'accès par cookie** : Le endpoint REST valide la session de l'utilisateur connecté de manière sécurisée en lisant son cookie de session WordPress classique (via `wp_validate_auth_cookie()`). Cela évite les erreurs d'autorisation REST (401/403) sans compromettre la sécurité.
 2. **Détermination du statut** : Le script vérifie la métadonnée `is_protected` associée au média.
 3. **Application du filigrane côté serveur** :
-   - Si `is_protected` est actif, le serveur charge le fichier d'origine en mémoire via la bibliothèque graphique **GD** de PHP, dessine une grille répétée de filigranes `"PHOTOVAULT PROTECTED"` directement dans les pixels de l'image, puis sert l'image modifiée à la volée.
+   - Si `is_protected` est actif et que l'utilisateur n'est pas l'administrateur, le serveur charge le fichier d'origine en mémoire via la bibliothèque graphique **GD** de PHP, dessine une grille répétée de filigranes (texte configurable dans "Réglages PhotoVault" de wp-admin) directement dans les pixels de l'image, puis sert l'image modifiée à la volée.
    - Si `is_protected` est inactif, l'image est servie normalement (après validation d'accès).
 4. **Bénéfice** : L'image d'origine haute définition n'est **jamais** envoyée au client pour un média protégé. Si le visiteur effectue une capture réseau ou télécharge l'image, il n'obtiendra que la version déjà filigranée par le serveur.
 
 ---
 
-## 📁 2. Isolation des Téléversements par Photographe
+## 📁 2. Restriction d'Accès aux Médias Privés
 
-Pour éviter que les répertoires d'images ne soient mélangés, un filtre WordPress intercepte le dossier de téléversement (`upload_dir`) lors des actions du photographe. 
-
-Les fichiers importés par un photographe sont stockés dans un répertoire dédié et confidentiel :
-`wp-content/uploads/photographers/user_{ID_UTILISATEUR}/`
+Si un média est configuré en statut "Privé" dans WordPress, seul l'administrateur propriétaire (ou l'auteur du post) peut y accéder. Toute tentative d'accès via le frontend ou via l'API REST par un simple client ou un visiteur anonyme se soldera par une erreur `403 Forbidden` ou une redirection stricte.
 
 ---
 
 ## 🛡️ 3. Protection Frontend (Anti-Copie)
 
-Pour dissuader les visiteurs d'enregistrer l'image via des raccourcis simples, un script JS d'interception est injecté en bas de la page [single-media_item.php](file:///c:/xampp/htdocs/site-wordpress1/wp-content/themes/PhotoVault/single-media_item.php) si le média est protégé :
+Pour dissuader les visiteurs d'enregistrer l'image via des raccourcis simples, un script JS d'interception est injecté au pied de la page [single-media_item.php](file:///c:/xampp/htdocs/site-wordpress1/wp-content/themes/PhotoVault/single-media_item.php) si le média est protégé :
 - **Clic droit bloqué** : Intercepte l'événement `contextmenu` et affiche un message d'alerte.
 - **Raccourcis bloqués** : Désactive l'utilisation de `Ctrl+S` (Sauvegarde), `Ctrl+C` (Copie), `Ctrl+U` (Afficher le code source) et les touches d'ouverture des outils de développement comme `F12` ou `Ctrl+Shift+I`.
 - **Drag & Drop désactivé** : Bloque le glisser-déposer de l'image vers le bureau ou un autre onglet.
@@ -42,9 +39,9 @@ Pour dissuader les visiteurs d'enregistrer l'image via des raccourcis simples, u
 
 ## 👁️ 4. Restriction des Accès pour les Visiteurs Anonymes
 
-Pour maximiser la sécurité de la plateforme, les visiteurs anonymes (déconnectés) n'ont accès qu'aux pages vitrines d'information et d'authentification :
-- `front-page.php` (Landing page)
-- `page-pricing.php` (Tarifs)
+Les visiteurs anonymes (déconnectés) n'ont accès qu'aux pages vitrines d'information et d'authentification :
+- `front-page.php` (Landing page d'accueil)
+- `page-pricing.php` (Prestations)
 - `page-about.php` (À propos)
 - `page-contact.php` (Contact)
 - Formulaires de connexion / inscription

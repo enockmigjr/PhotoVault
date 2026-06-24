@@ -64,7 +64,7 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 		</div>
 
 		<!-- Menu Mobile -->
-		<div id="mobile-menu" class="hidden md:hidden border-t border-gray-900 bg-[#0b0f19]/95 backdrop-blur-xl px-4 pt-4 pb-6 space-y-4 shadow-2xl transition-all duration-300 transform scale-y-95 origin-top opacity-0">
+		<div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 bottom-0 top-20 z-50 overflow-y-auto flex flex-col bg-[#0b0f19] border-t border-gray-900 px-6 pt-6 pb-8 space-y-6 shadow-2xl transition-all duration-300 transform scale-y-95 origin-top opacity-0">
 			<nav class="flex flex-col space-y-3">
 				<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Explorer</a>
 				<a href="<?php echo esc_url( home_url( '/pricing/' ) ); ?>" class="px-4 py-3 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/40 transition-all">Tarifs</a>
