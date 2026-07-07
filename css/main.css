@@ -81,7 +81,7 @@ h1, h2, h3, h4, h5, h6 {
 .watermark span {
 	font-size: clamp(0.72rem, 1.7vw, 1.25rem);
 	font-weight: 800;
-	color: rgba(255, 255, 255, 0.24);
+	color: rgba(14, 14, 14, 0.50);
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
 	white-space: nowrap;
