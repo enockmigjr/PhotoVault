@@ -79,10 +79,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .watermark span {
-	font-size: clamp(0.58rem, 1.35vw, 1rem);
+	font-size: clamp(0.72rem, 1.7vw, 1.25rem);
 	font-weight: 800;
-	color: rgba(231, 229, 228, 0.075);
-	letter-spacing: 0.16em;
+	color: rgba(255, 255, 255, 0.24);
+	letter-spacing: 0.18em;
 	text-transform: uppercase;
 	white-space: nowrap;
 }

@@ -264,7 +264,7 @@ function photovault_serve_secure_image( $request ) {
 
 			if ( $img ) {
 				$watermark_text = get_option( 'photovault_watermark_text', 'PHOTOVAULT' );
-				$col = imagecolorallocatealpha( $img, 255, 255, 255, 108 );
+				$col = imagecolorallocatealpha( $img, 255, 255, 255, 52 );
 				$w = imagesx( $img );
 				$h = imagesy( $img );
 
