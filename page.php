@@ -17,11 +17,9 @@ get_header();
 						<h1 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight"><?php the_title(); ?></h1>
 					</header>
 
-					<?php if ( has_post_thumbnail() ) : ?>
-						<div class="aspect-video w-full rounded-2xl overflow-hidden bg-gray-950 border border-gray-800">
-							<?php the_post_thumbnail( 'large', array( 'class' => 'w-full h-full object-cover' ) ); ?>
-						</div>
-					<?php endif; ?>
+					<div class="aspect-video w-full rounded-2xl overflow-hidden bg-gray-950 border border-gray-800">
+						<?php photovault_render_post_visual( 'large', 'w-full h-full object-cover' ); ?>
+					</div>
 
 					<div class="prose prose-invert max-w-none text-gray-300 leading-relaxed text-base space-y-6">
 						<?php the_content(); ?>

@@ -26,6 +26,18 @@ $featured_media = new WP_Query( array(
 	'posts_per_page' => 5,
 ) );
 
+$gallery_preview = new WP_Query( array(
+	'post_type'      => 'media_item',
+	'post_status'    => 'publish',
+	'posts_per_page' => 6,
+) );
+
+$journal_posts = new WP_Query( array(
+	'post_type'      => 'post',
+	'post_status'    => 'publish',
+	'posts_per_page' => 3,
+) );
+
 $collections = get_terms( array(
 	'taxonomy'   => 'media_folder',
 	'hide_empty' => false,
@@ -151,17 +163,35 @@ $current_year = (int) date( 'Y' );
 
 <section class="py-24 bg-[#0d0c0b] border-t border-gray-900">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-		<div class="lg:col-span-7 rounded-3xl border border-gray-800 bg-gray-950/50 p-5">
-			<div class="grid grid-cols-3 gap-3 aspect-[16/10]">
-				<div class="rounded-2xl bg-gray-900 border border-gray-800"></div><div class="rounded-2xl bg-gray-800 border border-gray-700"></div><div class="rounded-2xl bg-gray-900 border border-gray-800"></div>
-				<div class="rounded-2xl bg-gray-800 border border-gray-700 col-span-2"></div><div class="rounded-2xl bg-gray-900 border border-gray-800"></div>
+		<div class="lg:col-span-7 rounded-3xl border border-gray-800 bg-gray-950/70 p-4 sm:p-5 shadow-2xl">
+			<div class="flex flex-wrap items-center gap-2 pb-4 border-b border-gray-800">
+				<span class="px-3 py-1.5 rounded-full bg-indigo-600 text-white text-[11px] font-bold">Tout</span>
+				<span class="px-3 py-1.5 rounded-full bg-gray-900 text-gray-300 text-[11px] font-bold border border-gray-800">Collections</span>
+				<span class="px-3 py-1.5 rounded-full bg-gray-900 text-gray-300 text-[11px] font-bold border border-gray-800">Portrait</span>
+				<span class="px-3 py-1.5 rounded-full bg-gray-900 text-gray-300 text-[11px] font-bold border border-gray-800">HD autorisee</span>
+				<span class="ml-auto hidden sm:inline text-[11px] font-bold text-gray-500 uppercase tracking-wider">Apercus optimises</span>
 			</div>
+			<?php if ( $gallery_preview->have_posts() ) : ?>
+				<div class="grid grid-cols-2 md:grid-cols-3 gap-3 pt-4">
+					<?php while ( $gallery_preview->have_posts() ) : $gallery_preview->the_post(); ?>
+						<?php $preview_image = photovault_get_secure_image_url( get_the_ID(), 'card' ); ?>
+						<a href="<?php the_permalink(); ?>" class="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-900 border border-gray-800">
+							<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image:url('<?php echo esc_url( $preview_image ); ?>');"></div>
+							<div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent"><p class="text-white text-xs font-bold truncate"><?php the_title(); ?></p></div>
+						</a>
+					<?php endwhile; wp_reset_postdata(); ?>
+				</div>
+			<?php else : ?>
+				<div class="pt-4"><div class="pv-post-placeholder aspect-[16/10] rounded-2xl border border-gray-800"></div></div>
+			<?php endif; ?>
 		</div>
 		<div class="lg:col-span-5 space-y-6">
 			<p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Galerie libre HD</p>
 			<h2 class="text-4xl sm:text-5xl font-black text-white">Libre de regarder. Libre de conserver quand l'oeuvre l'autorise.</h2>
-			<p class="text-gray-400 leading-relaxed">Explorez par collection, categorie, annee, orientation, disponibilite et statut de protection. Les apercus restent legers ; les fichiers HD passent par un vrai controle de droits.</p>
-			<div class="grid grid-cols-2 gap-3 text-sm text-gray-300"><span>- Collection</span><span>- Categorie</span><span>- Annee</span><span>- Orientation</span><span>- Disponibilite</span><span>- Telechargement</span></div>
+			<p class="text-gray-400 leading-relaxed">Cette section montre le fonctionnement reel de la galerie : des apercus rapides, des filtres lisibles et une entree directe vers les fiches. Le fichier original reste reserve au telechargement autorise.</p>
+			<div class="grid grid-cols-2 gap-3 text-sm text-gray-300">
+				<span class="border-t border-gray-800 pt-3">Collection</span><span class="border-t border-gray-800 pt-3">Categorie</span><span class="border-t border-gray-800 pt-3">Annee</span><span class="border-t border-gray-800 pt-3">Protection</span><span class="border-t border-gray-800 pt-3">Disponibilite</span><span class="border-t border-gray-800 pt-3">Telechargement</span>
+			</div>
 		</div>
 	</div>
 </section>
@@ -214,48 +244,118 @@ $current_year = (int) date( 'Y' );
 </section>
 
 <section class="py-24 bg-[#11100f] border-t border-gray-900">
-	<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-		<h2 class="text-4xl sm:text-5xl font-black text-white">Les archives, annee apres annee.</h2>
-		<div class="space-y-6">
-			<?php foreach ( array( $current_year, $current_year - 1, $current_year - 2 ) as $year ) : ?>
-				<div class="grid grid-cols-[80px_1fr] gap-6 items-center"><span class="text-indigo-400 font-black"><?php echo esc_html( $year ); ?></span><div class="border-t border-gray-800 pt-4 text-gray-400">Series, commandes et fragments ajoutes aux archives PhotoVault.</div></div>
+	<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+			<div>
+				<p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Chronologie</p>
+				<h2 class="mt-4 text-4xl sm:text-5xl font-black text-white">Les archives, annee apres annee.</h2>
+			</div>
+			<p class="lg:col-span-2 text-gray-400 text-lg leading-relaxed">Chaque annee rassemble des commandes, des series libres, des lieux documentes et des collections parfois conservees hors du regard public. La chronologie donne un rythme a l'archive et transforme la galerie en recit.</p>
+		</div>
+		<div class="space-y-4">
+			<?php
+			$timeline_items = array(
+				array( 'year' => $current_year, 'title' => 'Archives vivantes', 'meta' => $stats['total'] . ' images conservees', 'copy' => 'Nouvelles series, mises a jour de collections et livraisons client securisees.' ),
+				array( 'year' => $current_year - 1, 'title' => 'Territoires & presences', 'meta' => $stats['folders'] . ' collections structurees', 'copy' => 'Organisation des dossiers, separation des series publiques et confidentielles.' ),
+				array( 'year' => $current_year - 2, 'title' => 'Premieres archives numeriques', 'meta' => $stats['protected'] . ' oeuvres protegees', 'copy' => 'Mise en place des apercus filigranes, des acces reserves et des telechargements controles.' ),
+			);
+			foreach ( $timeline_items as $item ) :
+			?>
+				<div class="grid grid-cols-1 md:grid-cols-[120px_1fr_220px] gap-5 p-5 rounded-3xl bg-gray-950/40 border border-gray-800">
+					<div class="text-3xl font-black text-indigo-400"><?php echo esc_html( $item['year'] ); ?></div>
+					<div><h3 class="text-2xl font-black text-white"><?php echo esc_html( $item['title'] ); ?></h3><p class="text-gray-400 mt-2 leading-relaxed"><?php echo esc_html( $item['copy'] ); ?></p></div>
+					<div class="md:text-right text-sm font-bold text-gray-500 uppercase tracking-wider"><?php echo esc_html( $item['meta'] ); ?></div>
+				</div>
 			<?php endforeach; ?>
 		</div>
 	</div>
 </section>
 
 <section class="py-24 bg-[#0d0c0b] border-t border-gray-900">
-	<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-		<p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Leur regard apres le notre</p>
-		<blockquote class="text-3xl sm:text-4xl font-black text-white leading-tight">Nous sommes venus pour quelques portraits. Nous sommes repartis avec une memoire entiere de cette periode de notre vie.</blockquote>
-		<p class="text-gray-500 text-sm">Shooting portrait / temoignage client</p>
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+		<div class="max-w-3xl">
+			<p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Leur regard apres le notre</p>
+			<h2 class="mt-4 text-4xl sm:text-5xl font-black text-white">Des seances vecues comme des fragments de memoire.</h2>
+		</div>
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+			<?php
+			$testimonials = array(
+				array( 'name' => 'Nadia A.', 'type' => 'Portrait editorial - 2026', 'image' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80', 'quote' => 'Nous sommes venus pour quelques portraits. Nous sommes repartis avec une memoire entiere de cette periode de notre vie.' ),
+				array( 'name' => 'Marius & Lea', 'type' => 'Couple & famille - 2025', 'image' => 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80', 'quote' => 'La seance a garde quelque chose de naturel. Rien ne semblait force, mais tout etait compose avec precision.' ),
+				array( 'name' => 'Studio K.', 'type' => 'Corporate - 2025', 'image' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80', 'quote' => 'Les portraits ont donne une presence plus juste a notre equipe. Sobres, humains, utilisables partout.' ),
+			);
+			foreach ( $testimonials as $item ) :
+			?>
+				<article class="overflow-hidden rounded-3xl bg-gray-950/50 border border-gray-800">
+					<img src="<?php echo esc_url( $item['image'] ); ?>" alt="Portrait temoignage <?php echo esc_attr( $item['name'] ); ?>" class="h-64 w-full object-cover" loading="lazy">
+					<div class="p-6 space-y-4"><blockquote class="text-lg font-bold text-white leading-snug">&laquo; <?php echo esc_html( $item['quote'] ); ?> &raquo;</blockquote><div><p class="text-sm font-black text-indigo-400"><?php echo esc_html( $item['name'] ); ?></p><p class="text-xs text-gray-500 mt-1"><?php echo esc_html( $item['type'] ); ?></p></div></div>
+				</article>
+			<?php endforeach; ?>
+		</div>
 	</div>
 </section>
 
 <section class="py-24 bg-[#11100f] border-t border-gray-900">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-		<div class="flex flex-col lg:flex-row justify-between gap-6"><h2 class="text-4xl sm:text-5xl font-black text-white">Carnets visuels</h2><p class="max-w-xl text-gray-400">Des notes pour comprendre la lumiere, la ville, le choix de rendre certaines images publiques et d'en proteger d'autres.</p></div>
+		<div class="flex flex-col lg:flex-row justify-between gap-6"><h2 class="text-4xl sm:text-5xl font-black text-white">Carnets visuels</h2><p class="max-w-xl text-gray-400">Les articles du blog deviennent des notes d'atelier : lumiere, protection, choix de serie, ville, archive et livraison.</p></div>
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-			<?php foreach ( array( 'Photographier Cotonou apres la pluie', 'Pourquoi certaines images restent privees', 'Ce qu une archive conserve vraiment' ) as $title ) : ?>
-				<article class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800"><p class="text-xs text-indigo-400 font-black uppercase tracking-wider">Journal</p><h3 class="text-xl font-black text-white mt-4"><?php echo esc_html( $title ); ?></h3><p class="text-sm text-gray-500 mt-4">Carnet editorial a publier.</p></article>
-			<?php endforeach; ?>
+			<?php if ( $journal_posts->have_posts() ) : ?>
+				<?php while ( $journal_posts->have_posts() ) : $journal_posts->the_post(); ?>
+					<article class="overflow-hidden rounded-3xl bg-gray-950/40 border border-gray-800">
+						<a href="<?php the_permalink(); ?>" class="block aspect-[4/3] bg-gray-950 border-b border-gray-800"><?php photovault_render_post_visual( 'medium_large', 'w-full h-full object-cover' ); ?></a>
+						<div class="p-6"><p class="text-xs text-indigo-400 font-black uppercase tracking-wider"><?php echo esc_html( get_the_date( 'd M Y' ) ); ?></p><h3 class="text-xl font-black text-white mt-4"><a href="<?php the_permalink(); ?>" class="hover:text-indigo-300"><?php the_title(); ?></a></h3><div class="text-sm text-gray-500 mt-4 leading-relaxed"><?php the_excerpt(); ?></div></div>
+					</article>
+				<?php endwhile; wp_reset_postdata(); ?>
+			<?php else : ?>
+				<?php foreach ( array( 'Photographier Cotonou apres la pluie', 'Pourquoi certaines images restent privees', 'Ce qu une archive conserve vraiment' ) as $title ) : ?>
+					<article class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800"><p class="text-xs text-indigo-400 font-black uppercase tracking-wider">Journal</p><h3 class="text-xl font-black text-white mt-4"><?php echo esc_html( $title ); ?></h3><p class="text-sm text-gray-500 mt-4">Carnet editorial pret a publier.</p></article>
+				<?php endforeach; ?>
+			<?php endif; ?>
 		</div>
 	</div>
 </section>
 
 <section class="py-24 bg-[#0d0c0b] border-t border-gray-900">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
-		<div><p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Expositions & publications</p><h2 class="text-4xl font-black text-white mt-4">Un espace pour les collaborations, parutions et evenements.</h2></div>
-		<div class="space-y-4 text-gray-400"><p>Ajoutez ici les expositions, magazines, collaborations, prix ou publications lorsque les archives s'ouvrent au public.</p><p>Cette section donne au portfolio une profondeur institutionnelle sans transformer le site en simple vitrine commerciale.</p></div>
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12">
+		<div class="lg:col-span-4"><p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Expositions & publications</p><h2 class="text-4xl font-black text-white mt-4">Les images sortent parfois de l'archive.</h2></div>
+		<div class="lg:col-span-8 space-y-4">
+			<?php
+			$publications = array(
+				array( 'date' => '2026', 'title' => 'Archives visuelles - selection ouverte', 'place' => 'Galerie PhotoVault', 'status' => 'En ligne' ),
+				array( 'date' => '2025', 'title' => 'Presences / portraits et memoires', 'place' => 'Serie editoriale', 'status' => 'Collection' ),
+				array( 'date' => '2024', 'title' => 'Territoires apres la pluie', 'place' => 'Carnet visuel', 'status' => 'Publication' ),
+			);
+			foreach ( $publications as $item ) :
+			?>
+				<div class="grid grid-cols-1 md:grid-cols-[90px_1fr_150px] gap-4 p-5 rounded-3xl bg-gray-950/40 border border-gray-800 items-center">
+					<span class="text-indigo-400 font-black"><?php echo esc_html( $item['date'] ); ?></span>
+					<div><h3 class="text-xl font-black text-white"><?php echo esc_html( $item['title'] ); ?></h3><p class="text-sm text-gray-500 mt-1"><?php echo esc_html( $item['place'] ); ?></p></div>
+					<span class="text-xs font-bold text-gray-300 uppercase tracking-wider md:text-right"><?php echo esc_html( $item['status'] ); ?></span>
+				</div>
+			<?php endforeach; ?>
+		</div>
 	</div>
 </section>
 
 <section class="py-24 bg-[#11100f] border-t border-gray-900">
 	<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-		<h2 class="text-4xl sm:text-5xl font-black text-white">Questions frequentes</h2>
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-			<?php foreach ( array( 'Les photographies publiques sont-elles gratuites ?', 'Comment acceder a une collection protegee ?', 'Comment reserver un shooting ?', 'Quels formats sont disponibles au telechargement ?', 'Puis-je commander un tirage physique ?', 'Comment mes photographies privees sont-elles protegees ?' ) as $question ) : ?>
-				<div class="p-5 rounded-2xl bg-gray-950/40 border border-gray-800 text-sm font-bold text-gray-200"><?php echo esc_html( $question ); ?></div>
+		<div><p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">FAQ</p><h2 class="mt-4 text-4xl sm:text-5xl font-black text-white">Questions frequentes</h2></div>
+		<div class="space-y-3">
+			<?php
+			$faqs = array(
+				'Les photographies publiques sont-elles gratuites ?' => 'Certaines images publiques peuvent etre telechargees en haute definition lorsque leur fiche l autorise. Les usages commerciaux demandent une validation specifique.',
+				'Comment acceder a une collection protegee ?' => 'Envoyez une demande depuis la page contact en precisant la collection ou le projet. L acces est ensuite valide manuellement.',
+				'Pourquoi certaines collections necessitent-elles une autorisation ?' => 'Les commandes privees, portraits sensibles, series inedites et archives confidentielles ne sont pas exposees sans accord.',
+				'Comment reserver un shooting ?' => 'Indiquez le type de seance, la date souhaitee, le lieu et l intention visuelle. Une proposition vous est ensuite retournee.',
+				'Quels formats sont disponibles au telechargement ?' => 'Les apercus restent optimises pour le web. Les fichiers originaux sont servis uniquement via le telechargement autorise.',
+				'Puis-je commander un tirage physique ?' => 'Oui, une demande de tirage peut etre faite pour les oeuvres disponibles, avec choix du format, papier et usage.',
+			);
+			foreach ( $faqs as $question => $answer ) :
+			?>
+				<details class="group rounded-2xl bg-gray-950/40 border border-gray-800 p-5">
+					<summary class="cursor-pointer list-none flex items-center justify-between gap-4 text-sm sm:text-base font-black text-white"><?php echo esc_html( $question ); ?><span class="text-indigo-400 group-open:rotate-45 transition-transform">+</span></summary>
+					<p class="text-sm text-gray-400 leading-relaxed mt-4 max-w-3xl"><?php echo esc_html( $answer ); ?></p>
+				</details>
 			<?php endforeach; ?>
 		</div>
 	</div>

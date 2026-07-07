@@ -20,11 +20,9 @@ get_header();
 				<?php while ( have_posts() ) : the_post(); ?>
 					<article class="glass-effect rounded-2xl overflow-hidden shadow-lg border border-gray-800/80 p-6 flex flex-col justify-between">
 						<div>
-							<?php if ( has_post_thumbnail() ) : ?>
-								<div class="aspect-video w-full rounded-xl overflow-hidden mb-4 bg-gray-950">
-									<?php the_post_thumbnail( 'medium_large', array( 'class' => 'w-full h-full object-cover' ) ); ?>
-								</div>
-							<?php endif; ?>
+							<div class="aspect-video w-full rounded-xl overflow-hidden mb-4 bg-gray-950 border border-gray-800/70">
+								<?php photovault_render_post_visual( 'medium_large', 'w-full h-full object-cover' ); ?>
+							</div>
 							<h2 class="text-xl font-bold text-white mb-2">
 								<a href="<?php the_permalink(); ?>" class="hover:text-indigo-400 transition-colors"><?php the_title(); ?></a>
 							</h2>
