@@ -35,7 +35,7 @@ if ( have_posts() ) :
 		$is_protected = get_post_meta( $media_id, 'is_protected', true ) === '1';
 		$folders = get_the_terms( $media_id, 'media_folder' );
 		$categories = get_the_terms( $media_id, 'media_category' );
-		$image_url = home_url( '/wp-json/photovault/v1/secure-image?id=' . $media_id . '&_wpnonce=' . wp_create_nonce( 'wp_rest' ) );
+		$image_url = photovault_get_secure_image_url( $media_id, 'preview' );
 		
 		// Incrémenter les vues
 		if ( ! $is_admin ) {
@@ -159,7 +159,7 @@ if ( have_posts() ) :
 										<span class="mr-2.5 text-base">🔒</span> Ce média est sous haute protection. Le téléchargement est désactivé.
 									</div>
 								<?php else : 
-									$download_url = home_url( '/wp-json/photovault/v1/secure-image?id=' . $media_id . '&download=1&_wpnonce=' . wp_create_nonce( 'wp_rest' ) );
+									$download_url = photovault_get_secure_image_url( $media_id, 'full', true );
 								?>
 									<a href="<?php echo esc_url( $download_url ); ?>" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl text-center block transition-all shadow-lg hover:shadow-indigo-500/10 cursor-pointer text-sm">
 										Télécharger en haute définition

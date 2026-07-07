@@ -32,6 +32,15 @@ get_header();
 				</div>
 			</section>
 
+
+			<section class="border-t border-gray-800/80 pt-8 space-y-4">
+				<h3 class="text-xl font-bold text-white">Processus de livraison</h3>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+					<div class="p-4 rounded-2xl bg-gray-950/40 border border-gray-800"><span class="block text-indigo-400 font-bold mb-1">Selection</span><p class="text-gray-400">Les images sont organisees par projet, dossier client et categorie.</p></div>
+					<div class="p-4 rounded-2xl bg-gray-950/40 border border-gray-800"><span class="block text-indigo-400 font-bold mb-1">Validation</span><p class="text-gray-400">Les apercus permettent de parcourir une serie sans charger les originaux.</p></div>
+					<div class="p-4 rounded-2xl bg-gray-950/40 border border-gray-800"><span class="block text-indigo-400 font-bold mb-1">Livraison</span><p class="text-gray-400">Les fichiers HD sont remis uniquement lorsque le telechargement est autorise.</p></div>
+				</div>
+			</section>
 			<section class="text-center pt-8 border-t border-gray-800/80 space-y-4">
 				<h3 class="text-xl font-bold text-white">Prêt à explorer la galerie ?</h3>
 				<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl inline-block transition-all shadow-lg cursor-pointer text-center">

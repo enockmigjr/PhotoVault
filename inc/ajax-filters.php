@@ -18,10 +18,79 @@ function photovault_register_rest_routes() {
 	register_rest_route( 'photovault/v1', '/secure-image', array(
 		'methods'             => WP_REST_Server::READABLE,
 		'callback'            => 'photovault_serve_secure_image',
-		'permission_callback' => '__return_true', // Géré finement en PHP pour éviter les blocages de nonces CORS/REST sur <img>
+		'permission_callback' => '__return_true',
 	) );
 }
 add_action( 'rest_api_init', 'photovault_register_rest_routes' );
+
+/**
+ * Construire une URL d'image protegee en indiquant l'usage attendu.
+ */
+function photovault_get_secure_image_url( $media_id, $display = 'card', $download = false ) {
+	$args = array(
+		'id'      => absint( $media_id ),
+		'display' => sanitize_key( $display ),
+	);
+
+	if ( $download ) {
+		$args['download'] = '1';
+		unset( $args['display'] );
+	}
+
+	if ( is_user_logged_in() ) {
+		$args['_wpnonce'] = wp_create_nonce( 'wp_rest' );
+	}
+
+	return add_query_arg( $args, rest_url( 'photovault/v1/secure-image' ) );
+}
+
+function photovault_get_secure_image_variant( $attachment_id, $display ) {
+	$display = sanitize_key( $display );
+	$sizes = array(
+		'card'    => array( 'photovault-card', 'medium', 'thumbnail' ),
+		'preview' => array( 'photovault-preview', 'large', 'medium_large' ),
+	);
+	$wanted_sizes = isset( $sizes[ $display ] ) ? $sizes[ $display ] : $sizes['card'];
+	$meta = wp_get_attachment_metadata( $attachment_id );
+	$upload_dir = wp_get_upload_dir();
+
+	if ( is_array( $meta ) && ! empty( $meta['sizes'] ) && ! empty( $meta['file'] ) ) {
+		$relative_dir = dirname( $meta['file'] );
+		$relative_dir = '.' === $relative_dir ? '' : $relative_dir;
+
+		foreach ( $wanted_sizes as $size_name ) {
+			if ( empty( $meta['sizes'][ $size_name ]['file'] ) ) {
+				continue;
+			}
+
+			$relative_file = trim( $relative_dir . '/' . $meta['sizes'][ $size_name ]['file'], '/\\' );
+			$path = trailingslashit( $upload_dir['basedir'] ) . $relative_file;
+			$path = wp_normalize_path( $path );
+
+			if ( file_exists( $path ) ) {
+				return array(
+					'path' => $path,
+					'mime' => ! empty( $meta['sizes'][ $size_name ]['mime-type'] ) ? $meta['sizes'][ $size_name ]['mime-type'] : photovault_get_file_mime_type( $path, $attachment_id ),
+				);
+			}
+		}
+	}
+
+	$original_path = get_attached_file( $attachment_id );
+	return array(
+		'path' => $original_path,
+		'mime' => photovault_get_file_mime_type( $original_path, $attachment_id ),
+	);
+}
+
+function photovault_get_file_mime_type( $path, $attachment_id ) {
+	$filetype = wp_check_filetype( $path );
+	if ( ! empty( $filetype['type'] ) ) {
+		return $filetype['type'];
+	}
+
+	return get_post_mime_type( $attachment_id );
+}
 
 function photovault_get_filtered_media( $request ) {
 	$params = $request->get_params();
@@ -31,7 +100,6 @@ function photovault_get_filtered_media( $request ) {
 		'paged'          => ! empty( $params['page'] ) ? intval( $params['page'] ) : 1,
 	);
 
-	// Seul l'administrateur peut voir les médias privés
 	if ( current_user_can( 'manage_options' ) ) {
 		$args['post_status'] = array( 'publish', 'private' );
 	} else {
@@ -78,26 +146,25 @@ function photovault_get_filtered_media( $request ) {
 	if ( $query->have_posts() ) {
 		while ( $query->have_posts() ) {
 			$query->the_post();
-			
-			// Sécurité secondaire : exclure les privés si l'utilisateur n'est pas admin
+
 			if ( 'private' === get_post_status() && ! current_user_can( 'manage_options' ) ) {
 				continue;
 			}
-			
+
 			$media_id = get_the_ID();
 			ob_start();
 			get_template_part( 'templates/media-card' );
 			$html = ob_get_clean();
 
 			$results[] = array(
-				'id'          => $media_id,
-				'title'       => get_the_title(),
-				'url'         => get_permalink(),
-				'image'       => home_url( '/wp-json/photovault/v1/secure-image?id=' . $media_id ),
-				'author'      => get_the_author(),
-				'is_protected'=> get_post_meta( $media_id, 'is_protected', true ) === '1',
-				'is_private'  => 'private' === get_post_status(),
-				'html'        => $html,
+				'id'           => $media_id,
+				'title'        => get_the_title(),
+				'url'          => get_permalink(),
+				'image'        => photovault_get_secure_image_url( $media_id, 'card' ),
+				'author'       => get_the_author(),
+				'is_protected' => get_post_meta( $media_id, 'is_protected', true ) === '1',
+				'is_private'   => 'private' === get_post_status(),
+				'html'         => $html,
 			);
 		}
 		wp_reset_postdata();
@@ -107,7 +174,6 @@ function photovault_get_filtered_media( $request ) {
 }
 
 function photovault_serve_secure_image( $request ) {
-	// Authentification par cookie de secours pour les requêtes standard GET (ex: <img> ou téléchargement direct)
 	if ( 0 === get_current_user_id() ) {
 		$cookie_user_id = wp_validate_auth_cookie( '', 'logged_in' );
 		if ( $cookie_user_id ) {
@@ -118,84 +184,82 @@ function photovault_serve_secure_image( $request ) {
 	$media_id = intval( $request->get_param( 'id' ) );
 	$post = get_post( $media_id );
 	if ( ! $post || 'media_item' !== $post->post_type ) {
-		return new WP_Error( 'not_found', 'Média introuvable.', array( 'status' => 404 ) );
+		return new WP_Error( 'not_found', 'Media introuvable.', array( 'status' => 404 ) );
 	}
 
 	$is_private = 'private' === $post->post_status;
-	$is_admin   = current_user_can( 'manage_options' );
-	$is_owner   = is_user_logged_in() && (int) $post->post_author === get_current_user_id();
+	$is_admin = current_user_can( 'manage_options' );
+	$is_owner = is_user_logged_in() && (int) $post->post_author === get_current_user_id();
 
-	// 1. Restriction d'accès stricte sur média privé
 	if ( $is_private && ! $is_admin && ! $is_owner ) {
-		return new WP_Error( 'forbidden', 'Accès interdit.', array( 'status' => 403 ) );
+		return new WP_Error( 'forbidden', 'Acces interdit.', array( 'status' => 403 ) );
 	}
 
 	$thumb_id = get_post_thumbnail_id( $media_id );
-	$filepath = $thumb_id ? get_attached_file( $thumb_id ) : '';
-	if ( ! $filepath || ! file_exists( $filepath ) ) {
+	if ( ! $thumb_id ) {
+		return new WP_Error( 'not_found', 'Fichier introuvable.', array( 'status' => 404 ) );
+	}
+
+	$original_path = get_attached_file( $thumb_id );
+	if ( ! $original_path || ! file_exists( $original_path ) ) {
 		return new WP_Error( 'not_found', 'Fichier introuvable.', array( 'status' => 404 ) );
 	}
 
 	$is_protected = get_post_meta( $media_id, 'is_protected', true ) === '1';
-	$mime = get_post_mime_type( $thumb_id );
 
-	// CAS A : Force le téléchargement si le paramètre download=1 est spécifié
 	if ( $request->get_param( 'download' ) === '1' ) {
 		if ( ! is_user_logged_in() ) {
-			return new WP_Error( 'unauthorized', 'Vous devez être connecté pour télécharger des médias.', array( 'status' => 401 ) );
-		}
-		
-		// Protection stricte : interdire le téléchargement si le média est protégé (sauf admins et propriétaires)
-		if ( $is_protected && ! $is_admin && ! $is_owner ) {
-			return new WP_Error( 'forbidden', 'Téléchargement interdit sur un média protégé.', array( 'status' => 403 ) );
+			return new WP_Error( 'unauthorized', 'Vous devez etre connecte pour telecharger des medias.', array( 'status' => 401 ) );
 		}
 
-		// Enregistrer le téléchargement
+		if ( $is_protected && ! $is_admin && ! $is_owner ) {
+			return new WP_Error( 'forbidden', 'Telechargement interdit sur un media protege.', array( 'status' => 403 ) );
+		}
+
 		$downloads = (int) get_post_meta( $media_id, 'photovault_downloads_count', true );
 		update_post_meta( $media_id, 'photovault_downloads_count', $downloads + 1 );
 
-		// Envoyer les en-têtes et servir le fichier brut d'origine
+		$mime = photovault_get_file_mime_type( $original_path, $thumb_id );
 		header( 'Content-Description: File Transfer' );
 		header( 'Content-Type: ' . $mime );
-		header( 'Content-Disposition: attachment; filename="' . basename( $filepath ) . '"' );
+		header( 'Content-Disposition: attachment; filename="' . basename( $original_path ) . '"' );
 		header( 'Content-Transfer-Encoding: binary' );
 		header( 'Expires: 0' );
 		header( 'Cache-Control: must-revalidate' );
 		header( 'Pragma: public' );
-		header( 'Content-Length: ' . filesize( $filepath ) );
-		
-		ob_clean();
+		header( 'Content-Length: ' . filesize( $original_path ) );
+
+		if ( ob_get_length() ) {
+			ob_clean();
+		}
 		flush();
-		readfile( $filepath );
+		readfile( $original_path );
 		exit;
 	}
 
-	// CAS B : Affichage normal
-	// Incrémenter le nombre de vues
-	if ( ! $is_admin ) {
-		$views = (int) get_post_meta( $media_id, 'photovault_views_count', true );
-		update_post_meta( $media_id, 'photovault_views_count', $views + 1 );
+	$display = sanitize_key( $request->get_param( 'display' ) );
+	$display = in_array( $display, array( 'card', 'preview' ), true ) ? $display : 'card';
+	$variant = photovault_get_secure_image_variant( $thumb_id, $display );
+	$filepath = $variant['path'];
+	$mime = $variant['mime'];
+
+	if ( ! $filepath || ! file_exists( $filepath ) ) {
+		return new WP_Error( 'not_found', 'Fichier introuvable.', array( 'status' => 404 ) );
 	}
 
 	header( 'Content-Type: ' . $mime );
+	header( 'Cache-Control: private, max-age=3600' );
 
-	// Si protégé et que l'utilisateur n'est ni admin ni propriétaire : superposer le filigrane
 	if ( $is_protected && ! $is_admin && ! $is_owner ) {
 		$filesize = filesize( $filepath );
 		if ( $filesize <= 20 * 1024 * 1024 && function_exists( 'imagecreatefromstring' ) ) {
 			$img = null;
 			if ( 'image/jpeg' === $mime || 'image/jpg' === $mime ) {
-				if ( function_exists( 'imagecreatefromjpeg' ) ) {
-					$img = @imagecreatefromjpeg( $filepath );
-				}
+				$img = function_exists( 'imagecreatefromjpeg' ) ? @imagecreatefromjpeg( $filepath ) : null;
 			} elseif ( 'image/png' === $mime ) {
-				if ( function_exists( 'imagecreatefrompng' ) ) {
-					$img = @imagecreatefrompng( $filepath );
-				}
+				$img = function_exists( 'imagecreatefrompng' ) ? @imagecreatefrompng( $filepath ) : null;
 			} elseif ( 'image/webp' === $mime ) {
-				if ( function_exists( 'imagecreatefromwebp' ) ) {
-					$img = @imagecreatefromwebp( $filepath );
-				}
+				$img = function_exists( 'imagecreatefromwebp' ) ? @imagecreatefromwebp( $filepath ) : null;
 			}
 
 			if ( $img ) {
@@ -203,10 +267,9 @@ function photovault_serve_secure_image( $request ) {
 				$col = imagecolorallocatealpha( $img, 255, 255, 255, 80 );
 				$w = imagesx( $img );
 				$h = imagesy( $img );
-				
-				// Répéter le filigrane de protection
-				for ( $x = 40; $x < $w; $x += 350 ) {
-					for ( $y = 50; $y < $h; $y += 280 ) {
+
+				for ( $x = 30; $x < $w; $x += 260 ) {
+					for ( $y = 35; $y < $h; $y += 210 ) {
 						imagestring( $img, 5, $x, $y, $watermark_text, $col );
 					}
 				}
@@ -227,5 +290,3 @@ function photovault_serve_secure_image( $request ) {
 	readfile( $filepath );
 	exit;
 }
-
-

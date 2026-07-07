@@ -47,6 +47,7 @@ Ce document vous guide pas à pas pour installer, configurer et tester l'ensembl
 2. Connectez-vous en tant que **Client** et accédez à cette image dans la galerie publique.
 3. Tentez d'effectuer un clic droit sur l'image : un message d'alerte s'affiche et l'action est bloquée.
 4. Tentez de glisser l'image vers votre bureau : le glissement est inactif.
-5. Ouvrez l'inspecteur d'éléments pour localiser l'image. Vous constaterez que son URL source pointe vers la route sécurisée de l'API REST de PhotoVault.
-6. Si vous copiez et ouvrez cette URL REST sécurisée dans un nouvel onglet, vous obtiendrez l'image **avec un filigrane de sécurité PHOTOVAULT incrusté directement dans ses pixels**, car le traitement a été fait par le serveur en PHP GD. L'originale reste introuvable.
-7. Sur la page de détail, le bouton de téléchargement de l'image est masqué pour l'utilisateur standard, empêchant tout vol d'image.
+5. Ouvrez l'inspecteur d'elements pour localiser l'image. Vous constaterez que son URL source pointe vers la route securisee de l'API REST de PhotoVault avec un parametre `display=card` ou `display=preview`.
+6. En galerie, le navigateur recoit une miniature optimisee. Sur la page detail, il recoit un apercu de consultation. L'image originale haute definition n'est envoyee qu'avec `download=1`, apres verification des droits.
+7. Si le media est protege, l'apercu obtenu par l'URL REST contient le filigrane de securite PHOTOVAULT directement incruste dans ses pixels.
+8. Sur la page de detail, le bouton de telechargement de l'image est masque pour l'utilisateur standard, empechant tout vol d'image.

@@ -75,6 +75,37 @@ $featured_media = new WP_Query( array(
 	</div>
 </section>
 
+<!-- Section Flux Client -->
+<section class="py-20 bg-[#0f0e0d] border-t border-gray-900">
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+			<div class="lg:col-span-1 space-y-4">
+				<span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Livraison client</span>
+				<h2 class="text-3xl sm:text-4xl font-extrabold text-white">Des apercus rapides, des originaux preserves</h2>
+				<p class="text-gray-400 text-sm leading-relaxed">La navigation reste fluide grace aux miniatures optimisees. Les fichiers haute definition ne sont transmis qu'au moment du telechargement autorise.</p>
+				<a href="<?php echo esc_url( home_url( '/fonctionnalites/' ) ); ?>" class="inline-flex text-sm font-bold text-indigo-400 hover:text-indigo-300 transition-colors">Voir les fonctionnalites &rarr;</a>
+			</div>
+			<div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
+				<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800/80">
+					<p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">01</p>
+					<h3 class="text-lg font-bold text-white mb-2">Galerie privee</h3>
+					<p class="text-sm text-gray-400 leading-relaxed">Chaque client accede aux collections publiees avec un compte securise.</p>
+				</div>
+				<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800/80">
+					<p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">02</p>
+					<h3 class="text-lg font-bold text-white mb-2">Apercus proteges</h3>
+					<p class="text-sm text-gray-400 leading-relaxed">Les images sensibles peuvent recevoir un filigrane serveur avant affichage.</p>
+				</div>
+				<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800/80">
+					<p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">03</p>
+					<h3 class="text-lg font-bold text-white mb-2">HD autorisee</h3>
+					<p class="text-sm text-gray-400 leading-relaxed">Les originaux restent reserves aux medias publics ou aux comptes autorises.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
 <!-- Section Galerie d'Exemple -->
 <section class="py-20 bg-[#0d0c0b]">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

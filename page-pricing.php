@@ -75,6 +75,20 @@ get_header();
 				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mt-8 w-full py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold rounded-xl text-center block transition-all cursor-pointer">Demander un devis</a>
 			</div>
 		</div>
+		<section class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left border-t border-gray-900 pt-10">
+			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
+				<h3 class="text-lg font-bold text-white mb-2">Galerie incluse</h3>
+				<p class="text-sm text-gray-400 leading-relaxed">Chaque prestation comprend un espace en ligne pour consulter les apercus et retrouver les livrables.</p>
+			</div>
+			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
+				<h3 class="text-lg font-bold text-white mb-2">Retouches et selection</h3>
+				<p class="text-sm text-gray-400 leading-relaxed">Les forfaits peuvent etre ajustes selon le volume d'images finales et le niveau de retouche souhaite.</p>
+			</div>
+			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
+				<h3 class="text-lg font-bold text-white mb-2">Droits d'utilisation</h3>
+				<p class="text-sm text-gray-400 leading-relaxed">Les usages personnels, commerciaux ou editoriaux sont precises avant livraison des fichiers HD.</p>
+			</div>
+		</section>
 	</div>
 </div>
 

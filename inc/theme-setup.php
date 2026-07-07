@@ -16,6 +16,8 @@ function photovault_setup() {
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
+	add_image_size( 'photovault-card', 400, 400, true );
+	add_image_size( 'photovault-preview', 1600, 1600, false );
 
 	register_nav_menus( array(
 		'primary' => esc_html__( 'Menu Principal', 'photovault' ),
@@ -61,6 +63,7 @@ function photovault_create_app_pages() {
 		'pricing'         => array( 'title' => 'Tarifs', 'template' => 'page-pricing.php' ),
 		'about'           => array( 'title' => 'À Propos', 'template' => 'page-about.php' ),
 		'contact'         => array( 'title' => 'Contact', 'template' => 'page-contact.php' ),
+		'fonctionnalites' => array( 'title' => 'Fonctionnalites', 'template' => 'page-features.php' ),
 	);
 
 	foreach ( $pages_to_create as $slug => $data ) {

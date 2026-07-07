@@ -22,7 +22,7 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 						Photo<span class="text-indigo-500">Vault</span>
 					</div>
 					<p class="text-xs leading-relaxed text-gray-500 font-medium">
-						Une plateforme moderne pensée pour l'avenir de l'intégration et du développement web. Sécurisée, rapide et intuitive.
+						Galerie photo privee pour presenter des apercus rapides, proteger les images sensibles et livrer les fichiers HD aux clients autorises.
 					</p>
 				</div>
 
@@ -35,7 +35,7 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 							</a>
 						</li>
 						<li>
-							<a href="<?php echo esc_url( get_permalink( get_page_by_path( 'fonctionnalites' ) ) ); ?>" class="hover:text-indigo-400 transition-colors">
+							<a href="<?php echo esc_url( home_url( '/fonctionnalites/' ) ); ?>" class="hover:text-indigo-400 transition-colors">
 								Fonctionnalités
 							</a>
 						</li>

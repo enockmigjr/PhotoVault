@@ -9,8 +9,13 @@ Ce document décrit en détail les mécanismes de protection implémentés dans 
 Afin d'empêcher les utilisateurs avancés de récupérer l'image d'origine depuis l'inspecteur web en récupérant son URL directe, PhotoVault n'expose jamais les URLs réelles des fichiers physiques (ex: `wp-content/uploads/...`).
 
 ### Fonctionnement du Proxy REST
-Toutes les balises d'images du thème (`img src`) pointent vers un point de terminaison de l'API REST personnalisée de WordPress :
-`https://votre-site.com/wp-json/photovault/v1/secure-image?id=ID_DU_MEDIA`
+Toutes les balises d'images du theme (`img src`) pointent vers un point de terminaison de l'API REST personnalisee de WordPress :
+`https://votre-site.com/wp-json/photovault/v1/secure-image?id=ID_DU_MEDIA&display=card`
+
+Le parametre `display` indique le format attendu :
+- `card` sert une miniature adaptee aux grilles de galerie.
+- `preview` sert une version de consultation pour la page detail.
+- `download=1` sert l'original uniquement lors d'un telechargement autorise.
 
 Lorsqu'une image est demandée par le navigateur :
 1. **Contrôle d'accès par cookie** : Le endpoint REST valide la session de l'utilisateur connecté de manière sécurisée en lisant son cookie de session WordPress classique (via `wp_validate_auth_cookie()`). Cela évite les erreurs d'autorisation REST (401/403) sans compromettre la sécurité.
