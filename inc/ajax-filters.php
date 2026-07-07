@@ -264,13 +264,13 @@ function photovault_serve_secure_image( $request ) {
 
 			if ( $img ) {
 				$watermark_text = get_option( 'photovault_watermark_text', 'PHOTOVAULT' );
-				$col = imagecolorallocatealpha( $img, 255, 255, 255, 80 );
+				$col = imagecolorallocatealpha( $img, 255, 255, 255, 108 );
 				$w = imagesx( $img );
 				$h = imagesy( $img );
 
-				for ( $y = -40, $row = 0; $y < $h + 80; $y += 95, $row++ ) {
-					$offset = ( $row % 3 ) * 85;
-					for ( $x = -220 + $offset; $x < $w + 160; $x += 210 ) {
+				for ( $y = -30, $row = 0; $y < $h + 60; $y += 58, $row++ ) {
+					$offset = ( $row % 4 ) * 42;
+					for ( $x = -160 + $offset; $x < $w + 120; $x += 145 ) {
 						imagestring( $img, 5, $x, $y, $watermark_text, $col );
 					}
 				}
