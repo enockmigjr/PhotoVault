@@ -268,8 +268,9 @@ function photovault_serve_secure_image( $request ) {
 				$w = imagesx( $img );
 				$h = imagesy( $img );
 
-				for ( $x = 30; $x < $w; $x += 260 ) {
-					for ( $y = 35; $y < $h; $y += 210 ) {
+				for ( $y = -40, $row = 0; $y < $h + 80; $y += 95, $row++ ) {
+					$offset = ( $row % 3 ) * 85;
+					for ( $x = -220 + $offset; $x < $w + 160; $x += 210 ) {
 						imagestring( $img, 5, $x, $y, $watermark_text, $col );
 					}
 				}

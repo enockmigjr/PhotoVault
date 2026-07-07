@@ -100,6 +100,20 @@ get_header();
 				</form>
 			</div>
 		</div>
+		<section class="grid grid-cols-1 md:grid-cols-3 gap-5 border-t border-gray-900 pt-10">
+			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
+				<h3 class="text-lg font-bold text-white mb-2">Demande d'acces</h3>
+				<p class="text-sm text-gray-400 leading-relaxed">Precisez la collection, le projet ou la serie protegee que vous souhaitez consulter.</p>
+			</div>
+			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
+				<h3 class="text-lg font-bold text-white mb-2">Reservation shooting</h3>
+				<p class="text-sm text-gray-400 leading-relaxed">Indiquez la date souhaitee, le lieu, le type de portraits et l'ambiance recherchee.</p>
+			</div>
+			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
+				<h3 class="text-lg font-bold text-white mb-2">Licence ou tirage</h3>
+				<p class="text-sm text-gray-400 leading-relaxed">Mentionnez l'oeuvre, le format, l'usage prevu et le delai de livraison attendu.</p>
+			</div>
+		</section>
 	</div>
 </div>
 

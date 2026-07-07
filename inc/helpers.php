@@ -105,42 +105,51 @@ add_action( 'before_delete_post', 'photovault_clean_stats_cache' );
  * Injecter le script JS de protection anti-téléchargement si nécessaire.
  */
 function photovault_inject_protection_script() {
-	if ( is_singular( 'media_item' ) ) {
-		$media_id = get_the_ID();
-		$is_protected = get_post_meta( $media_id, 'is_protected', true ) === '1';
-
-		if ( $is_protected ) {
-			?>
-			<script>
-				document.addEventListener('DOMContentLoaded', function() {
-					// Bloquer le clic droit sur tout le document
-					document.addEventListener('contextmenu', function(e) {
-						e.preventDefault();
-						alert("Ce média est protégé par PhotoVault. Le téléchargement direct et le clic droit sont désactivés.");
-					}, false);
-
-					// Bloquer les raccourcis de sauvegarde et de capture
-					document.addEventListener('keydown', function(e) {
-						// Ctrl+S, Ctrl+U, Ctrl+Shift+I, F12
-						if ( (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'c')) || 
-							 (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J')) || 
-							 e.key === 'F12' ) {
-							e.preventDefault();
-							alert("Raccourci désactivé pour la sécurité du média.");
-						}
-					});
-
-					// Empêcher le drag & drop des images
-					const images = document.querySelectorAll('img');
-					images.forEach(img => {
-						img.addEventListener('dragstart', function(e) {
-							e.preventDefault();
-						});
-					});
-				});
-			</script>
-			<?php
-		}
+	if ( ! is_singular( 'media_item' ) ) {
+		return;
 	}
+
+	$media_id = get_the_ID();
+	$is_protected = get_post_meta( $media_id, 'is_protected', true ) === '1';
+	$post = get_post( $media_id );
+	$is_admin = current_user_can( 'manage_options' );
+	$is_owner = $post && is_user_logged_in() && (int) $post->post_author === get_current_user_id();
+
+	if ( ! $is_protected || $is_admin || $is_owner ) {
+		return;
+	}
+	?>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			function notify(message) {
+				if (window.PhotoVaultProtectionNotice) {
+					window.PhotoVaultProtectionNotice(message);
+				}
+			}
+
+			document.addEventListener('contextmenu', function(e) {
+				e.preventDefault();
+				notify('Ce media est protege par PhotoVault. Le clic droit et la sauvegarde directe sont desactives.');
+			}, false);
+
+			document.addEventListener('keydown', function(e) {
+				if ( (e.ctrlKey && ['s', 'u', 'c'].includes(e.key.toLowerCase())) ||
+					 (e.ctrlKey && e.shiftKey && ['i', 'j'].includes(e.key.toLowerCase())) ||
+					 e.key === 'F12' ) {
+					e.preventDefault();
+					notify('Raccourci desactive pour proteger ce media.');
+				}
+			});
+
+			document.querySelectorAll('img').forEach(function(img) {
+				img.setAttribute('draggable', 'false');
+				img.addEventListener('dragstart', function(e) {
+					e.preventDefault();
+					notify('Le glisser-deposer est desactive sur ce media protege.');
+				});
+			});
+		});
+	</script>
+	<?php
 }
 add_action( 'wp_footer', 'photovault_inject_protection_script' );

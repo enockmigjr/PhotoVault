@@ -81,7 +81,11 @@ if ( have_posts() ) :
 									<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" class="w-full h-auto max-h-[75vh] object-contain mx-auto select-none pointer-events-none rounded-xl">
 									
 									<?php if ( $is_protected ) : ?>
-										<div class="watermark font-extrabold select-none"><?php echo esc_html( get_option( 'photovault_watermark_text', 'PHOTOVAULT' ) ); ?></div>
+										<div class="watermark font-extrabold select-none" aria-hidden="true">
+											<?php for ( $i = 0; $i < 30; $i++ ) : ?>
+												<span><?php echo esc_html( get_option( 'photovault_watermark_text', 'PHOTOVAULT' ) ); ?></span>
+											<?php endfor; ?>
+										</div>
 									<?php endif; ?>
 								<?php else : ?>
 									<div class="w-full h-[50vh] flex items-center justify-center bg-gray-900/50 text-gray-700">
