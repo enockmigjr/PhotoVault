@@ -12,7 +12,7 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 ?>
 
 <?php if ( ! $is_dashboard_template ) : ?>
-	<footer class="bg-[#090808] text-gray-400 pt-16 pb-8 border-t border-gray-900 mt-auto font-sans">
+	<footer class="bg-[#090808] text-gray-300 pt-16 pb-8 border-t border-gray-900 mt-auto font-sans">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
@@ -21,7 +21,7 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 					<div class="text-white text-xl font-black tracking-tight">
 						Photo<span class="text-indigo-500">Vault</span>
 					</div>
-					<p class="text-xs leading-relaxed text-gray-500 font-medium">
+					<p class="text-xs leading-relaxed text-gray-300 font-medium">
 						Galerie photo privee pour presenter des apercus rapides, proteger les images sensibles et livrer les fichiers HD aux clients autorises.
 					</p>
 				</div>
@@ -80,7 +80,7 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 
 				<div class="space-y-4">
 					<h4 class="text-white font-bold mb-2 tracking-widest uppercase text-xs">Restez connecté</h4>
-					<p class="text-xs text-gray-500 font-medium font-medium">Inscrivez-vous pour suivre nos dernières mises à jour.</p>
+					<p class="text-xs text-gray-300 font-medium font-medium">Inscrivez-vous pour suivre nos dernières mises à jour.</p>
 					<form class="flex flex-col sm:flex-row gap-2" onsubmit="alert('Inscription à la newsletter simulée avec succès !'); return false;">
 						<input type="email" placeholder="Votre email..." class="bg-gray-950/40 text-white placeholder-gray-600 px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 border border-gray-800 w-full" required>
 						<button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-md cursor-pointer">
@@ -93,10 +93,10 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 
 			<div class="border-t border-gray-900 pt-8 mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-gray-600">
 				<div>
-					&copy; <?php echo date('Y'); ?> <span class="text-gray-500 font-bold">EXO PAUL</span>. Tous droits réservés.
+					&copy; <?php echo date('Y'); ?> <span class="text-gray-300 font-bold">EXO PAUL</span>. Tous droits réservés.
 				</div>
 				<div>
-					Développé par <a href="https://github.com/enockmigjr" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-indigo-400 font-bold transition-colors">Enok Junior MIGNANWANDE</a>
+					Développé par <a href="https://github.com/enockmigjr" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-indigo-400 font-bold transition-colors">Enok Junior MIGNANWANDE</a>
 				</div>
 			</div>
 

@@ -12,7 +12,7 @@ get_header();
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<header class="mb-10 pb-6 border-b border-gray-900">
 			<h1 class="text-4xl font-extrabold text-white">Le Blog PhotoVault</h1>
-			<p class="text-gray-400 mt-1">Découvrez des conseils de photographie, des tutoriels et nos mises à jour.</p>
+			<p class="text-gray-300 mt-1">Découvrez des conseils de photographie, des tutoriels et nos mises à jour.</p>
 		</header>
 
 		<?php if ( have_posts() ) : ?>
@@ -26,8 +26,8 @@ get_header();
 							<h2 class="text-xl font-bold text-white mb-2">
 								<a href="<?php the_permalink(); ?>" class="hover:text-indigo-400 transition-colors"><?php the_title(); ?></a>
 							</h2>
-							<p class="text-xs text-gray-500 mb-4"><?php echo get_the_date(); ?> | Par <?php the_author(); ?></p>
-							<div class="text-gray-400 text-sm leading-relaxed mb-6">
+							<p class="text-xs text-gray-300 mb-4"><?php echo get_the_date(); ?> | Par <?php the_author(); ?></p>
+							<div class="text-gray-300 text-sm leading-relaxed mb-6">
 								<?php the_excerpt(); ?>
 							</div>
 						</div>
@@ -50,7 +50,7 @@ get_header();
 			</div>
 		<?php else : ?>
 			<div class="text-center py-20 glass-effect rounded-2xl">
-				<p class="text-gray-500">Aucun article de blog disponible pour le moment.</p>
+				<p class="text-gray-300">Aucun article de blog disponible pour le moment.</p>
 			</div>
 		<?php endif; ?>
 	</div>

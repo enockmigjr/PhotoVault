@@ -24,7 +24,7 @@ if ( have_posts() ) :
 					<svg class="h-14 w-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
 				</div>
 				<h2 class="text-3xl font-black text-white">Contenu Privé</h2>
-				<p class="text-gray-400 mt-2 max-w-md text-sm">Ce média est configuré en mode confidentiel et est uniquement accessible au propriétaire de la galerie.</p>
+				<p class="text-gray-300 mt-2 max-w-md text-sm">Ce média est configuré en mode confidentiel et est uniquement accessible au propriétaire de la galerie.</p>
 				<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="mt-8 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/20 cursor-pointer text-sm">Retourner à la galerie</a>
 			</div>
 			<?php
@@ -48,11 +48,11 @@ if ( have_posts() ) :
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				
 				<!-- Fil d'Ariane & Navigation entre médias -->
-				<div class="flex justify-between items-center mb-10 text-xs text-gray-500">
+				<div class="flex justify-between items-center mb-10 text-xs text-gray-300">
 					<div class="flex items-center gap-1.5">
 						<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="hover:text-white transition-colors">Galerie</a>
 						<span>/</span>
-						<span class="text-gray-400 truncate max-w-[200px]"><?php the_title(); ?></span>
+						<span class="text-gray-300 truncate max-w-[200px]"><?php the_title(); ?></span>
 					</div>
 					
 					<div class="flex gap-4">
@@ -107,15 +107,15 @@ if ( have_posts() ) :
 										<span class="bg-emerald-600/20 text-emerald-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/20">🔓 PUBLIC</span>
 									<?php endif; ?>
 									<?php if ( $is_private ) : ?>
-										<span class="bg-gray-800 text-gray-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-gray-700">👁️ PRIVÉ</span>
+										<span class="bg-gray-800 text-gray-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-gray-700">👁️ PRIVÉ</span>
 									<?php endif; ?>
 								</div>
 								<h1 class="text-3xl font-black text-white leading-tight tracking-tight"><?php the_title(); ?></h1>
-								<p class="text-xs text-gray-500 mt-2">Publié le <?php echo get_the_date(); ?></p>
+								<p class="text-xs text-gray-300 mt-2">Publié le <?php echo get_the_date(); ?></p>
 							</div>
 
 							<?php if ( get_the_content() ) : ?>
-								<div class="prose prose-invert text-sm text-gray-400 leading-relaxed border-t border-gray-800/60 pt-5">
+								<div class="prose prose-invert text-sm text-gray-300 leading-relaxed border-t border-gray-800/60 pt-5">
 									<?php the_content(); ?>
 								</div>
 							<?php endif; ?>
@@ -127,7 +127,7 @@ if ( have_posts() ) :
 								</div>
 								<div class="ml-3">
 									<p class="text-sm font-bold text-white"><?php the_author(); ?></p>
-									<p class="text-xs text-gray-500">Propriétaire de l'œuvre</p>
+									<p class="text-xs text-gray-300">Propriétaire de l'œuvre</p>
 								</div>
 							</div>
 
@@ -135,7 +135,7 @@ if ( have_posts() ) :
 							<div class="border-t border-gray-800/60 pt-5 space-y-4">
 								<?php if ( ! empty( $folders ) && ! is_wp_error( $folders ) ) : ?>
 									<div>
-										<span class="block text-xs font-bold text-gray-500 uppercase tracking-wider">Dossier / Projet</span>
+										<span class="block text-xs font-bold text-gray-300 uppercase tracking-wider">Dossier / Projet</span>
 										<div class="flex flex-wrap gap-2 mt-2">
 											<?php foreach ( $folders as $folder ) : ?>
 												<a href="<?php echo esc_url( get_term_link( $folder ) ); ?>" class="text-[11px] font-semibold bg-gray-900 border border-gray-800 hover:border-indigo-500/40 text-indigo-400 px-3 py-1.5 rounded-xl transition-all"><?php echo esc_html( $folder->name ); ?></a>
@@ -146,10 +146,10 @@ if ( have_posts() ) :
 
 								<?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>
 									<div>
-										<span class="block text-xs font-bold text-gray-500 uppercase tracking-wider">Catégories</span>
+										<span class="block text-xs font-bold text-gray-300 uppercase tracking-wider">Catégories</span>
 										<div class="flex flex-wrap gap-2 mt-2">
 											<?php foreach ( $categories as $cat ) : ?>
-												<a href="<?php echo esc_url( get_term_link( $cat ) ); ?>" class="text-[11px] font-semibold bg-gray-900 border border-gray-800 hover:border-gray-600 text-gray-300 px-3 py-1.5 rounded-xl transition-all"><?php echo esc_html( $cat->name ); ?></a>
+												<a href="<?php echo esc_url( get_term_link( $cat ) ); ?>" class="text-[11px] font-semibold bg-gray-900 border border-gray-800 hover:border-gray-600 text-gray-200 px-3 py-1.5 rounded-xl transition-all"><?php echo esc_html( $cat->name ); ?></a>
 											<?php endforeach; ?>
 										</div>
 									</div>

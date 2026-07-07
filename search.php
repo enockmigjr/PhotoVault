@@ -14,7 +14,7 @@ get_header();
 			<h1 class="text-4xl font-extrabold text-white">
 				Résultats de recherche pour : <span class="text-indigo-400">"<?php echo get_search_query(); ?>"</span>
 			</h1>
-			<p class="text-gray-400 mt-2 text-sm">
+			<p class="text-gray-300 mt-2 text-sm">
 				<?php
 				global $wp_query;
 				printf( _n( '%d résultat trouvé.', '%d résultats trouvés.', $wp_query->found_posts, 'photovault' ), $wp_query->found_posts );
@@ -33,8 +33,8 @@ get_header();
 							<h2 class="text-xl font-bold text-white mb-2">
 								<a href="<?php the_permalink(); ?>" class="hover:text-indigo-400 transition-colors"><?php the_title(); ?></a>
 							</h2>
-							<p class="text-xs text-gray-500 mb-4"><?php echo get_the_date(); ?> | Par <?php the_author(); ?></p>
-							<div class="text-gray-400 text-sm leading-relaxed mb-6">
+							<p class="text-xs text-gray-300 mb-4"><?php echo get_the_date(); ?> | Par <?php the_author(); ?></p>
+							<div class="text-gray-300 text-sm leading-relaxed mb-6">
 								<?php the_excerpt(); ?>
 							</div>
 						</div>
@@ -57,7 +57,7 @@ get_header();
 			</div>
 		<?php else : ?>
 			<div class="text-center py-20 glass-effect rounded-2xl max-w-md mx-auto space-y-6">
-				<p class="text-gray-500">Aucun résultat ne correspond à votre recherche. Veuillez réessayer avec d'autres mots-clés.</p>
+				<p class="text-gray-300">Aucun résultat ne correspond à votre recherche. Veuillez réessayer avec d'autres mots-clés.</p>
 				<?php get_search_form(); ?>
 			</div>
 		<?php endif; ?>

@@ -23,7 +23,7 @@ get_header();
 			<h2 class="mt-6 text-center text-4xl font-extrabold text-white tracking-tight">
 				Photo<span class="text-indigo-500">Vault</span>
 			</h2>
-			<p class="mt-2 text-center text-sm text-gray-400">
+			<p class="mt-2 text-center text-sm text-gray-300">
 				Connectez-vous à votre espace client
 			</p>
 		</div>
@@ -39,12 +39,12 @@ get_header();
 			
 			<div class="rounded-md space-y-4">
 				<div>
-					<label for="username" class="block text-sm font-medium text-gray-300 mb-1">Identifiant ou E-mail</label>
+					<label for="username" class="block text-sm font-medium text-gray-200 mb-1">Identifiant ou E-mail</label>
 					<input id="username" name="log" type="text" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="photographe@example.com">
 				</div>
 				<div>
 					<div class="flex justify-between items-center mb-1">
-						<label for="password" class="block text-sm font-medium text-gray-300">Mot de passe</label>
+						<label for="password" class="block text-sm font-medium text-gray-200">Mot de passe</label>
 						<a href="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">Oublié ?</a>
 					</div>
 					<input id="password" name="pwd" type="password" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="••••••••">
@@ -54,7 +54,7 @@ get_header();
 			<div class="flex items-center justify-between">
 				<div class="flex items-center">
 					<input id="rememberme" name="rememberme" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-800 rounded bg-gray-900/50">
-					<label for="rememberme" class="ml-2 block text-sm text-gray-300">Se souvenir de moi</label>
+					<label for="rememberme" class="ml-2 block text-sm text-gray-200">Se souvenir de moi</label>
 				</div>
 			</div>
 
@@ -66,7 +66,7 @@ get_header();
 		</form>
 
 		<div class="text-center mt-4">
-			<span class="text-sm text-gray-400">Nouveau sur la plateforme ?</span>
+			<span class="text-sm text-gray-300">Nouveau sur la plateforme ?</span>
 			<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="text-sm font-medium text-indigo-400 hover:text-indigo-300 ml-1 transition-colors">Créer un compte</a>
 		</div>
 	</div>

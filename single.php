@@ -18,7 +18,7 @@ get_header();
 							&larr; Retour au blog
 						</a>
 						<h1 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight mt-2"><?php the_title(); ?></h1>
-						<p class="text-sm text-gray-500">
+						<p class="text-sm text-gray-300">
 							Publié le <?php echo get_the_date(); ?> | Par <?php the_author(); ?>
 						</p>
 					</header>
@@ -27,7 +27,7 @@ get_header();
 						<?php photovault_render_post_visual( 'large', 'w-full h-full object-cover' ); ?>
 					</div>
 
-					<div class="prose prose-invert max-w-none text-gray-300 leading-relaxed text-base space-y-6">
+					<div class="prose prose-invert max-w-none text-gray-200 leading-relaxed text-base space-y-6">
 						<?php the_content(); ?>
 					</div>
 

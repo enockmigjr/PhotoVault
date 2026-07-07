@@ -47,7 +47,7 @@ get_header();
 			<h2 class="mt-6 text-center text-4xl font-extrabold text-white tracking-tight">
 				Mot de passe oublié
 			</h2>
-			<p class="mt-2 text-center text-sm text-gray-400">
+			<p class="mt-2 text-center text-sm text-gray-300">
 				Saisissez vos informations pour réinitialiser votre mot de passe
 			</p>
 		</div>
@@ -68,7 +68,7 @@ get_header();
 			<?php wp_nonce_field( 'photovault_forgot_action', 'photovault_forgot_nonce' ); ?>
 			
 			<div>
-				<label for="user_login" class="block text-sm font-medium text-gray-300 mb-1">Identifiant ou E-mail</label>
+				<label for="user_login" class="block text-sm font-medium text-gray-200 mb-1">Identifiant ou E-mail</label>
 				<input id="user_login" name="user_login" type="text" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="photographe@example.com">
 			</div>
 

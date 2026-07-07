@@ -64,7 +64,7 @@ $current_year = (int) date( 'Y' );
 				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="px-8 py-4 bg-white/10 hover:bg-white/15 text-white font-bold rounded-xl border border-white/20 transition-all text-center cursor-pointer backdrop-blur-md">Reserver un shooting</a>
 			</div>
 		</div>
-		<a href="#manifeste" class="mt-16 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.25em] text-gray-300 hover:text-white transition-colors">Decouvrir <span class="h-10 w-px bg-indigo-400/70"></span></a>
+		<a href="#manifeste" class="mt-16 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.25em] text-gray-200 hover:text-white transition-colors">Decouvrir <span class="h-10 w-px bg-indigo-400/70"></span></a>
 	</div>
 </section>
 
@@ -74,7 +74,7 @@ $current_year = (int) date( 'Y' );
 			<p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">01 - Manifeste</p>
 			<h2 class="mt-5 text-4xl sm:text-5xl font-black text-white leading-tight">Chaque image est une trace. Chaque silence, une histoire.</h2>
 		</div>
-		<div class="lg:col-span-7 lg:col-start-6 space-y-6 text-gray-300 text-lg leading-relaxed">
+		<div class="lg:col-span-7 lg:col-start-6 space-y-6 text-gray-200 text-lg leading-relaxed">
 			<p>Chaque photographie nait d'un instant qui ne reviendra jamais. PhotoVault conserve ces fragments comme des archives sensibles : lumiere, mouvement, memoire, visage, territoire.</p>
 			<p>Ici, l'image n'est pas seulement affichee. Elle est classee, protegee, contextualisee et livree avec soin, selon son degre d'ouverture ou de confidentialite.</p>
 			<p>Les galeries publiques invitent a explorer. Les collections protegees gardent leur part de silence. Les commandes sur mesure deviennent, a leur tour, de futures archives.</p>
@@ -106,14 +106,14 @@ $current_year = (int) date( 'Y' );
 						<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
 						<div class="absolute left-5 right-5 bottom-5">
 							<h3 class="text-white text-xl font-black truncate"><?php the_title(); ?></h3>
-							<p class="text-xs text-gray-300 mt-1"><?php echo esc_html( get_the_date( 'Y' ) ); ?> / <?php echo esc_html( $label ); ?></p>
+							<p class="text-xs text-gray-200 mt-1"><?php echo esc_html( get_the_date( 'Y' ) ); ?> / <?php echo esc_html( $label ); ?></p>
 							<span class="inline-flex mt-4 text-xs font-bold text-indigo-300 opacity-0 group-hover:opacity-100 transition-opacity">Voir l'oeuvre</span>
 						</div>
 					</a>
 				<?php endwhile; wp_reset_postdata(); ?>
 			</div>
 		<?php else : ?>
-			<div class="py-16 border border-dashed border-gray-800 rounded-3xl text-center text-gray-500">Ajoutez vos premiers medias pour composer cette selection.</div>
+			<div class="py-16 border border-dashed border-gray-800 rounded-3xl text-center text-gray-300">Ajoutez vos premiers medias pour composer cette selection.</div>
 		<?php endif; ?>
 	</div>
 </section>
@@ -131,8 +131,8 @@ $current_year = (int) date( 'Y' );
 						<span class="text-xs font-black text-indigo-400">0<?php echo esc_html( $i + 1 ); ?></span>
 						<div>
 							<h3 class="text-2xl font-black text-white"><?php echo esc_html( $collection->name ); ?></h3>
-							<p class="text-sm text-gray-400 mt-3"><?php echo esc_html( $collection->count ); ?> oeuvres classees</p>
-							<p class="text-xs text-gray-500 mt-4">Archive active / acces controle</p>
+							<p class="text-sm text-gray-300 mt-3"><?php echo esc_html( $collection->count ); ?> oeuvres classees</p>
+							<p class="text-xs text-gray-300 mt-4">Archive active / acces controle</p>
 						</div>
 					</a>
 				<?php endforeach; ?>
@@ -140,7 +140,7 @@ $current_year = (int) date( 'Y' );
 				<?php foreach ( array( 'Fragments Urbains', 'Presences', 'Apres la pluie', 'Memoire silencieuse' ) as $i => $name ) : ?>
 					<div class="p-6 rounded-3xl bg-gray-950/50 border border-gray-800 min-h-[230px] flex flex-col justify-between">
 						<span class="text-xs font-black text-indigo-400">0<?php echo esc_html( $i + 1 ); ?></span>
-						<div><h3 class="text-2xl font-black text-white"><?php echo esc_html( $name ); ?></h3><p class="text-sm text-gray-500 mt-3">Collection a constituer</p></div>
+						<div><h3 class="text-2xl font-black text-white"><?php echo esc_html( $name ); ?></h3><p class="text-sm text-gray-300 mt-3">Collection a constituer</p></div>
 					</div>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -151,63 +151,29 @@ $current_year = (int) date( 'Y' );
 <section class="py-24 bg-[#11100f] border-t border-gray-900">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
 		<div class="p-8 sm:p-10 rounded-3xl border border-gray-800 bg-gray-950/40 min-h-[320px] flex flex-col justify-between">
-			<div><p class="text-xs font-black uppercase tracking-[0.25em] text-indigo-400">Galerie publique</p><h2 class="text-4xl font-black text-white mt-4">Explorer librement</h2><p class="text-gray-400 mt-4 leading-relaxed">Decouvrez une selection de photographies accessibles en consultation fluide, classees par projet, categorie et disponibilite.</p></div>
+			<div><p class="text-xs font-black uppercase tracking-[0.25em] text-indigo-400">Galerie publique</p><h2 class="text-4xl font-black text-white mt-4">Explorer librement</h2><p class="text-gray-300 mt-4 leading-relaxed">Decouvrez une selection de photographies accessibles en consultation fluide, classees par projet, categorie et disponibilite.</p></div>
 			<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="mt-8 inline-flex text-sm font-bold text-indigo-400">Acceder a la galerie &rarr;</a>
 		</div>
 		<div class="p-8 sm:p-10 rounded-3xl border border-indigo-500/30 bg-indigo-950/10 min-h-[320px] flex flex-col justify-between">
-			<div><p class="text-xs font-black uppercase tracking-[0.25em] text-indigo-400">Collections protegees</p><h2 class="text-4xl font-black text-white mt-4">Acceder a l'inedit</h2><p class="text-gray-400 mt-4 leading-relaxed">Certaines series, commandes privees et archives exclusives sont reservees aux visiteurs autorises.</p></div>
+			<div><p class="text-xs font-black uppercase tracking-[0.25em] text-indigo-400">Collections protegees</p><h2 class="text-4xl font-black text-white mt-4">Acceder a l'inedit</h2><p class="text-gray-300 mt-4 leading-relaxed">Certaines series, commandes privees et archives exclusives sont reservees aux visiteurs autorises.</p></div>
 			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mt-8 inline-flex text-sm font-bold text-indigo-400">Demander un acces &rarr;</a>
 		</div>
 	</div>
 </section>
 
-<section class="py-24 bg-[#0d0c0b] border-t border-gray-900">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-		<div class="lg:col-span-7 rounded-3xl border border-gray-800 bg-gray-950/70 p-4 sm:p-5 shadow-2xl">
-			<div class="flex flex-wrap items-center gap-2 pb-4 border-b border-gray-800">
-				<span class="px-3 py-1.5 rounded-full bg-indigo-600 text-white text-[11px] font-bold">Tout</span>
-				<span class="px-3 py-1.5 rounded-full bg-gray-900 text-gray-300 text-[11px] font-bold border border-gray-800">Collections</span>
-				<span class="px-3 py-1.5 rounded-full bg-gray-900 text-gray-300 text-[11px] font-bold border border-gray-800">Portrait</span>
-				<span class="px-3 py-1.5 rounded-full bg-gray-900 text-gray-300 text-[11px] font-bold border border-gray-800">HD autorisee</span>
-				<span class="ml-auto hidden sm:inline text-[11px] font-bold text-gray-500 uppercase tracking-wider">Apercus optimises</span>
-			</div>
-			<?php if ( $gallery_preview->have_posts() ) : ?>
-				<div class="grid grid-cols-2 md:grid-cols-3 gap-3 pt-4">
-					<?php while ( $gallery_preview->have_posts() ) : $gallery_preview->the_post(); ?>
-						<?php $preview_image = photovault_get_secure_image_url( get_the_ID(), 'card' ); ?>
-						<a href="<?php the_permalink(); ?>" class="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-900 border border-gray-800">
-							<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image:url('<?php echo esc_url( $preview_image ); ?>');"></div>
-							<div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent"><p class="text-white text-xs font-bold truncate"><?php the_title(); ?></p></div>
-						</a>
-					<?php endwhile; wp_reset_postdata(); ?>
-				</div>
-			<?php else : ?>
-				<div class="pt-4"><div class="pv-post-placeholder aspect-[16/10] rounded-2xl border border-gray-800"></div></div>
-			<?php endif; ?>
-		</div>
-		<div class="lg:col-span-5 space-y-6">
-			<p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Galerie libre HD</p>
-			<h2 class="text-4xl sm:text-5xl font-black text-white">Libre de regarder. Libre de conserver quand l'oeuvre l'autorise.</h2>
-			<p class="text-gray-400 leading-relaxed">Cette section montre le fonctionnement reel de la galerie : des apercus rapides, des filtres lisibles et une entree directe vers les fiches. Le fichier original reste reserve au telechargement autorise.</p>
-			<div class="grid grid-cols-2 gap-3 text-sm text-gray-300">
-				<span class="border-t border-gray-800 pt-3">Collection</span><span class="border-t border-gray-800 pt-3">Categorie</span><span class="border-t border-gray-800 pt-3">Annee</span><span class="border-t border-gray-800 pt-3">Protection</span><span class="border-t border-gray-800 pt-3">Disponibilite</span><span class="border-t border-gray-800 pt-3">Telechargement</span>
-			</div>
-		</div>
-	</div>
-</section>
 
 <section class="py-24 bg-[#11100f] border-t border-gray-900">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 		<div class="space-y-6">
 			<p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Archives confidentielles</p>
 			<h2 class="text-4xl sm:text-5xl font-black text-white">Ce qui n'est pas expose n'est pas pour autant oublie.</h2>
-			<p class="text-gray-400 leading-relaxed">Commandes privees, series inedites, travaux confidentiels et collections exclusives restent volontairement hors du regard public. L'acces se demande, se valide et se trace.</p>
+			<p class="text-gray-300 leading-relaxed">Commandes privees, series inedites, travaux confidentiels et collections exclusives restent volontairement hors du regard public. L'acces se demande, se valide et se trace.</p>
 			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="inline-flex px-7 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold">Demander un acces</a>
 		</div>
 		<div class="relative rounded-3xl overflow-hidden border border-gray-800 bg-gray-950 min-h-[420px]">
 			<div class="absolute inset-0 bg-cover bg-center blur-sm scale-105" <?php if ( $hero_image ) : ?>style="background-image:url('<?php echo esc_url( $hero_image ); ?>');"<?php endif; ?>></div>
 			<div class="absolute inset-0 bg-gradient-to-br from-indigo-950/40 via-[#0d0c0b]/70 to-[#0d0c0b]/95"></div>
-			<div class="absolute inset-0 flex items-end p-8"><div><p class="text-xs font-black uppercase tracking-[0.25em] text-indigo-300">Collection confidentielle</p><h3 class="text-3xl font-black text-white mt-3">34 oeuvres</h3><p class="text-gray-300 mt-2">Acces sur autorisation</p></div></div>
+			<div class="absolute inset-0 flex items-end p-8"><div><p class="text-xs font-black uppercase tracking-[0.25em] text-indigo-300">Collection confidentielle</p><h3 class="text-3xl font-black text-white mt-3">34 oeuvres</h3><p class="text-gray-200 mt-2">Acces sur autorisation</p></div></div>
 		</div>
 	</div>
 </section>
@@ -217,7 +183,7 @@ $current_year = (int) date( 'Y' );
 		<div class="max-w-3xl"><p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Services photographiques</p><h2 class="mt-4 text-4xl sm:text-5xl font-black text-white">Creer votre propre temps suspendu.</h2></div>
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 			<?php foreach ( array( 'Portrait prive' => 'Portrait individuel, editorial ou intime.', 'Couple & famille' => 'Des instants construits sans perdre leur naturel.', 'Evenement' => 'Documenter sans interrompre.', 'Corporate' => 'Portraits professionnels et identite visuelle.', 'Projet artistique' => 'Collaboration creative et direction visuelle.', 'Commande sur mesure' => 'Un besoin particulier ? Construisons le projet ensemble.' ) as $title => $copy ) : ?>
-				<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800"><h3 class="text-xl font-black text-white"><?php echo esc_html( $title ); ?></h3><p class="text-sm text-gray-400 mt-3 leading-relaxed"><?php echo esc_html( $copy ); ?></p></div>
+				<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800"><h3 class="text-xl font-black text-white"><?php echo esc_html( $title ); ?></h3><p class="text-sm text-gray-300 mt-3 leading-relaxed"><?php echo esc_html( $copy ); ?></p></div>
 			<?php endforeach; ?>
 		</div>
 	</div>
@@ -236,10 +202,10 @@ $current_year = (int) date( 'Y' );
 
 <section class="py-20 bg-[#0d0c0b] border-t border-gray-900">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-		<div><strong class="text-5xl font-black text-white"><?php echo esc_html( $stats['total'] ); ?></strong><p class="text-xs uppercase tracking-wider text-gray-500 mt-2">images conservees</p></div>
-		<div><strong class="text-5xl font-black text-white"><?php echo esc_html( $stats['folders'] ); ?></strong><p class="text-xs uppercase tracking-wider text-gray-500 mt-2">collections</p></div>
-		<div><strong class="text-5xl font-black text-white"><?php echo esc_html( $stats['protected'] ); ?></strong><p class="text-xs uppercase tracking-wider text-gray-500 mt-2">oeuvres protegees</p></div>
-		<div><strong class="text-5xl font-black text-white"><?php echo esc_html( $stats['categories'] ); ?></strong><p class="text-xs uppercase tracking-wider text-gray-500 mt-2">territoires visuels</p></div>
+		<div><strong class="text-5xl font-black text-white"><?php echo esc_html( $stats['total'] ); ?></strong><p class="text-xs uppercase tracking-wider text-gray-300 mt-2">images conservees</p></div>
+		<div><strong class="text-5xl font-black text-white"><?php echo esc_html( $stats['folders'] ); ?></strong><p class="text-xs uppercase tracking-wider text-gray-300 mt-2">collections</p></div>
+		<div><strong class="text-5xl font-black text-white"><?php echo esc_html( $stats['protected'] ); ?></strong><p class="text-xs uppercase tracking-wider text-gray-300 mt-2">oeuvres protegees</p></div>
+		<div><strong class="text-5xl font-black text-white"><?php echo esc_html( $stats['categories'] ); ?></strong><p class="text-xs uppercase tracking-wider text-gray-300 mt-2">territoires visuels</p></div>
 	</div>
 </section>
 
@@ -250,7 +216,7 @@ $current_year = (int) date( 'Y' );
 				<p class="text-xs font-black uppercase tracking-[0.28em] text-indigo-400">Chronologie</p>
 				<h2 class="mt-4 text-4xl sm:text-5xl font-black text-white">Les archives, annee apres annee.</h2>
 			</div>
-			<p class="lg:col-span-2 text-gray-400 text-lg leading-relaxed">Chaque annee rassemble des commandes, des series libres, des lieux documentes et des collections parfois conservees hors du regard public. La chronologie donne un rythme a l'archive et transforme la galerie en recit.</p>
+			<p class="lg:col-span-2 text-gray-300 text-lg leading-relaxed">Chaque annee rassemble des commandes, des series libres, des lieux documentes et des collections parfois conservees hors du regard public. La chronologie donne un rythme a l'archive et transforme la galerie en recit.</p>
 		</div>
 		<div class="space-y-4">
 			<?php
@@ -263,8 +229,8 @@ $current_year = (int) date( 'Y' );
 			?>
 				<div class="grid grid-cols-1 md:grid-cols-[120px_1fr_220px] gap-5 p-5 rounded-3xl bg-gray-950/40 border border-gray-800">
 					<div class="text-3xl font-black text-indigo-400"><?php echo esc_html( $item['year'] ); ?></div>
-					<div><h3 class="text-2xl font-black text-white"><?php echo esc_html( $item['title'] ); ?></h3><p class="text-gray-400 mt-2 leading-relaxed"><?php echo esc_html( $item['copy'] ); ?></p></div>
-					<div class="md:text-right text-sm font-bold text-gray-500 uppercase tracking-wider"><?php echo esc_html( $item['meta'] ); ?></div>
+					<div><h3 class="text-2xl font-black text-white"><?php echo esc_html( $item['title'] ); ?></h3><p class="text-gray-300 mt-2 leading-relaxed"><?php echo esc_html( $item['copy'] ); ?></p></div>
+					<div class="md:text-right text-sm font-bold text-gray-300 uppercase tracking-wider"><?php echo esc_html( $item['meta'] ); ?></div>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -288,7 +254,7 @@ $current_year = (int) date( 'Y' );
 			?>
 				<article class="overflow-hidden rounded-3xl bg-gray-950/50 border border-gray-800">
 					<img src="<?php echo esc_url( $item['image'] ); ?>" alt="Portrait temoignage <?php echo esc_attr( $item['name'] ); ?>" class="h-64 w-full object-cover" loading="lazy">
-					<div class="p-6 space-y-4"><blockquote class="text-lg font-bold text-white leading-snug">&laquo; <?php echo esc_html( $item['quote'] ); ?> &raquo;</blockquote><div><p class="text-sm font-black text-indigo-400"><?php echo esc_html( $item['name'] ); ?></p><p class="text-xs text-gray-500 mt-1"><?php echo esc_html( $item['type'] ); ?></p></div></div>
+					<div class="p-6 space-y-4"><blockquote class="text-lg font-bold text-white leading-snug">&laquo; <?php echo esc_html( $item['quote'] ); ?> &raquo;</blockquote><div><p class="text-sm font-black text-indigo-400"><?php echo esc_html( $item['name'] ); ?></p><p class="text-xs text-gray-300 mt-1"><?php echo esc_html( $item['type'] ); ?></p></div></div>
 				</article>
 			<?php endforeach; ?>
 		</div>
@@ -297,18 +263,18 @@ $current_year = (int) date( 'Y' );
 
 <section class="py-24 bg-[#11100f] border-t border-gray-900">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-		<div class="flex flex-col lg:flex-row justify-between gap-6"><h2 class="text-4xl sm:text-5xl font-black text-white">Carnets visuels</h2><p class="max-w-xl text-gray-400">Les articles du blog deviennent des notes d'atelier : lumiere, protection, choix de serie, ville, archive et livraison.</p></div>
+		<div class="flex flex-col lg:flex-row justify-between gap-6"><h2 class="text-4xl sm:text-5xl font-black text-white">Carnets visuels</h2><p class="max-w-xl text-gray-300">Les articles du blog deviennent des notes d'atelier : lumiere, protection, choix de serie, ville, archive et livraison.</p></div>
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 			<?php if ( $journal_posts->have_posts() ) : ?>
 				<?php while ( $journal_posts->have_posts() ) : $journal_posts->the_post(); ?>
 					<article class="overflow-hidden rounded-3xl bg-gray-950/40 border border-gray-800">
 						<a href="<?php the_permalink(); ?>" class="block aspect-[4/3] bg-gray-950 border-b border-gray-800"><?php photovault_render_post_visual( 'medium_large', 'w-full h-full object-cover' ); ?></a>
-						<div class="p-6"><p class="text-xs text-indigo-400 font-black uppercase tracking-wider"><?php echo esc_html( get_the_date( 'd M Y' ) ); ?></p><h3 class="text-xl font-black text-white mt-4"><a href="<?php the_permalink(); ?>" class="hover:text-indigo-300"><?php the_title(); ?></a></h3><div class="text-sm text-gray-500 mt-4 leading-relaxed"><?php the_excerpt(); ?></div></div>
+						<div class="p-6"><p class="text-xs text-indigo-400 font-black uppercase tracking-wider"><?php echo esc_html( get_the_date( 'd M Y' ) ); ?></p><h3 class="text-xl font-black text-white mt-4"><a href="<?php the_permalink(); ?>" class="hover:text-indigo-300"><?php the_title(); ?></a></h3><div class="text-sm text-gray-300 mt-4 leading-relaxed"><?php the_excerpt(); ?></div></div>
 					</article>
 				<?php endwhile; wp_reset_postdata(); ?>
 			<?php else : ?>
 				<?php foreach ( array( 'Photographier Cotonou apres la pluie', 'Pourquoi certaines images restent privees', 'Ce qu une archive conserve vraiment' ) as $title ) : ?>
-					<article class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800"><p class="text-xs text-indigo-400 font-black uppercase tracking-wider">Journal</p><h3 class="text-xl font-black text-white mt-4"><?php echo esc_html( $title ); ?></h3><p class="text-sm text-gray-500 mt-4">Carnet editorial pret a publier.</p></article>
+					<article class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800"><p class="text-xs text-indigo-400 font-black uppercase tracking-wider">Journal</p><h3 class="text-xl font-black text-white mt-4"><?php echo esc_html( $title ); ?></h3><p class="text-sm text-gray-300 mt-4">Carnet editorial pret a publier.</p></article>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</div>
@@ -329,8 +295,8 @@ $current_year = (int) date( 'Y' );
 			?>
 				<div class="grid grid-cols-1 md:grid-cols-[90px_1fr_150px] gap-4 p-5 rounded-3xl bg-gray-950/40 border border-gray-800 items-center">
 					<span class="text-indigo-400 font-black"><?php echo esc_html( $item['date'] ); ?></span>
-					<div><h3 class="text-xl font-black text-white"><?php echo esc_html( $item['title'] ); ?></h3><p class="text-sm text-gray-500 mt-1"><?php echo esc_html( $item['place'] ); ?></p></div>
-					<span class="text-xs font-bold text-gray-300 uppercase tracking-wider md:text-right"><?php echo esc_html( $item['status'] ); ?></span>
+					<div><h3 class="text-xl font-black text-white"><?php echo esc_html( $item['title'] ); ?></h3><p class="text-sm text-gray-300 mt-1"><?php echo esc_html( $item['place'] ); ?></p></div>
+					<span class="text-xs font-bold text-gray-200 uppercase tracking-wider md:text-right"><?php echo esc_html( $item['status'] ); ?></span>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -354,7 +320,7 @@ $current_year = (int) date( 'Y' );
 			?>
 				<details class="group rounded-2xl bg-gray-950/40 border border-gray-800 p-5">
 					<summary class="cursor-pointer list-none flex items-center justify-between gap-4 text-sm sm:text-base font-black text-white"><?php echo esc_html( $question ); ?><span class="text-indigo-400 group-open:rotate-45 transition-transform">+</span></summary>
-					<p class="text-sm text-gray-400 leading-relaxed mt-4 max-w-3xl"><?php echo esc_html( $answer ); ?></p>
+					<p class="text-sm text-gray-300 leading-relaxed mt-4 max-w-3xl"><?php echo esc_html( $answer ); ?></p>
 				</details>
 			<?php endforeach; ?>
 		</div>
@@ -366,7 +332,7 @@ $current_year = (int) date( 'Y' );
 	<div class="absolute inset-0 bg-[#0d0c0b]/70"></div>
 	<div class="relative max-w-5xl mx-auto px-4 text-center">
 		<h2 class="text-4xl sm:text-6xl font-black text-white leading-tight">Certains instants passent. D'autres meritent de rester.</h2>
-		<p class="text-gray-300 text-lg mt-6 max-w-2xl mx-auto">Explorez les archives existantes ou creons ensemble les prochaines images.</p>
+		<p class="text-gray-200 text-lg mt-6 max-w-2xl mx-auto">Explorez les archives existantes ou creons ensemble les prochaines images.</p>
 		<div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center"><a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl">Explorer la galerie</a><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="px-8 py-4 bg-white/10 hover:bg-white/15 text-white font-bold rounded-xl border border-white/20">Reserver un shooting</a></div>
 	</div>
 </section>

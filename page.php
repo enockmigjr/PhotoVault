@@ -21,7 +21,7 @@ get_header();
 						<?php photovault_render_post_visual( 'large', 'w-full h-full object-cover' ); ?>
 					</div>
 
-					<div class="prose prose-invert max-w-none text-gray-300 leading-relaxed text-base space-y-6">
+					<div class="prose prose-invert max-w-none text-gray-200 leading-relaxed text-base space-y-6">
 						<?php the_content(); ?>
 					</div>
 				</article>

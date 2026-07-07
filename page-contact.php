@@ -38,7 +38,7 @@ get_header();
 	<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 		<header class="text-center space-y-4">
 			<h1 class="text-4xl sm:text-6xl font-extrabold text-white">Contactez le <span class="text-indigo-500">Support</span></h1>
-			<p class="text-gray-400 text-lg max-w-xl mx-auto">Une question ? Un problème technique ? Notre équipe est là pour vous aider.</p>
+			<p class="text-gray-300 text-lg max-w-xl mx-auto">Une question ? Un problème technique ? Notre équipe est là pour vous aider.</p>
 		</header>
 
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -46,11 +46,11 @@ get_header();
 			<div class="space-y-6 md:col-span-1">
 				<div class="glass-effect p-6 rounded-2xl border border-gray-800 space-y-4">
 					<h3 class="text-lg font-bold text-white">Nos Bureaux</h3>
-					<p class="text-sm text-gray-400">PhotoVault Inc.<br>42 Rue de l'Art Visuel<br>75001 Paris, France</p>
+					<p class="text-sm text-gray-300">PhotoVault Inc.<br>42 Rue de l'Art Visuel<br>75001 Paris, France</p>
 				</div>
 				<div class="glass-effect p-6 rounded-2xl border border-gray-800 space-y-4">
 					<h3 class="text-lg font-bold text-white">Support Direct</h3>
-					<p class="text-sm text-gray-400">support@photovault.local<br>+33 (0)1 23 45 67 89</p>
+					<p class="text-sm text-gray-300">support@photovault.local<br>+33 (0)1 23 45 67 89</p>
 				</div>
 			</div>
 
@@ -73,22 +73,22 @@ get_header();
 
 					<div class="grid grid-cols-2 gap-4">
 						<div>
-							<label for="name" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Nom / Prénom</label>
+							<label for="name" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Nom / Prénom</label>
 							<input id="name" name="contact_name" type="text" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
 						</div>
 						<div>
-							<label for="email" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Adresse E-mail</label>
+							<label for="email" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Adresse E-mail</label>
 							<input id="email" name="email" type="email" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
 						</div>
 					</div>
 
 					<div>
-						<label for="subject" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Sujet</label>
+						<label for="subject" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Sujet</label>
 						<input id="subject" name="contact_subject" type="text" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 
 					<div>
-						<label for="message" class="block text-xs font-semibold text-gray-400 uppercase mb-1">Message</label>
+						<label for="message" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Message</label>
 						<textarea id="message" name="contact_message" rows="5" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
 					</div>
 
@@ -103,15 +103,15 @@ get_header();
 		<section class="grid grid-cols-1 md:grid-cols-3 gap-5 border-t border-gray-900 pt-10">
 			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
 				<h3 class="text-lg font-bold text-white mb-2">Demande d'acces</h3>
-				<p class="text-sm text-gray-400 leading-relaxed">Precisez la collection, le projet ou la serie protegee que vous souhaitez consulter.</p>
+				<p class="text-sm text-gray-300 leading-relaxed">Precisez la collection, le projet ou la serie protegee que vous souhaitez consulter.</p>
 			</div>
 			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
 				<h3 class="text-lg font-bold text-white mb-2">Reservation shooting</h3>
-				<p class="text-sm text-gray-400 leading-relaxed">Indiquez la date souhaitee, le lieu, le type de portraits et l'ambiance recherchee.</p>
+				<p class="text-sm text-gray-300 leading-relaxed">Indiquez la date souhaitee, le lieu, le type de portraits et l'ambiance recherchee.</p>
 			</div>
 			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
 				<h3 class="text-lg font-bold text-white mb-2">Licence ou tirage</h3>
-				<p class="text-sm text-gray-400 leading-relaxed">Mentionnez l'oeuvre, le format, l'usage prevu et le delai de livraison attendu.</p>
+				<p class="text-sm text-gray-300 leading-relaxed">Mentionnez l'oeuvre, le format, l'usage prevu et le delai de livraison attendu.</p>
 			</div>
 		</section>
 	</div>

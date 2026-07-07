@@ -43,7 +43,7 @@ $avatar_url = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' 
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="text-xl font-black text-white tracking-tight hover:opacity-80 transition-opacity">
         Photo<span class="text-indigo-500">Vault</span>
     </a>
-    <button id="toggle-sidebar" class="text-gray-300 hover:text-white p-2 focus:outline-none" aria-label="Ouvrir le menu">
+    <button id="toggle-sidebar" class="text-gray-200 hover:text-white p-2 focus:outline-none" aria-label="Ouvrir le menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
@@ -59,7 +59,7 @@ $avatar_url = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' 
         </a>
         
         <div class="flex lg:hidden justify-end mb-6">
-            <button id="close-sidebar" class="text-gray-400 hover:text-white p-1">
+            <button id="close-sidebar" class="text-gray-300 hover:text-white p-1">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -69,7 +69,7 @@ $avatar_url = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' 
         <nav class="space-y-1">
             <?php foreach ( $menu_items as $key => $item ) : 
                 $is_active = in_array( $current_page, $item['active_on'] );
-                $active_class = $is_active ? 'bg-indigo-600 text-white font-bold' : 'text-gray-300 hover:bg-gray-800/50 hover:text-white font-medium';
+                $active_class = $is_active ? 'bg-indigo-600 text-white font-bold' : 'text-gray-200 hover:bg-gray-800/50 hover:text-white font-medium';
             ?>
                 <a href="<?php echo esc_url( $item['url'] ); ?>" class="flex items-center px-4 py-3.5 text-xs tracking-wider uppercase rounded-xl transition-all <?php echo esc_attr( $active_class ); ?>">
                     <?php echo $item['icon']; ?>
@@ -84,7 +84,7 @@ $avatar_url = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' 
             <img class="h-10 w-10 rounded-full object-cover border-2 border-indigo-500/50" src="<?php echo esc_url( $avatar_url ); ?>" alt="Avatar">
             <div class="ml-3">
                 <p class="text-sm font-bold text-white truncate max-w-[140px]"><?php echo esc_html( $current_user->display_name ); ?></p>
-                <p class="text-xs text-gray-500 truncate max-w-[140px]">Administrateur</p>
+                <p class="text-xs text-gray-300 truncate max-w-[140px]">Administrateur</p>
             </div>
         </div>
         <a href="<?php echo esc_url( wp_logout_url( home_url( '/login/' ) ) ); ?>" class="flex items-center px-4 py-3 text-xs tracking-wider uppercase font-semibold text-red-400 hover:bg-red-950/20 rounded-xl transition-all cursor-pointer">

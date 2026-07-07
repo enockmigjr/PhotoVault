@@ -33,7 +33,7 @@ get_header();
             <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h2 class="text-3xl font-black text-white tracking-tight">Panneau Analytique</h2>
-                    <p class="text-gray-400 mt-1 text-sm font-medium">Aperçu général de l'activité, de la visibilité et de la sécurité des galeries.</p>
+                    <p class="text-gray-300 mt-1 text-sm font-medium">Aperçu général de l'activité, de la visibilité et de la sécurité des galeries.</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-ping"></span>
@@ -44,7 +44,7 @@ get_header();
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="glass-effect p-6 rounded-3xl flex items-center justify-between shadow-xl border border-gray-800/80">
                     <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Total Médias</p>
+                        <p class="text-xs font-bold text-gray-300 uppercase tracking-widest">Total Médias</p>
                         <h3 class="text-4xl font-black text-white mt-2"><?php echo esc_html( $stats['total'] ); ?></h3>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-indigo-600/10 text-indigo-400 border border-indigo-500/20">
@@ -54,7 +54,7 @@ get_header();
 
                 <div class="glass-effect p-6 rounded-3xl flex items-center justify-between shadow-xl border border-gray-800/80">
                     <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Publics</p>
+                        <p class="text-xs font-bold text-gray-300 uppercase tracking-widest">Publics</p>
                         <h3 class="text-4xl font-black text-emerald-400 mt-2"><?php echo esc_html( $stats['public'] ); ?></h3>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-emerald-600/10 text-emerald-400 border border-emerald-500/20">
@@ -64,17 +64,17 @@ get_header();
 
                 <div class="glass-effect p-6 rounded-3xl flex items-center justify-between shadow-xl border border-gray-800/80">
                     <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Privés</p>
-                        <h3 class="text-4xl font-black text-gray-300 mt-2"><?php echo esc_html( $stats['private'] ); ?></h3>
+                        <p class="text-xs font-bold text-gray-300 uppercase tracking-widest">Privés</p>
+                        <h3 class="text-4xl font-black text-gray-200 mt-2"><?php echo esc_html( $stats['private'] ); ?></h3>
                     </div>
-                    <div class="p-3.5 rounded-2xl bg-gray-800/50 text-gray-400 border border-gray-700/30">
+                    <div class="p-3.5 rounded-2xl bg-gray-800/50 text-gray-300 border border-gray-700/30">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
                     </div>
                 </div>
 
                 <div class="glass-effect p-6 rounded-3xl flex items-center justify-between shadow-xl border border-gray-800/80">
                     <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Protégés</p>
+                        <p class="text-xs font-bold text-gray-300 uppercase tracking-widest">Protégés</p>
                         <h3 class="text-4xl font-black text-indigo-400 mt-2"><?php echo esc_html( $stats['protected'] ); ?></h3>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-indigo-600/10 text-indigo-400 border border-indigo-500/20">
@@ -84,7 +84,7 @@ get_header();
 
                 <div class="glass-effect p-6 rounded-3xl flex items-center justify-between shadow-xl border border-gray-800/80">
                     <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Dossiers</p>
+                        <p class="text-xs font-bold text-gray-300 uppercase tracking-widest">Dossiers</p>
                         <h3 class="text-4xl font-black text-white mt-2"><?php echo esc_html( $stats['folders'] ); ?></h3>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-purple-600/10 text-purple-400 border border-purple-500/20">
@@ -94,7 +94,7 @@ get_header();
 
                 <div class="glass-effect p-6 rounded-3xl flex items-center justify-between shadow-xl border border-gray-800/80">
                     <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Catégories</p>
+                        <p class="text-xs font-bold text-gray-300 uppercase tracking-widest">Catégories</p>
                         <h3 class="text-4xl font-black text-white mt-2"><?php echo esc_html( $stats['categories'] ); ?></h3>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-pink-600/10 text-pink-400 border border-pink-500/20">
@@ -104,7 +104,7 @@ get_header();
 
                 <div class="glass-effect p-6 rounded-3xl flex items-center justify-between shadow-xl border border-gray-800/80">
                     <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Vues totales</p>
+                        <p class="text-xs font-bold text-gray-300 uppercase tracking-widest">Vues totales</p>
                         <h3 class="text-4xl font-black text-white mt-2"><?php echo esc_html( $stats['views'] ); ?></h3>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-blue-600/10 text-blue-400 border border-blue-500/20">
@@ -114,7 +114,7 @@ get_header();
 
                 <div class="glass-effect p-6 rounded-3xl flex items-center justify-between shadow-xl border border-gray-800/80">
                     <div>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Téléchargements</p>
+                        <p class="text-xs font-bold text-gray-300 uppercase tracking-widest">Téléchargements</p>
                         <h3 class="text-4xl font-black text-white mt-2"><?php echo esc_html( $stats['downloads'] ); ?></h3>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-amber-600/10 text-amber-400 border border-amber-500/20">

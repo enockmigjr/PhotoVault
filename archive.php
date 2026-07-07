@@ -14,7 +14,7 @@ get_header();
 			<h1 class="text-4xl font-extrabold text-white">
 				<?php the_archive_title(); ?>
 			</h1>
-			<?php the_archive_description( '<p class="text-gray-400 mt-2 text-sm max-w-xl">', '</p>' ); ?>
+			<?php the_archive_description( '<p class="text-gray-300 mt-2 text-sm max-w-xl">', '</p>' ); ?>
 		</header>
 
 		<?php if ( have_posts() ) : ?>
@@ -28,8 +28,8 @@ get_header();
 							<h2 class="text-xl font-bold text-white mb-2">
 								<a href="<?php the_permalink(); ?>" class="hover:text-indigo-400 transition-colors"><?php the_title(); ?></a>
 							</h2>
-							<p class="text-xs text-gray-500 mb-4"><?php echo get_the_date(); ?> | Par <?php the_author(); ?></p>
-							<div class="text-gray-400 text-sm leading-relaxed mb-6">
+							<p class="text-xs text-gray-300 mb-4"><?php echo get_the_date(); ?> | Par <?php the_author(); ?></p>
+							<div class="text-gray-300 text-sm leading-relaxed mb-6">
 								<?php the_excerpt(); ?>
 							</div>
 						</div>
@@ -52,7 +52,7 @@ get_header();
 			</div>
 		<?php else : ?>
 			<div class="text-center py-20 glass-effect rounded-2xl">
-				<p class="text-gray-500">Aucun article trouvé dans cette archive.</p>
+				<p class="text-gray-300">Aucun article trouvé dans cette archive.</p>
 			</div>
 		<?php endif; ?>
 	</div>
