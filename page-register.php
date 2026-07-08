@@ -31,11 +31,17 @@ get_header();
 					case 'fields_required':
 						$error_message = esc_html__( 'Veuillez remplir tous les champs obligatoires.', 'photovault' );
 						break;
+					case 'invalid_email':
+						$error_message = esc_html__( 'Adresse e-mail invalide.', 'photovault' );
+						break;
+					case 'weak_password':
+						$error_message = esc_html__( 'Le mot de passe doit contenir au moins 8 caracteres.', 'photovault' );
+						break;
 					case 'password_mismatch':
 						$error_message = esc_html__( 'Les mots de passe ne correspondent pas.', 'photovault' );
 						break;
 					case 'email_exists':
-						$error_message = esc_html__( 'Cette adresse e-mail est déjà utilisée.', 'photovault' );
+						$error_message = esc_html__( 'Cette adresse e-mail est deja utilisee.', 'photovault' );
 						break;
 					case 'username_exists':
 						$error_message = esc_html__( 'Ce nom d\'utilisateur est déjà pris.', 'photovault' );
