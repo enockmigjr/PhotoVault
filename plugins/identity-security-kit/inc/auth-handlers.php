@@ -107,7 +107,8 @@ function identity_security_kit_validate_uploaded_image_file( $file ) {
 		return new WP_Error( 'invalid_upload', __( 'The uploaded file is invalid.', 'identity-security-kit' ) );
 	}
 
-	$max_size = (int) apply_filters( 'identity_security_kit_max_avatar_size', 6 * MB_IN_BYTES );
+	$settings = function_exists( 'identity_security_kit_get_settings' ) ? identity_security_kit_get_settings() : array( 'max_avatar_size_mb' => 6, 'max_avatar_dimension' => 6000 );
+	$max_size = (int) apply_filters( 'identity_security_kit_max_avatar_size', $settings['max_avatar_size_mb'] * MB_IN_BYTES );
 	$size     = isset( $file['size'] ) ? (int) $file['size'] : 0;
 	if ( $size <= 0 || $size > $max_size ) {
 		return new WP_Error( 'file_too_large', __( 'The uploaded file is too large.', 'identity-security-kit' ) );
@@ -124,7 +125,7 @@ function identity_security_kit_validate_uploaded_image_file( $file ) {
 		return new WP_Error( 'invalid_image', __( 'The uploaded file is not a valid image.', 'identity-security-kit' ) );
 	}
 
-	$max_dimension = (int) apply_filters( 'identity_security_kit_max_avatar_dimension', 6000 );
+	$max_dimension = (int) apply_filters( 'identity_security_kit_max_avatar_dimension', $settings['max_avatar_dimension'] );
 	if ( $dimensions[0] > $max_dimension || $dimensions[1] > $max_dimension ) {
 		return new WP_Error( 'image_too_large', __( 'The uploaded image dimensions are too large.', 'identity-security-kit' ) );
 	}
@@ -132,6 +133,17 @@ function identity_security_kit_validate_uploaded_image_file( $file ) {
 	return true;
 }
 
+
+/**
+ * Return the active minimum password length.
+ *
+ * @return int
+ */
+function identity_security_kit_get_min_password_length() {
+	$settings = function_exists( 'identity_security_kit_get_settings' ) ? identity_security_kit_get_settings() : array( 'min_password_length' => 8 );
+
+	return max( 8, absint( $settings['min_password_length'] ) );
+}
 /**
  * Resolve the default role for front-office registrations.
  *
@@ -249,7 +261,7 @@ function identity_security_kit_handle_registration() {
 		$error_code = 'fields_required';
 	} elseif ( ! is_email( $email ) ) {
 		$error_code = 'invalid_email';
-	} elseif ( strlen( $password ) < 8 ) {
+	} elseif ( strlen( $password ) < identity_security_kit_get_min_password_length() ) {
 		$error_code = 'weak_password';
 	} elseif ( $password !== $password_c ) {
 		$error_code = 'password_mismatch';
@@ -329,7 +341,7 @@ function identity_security_kit_handle_profile_update() {
 			identity_security_kit_redirect( 'profile', array( 'profile' => 'current_password_invalid' ) );
 		}
 
-		if ( strlen( $password ) < 8 ) {
+		if ( strlen( $password ) < identity_security_kit_get_min_password_length() ) {
 			identity_security_kit_redirect( 'profile', array( 'profile' => 'weak_password' ) );
 		}
 
