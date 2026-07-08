@@ -15,6 +15,7 @@ if ( have_posts() ) :
 		$is_private = 'private' === get_post_status( $media_id );
 		$is_admin = current_user_can( 'manage_options' );
 		$is_owner = is_user_logged_in() && (get_current_user_id() === $author_id);
+		$has_verified_identity = function_exists( 'photovault_user_has_verified_identity' ) ? photovault_user_has_verified_identity( get_current_user_id() ) : true;
 
 		// 1. Restriction d'accès stricte pour les posts privés.
 		if ( $is_private && ! $is_admin && ! $is_owner ) {
@@ -26,6 +27,21 @@ if ( have_posts() ) :
 				<h2 class="text-3xl font-black text-white">Contenu Privé</h2>
 				<p class="text-gray-300 mt-2 max-w-md text-sm">Ce média est configuré en mode confidentiel et est uniquement accessible au propriétaire de la galerie.</p>
 				<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="mt-8 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/20 cursor-pointer text-sm">Retourner à la galerie</a>
+			</div>
+			<?php
+			get_footer();
+			exit;
+		}
+
+		if ( $is_private && ! $is_admin && ! $has_verified_identity ) {
+			?>
+			<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#0d0c0b]">
+				<div class="p-4 rounded-full bg-amber-950/20 border border-amber-400/20 text-amber-300 mb-6">
+					<svg class="h-14 w-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V8a2 2 0 00-2-2H3a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
+				</div>
+				<h2 class="text-3xl font-black text-white">Verification e-mail requise</h2>
+				<p class="text-gray-300 mt-2 max-w-md text-sm">Confirmez votre adresse e-mail avant d'ouvrir cette archive confidentielle.</p>
+				<a href="<?php echo esc_url( home_url( '/profile/' ) ); ?>" class="mt-8 px-6 py-3 bg-amber-300 hover:bg-amber-200 text-black font-bold rounded-xl transition-all cursor-pointer text-sm">Verifier mon e-mail</a>
 			</div>
 			<?php
 			get_footer();

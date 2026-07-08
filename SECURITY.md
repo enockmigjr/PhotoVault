@@ -43,3 +43,7 @@ PhotoVault is being migrated from a theme-heavy implementation to a modular Word
 
 ## Reporting
 Security issues should be handled privately with the site owner/development team. Do not disclose exploitable details in public issues or comments.
+## Identity verification gates
+
+- When Identity Security Kit is active, non-admin users must have a verified email address before opening private media previews or downloading original files.
+- Administrators and PhotoVault media managers keep full access for support and moderation workflows.
