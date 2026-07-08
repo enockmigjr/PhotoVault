@@ -79,16 +79,34 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 				</div>
 
 				<div class="space-y-4">
-					<h4 class="text-white font-bold mb-2 tracking-widest uppercase text-xs">Restez connecté</h4>
-					<p class="text-xs text-gray-300 font-medium font-medium">Inscrivez-vous pour suivre nos dernières mises à jour.</p>
-					<form class="flex flex-col sm:flex-row gap-2" onsubmit="alert('Inscription à la newsletter simulée avec succès !'); return false;">
-						<input type="email" placeholder="Votre email..." class="bg-gray-950/40 text-white placeholder-gray-600 px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 border border-gray-800 w-full" required>
-						<button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-md cursor-pointer">
-							OK
-						</button>
-					</form>
+					<h4 class="text-white font-bold mb-2 tracking-widest uppercase text-xs">Restez connecte</h4>
+					<p class="text-xs text-gray-300 font-medium">Recevez les carnets visuels, les nouvelles collections et les invitations privees.</p>
+					<?php $newsletter_status = isset( $_GET['newsletter'] ) ? sanitize_key( wp_unslash( $_GET['newsletter'] ) ) : ''; ?>
+					<?php if ( 'subscribed' === $newsletter_status ) : ?>
+						<p class="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-100">Inscription enregistree.</p>
+					<?php elseif ( in_array( $newsletter_status, array( 'invalid_email', 'consent_required', 'security_failed', 'db_error' ), true ) ) : ?>
+						<p class="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-100">Inscription impossible. Verifiez votre e-mail et votre consentement.</p>
+					<?php endif; ?>
+					<?php if ( function_exists( 'newsletter_campaign_kit_handle_subscribe' ) ) : ?>
+						<form class="space-y-3" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST">
+							<input type="hidden" name="action" value="newsletter_campaign_kit_subscribe">
+							<input type="hidden" name="newsletter_source" value="front_footer">
+							<?php wp_nonce_field( 'newsletter_campaign_kit_subscribe', 'newsletter_campaign_kit_nonce' ); ?>
+							<div class="flex flex-col gap-2 sm:flex-row">
+								<input name="newsletter_email" type="email" placeholder="Votre email..." class="bg-gray-950/40 text-white placeholder-gray-600 px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 border border-gray-800 w-full" required>
+								<button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-md cursor-pointer">
+									OK
+								</button>
+							</div>
+							<label class="flex items-start gap-2 text-[10px] leading-4 text-gray-400">
+								<input class="mt-0.5 h-3.5 w-3.5 rounded border-gray-700 bg-gray-950 text-indigo-500" type="checkbox" name="newsletter_consent" value="1" required>
+								<span>J'accepte de recevoir les actualites editoriales de PhotoVault et je peux me desinscrire a tout moment.</span>
+							</label>
+						</form>
+					<?php else : ?>
+						<p class="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-amber-100">Newsletter en cours d'activation.</p>
+					<?php endif; ?>
 				</div>
-
 			</div>
 
 			<div class="border-t border-gray-900 pt-8 mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-gray-600">
