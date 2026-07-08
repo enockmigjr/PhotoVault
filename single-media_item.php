@@ -20,6 +20,9 @@ if ( have_posts() ) :
 
 		// 1. Restriction d'accès stricte pour les posts privés.
 		if ( $is_private && ! $can_access_media && $has_verified_identity ) {
+			if ( function_exists( 'photovault_log_media_event' ) ) {
+				photovault_log_media_event( 'access_denied', 'warning', $media_id, array( 'reason' => 'private_detail_view' ) );
+			}
 			?>
 			<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#0d0c0b]">
 				<div class="p-4 rounded-full bg-red-950/20 border border-red-500/20 text-red-500 mb-6 animate-pulse">
@@ -35,6 +38,9 @@ if ( have_posts() ) :
 		}
 
 		if ( $is_private && ! $can_access_media && ! $has_verified_identity ) {
+			if ( function_exists( 'photovault_log_media_event' ) ) {
+				photovault_log_media_event( 'access_denied', 'warning', $media_id, array( 'reason' => 'email_unverified_detail_view' ) );
+			}
 			?>
 			<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#0d0c0b]">
 				<div class="p-4 rounded-full bg-amber-950/20 border border-amber-400/20 text-amber-300 mb-6">
@@ -54,6 +60,10 @@ if ( have_posts() ) :
 		$categories = get_the_terms( $media_id, 'media_category' );
 		$image_url = photovault_get_secure_image_url( $media_id, 'preview' );
 		
+		if ( function_exists( 'photovault_log_media_event' ) ) {
+			photovault_log_media_event( 'media_view', 'info', $media_id, array( 'private' => $is_private, 'protected' => $is_protected, 'owner' => $is_owner, 'admin' => $is_admin ) );
+		}
+
 		// Incrémenter les vues
 		if ( ! $is_admin ) {
 			$views = (int) get_post_meta( $media_id, 'photovault_views_count', true );
