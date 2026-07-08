@@ -21,11 +21,12 @@ function identity_security_kit_get_routes() {
 	}
 
 	$routes = array(
-		'login'       => home_url( '/login/' ),
-		'register'    => home_url( '/register/' ),
-		'profile'     => home_url( '/profile/' ),
-		'dashboard'   => home_url( '/dashboard/' ),
-		'after_login' => $gallery_url,
+		'login'           => home_url( '/login/' ),
+		'register'        => home_url( '/register/' ),
+		'profile'         => home_url( '/profile/' ),
+		'forgot_password' => home_url( '/forgot-password/' ),
+		'dashboard'       => home_url( '/dashboard/' ),
+		'after_login'     => $gallery_url,
 	);
 
 	/**
@@ -179,6 +180,50 @@ function identity_security_kit_handle_login() {
 }
 add_action( 'template_redirect', 'identity_security_kit_handle_login' );
 
+/**
+ * Handle front-office password reset requests with anti-enumeration responses.
+ */
+function identity_security_kit_handle_forgot_password() {
+	if ( ! identity_security_kit_is_post_request() || ! isset( $_POST['photovault_forgot_nonce'] ) ) {
+		return;
+	}
+
+	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['photovault_forgot_nonce'] ) ), 'photovault_forgot_action' ) ) {
+		identity_security_kit_redirect( 'forgot_password', array( 'forgot' => 'security_failed' ) );
+	}
+
+	$user_input = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
+	if ( '' === $user_input ) {
+		identity_security_kit_redirect( 'forgot_password', array( 'forgot' => 'fields_required' ) );
+	}
+
+	$user = is_email( $user_input ) ? get_user_by( 'email', $user_input ) : get_user_by( 'login', sanitize_user( $user_input ) );
+	if ( $user ) {
+		$key = get_password_reset_key( $user );
+		if ( is_wp_error( $key ) ) {
+			do_action( 'identity_security_kit_password_reset_failed', $key, $user->ID );
+		} else {
+			$reset_url = network_site_url(
+				'wp-login.php?action=rp&key=' . rawurlencode( $key ) . '&login=' . rawurlencode( $user->user_login ),
+				'login'
+			);
+			$subject   = sprintf( __( '[%s] Password reset', 'identity-security-kit' ), wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) );
+			$message   = sprintf(
+				/* translators: 1: display name, 2: password reset URL. */
+				__( "Hello %1$s,\n\nA password reset was requested for your account.\n\nOpen this secure link to choose a new password:\n%2$s\n\nIf you did not request this, you can ignore this email.", 'identity-security-kit' ),
+				$user->display_name ? $user->display_name : $user->user_login,
+				$reset_url
+			);
+
+			if ( ! wp_mail( $user->user_email, $subject, $message ) ) {
+				do_action( 'identity_security_kit_password_reset_mail_failed', $user->ID );
+			}
+		}
+	}
+
+	identity_security_kit_redirect( 'forgot_password', array( 'forgot' => 'sent' ) );
+}
+add_action( 'template_redirect', 'identity_security_kit_handle_forgot_password' );
 /**
  * Handle front-office registration submissions.
  */
