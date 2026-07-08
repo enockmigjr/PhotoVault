@@ -42,12 +42,17 @@ function photovault_scripts() {
 	// Script JS principal global.
 	wp_enqueue_script( 'photovault-main-js', PHOTOVAULT_URI . '/js/main.js', array(), PHOTOVAULT_VERSION, true );
 	
-	// Support d'AJAX pour le JS (localisé sur notre script principal toujours chargé).
-	wp_localize_script( 'photovault-main-js', 'photovault_ajax', array(
+	// Configuration REST disponible avant le script principal et les scripts inline.
+	$photovault_frontend_config = array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'rest_url' => esc_url_raw( rest_url( 'photovault/v1' ) ),
 		'nonce'    => wp_create_nonce( 'wp_rest' ),
-	) );
+	);
+	wp_add_inline_script(
+		'photovault-main-js',
+		'window.photovault_ajax = window.photovault_ajax || ' . wp_json_encode( $photovault_frontend_config ) . ';',
+		'before'
+	);
 }
 add_action( 'wp_enqueue_scripts', 'photovault_scripts' );
 

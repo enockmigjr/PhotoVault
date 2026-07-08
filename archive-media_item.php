@@ -134,10 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	const grid = document.getElementById('media-grid');
 	const resetButton = document.getElementById('reset-filters');
 
-	// Sécurisation de photovault_ajax en cas de non initialisation
-	const pvAjax = window.photovault_ajax || {
-		rest_url: '/wp-json/photovault/v1'
-	};
+	const pvAjax = window.photovault_ajax || <?php echo wp_json_encode( array(
+		'rest_url' => esc_url_raw( rest_url( 'photovault/v1' ) ),
+		'nonce'    => wp_create_nonce( 'wp_rest' ),
+	) ); ?>;
 
 	// Fonction de fetch et mise à jour de la grille
 	function updateMediaGrid() {
