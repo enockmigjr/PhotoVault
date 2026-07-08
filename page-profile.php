@@ -10,11 +10,13 @@ if ( ! is_user_logged_in() ) {
 	exit;
 }
 
-$current_user = wp_get_current_user();
-$avatar_id    = get_user_meta( $current_user->ID, 'photovault_avatar_id', true );
-$avatar_url   = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' ) : get_avatar_url( $current_user->ID, array( 'size' => 160 ) );
-$status       = isset( $_GET['profile'] ) ? sanitize_key( wp_unslash( $_GET['profile'] ) ) : '';
-$messages     = array(
+$current_user   = wp_get_current_user();
+$avatar_id      = get_user_meta( $current_user->ID, 'photovault_avatar_id', true );
+$avatar_url     = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' ) : get_avatar_url( $current_user->ID, array( 'size' => 160 ) );
+$status         = isset( $_GET['profile'] ) ? sanitize_key( wp_unslash( $_GET['profile'] ) ) : '';
+$verify         = isset( $_GET['verify'] ) ? sanitize_key( wp_unslash( $_GET['verify'] ) ) : '';
+$email_verified = function_exists( 'identity_security_kit_is_email_verified' ) ? identity_security_kit_is_email_verified( $current_user->ID ) : true;
+$messages       = array(
 	'success'                  => array( 'type' => 'success', 'text' => __( 'Profil mis a jour.', 'photovault' ) ),
 	'invalid_email'            => array( 'type' => 'error', 'text' => __( 'Adresse e-mail invalide.', 'photovault' ) ),
 	'email_exists'             => array( 'type' => 'error', 'text' => __( 'Cette adresse e-mail est deja utilisee.', 'photovault' ) ),
@@ -27,6 +29,13 @@ $messages     = array(
 	'image_too_large'          => array( 'type' => 'error', 'text' => __( 'Les dimensions de l\'image sont trop grandes.', 'photovault' ) ),
 	'avatar_upload_failed'     => array( 'type' => 'error', 'text' => __( 'L\'avatar n\'a pas pu etre enregistre.', 'photovault' ) ),
 	'failed'                   => array( 'type' => 'error', 'text' => __( 'La mise a jour du profil a echoue.', 'photovault' ) ),
+);
+$verify_messages = array(
+	'pending'  => array( 'type' => 'info', 'text' => __( 'Un lien de verification vient d\'etre envoye a votre adresse e-mail.', 'photovault' ) ),
+	'success'  => array( 'type' => 'success', 'text' => __( 'Adresse e-mail verifiee avec succes.', 'photovault' ) ),
+	'invalid'  => array( 'type' => 'error', 'text' => __( 'Lien de verification invalide.', 'photovault' ) ),
+	'expired'  => array( 'type' => 'error', 'text' => __( 'Lien de verification expire. Modifiez votre adresse ou contactez l\'administration pour recevoir un nouveau lien.', 'photovault' ) ),
+	'deferred' => array( 'type' => 'error', 'text' => __( 'Le profil est enregistre, mais le message de verification n\'a pas pu etre envoye.', 'photovault' ) ),
 );
 
 get_header();
@@ -44,6 +53,19 @@ get_header();
 				<?php esc_html_e( 'Retour au tableau de bord', 'photovault' ); ?>
 			</a>
 		</header>
+
+		<?php if ( ! $email_verified ) : ?>
+			<div class="rounded-xl border border-amber-300/40 bg-amber-400/10 px-5 py-4 text-sm text-amber-100">
+				<?php esc_html_e( 'Votre adresse e-mail est en attente de verification. Certaines protections avancees pourront exiger cette confirmation.', 'photovault' ); ?>
+			</div>
+		<?php endif; ?>
+
+		<?php if ( $verify && isset( $verify_messages[ $verify ] ) ) : ?>
+			<?php $notice = $verify_messages[ $verify ]; ?>
+			<div class="rounded-xl border px-5 py-4 text-sm <?php echo 'success' === $notice['type'] ? 'border-emerald-400/40 bg-emerald-500/10 text-emerald-100' : ( 'info' === $notice['type'] ? 'border-amber-300/40 bg-amber-400/10 text-amber-100' : 'border-red-400/40 bg-red-500/10 text-red-100' ); ?>">
+				<?php echo esc_html( $notice['text'] ); ?>
+			</div>
+		<?php endif; ?>
 
 		<?php if ( $status && isset( $messages[ $status ] ) ) : ?>
 			<?php $notice = $messages[ $status ]; ?>

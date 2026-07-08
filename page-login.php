@@ -14,6 +14,13 @@ if ( is_user_logged_in() ) {
 	exit;
 }
 
+$verify = isset( $_GET['verify'] ) ? sanitize_key( wp_unslash( $_GET['verify'] ) ) : '';
+$verify_messages = array(
+	'success' => array( 'type' => 'success', 'text' => __( 'Adresse e-mail verifiee. Vous pouvez vous connecter.', 'photovault' ) ),
+	'invalid' => array( 'type' => 'error', 'text' => __( 'Lien de verification invalide.', 'photovault' ) ),
+	'expired' => array( 'type' => 'error', 'text' => __( 'Lien de verification expire. Connectez-vous puis demandez un nouveau lien depuis votre profil.', 'photovault' ) ),
+);
+
 get_header();
 ?>
 
@@ -24,13 +31,20 @@ get_header();
 				Photo<span class="text-indigo-500">Vault</span>
 			</h2>
 			<p class="mt-2 text-center text-sm text-gray-300">
-				Connectez-vous à votre espace client
+				Connectez-vous a votre espace client
 			</p>
 		</div>
 
+		<?php if ( $verify && isset( $verify_messages[ $verify ] ) ) : ?>
+			<?php $notice = $verify_messages[ $verify ]; ?>
+			<div class="<?php echo 'success' === $notice['type'] ? 'bg-emerald-900/30 border-emerald-500 text-emerald-100' : 'bg-red-900/30 border-red-500 text-red-200'; ?> border px-4 py-3 rounded-lg text-sm text-center">
+				<?php echo esc_html( $notice['text'] ); ?>
+			</div>
+		<?php endif; ?>
+
 		<?php if ( isset( $_GET['login'] ) && 'failed' === $_GET['login'] ) : ?>
 			<div class="bg-red-900/30 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm text-center">
-				Identifiants incorrects. Veuillez réessayer.
+				Identifiants incorrects. Veuillez reessayer.
 			</div>
 		<?php endif; ?>
 
@@ -45,9 +59,9 @@ get_header();
 				<div>
 					<div class="flex justify-between items-center mb-1">
 						<label for="password" class="block text-sm font-medium text-gray-200">Mot de passe</label>
-						<a href="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">Oublié ?</a>
+						<a href="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">Oublie ?</a>
 					</div>
-					<input id="password" name="pwd" type="password" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="••••••••">
+					<input id="password" name="pwd" type="password" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Mot de passe">
 				</div>
 			</div>
 
@@ -67,7 +81,7 @@ get_header();
 
 		<div class="text-center mt-4">
 			<span class="text-sm text-gray-300">Nouveau sur la plateforme ?</span>
-			<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="text-sm font-medium text-indigo-400 hover:text-indigo-300 ml-1 transition-colors">Créer un compte</a>
+			<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="text-sm font-medium text-indigo-400 hover:text-indigo-300 ml-1 transition-colors">Creer un compte</a>
 		</div>
 	</div>
 </div>

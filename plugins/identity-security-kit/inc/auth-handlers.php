@@ -304,9 +304,18 @@ function identity_security_kit_handle_registration() {
 
 	identity_security_kit_log_event( 'registration_success', 'success', $user_id );
 
+	$verify_status = 'pending';
+	if ( function_exists( 'identity_security_kit_create_email_verification_challenge' ) ) {
+		$challenge = identity_security_kit_create_email_verification_challenge( $user_id, $email );
+		if ( is_wp_error( $challenge ) ) {
+			identity_security_kit_log_event( 'registration_email_verification_deferred', 'warning', $user_id, array( 'reason' => $challenge->get_error_code() ) );
+			$verify_status = 'deferred';
+		}
+	}
+
 	wp_set_current_user( $user_id );
 	wp_set_auth_cookie( $user_id );
-	identity_security_kit_redirect( 'after_login' );
+	identity_security_kit_redirect( 'profile', array( 'verify' => $verify_status ) );
 }
 add_action( 'template_redirect', 'identity_security_kit_handle_registration' );
 
@@ -330,6 +339,7 @@ function identity_security_kit_handle_profile_update() {
 	$current_user_id = get_current_user_id();
 	$current_user    = wp_get_current_user();
 	$email           = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+	$email_changed   = strtolower( $email ) !== strtolower( $current_user->user_email );
 	$bio             = isset( $_POST['bio'] ) ? sanitize_textarea_field( wp_unslash( $_POST['bio'] ) ) : '';
 
 	if ( empty( $email ) || ! is_email( $email ) ) {
@@ -400,8 +410,20 @@ function identity_security_kit_handle_profile_update() {
 		identity_security_kit_redirect( 'profile', array( 'profile' => 'failed' ) );
 	}
 
+	$redirect_args = array( 'profile' => 'success' );
+
+	if ( $email_changed && function_exists( 'identity_security_kit_create_email_verification_challenge' ) ) {
+		$challenge = identity_security_kit_create_email_verification_challenge( $current_user_id, $email );
+		if ( is_wp_error( $challenge ) ) {
+			identity_security_kit_log_event( 'profile_email_verification_deferred', 'warning', $current_user_id, array( 'reason' => $challenge->get_error_code() ) );
+			$redirect_args['verify'] = 'deferred';
+		} else {
+			$redirect_args['verify'] = 'pending';
+		}
+	}
+
 	identity_security_kit_log_event( 'profile_update_success', 'success', $current_user_id );
 
-	identity_security_kit_redirect( 'profile', array( 'profile' => 'success' ) );
+	identity_security_kit_redirect( 'profile', $redirect_args );
 }
 add_action( 'template_redirect', 'identity_security_kit_handle_profile_update' );

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Identity Security Kit
  * Description: Reusable identity, login, registration, and profile security handlers.
- * Version: 0.1.3
+ * Version: 0.1.4
  * Author: PhotoVault
  * Text Domain: identity-security-kit
  */
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'IDENTITY_SECURITY_KIT_VERSION', '0.1.3' );
+define( 'IDENTITY_SECURITY_KIT_VERSION', '0.1.4' );
 define( 'IDENTITY_SECURITY_KIT_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
@@ -34,9 +34,10 @@ function identity_security_kit_get_capabilities() {
  */
 function identity_security_kit_get_default_settings() {
 	return array(
-		'min_password_length'  => 8,
-		'max_avatar_size_mb'   => 6,
-		'max_avatar_dimension' => 6000,
+		'min_password_length'         => 8,
+		'max_avatar_size_mb'          => 6,
+		'max_avatar_dimension'        => 6000,
+		'email_verification_ttl_hours' => 24,
 	);
 }
 
@@ -50,9 +51,10 @@ function identity_security_kit_get_settings() {
 	$settings = is_array( $settings ) ? $settings : array();
 	$settings = wp_parse_args( $settings, identity_security_kit_get_default_settings() );
 
-	$settings['min_password_length']  = max( 8, min( 128, absint( $settings['min_password_length'] ) ) );
-	$settings['max_avatar_size_mb']   = max( 1, min( 12, absint( $settings['max_avatar_size_mb'] ) ) );
-	$settings['max_avatar_dimension'] = max( 512, min( 6000, absint( $settings['max_avatar_dimension'] ) ) );
+	$settings['min_password_length']         = max( 8, min( 128, absint( $settings['min_password_length'] ) ) );
+	$settings['max_avatar_size_mb']          = max( 1, min( 12, absint( $settings['max_avatar_size_mb'] ) ) );
+	$settings['max_avatar_dimension']        = max( 512, min( 6000, absint( $settings['max_avatar_dimension'] ) ) );
+	$settings['email_verification_ttl_hours'] = max( 1, min( 168, absint( $settings['email_verification_ttl_hours'] ) ) );
 
 	return $settings;
 }
@@ -66,6 +68,17 @@ function identity_security_kit_get_audit_table() {
 	global $wpdb;
 
 	return $wpdb->prefix . 'identity_security_audit';
+}
+
+/**
+ * Return the email verification challenge table name.
+ *
+ * @return string
+ */
+function identity_security_kit_get_email_verification_table() {
+	global $wpdb;
+
+	return $wpdb->prefix . 'identity_security_email_challenges';
 }
 
 /**
@@ -96,6 +109,25 @@ function identity_security_kit_install_schema() {
 	) {$charset_collate};";
 
 	dbDelta( $sql );
+
+	$verification_table = identity_security_kit_get_email_verification_table();
+	$verification_sql   = "CREATE TABLE {$verification_table} (
+		id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+		user_id bigint(20) unsigned NOT NULL,
+		email_hash char(64) NOT NULL,
+		token_hash char(64) NOT NULL,
+		status varchar(24) NOT NULL DEFAULT 'pending',
+		expires_at datetime NOT NULL,
+		created_at datetime NOT NULL,
+		verified_at datetime NULL,
+		PRIMARY KEY  (id),
+		KEY user_id (user_id),
+		KEY token_hash (token_hash),
+		KEY status (status),
+		KEY expires_at (expires_at)
+	) {$charset_collate};";
+
+	dbDelta( $verification_sql );
 }
 
 /**
@@ -132,5 +164,6 @@ function identity_security_kit_maybe_upgrade() {
 add_action( 'admin_init', 'identity_security_kit_maybe_upgrade' );
 
 require_once IDENTITY_SECURITY_KIT_DIR . 'inc/audit.php';
+require_once IDENTITY_SECURITY_KIT_DIR . 'inc/email-verification.php';
 require_once IDENTITY_SECURITY_KIT_DIR . 'inc/auth-handlers.php';
 require_once IDENTITY_SECURITY_KIT_DIR . 'inc/admin.php';
