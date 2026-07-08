@@ -16,9 +16,10 @@ if ( have_posts() ) :
 		$is_admin = current_user_can( 'manage_options' );
 		$is_owner = is_user_logged_in() && (get_current_user_id() === $author_id);
 		$has_verified_identity = function_exists( 'photovault_user_has_verified_identity' ) ? photovault_user_has_verified_identity( get_current_user_id() ) : true;
+		$can_access_media = function_exists( 'photovault_user_can_access_media' ) ? photovault_user_can_access_media( $media_id, get_current_user_id() ) : ( ! $is_private || $is_admin || $is_owner );
 
 		// 1. Restriction d'accès stricte pour les posts privés.
-		if ( $is_private && ! $is_admin && ! $is_owner ) {
+		if ( $is_private && ! $can_access_media && $has_verified_identity ) {
 			?>
 			<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#0d0c0b]">
 				<div class="p-4 rounded-full bg-red-950/20 border border-red-500/20 text-red-500 mb-6 animate-pulse">
@@ -33,7 +34,7 @@ if ( have_posts() ) :
 			exit;
 		}
 
-		if ( $is_private && ! $is_admin && ! $has_verified_identity ) {
+		if ( $is_private && ! $can_access_media && ! $has_verified_identity ) {
 			?>
 			<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#0d0c0b]">
 				<div class="p-4 rounded-full bg-amber-950/20 border border-amber-400/20 text-amber-300 mb-6">
