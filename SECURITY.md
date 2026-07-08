@@ -13,6 +13,7 @@ PhotoVault is being migrated from a theme-heavy implementation to a modular Word
 - Sensitive identity events are logged in `wp_identity_security_audit` without passwords, reset keys, raw IP addresses or secrets.
 
 ### Media Access
+- Sensitive media events are logged in `wp_photovault_media_audit`: views, previews, protected previews, downloads, denied access and access grants.
 - `photovault-core` owns media REST routes, upload validation, capabilities and protected image serving.
 - Gallery list endpoints require authentication.
 - Admins and users with PhotoVault capabilities can see all managed media.
