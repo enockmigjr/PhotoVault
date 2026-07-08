@@ -20,6 +20,7 @@ PhotoVault is being migrated from a theme-heavy implementation to a modular Word
 - Private media are denied to non-admin/non-owner users in REST and image proxy code.
 - Protected media downloads require a logged-in user and REST nonce, and are denied to unauthorized viewers.
 - List/card views use thumbnail/preview variants instead of original HD files.
+- For protected or private media controlled by PhotoVault, original files are moved to `wp-content/photovault-private/originals` and served only through the checked download endpoint.
 
 ### Newsletter
 - Newsletter subscriptions use a real POST handler, nonce validation and explicit consent.
@@ -28,7 +29,7 @@ PhotoVault is being migrated from a theme-heavy implementation to a modular Word
 - Admin subscriber management requires dedicated newsletter capabilities.
 
 ## Known Gaps
-- Direct file access for originals must still be hardened at storage/server level. WordPress-level checks cannot protect an original file if its public URL is known.
+- Existing originals uploaded before the private-storage migration must be processed from the PhotoVault admin workspace. Nginx deployments must still deny direct access to `wp-content/photovault-private/` explicitly.
 - Identity Kit does not yet implement email verification, OTP, TOTP/MFA, recovery codes or grace-period enforcement.
 - Newsletter Kit does not yet implement sending queue, campaign state machine, provider abstraction or per-campaign reporting.
 - Automated security tests are still missing.

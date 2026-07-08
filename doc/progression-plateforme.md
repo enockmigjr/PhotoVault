@@ -108,11 +108,11 @@ PhotoVault
 
 ### Critique
 
-- Les originaux restent potentiellement accessibles si une URL directe `wp-content/uploads/...` est connue. Le proxy WordPress protege les parcours controles, mais pas encore le stockage public lui-meme.
 - La verification runtime complete depend de XAMPP/MySQL actif. Sans base accessible, les migrations `dbDelta`, pages admin et flux bout-en-bout ne peuvent pas etre confirmes.
 
 ### Eleve
 
+- Les originaux sensibles disposent maintenant d'une premiere migration vers stockage prive, mais les existants doivent etre traites en admin et la regle serveur Nginx/Apache doit etre verifiee en production.
 - Les tests automatises d'autorisation REST/AJAX/media ne sont pas encore en place.
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Les politiques MFA/OTP/recovery codes ne sont pas encore implementees dans Identity Kit.
@@ -134,8 +134,8 @@ PhotoVault
 
 ### P0 - Securite media reelle
 
-1. Definir la strategie de stockage des originaux: dossier prive hors webroot, regles serveur, ou migration progressive.
-2. Ajouter une politique claire: public HD, logged-in, owner/admin, collection authorized.
+1. Traiter les originaux existants depuis l'admin PhotoVault par lots de 25.
+2. Verifier que le serveur web refuse directement `wp-content/photovault-private/` en Apache et Nginx.
 3. Ajouter tests d'ID guessing sur REST, preview et download.
 
 ### P1 - Verification runtime
@@ -182,11 +182,11 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 78%.
+Estimation actuelle: 81%.
 
 Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit, enrichissement public et depots plugins separes.
 
 Elle ne signifie pas encore "production ready". Les deux gros blocs qui empechent ce label sont:
 
-- protection serveur/stockage des originaux;
+- verification serveur du stockage prive sur l'environnement cible;
 - tests runtime automatises et verification complete avec WordPress actif.
