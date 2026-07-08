@@ -83,6 +83,8 @@ function identity_security_kit_render_admin_page() {
 	$avatar_count   = identity_security_kit_count_profile_avatars();
 	$capabilities   = identity_security_kit_get_capabilities();
 	$settings_saved = isset( $_GET['settings-updated'] ) && 'true' === sanitize_text_field( wp_unslash( $_GET['settings-updated'] ) );
+	$audit_count    = function_exists( 'identity_security_kit_count_audit_events' ) ? identity_security_kit_count_audit_events() : 0;
+	$audit_events   = function_exists( 'identity_security_kit_get_recent_audit_events' ) ? identity_security_kit_get_recent_audit_events( 12 ) : array();
 	?>
 	<div class="wrap identity-security-kit-admin">
 		<h1><?php esc_html_e( 'Identity Security Kit', 'identity-security-kit' ); ?></h1>
@@ -97,6 +99,7 @@ function identity_security_kit_render_admin_page() {
 			<?php identity_security_kit_render_metric( __( 'Avatars', 'identity-security-kit' ), number_format_i18n( $avatar_count ), __( 'Profiles with custom avatar', 'identity-security-kit' ) ); ?>
 			<?php identity_security_kit_render_metric( __( 'Password min', 'identity-security-kit' ), (string) $settings['min_password_length'], __( 'Characters required', 'identity-security-kit' ) ); ?>
 			<?php identity_security_kit_render_metric( __( 'Capabilities', 'identity-security-kit' ), (string) count( $capabilities ), __( 'Granted to administrators', 'identity-security-kit' ) ); ?>
+			<?php identity_security_kit_render_metric( __( 'Audit events', 'identity-security-kit' ), number_format_i18n( $audit_count ), __( 'Sensitive actions logged', 'identity-security-kit' ) ); ?>
 		</div>
 
 		<div class="isk-layout">
@@ -149,10 +152,45 @@ function identity_security_kit_render_admin_page() {
 					<li><?php esc_html_e( 'Security audit events', 'identity-security-kit' ); ?></li>
 				</ul>
 			</section>
+			<?php if ( current_user_can( 'identity_view_security_audit' ) ) : ?>
+				<section class="isk-panel isk-audit-panel">
+					<h2><?php esc_html_e( 'Recent security audit', 'identity-security-kit' ); ?></h2>
+					<table class="widefat fixed striped">
+						<thead>
+							<tr>
+								<th><?php esc_html_e( 'Event', 'identity-security-kit' ); ?></th>
+								<th><?php esc_html_e( 'Status', 'identity-security-kit' ); ?></th>
+								<th><?php esc_html_e( 'User', 'identity-security-kit' ); ?></th>
+								<th><?php esc_html_e( 'Context', 'identity-security-kit' ); ?></th>
+								<th><?php esc_html_e( 'Date', 'identity-security-kit' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php if ( empty( $audit_events ) ) : ?>
+								<tr><td colspan="5"><?php esc_html_e( 'No audit event recorded yet.', 'identity-security-kit' ); ?></td></tr>
+							<?php else : ?>
+								<?php foreach ( $audit_events as $event ) : ?>
+									<?php
+									$context = ! empty( $event['context'] ) ? json_decode( $event['context'], true ) : array();
+									$context = is_array( $context ) ? $context : array();
+									?>
+									<tr>
+										<td><code><?php echo esc_html( $event['event'] ); ?></code></td>
+										<td><?php echo esc_html( $event['status'] ); ?></td>
+										<td><?php echo ! empty( $event['user_id'] ) ? esc_html( '#' . absint( $event['user_id'] ) ) : esc_html__( 'Unknown', 'identity-security-kit' ); ?></td>
+										<td><?php echo esc_html( $context ? wp_json_encode( $context ) : '-' ); ?></td>
+										<td><?php echo esc_html( get_date_from_gmt( $event['created_at'], 'Y-m-d H:i' ) ); ?></td>
+									</tr>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</tbody>
+					</table>
+				</section>
+			<?php endif; ?>
 		</div>
 	</div>
 	<style>
-		.identity-security-kit-admin .isk-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.identity-security-kit-admin .isk-card,.identity-security-kit-admin .isk-panel{background:#fff;border:1px solid #dcdcde;border-radius:8px;padding:16px}.identity-security-kit-admin .isk-card span{display:block;color:#646970;font-size:12px;text-transform:uppercase;letter-spacing:.08em}.identity-security-kit-admin .isk-card strong{display:block;margin-top:8px;font-size:28px}.identity-security-kit-admin .isk-card em{display:block;margin-top:4px;color:#646970;font-style:normal}.identity-security-kit-admin .isk-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:16px}.identity-security-kit-admin .isk-list{margin-left:0}.identity-security-kit-admin .isk-list li{border-bottom:1px solid #f0f0f1;margin:0;padding:8px 0}@media(max-width:960px){.identity-security-kit-admin .isk-grid,.identity-security-kit-admin .isk-layout{grid-template-columns:1fr}}
+		.identity-security-kit-admin .isk-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:18px 0}.identity-security-kit-admin .isk-card,.identity-security-kit-admin .isk-panel{background:#fff;border:1px solid #dcdcde;border-radius:8px;padding:16px}.identity-security-kit-admin .isk-card span{display:block;color:#646970;font-size:12px;text-transform:uppercase;letter-spacing:.08em}.identity-security-kit-admin .isk-card strong{display:block;margin-top:8px;font-size:28px}.identity-security-kit-admin .isk-card em{display:block;margin-top:4px;color:#646970;font-style:normal}.identity-security-kit-admin .isk-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:16px}.identity-security-kit-admin .isk-audit-panel{grid-column:1/-1}.identity-security-kit-admin .isk-list{margin-left:0}.identity-security-kit-admin .isk-list li{border-bottom:1px solid #f0f0f1;margin:0;padding:8px 0}@media(max-width:960px){.identity-security-kit-admin .isk-grid,.identity-security-kit-admin .isk-layout{grid-template-columns:1fr}}
 	</style>
 	<?php
 }

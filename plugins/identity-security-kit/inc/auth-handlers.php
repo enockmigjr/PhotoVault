@@ -169,6 +169,7 @@ function identity_security_kit_handle_login() {
 	}
 
 	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['photovault_login_nonce'] ) ), 'photovault_login_action' ) ) {
+		identity_security_kit_log_event( 'login_nonce_failed', 'failure' );
 		wp_die( esc_html__( 'Security verification failed.', 'identity-security-kit' ) );
 	}
 
@@ -181,8 +182,11 @@ function identity_security_kit_handle_login() {
 	$user = wp_signon( $creds, is_ssl() );
 
 	if ( is_wp_error( $user ) ) {
+		identity_security_kit_log_event( 'login_failed', 'failure', 0, array( 'reason' => $user->get_error_code() ) );
 		identity_security_kit_redirect( 'login', array( 'login' => 'failed' ) );
 	}
+
+	identity_security_kit_log_event( 'login_success', 'success', $user->ID );
 
 	if ( current_user_can( 'photovault_manage_media' ) || current_user_can( 'manage_options' ) ) {
 		identity_security_kit_redirect( 'dashboard' );
@@ -201,16 +205,19 @@ function identity_security_kit_handle_forgot_password() {
 	}
 
 	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['photovault_forgot_nonce'] ) ), 'photovault_forgot_action' ) ) {
+		identity_security_kit_log_event( 'password_reset_nonce_failed', 'failure' );
 		identity_security_kit_redirect( 'forgot_password', array( 'forgot' => 'security_failed' ) );
 	}
 
 	$user_input = isset( $_POST['user_login'] ) ? sanitize_text_field( wp_unslash( $_POST['user_login'] ) ) : '';
 	if ( '' === $user_input ) {
+		identity_security_kit_log_event( 'password_reset_empty_identifier', 'warning' );
 		identity_security_kit_redirect( 'forgot_password', array( 'forgot' => 'fields_required' ) );
 	}
 
 	$user = is_email( $user_input ) ? get_user_by( 'email', $user_input ) : get_user_by( 'login', sanitize_user( $user_input ) );
 	if ( $user ) {
+		identity_security_kit_log_event( 'password_reset_requested', 'info', $user->ID );
 		$key = get_password_reset_key( $user );
 		if ( is_wp_error( $key ) ) {
 			do_action( 'identity_security_kit_password_reset_failed', $key, $user->ID );
@@ -231,6 +238,8 @@ function identity_security_kit_handle_forgot_password() {
 				do_action( 'identity_security_kit_password_reset_mail_failed', $user->ID );
 			}
 		}
+	} else {
+		identity_security_kit_log_event( 'password_reset_unknown_identifier', 'info' );
 	}
 
 	identity_security_kit_redirect( 'forgot_password', array( 'forgot' => 'sent' ) );
@@ -245,6 +254,7 @@ function identity_security_kit_handle_registration() {
 	}
 
 	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['photovault_register_nonce'] ) ), 'photovault_register_action' ) ) {
+		identity_security_kit_log_event( 'registration_nonce_failed', 'failure' );
 		wp_die( esc_html__( 'Security verification failed.', 'identity-security-kit' ) );
 	}
 
@@ -272,6 +282,7 @@ function identity_security_kit_handle_registration() {
 	}
 
 	if ( ! empty( $error_code ) ) {
+		identity_security_kit_log_event( 'registration_rejected', 'warning', 0, array( 'reason' => $error_code ) );
 		identity_security_kit_redirect( 'register', array( 'register' => 'failed', 'err' => $error_code ) );
 	}
 
@@ -287,8 +298,11 @@ function identity_security_kit_handle_registration() {
 	);
 
 	if ( is_wp_error( $user_id ) ) {
+		identity_security_kit_log_event( 'registration_failed', 'failure', 0, array( 'reason' => $user_id->get_error_code() ) );
 		identity_security_kit_redirect( 'register', array( 'register' => 'failed', 'err' => 'failed' ) );
 	}
+
+	identity_security_kit_log_event( 'registration_success', 'success', $user_id );
 
 	wp_set_current_user( $user_id );
 	wp_set_auth_cookie( $user_id );
@@ -305,6 +319,7 @@ function identity_security_kit_handle_profile_update() {
 	}
 
 	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['photovault_profile_nonce'] ) ), 'photovault_profile_action' ) ) {
+		identity_security_kit_log_event( 'profile_nonce_failed', 'failure', get_current_user_id() );
 		wp_die( esc_html__( 'Security verification failed.', 'identity-security-kit' ) );
 	}
 
@@ -318,11 +333,13 @@ function identity_security_kit_handle_profile_update() {
 	$bio             = isset( $_POST['bio'] ) ? sanitize_textarea_field( wp_unslash( $_POST['bio'] ) ) : '';
 
 	if ( empty( $email ) || ! is_email( $email ) ) {
+		identity_security_kit_log_event( 'profile_update_rejected', 'warning', $current_user_id, array( 'reason' => 'invalid_email' ) );
 		identity_security_kit_redirect( 'profile', array( 'profile' => 'invalid_email' ) );
 	}
 
 	$email_owner = email_exists( $email );
 	if ( $email_owner && (int) $email_owner !== (int) $current_user_id ) {
+		identity_security_kit_log_event( 'profile_update_rejected', 'warning', $current_user_id, array( 'reason' => 'email_exists' ) );
 		identity_security_kit_redirect( 'profile', array( 'profile' => 'email_exists' ) );
 	}
 
@@ -379,8 +396,11 @@ function identity_security_kit_handle_profile_update() {
 
 	$result = wp_update_user( $user_data );
 	if ( is_wp_error( $result ) ) {
+		identity_security_kit_log_event( 'profile_update_failed', 'failure', $current_user_id, array( 'reason' => $result->get_error_code() ) );
 		identity_security_kit_redirect( 'profile', array( 'profile' => 'failed' ) );
 	}
+
+	identity_security_kit_log_event( 'profile_update_success', 'success', $current_user_id );
 
 	identity_security_kit_redirect( 'profile', array( 'profile' => 'success' ) );
 }
