@@ -23,12 +23,13 @@ PhotoVault is being migrated from a theme-heavy implementation to a modular Word
 ### Newsletter
 - Newsletter subscriptions use a real POST handler, nonce validation and explicit consent.
 - Subscriber metadata stores hashed IP data instead of raw IP addresses.
+- Public unsubscribe uses a server-side token and does not expose the email address in the URL.
 - Admin subscriber management requires dedicated newsletter capabilities.
 
 ## Known Gaps
 - Direct file access for originals must still be hardened at storage/server level. WordPress-level checks cannot protect an original file if its public URL is known.
 - Identity Kit does not yet implement email verification, OTP, TOTP/MFA, recovery codes or grace-period enforcement.
-- Newsletter Kit does not yet implement unsubscribe links, sending queue, campaign state machine or provider abstraction.
+- Newsletter Kit does not yet implement sending queue, campaign state machine, provider abstraction or per-campaign reporting.
 - Automated security tests are still missing.
 - Runtime activation could not be fully rechecked while MySQL/XAMPP was refusing connections.
 

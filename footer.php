@@ -84,8 +84,10 @@ $is_dashboard_template = is_page_template( 'page-dashboard.php' );
 					<?php $newsletter_status = isset( $_GET['newsletter'] ) ? sanitize_key( wp_unslash( $_GET['newsletter'] ) ) : ''; ?>
 					<?php if ( 'subscribed' === $newsletter_status ) : ?>
 						<p class="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-100">Inscription enregistree.</p>
-					<?php elseif ( in_array( $newsletter_status, array( 'invalid_email', 'consent_required', 'security_failed', 'db_error' ), true ) ) : ?>
-						<p class="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-100">Inscription impossible. Verifiez votre e-mail et votre consentement.</p>
+					<?php elseif ( 'unsubscribed' === $newsletter_status ) : ?>
+						<p class="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-100">Desinscription enregistree.</p>
+					<?php elseif ( in_array( $newsletter_status, array( 'invalid_email', 'consent_required', 'security_failed', 'db_error', 'unsubscribe_invalid', 'unsubscribe_failed' ), true ) ) : ?>
+						<p class="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-100">Operation newsletter impossible. Verifiez votre e-mail, votre consentement ou le lien utilise.</p>
 					<?php endif; ?>
 					<?php if ( function_exists( 'newsletter_campaign_kit_handle_subscribe' ) ) : ?>
 						<form class="space-y-3" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST">

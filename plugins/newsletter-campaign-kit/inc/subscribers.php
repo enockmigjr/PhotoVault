@@ -36,6 +36,33 @@ function newsletter_campaign_kit_get_request_ip_hash() {
 	return hash_hmac( 'sha256', $ip, wp_salt( 'nonce' ) );
 }
 
+
+/**
+ * Create a stable non-secret unsubscribe token for an email hash.
+ *
+ * @param string $email_hash Email HMAC hash.
+ * @return string
+ */
+function newsletter_campaign_kit_create_unsubscribe_token( $email_hash ) {
+	return hash_hmac( 'sha256', sanitize_text_field( $email_hash ), wp_salt( 'secure_auth' ) );
+}
+
+/**
+ * Build a public unsubscribe URL from a token.
+ *
+ * @param string $token Unsubscribe token.
+ * @return string
+ */
+function newsletter_campaign_kit_get_unsubscribe_url( $token ) {
+	return add_query_arg(
+		array(
+			'action' => 'newsletter_campaign_kit_unsubscribe',
+			'token'  => sanitize_text_field( $token ),
+		),
+		admin_url( 'admin-post.php' )
+	);
+}
+
 /**
  * Subscribe or reactivate an email address.
  *
@@ -54,7 +81,8 @@ function newsletter_campaign_kit_subscribe_email( $email, $source, $consent_text
 
 	$table_name = newsletter_campaign_kit_get_subscribers_table();
 	$email_hash = hash_hmac( 'sha256', strtolower( $email ), wp_salt( 'auth' ) );
-	$now        = current_time( 'mysql', true );
+	$now               = current_time( 'mysql', true );
+	$unsubscribe_token = newsletter_campaign_kit_create_unsubscribe_token( $email_hash );
 	$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? substr( sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ), 0, 255 ) : '';
 
 	$existing_id = $wpdb->get_var(
@@ -65,13 +93,14 @@ function newsletter_campaign_kit_subscribe_email( $email, $source, $consent_text
 	);
 
 	$data = array(
-		'email'        => $email,
-		'status'       => 'subscribed',
-		'source'       => sanitize_key( $source ),
-		'consent_text' => sanitize_textarea_field( $consent_text ),
-		'ip_hash'      => newsletter_campaign_kit_get_request_ip_hash(),
-		'user_agent'   => $user_agent,
-		'updated_at'   => $now,
+		'email'             => $email,
+		'unsubscribe_token' => $unsubscribe_token,
+		'status'            => 'subscribed',
+		'source'            => sanitize_key( $source ),
+		'consent_text'      => sanitize_textarea_field( $consent_text ),
+		'ip_hash'           => newsletter_campaign_kit_get_request_ip_hash(),
+		'user_agent'        => $user_agent,
+		'updated_at'        => $now,
 	);
 
 	if ( $existing_id ) {
@@ -79,7 +108,7 @@ function newsletter_campaign_kit_subscribe_email( $email, $source, $consent_text
 			$table_name,
 			$data,
 			array( 'id' => (int) $existing_id ),
-			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
+			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
 			array( '%d' )
 		);
 
@@ -92,7 +121,7 @@ function newsletter_campaign_kit_subscribe_email( $email, $source, $consent_text
 	$inserted = $wpdb->insert(
 		$table_name,
 		$data,
-		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 	);
 
 	return false === $inserted ? new WP_Error( 'db_error', __( 'Subscription could not be saved.', 'newsletter-campaign-kit' ) ) : true;
@@ -127,3 +156,34 @@ function newsletter_campaign_kit_handle_subscribe() {
 }
 add_action( 'admin_post_nopriv_newsletter_campaign_kit_subscribe', 'newsletter_campaign_kit_handle_subscribe' );
 add_action( 'admin_post_newsletter_campaign_kit_subscribe', 'newsletter_campaign_kit_handle_subscribe' );
+
+/**
+ * Handle public unsubscribe requests.
+ */
+function newsletter_campaign_kit_handle_unsubscribe() {
+	global $wpdb;
+
+	$token = isset( $_GET['token'] ) ? sanitize_text_field( wp_unslash( $_GET['token'] ) ) : '';
+	if ( ! preg_match( '/^[a-f0-9]{64}$/', $token ) ) {
+		wp_safe_redirect( add_query_arg( 'newsletter', 'unsubscribe_invalid', home_url( '/' ) ) );
+		exit;
+	}
+
+	$table_name = newsletter_campaign_kit_get_subscribers_table();
+	$updated    = $wpdb->update(
+		$table_name,
+		array(
+			'status'     => 'unsubscribed',
+			'updated_at' => current_time( 'mysql', true ),
+		),
+		array( 'unsubscribe_token' => $token ),
+		array( '%s', '%s' ),
+		array( '%s' )
+	);
+
+	$status = false === $updated ? 'unsubscribe_failed' : 'unsubscribed';
+	wp_safe_redirect( add_query_arg( 'newsletter', $status, home_url( '/' ) ) );
+	exit;
+}
+add_action( 'admin_post_nopriv_newsletter_campaign_kit_unsubscribe', 'newsletter_campaign_kit_handle_unsubscribe' );
+add_action( 'admin_post_newsletter_campaign_kit_unsubscribe', 'newsletter_campaign_kit_handle_unsubscribe' );

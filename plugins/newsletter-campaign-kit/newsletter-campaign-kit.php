@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Newsletter Campaign Kit
  * Description: Reusable newsletter subscription and campaign foundation for WordPress projects.
- * Version: 0.1.1
+ * Version: 0.1.2
  * Author: PhotoVault
  * Text Domain: newsletter-campaign-kit
  */
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'NEWSLETTER_CAMPAIGN_KIT_VERSION', '0.1.1' );
+define( 'NEWSLETTER_CAMPAIGN_KIT_VERSION', '0.1.2' );
 define( 'NEWSLETTER_CAMPAIGN_KIT_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
@@ -56,6 +56,7 @@ function newsletter_campaign_kit_activate() {
 		id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 		email_hash char(64) NOT NULL,
 		email varchar(190) NOT NULL,
+		unsubscribe_token char(64) NOT NULL,
 		status varchar(24) NOT NULL DEFAULT 'subscribed',
 		source varchar(100) NOT NULL DEFAULT 'front_footer',
 		consent_text text NULL,
@@ -65,6 +66,7 @@ function newsletter_campaign_kit_activate() {
 		updated_at datetime NOT NULL,
 		PRIMARY KEY  (id),
 		UNIQUE KEY email_hash (email_hash),
+		KEY unsubscribe_token (unsubscribe_token),
 		KEY status (status),
 		KEY updated_at (updated_at)
 	) {$charset_collate};";
