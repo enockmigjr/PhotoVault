@@ -66,6 +66,60 @@ function identity_security_kit_get_email_verification_url( $user_id, $token ) {
 }
 
 /**
+ * Return the number of minutes a user must wait before requesting another link.
+ *
+ * @return int
+ */
+function identity_security_kit_get_email_verification_resend_minutes() {
+	$settings = identity_security_kit_get_settings();
+
+	return max( 1, min( 1440, absint( $settings['email_verification_resend_minutes'] ) ) );
+}
+
+/**
+ * Check whether a user may request a new verification challenge now.
+ *
+ * @param int    $user_id User ID.
+ * @param string $email   Email address.
+ * @return true|WP_Error
+ */
+function identity_security_kit_can_request_email_verification( $user_id, $email ) {
+	global $wpdb;
+
+	$user_id = absint( $user_id );
+	$email   = sanitize_email( $email );
+
+	if ( ! $user_id || ! is_email( $email ) ) {
+		return new WP_Error( 'invalid_email_challenge', __( 'Invalid email verification request.', 'identity-security-kit' ) );
+	}
+
+	if ( identity_security_kit_is_email_verified( $user_id ) ) {
+		return new WP_Error( 'already_verified', __( 'This email address is already verified.', 'identity-security-kit' ) );
+	}
+
+	$table       = identity_security_kit_get_email_verification_table();
+	$email_hash  = identity_security_kit_hash_email_challenge_value( $email );
+	$latest_date = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT created_at FROM {$table} WHERE user_id = %d AND email_hash = %s AND status = %s ORDER BY created_at DESC LIMIT 1",
+			$user_id,
+			$email_hash,
+			'pending'
+		)
+	);
+
+	if ( $latest_date ) {
+		$cooldown_seconds = identity_security_kit_get_email_verification_resend_minutes() * MINUTE_IN_SECONDS;
+		$latest_ts        = strtotime( $latest_date . ' UTC' );
+		if ( $latest_ts && ( time() - $latest_ts ) < $cooldown_seconds ) {
+			return new WP_Error( 'rate_limited', __( 'Please wait before requesting another verification email.', 'identity-security-kit' ) );
+		}
+	}
+
+	return true;
+}
+
+/**
  * Create and send a verification challenge for a user's email address.
  *
  * @param int    $user_id User ID.
@@ -82,22 +136,24 @@ function identity_security_kit_create_email_verification_challenge( $user_id, $e
 		return new WP_Error( 'invalid_email_challenge', __( 'Invalid email verification request.', 'identity-security-kit' ) );
 	}
 
-	$settings  = identity_security_kit_get_settings();
-	$ttl_hours = max( 1, min( 168, absint( $settings['email_verification_ttl_hours'] ) ) );
-	$token     = wp_generate_password( 43, false, false );
-	$now       = gmdate( 'Y-m-d H:i:s' );
-	$expires   = gmdate( 'Y-m-d H:i:s', time() + ( HOUR_IN_SECONDS * $ttl_hours ) );
-	$table     = identity_security_kit_get_email_verification_table();
+	$settings   = identity_security_kit_get_settings();
+	$ttl_hours  = max( 1, min( 168, absint( $settings['email_verification_ttl_hours'] ) ) );
+	$token      = wp_generate_password( 43, false, false );
+	$now        = gmdate( 'Y-m-d H:i:s' );
+	$expires    = gmdate( 'Y-m-d H:i:s', time() + ( HOUR_IN_SECONDS * $ttl_hours ) );
+	$table      = identity_security_kit_get_email_verification_table();
+	$email_hash = identity_security_kit_hash_email_challenge_value( $email );
+
 
 	$inserted = $wpdb->insert(
 		$table,
 		array(
-			'user_id'     => $user_id,
-			'email_hash'  => identity_security_kit_hash_email_challenge_value( $email ),
-			'token_hash'  => identity_security_kit_hash_email_challenge_value( $token ),
-			'status'      => 'pending',
-			'expires_at'  => $expires,
-			'created_at'  => $now,
+			'user_id'    => $user_id,
+			'email_hash' => $email_hash,
+			'token_hash' => identity_security_kit_hash_email_challenge_value( $token ),
+			'status'     => 'pending',
+			'expires_at' => $expires,
+			'created_at' => $now,
 		),
 		array( '%d', '%s', '%s', '%s', '%s', '%s' )
 	);
@@ -125,6 +181,18 @@ function identity_security_kit_create_email_verification_challenge( $user_id, $e
 		identity_security_kit_log_event( 'email_verification_mail_failed', 'warning', $user_id );
 		return new WP_Error( 'email_verification_mail_failed', __( 'Email verification message could not be sent.', 'identity-security-kit' ) );
 	}
+
+	$challenge_id = absint( $wpdb->insert_id );
+	$wpdb->query(
+		$wpdb->prepare(
+			"UPDATE {$table} SET status = %s WHERE user_id = %d AND email_hash = %s AND status = %s AND id <> %d",
+			'superseded',
+			$user_id,
+			$email_hash,
+			'pending',
+			$challenge_id
+		)
+	);
 
 	identity_security_kit_log_event( 'email_verification_challenge_created', 'info', $user_id, array( 'expires_hours' => $ttl_hours ) );
 
@@ -194,3 +262,38 @@ function identity_security_kit_handle_email_verification() {
 }
 add_action( 'admin_post_nopriv_identity_security_kit_verify_email', 'identity_security_kit_handle_email_verification' );
 add_action( 'admin_post_identity_security_kit_verify_email', 'identity_security_kit_handle_email_verification' );
+
+/**
+ * Handle authenticated requests to resend the verification email.
+ */
+function identity_security_kit_handle_resend_email_verification() {
+	if ( ! is_user_logged_in() ) {
+		identity_security_kit_redirect( 'login' );
+	}
+
+	check_admin_referer( 'identity_security_kit_resend_email_verification' );
+
+	$user_id = get_current_user_id();
+	$user    = wp_get_current_user();
+
+	if ( ! $user || ! is_email( $user->user_email ) ) {
+		identity_security_kit_log_event( 'email_verification_resend_rejected', 'warning', $user_id, array( 'reason' => 'invalid_email' ) );
+		identity_security_kit_redirect( 'profile', array( 'verify' => 'invalid' ) );
+	}
+
+	$allowed = identity_security_kit_can_request_email_verification( $user_id, $user->user_email );
+	if ( is_wp_error( $allowed ) ) {
+		identity_security_kit_log_event( 'email_verification_resend_rejected', 'warning', $user_id, array( 'reason' => $allowed->get_error_code() ) );
+		identity_security_kit_redirect( 'profile', array( 'verify' => sanitize_key( $allowed->get_error_code() ) ) );
+	}
+
+	$result = identity_security_kit_create_email_verification_challenge( $user_id, $user->user_email );
+	if ( is_wp_error( $result ) ) {
+		identity_security_kit_log_event( 'email_verification_resend_failed', 'warning', $user_id, array( 'reason' => $result->get_error_code() ) );
+		identity_security_kit_redirect( 'profile', array( 'verify' => 'deferred' ) );
+	}
+
+	identity_security_kit_log_event( 'email_verification_resend_success', 'info', $user_id );
+	identity_security_kit_redirect( 'profile', array( 'verify' => 'resent' ) );
+}
+add_action( 'admin_post_identity_security_kit_resend_email_verification', 'identity_security_kit_handle_resend_email_verification' );

@@ -35,7 +35,10 @@ $verify_messages = array(
 	'success'  => array( 'type' => 'success', 'text' => __( 'Adresse e-mail verifiee avec succes.', 'photovault' ) ),
 	'invalid'  => array( 'type' => 'error', 'text' => __( 'Lien de verification invalide.', 'photovault' ) ),
 	'expired'  => array( 'type' => 'error', 'text' => __( 'Lien de verification expire. Modifiez votre adresse ou contactez l\'administration pour recevoir un nouveau lien.', 'photovault' ) ),
-	'deferred' => array( 'type' => 'error', 'text' => __( 'Le profil est enregistre, mais le message de verification n\'a pas pu etre envoye.', 'photovault' ) ),
+	'deferred'         => array( 'type' => 'error', 'text' => __( 'Le profil est enregistre, mais le message de verification n\'a pas pu etre envoye.', 'photovault' ) ),
+	'resent'           => array( 'type' => 'success', 'text' => __( 'Un nouveau lien de verification vient d\'etre envoye.', 'photovault' ) ),
+	'rate_limited'     => array( 'type' => 'info', 'text' => __( 'Veuillez patienter avant de demander un nouveau lien de verification.', 'photovault' ) ),
+	'already_verified' => array( 'type' => 'success', 'text' => __( 'Votre adresse e-mail est deja verifiee.', 'photovault' ) ),
 );
 
 get_header();
@@ -55,8 +58,17 @@ get_header();
 		</header>
 
 		<?php if ( ! $email_verified ) : ?>
-			<div class="rounded-xl border border-amber-300/40 bg-amber-400/10 px-5 py-4 text-sm text-amber-100">
-				<?php esc_html_e( 'Votre adresse e-mail est en attente de verification. Certaines protections avancees pourront exiger cette confirmation.', 'photovault' ); ?>
+			<div class="flex flex-col gap-4 rounded-xl border border-amber-300/40 bg-amber-400/10 px-5 py-4 text-sm text-amber-100 sm:flex-row sm:items-center sm:justify-between">
+				<p><?php esc_html_e( 'Votre adresse e-mail est en attente de verification. Certaines protections avancees pourront exiger cette confirmation.', 'photovault' ); ?></p>
+				<?php if ( function_exists( 'identity_security_kit_can_request_email_verification' ) ) : ?>
+					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST">
+						<input type="hidden" name="action" value="identity_security_kit_resend_email_verification">
+						<?php wp_nonce_field( 'identity_security_kit_resend_email_verification' ); ?>
+						<button class="rounded-full border border-amber-200/60 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-amber-100 transition hover:bg-amber-200 hover:text-black" type="submit">
+							<?php esc_html_e( 'Renvoyer le lien', 'photovault' ); ?>
+						</button>
+					</form>
+				<?php endif; ?>
 			</div>
 		<?php endif; ?>
 

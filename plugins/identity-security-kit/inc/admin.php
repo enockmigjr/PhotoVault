@@ -160,6 +160,13 @@ function identity_security_kit_render_admin_page() {
 								<p class="description"><?php esc_html_e( 'Verification links expire between 1 hour and 7 days after creation.', 'identity-security-kit' ); ?></p>
 							</td>
 						</tr>
+						<tr>
+							<th scope="row"><label for="isk_email_verification_resend_minutes"><?php esc_html_e( 'Verification resend cooldown', 'identity-security-kit' ); ?></label></th>
+							<td>
+								<input id="isk_email_verification_resend_minutes" class="small-text" name="email_verification_resend_minutes" type="number" min="1" max="1440" value="<?php echo esc_attr( $settings['email_verification_resend_minutes'] ); ?>"> <?php esc_html_e( 'minutes', 'identity-security-kit' ); ?>
+								<p class="description"><?php esc_html_e( 'Authenticated users must wait before requesting another verification link.', 'identity-security-kit' ); ?></p>
+							</td>
+						</tr>
 					</table>
 
 					<?php submit_button( __( 'Save settings', 'identity-security-kit' ) ); ?>
@@ -239,7 +246,8 @@ function identity_security_kit_handle_save_settings() {
 		'min_password_length'         => isset( $_POST['min_password_length'] ) ? max( 8, min( 128, absint( $_POST['min_password_length'] ) ) ) : 8,
 		'max_avatar_size_mb'          => isset( $_POST['max_avatar_size_mb'] ) ? max( 1, min( 12, absint( $_POST['max_avatar_size_mb'] ) ) ) : 6,
 		'max_avatar_dimension'        => isset( $_POST['max_avatar_dimension'] ) ? max( 512, min( 6000, absint( $_POST['max_avatar_dimension'] ) ) ) : 6000,
-		'email_verification_ttl_hours' => isset( $_POST['email_verification_ttl_hours'] ) ? max( 1, min( 168, absint( $_POST['email_verification_ttl_hours'] ) ) ) : 24,
+		'email_verification_ttl_hours'       => isset( $_POST['email_verification_ttl_hours'] ) ? max( 1, min( 168, absint( $_POST['email_verification_ttl_hours'] ) ) ) : 24,
+		'email_verification_resend_minutes' => isset( $_POST['email_verification_resend_minutes'] ) ? max( 1, min( 1440, absint( $_POST['email_verification_resend_minutes'] ) ) ) : 15,
 	);
 
 	update_option( 'identity_security_kit_settings', $settings, false );

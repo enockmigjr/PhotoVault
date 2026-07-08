@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Identity Security Kit
  * Description: Reusable identity, login, registration, and profile security handlers.
- * Version: 0.1.4
+ * Version: 0.1.5
  * Author: PhotoVault
  * Text Domain: identity-security-kit
  */
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'IDENTITY_SECURITY_KIT_VERSION', '0.1.4' );
+define( 'IDENTITY_SECURITY_KIT_VERSION', '0.1.5' );
 define( 'IDENTITY_SECURITY_KIT_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
@@ -37,7 +37,8 @@ function identity_security_kit_get_default_settings() {
 		'min_password_length'         => 8,
 		'max_avatar_size_mb'          => 6,
 		'max_avatar_dimension'        => 6000,
-		'email_verification_ttl_hours' => 24,
+		'email_verification_ttl_hours'       => 24,
+		'email_verification_resend_minutes' => 15,
 	);
 }
 
@@ -54,7 +55,8 @@ function identity_security_kit_get_settings() {
 	$settings['min_password_length']         = max( 8, min( 128, absint( $settings['min_password_length'] ) ) );
 	$settings['max_avatar_size_mb']          = max( 1, min( 12, absint( $settings['max_avatar_size_mb'] ) ) );
 	$settings['max_avatar_dimension']        = max( 512, min( 6000, absint( $settings['max_avatar_dimension'] ) ) );
-	$settings['email_verification_ttl_hours'] = max( 1, min( 168, absint( $settings['email_verification_ttl_hours'] ) ) );
+	$settings['email_verification_ttl_hours']       = max( 1, min( 168, absint( $settings['email_verification_ttl_hours'] ) ) );
+	$settings['email_verification_resend_minutes'] = max( 1, min( 1440, absint( $settings['email_verification_resend_minutes'] ) ) );
 
 	return $settings;
 }
