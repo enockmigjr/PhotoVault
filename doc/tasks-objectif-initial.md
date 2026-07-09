@@ -18,7 +18,7 @@ Legende:
 - [x] Ajouter ADR-001 pour la separation theme/plugins.
 - [x] Ajouter un document de progression globale de plateforme.
 - [~] Supprimer les fallbacks legacy du theme une fois toute la logique confirmee dans les plugins actifs.
-- [ ] Documenter exhaustivement les hooks publics, filtres, tables, options et capabilities de chaque plugin.
+- [x] Documenter exhaustivement les hooks publics, filtres, tables, options et capabilities de chaque plugin.
 
 ## 2. Securite fondamentale WordPress
 
@@ -86,7 +86,7 @@ Legende:
 - [x] Stocker metadata sensible de maniere minimisee/hashee quand pertinent.
 - [x] Ajouter unsubscribe via token serveur.
 - [x] Ajouter premiere UI admin abonnes.
-- [~] Documenter capabilities et tables newsletter.
+- [x] Documenter capabilities et tables newsletter.
 - [ ] Ajouter listes, segments, tags et imports/exports.
 - [ ] Ajouter campagnes, templates, etats et transitions serveur.
 - [ ] Ajouter queue d'envoi batch + retry/backoff.
@@ -168,6 +168,6 @@ Legende:
 
 ## Statut global
 
-Progression estimee: 85%.
+Progression estimee: 86%.
 
 Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.
