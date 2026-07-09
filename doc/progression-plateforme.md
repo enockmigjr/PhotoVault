@@ -4,6 +4,8 @@ Derniere mise a jour: 2026-07-08
 
 ## Objectif initial
 
+Checklist detaillee: [tasks-objectif-initial.md](tasks-objectif-initial.md).
+
 Faire evoluer PhotoVault d'un theme WordPress centre sur l'affichage vers une plateforme modulaire, securisee, extensible et exploitable en production.
 
 Le cap reste le meme:
