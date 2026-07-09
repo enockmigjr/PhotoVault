@@ -70,7 +70,8 @@ PhotoVault
 - Les medias prives sont filtres dans la REST list et dans le proxy image.
 - Les medias proteges recoivent un filigrane serveur plus visible.
 - Les previews filigranees sont mises en cache fichier pour eviter un recalcul GD a chaque requete.
-- Les reglages admin permettent maintenant de borner texte, opacite, densite et qualite JPEG du filigrane.
+- Le cache des previews protegees inclut l identifiant et la date de modification du fichier de filigrane personnalise.
+- Les reglages admin permettent maintenant de borner texte, image personnalisee, opacite, densite et qualite JPEG du filigrane.
 - Les admins et media managers gardent l'acces complet.
 
 ### Acces proteges
@@ -199,7 +200,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 90%.
+Estimation actuelle: 91%.
 
 Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit, enrichissement public et depots plugins separes.
 

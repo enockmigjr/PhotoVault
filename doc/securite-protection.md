@@ -21,7 +21,7 @@ Lorsqu'une image est demandée par le navigateur :
 1. **Contrôle d'accès par cookie** : Le endpoint REST valide la session de l'utilisateur connecté de manière sécurisée en lisant son cookie de session WordPress classique (via `wp_validate_auth_cookie()`). Cela évite les erreurs d'autorisation REST (401/403) sans compromettre la sécurité.
 2. **Détermination du statut** : Le script vérifie la métadonnée `is_protected` associée au média.
 3. **Application du filigrane côté serveur** :
-   - Si `is_protected` est actif et que l'utilisateur n'est pas l'administrateur, le serveur charge le fichier d'origine en mémoire via la bibliothèque graphique **GD** de PHP, dessine une grille répétée de filigranes (texte configurable dans "Réglages PhotoVault" de wp-admin) directement dans les pixels de l'image, puis sert l'image modifiée à la volée.
+   - Si `is_protected` est actif et que l'utilisateur n'est pas l'administrateur, le serveur charge le fichier d'origine en mémoire via la bibliothèque graphique **GD** de PHP, dessine une grille répétée de filigranes (image personnalisée JPEG/PNG/WebP si configurée, sinon texte configurable dans "Réglages PhotoVault" de wp-admin) directement dans les pixels de l'image, puis sert l'image modifiée à la volée.
    - Si `is_protected` est inactif, l'image est servie normalement (après validation d'accès).
 4. **Bénéfice** : L'image d'origine haute définition n'est **jamais** envoyée au client pour un média protégé. Si le visiteur effectue une capture réseau ou télécharge l'image, il n'obtiendra que la version déjà filigranée par le serveur.
 

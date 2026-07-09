@@ -59,7 +59,7 @@ Legende:
 - [x] Empecher le download direct des medias proteges pour les utilisateurs non autorises.
 - [x] Mettre le download HD derriere endpoint controle.
 - [~] Generer ou regenerer toutes les miniatures des medias existants en runtime si necessaire.
-- [~] Ajouter options admin pour opacite, texte, densite et cache du filigrane. Reste: image de filigrane personnalisee.
+- [x] Ajouter options admin pour opacite, texte, image personnalisee, densite et cache du filigrane.
 
 ## 5. Identity Security Kit
 
@@ -168,6 +168,6 @@ Legende:
 
 ## Statut global
 
-Progression estimee: 90%.
+Progression estimee: 91%.
 
 Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.

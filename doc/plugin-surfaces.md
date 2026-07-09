@@ -23,6 +23,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `photovault_watermark_opacity` | Opacite du filigrane | Valeur bornee 10-100 |
 | `photovault_watermark_spacing` | Densite/espacement du filigrane | Valeur bornee 35-180 px |
 | `photovault_watermark_quality` | Qualite JPEG du cache filigrane | Valeur bornee 60-95 |
+| `photovault_watermark_image_id` | Image de filigrane serveur | Attachment JPEG, PNG ou WebP valide, fallback texte si absent |
 
 ### Post types, taxonomies et meta
 
