@@ -1,0 +1,146 @@
+# Inventaire REST/AJAX et admin-post
+
+Derniere mise a jour: 2026-07-09
+
+Objectif: classer les points d'entree publics, authentifies et privilegies afin de preparer les tests de securite REST/AJAX, CSRF, IDOR et privilege escalation.
+
+## Synthese
+
+| Zone | Endpoint/action | Exposition | Controle principal | Etat |
+| --- | --- | --- | --- | --- |
+| PhotoVault Core | `GET /wp-json/photovault/v1/media` | Authentifie | `is_user_logged_in`, sanitizers REST, filtrage `photovault_user_can_access_media` | A tester |
+| PhotoVault Core | `GET /wp-json/photovault/v1/secure-image` | Public transport | Validation ID/display/download, controles internes private/protected/download, nonce download, audit | A tester |
+| PhotoVault Core | `admin_post_photovault_update_access_request_status` | Admin | `photovault_manage_media`, nonce par demande | A tester |
+| PhotoVault Core | `admin_post_photovault_secure_existing_originals` | Admin | `photovault_manage_media`, nonce global | A tester |
+| Identity Security Kit | `admin_post_identity_security_kit_save_settings` | Admin | `identity_manage_settings`, nonce reglages | A tester |
+| Identity Security Kit | `admin_post_nopriv_identity_security_kit_verify_email` | Public lien email | Token long, hash serveur, statut pending, expiration | A tester |
+| Identity Security Kit | `admin_post_identity_security_kit_verify_email` | Authentifie lien email | Token long, hash serveur, statut pending, expiration | A tester |
+| Identity Security Kit | `admin_post_identity_security_kit_resend_email_verification` | Authentifie | Session, nonce, politique de renvoi | A tester |
+| Newsletter Campaign Kit | `admin_post_nopriv_newsletter_campaign_kit_subscribe` | Public formulaire | Nonce, consentement, email valide, IP hash | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_subscribe` | Authentifie formulaire | Nonce, consentement, email valide, IP hash | A tester |
+| Newsletter Campaign Kit | `admin_post_nopriv_newsletter_campaign_kit_unsubscribe` | Public lien email | Token 64 hex, pas d'email brut dans l'URL | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_unsubscribe` | Authentifie lien email | Token 64 hex, pas d'email brut dans l'URL | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_subscriber_status` | Admin | `newsletter_manage_subscribers`, nonce par abonne, whitelist status | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_export_subscribers` | Admin | `newsletter_view_reports`, nonce export | A tester |
+
+## PhotoVault Core
+
+### `GET /wp-json/photovault/v1/media`
+
+- Exposition: utilisateurs connectes.
+- Donnees: liste paginee de medias avec filtres page, folder, category, author, protected, search, orderby.
+- Controle actuel: `permission_callback => is_user_logged_in`.
+- Validation actuelle: callbacks REST sur entiers positifs, chaine de recherche et filtres controles.
+- Protection media: les medias `private` sont retires du resultat si `photovault_user_can_access_media()` refuse l'utilisateur courant.
+- Risque residuel: verifier qu'un utilisateur connecte sans grant ne peut pas enumerrer les medias prives par filtres, pages ou recherche.
+- Tests a ajouter: anonyme 401/403, user sans grant, user avec grant, owner, media manager, admin, filtre protected, tentative ID guessing indirecte.
+
+### `GET /wp-json/photovault/v1/secure-image`
+
+- Exposition: public par necessite technique, car les balises `img` doivent pouvoir charger une image via URL.
+- Controle actuel: `permission_callback => __return_true`, puis controles internes dans le callback.
+- Validation actuelle: `id` requis positif, `display` limite aux variantes attendues, `download` filtre binaire.
+- Protection private: un media prive renvoie `403` si `photovault_user_can_access_media()` refuse l'utilisateur courant.
+- Protection download: `download=1` exige nonce REST, utilisateur connecte, email verifie pour non privilegies, et refuse le download d'un media protege a un non-admin/non-owner.
+- Protection preview: les medias proteges non admin/non owner recoivent une preview filigranee cote serveur.
+- Audit: refus, previews, previews protegees et downloads sont journalises quand l'audit media est disponible.
+- Risque residuel: endpoint volontairement public a documenter dans les tests afin d'eviter une regression vers un simple `__return_true` sans garde-fous.
+- Tests a ajouter: image publique preview, media prive anonyme, media prive user sans grant, media prive user avec grant, download nonce invalide, download user non verifie, download protege non owner, download admin.
+
+### `admin_post_photovault_update_access_request_status`
+
+- Exposition: admin-post authentifie.
+- Controle actuel: capability `photovault_manage_media`.
+- CSRF: nonce `photovault_update_access_request_status_{request_id}`.
+- Effet: approuve ou rejette une demande d'acces, cree un grant lorsque la demande est approuvee.
+- Tests a ajouter: anonyme, utilisateur standard, media manager/admin, nonce invalide, request inexistante, status invalide.
+
+### `admin_post_photovault_secure_existing_originals`
+
+- Exposition: admin-post authentifie.
+- Controle actuel: capability `photovault_manage_media`.
+- CSRF: nonce `photovault_secure_existing_originals`.
+- Effet: traite un lot d'originaux proteges/prives existants vers le stockage prive.
+- Tests a ajouter: anonyme, utilisateur standard, media manager/admin, nonce invalide, lot vide, chemin original manquant, idempotence.
+
+## Identity Security Kit
+
+### `admin_post_identity_security_kit_save_settings`
+
+- Exposition: admin-post authentifie.
+- Controle actuel: capability `identity_manage_settings`.
+- CSRF: nonce de sauvegarde des reglages.
+- Risque residuel: les politiques exposees doivent rester bornees cote serveur.
+- Tests a ajouter: non-admin, nonce invalide, valeurs hors bornes, sauvegarde valide.
+
+### `identity_security_kit_verify_email`
+
+- Exposition: public et authentifie via lien d'email.
+- Controle actuel: `uid` entier, `token` sanitize, recherche par hash serveur et statut `pending`.
+- Expiration: challenge marque expire si `expires_at` est depasse.
+- Justification CSRF: pas de nonce WordPress car le lien email est le facteur de possession; le token doit rester long, non reutilisable et expire.
+- Risque residuel: confirmer single-use et absence d'enumeration visible dans les messages.
+- Tests a ajouter: token valide, token invalide, token expire, token deja consomme, uid invalide.
+
+### `identity_security_kit_resend_email_verification`
+
+- Exposition: utilisateur connecte.
+- Controle actuel: session obligatoire + nonce `identity_security_kit_resend_email_verification`.
+- Risque residuel: ajouter ou verifier un rate limiting strict lorsque le module OTP/MFA sera ajoute.
+- Tests a ajouter: anonyme, nonce invalide, email deja verifie, renvoi valide, limite de frequence.
+
+## Newsletter Campaign Kit
+
+### `newsletter_campaign_kit_subscribe`
+
+- Exposition: public et authentifie via formulaire.
+- Controle actuel: nonce `newsletter_campaign_kit_subscribe`, consentement obligatoire, email valide.
+- Donnees sensibles: email hash, IP hash, user-agent tronque.
+- Risque residuel: ajouter rate limiting et anti-abuse avant production publique.
+- Tests a ajouter: nonce absent, consentement absent, email invalide, email existant, double opt-in futur.
+
+### `newsletter_campaign_kit_unsubscribe`
+
+- Exposition: public et authentifie via lien.
+- Controle actuel: token hex 64 caracteres, pas d'email dans l'URL.
+- Justification CSRF: lien email de desinscription volontaire, action attendue sans login.
+- Risque residuel: verifier idempotence et messages neutres pour token inconnu.
+- Tests a ajouter: token invalide, token inconnu, token valide, second clic, absence de fuite email.
+
+### `newsletter_campaign_kit_update_subscriber_status`
+
+- Exposition: admin-post authentifie.
+- Controle actuel: capability `newsletter_manage_subscribers`.
+- CSRF: nonce `newsletter_campaign_kit_update_subscriber_{subscriber_id}`.
+- Validation: status limite a `subscribed`, `unsubscribed`, `suppressed`.
+- Tests a ajouter: non-admin, nonce invalide, status invalide, subscriber inexistant, transition valide.
+
+### `newsletter_campaign_kit_export_subscribers`
+
+- Exposition: admin-post authentifie.
+- Controle actuel: capability `newsletter_view_reports`.
+- CSRF: nonce `newsletter_campaign_kit_export_subscribers`.
+- Donnees: CSV avec emails, statuts, source et dates.
+- Risque residuel: export limite actuellement a 100 entrees; documenter pagination/export complet avant usage production.
+- Tests a ajouter: non-admin, nonce invalide, role lecture rapports, headers CSV, absence d'acces public.
+
+## Fallbacks theme legacy
+
+Le theme conserve des modules legacy lorsque `PHOTOVAULT_CORE_VERSION` n'est pas defini. Dans ce mode, `inc/ajax-filters.php` peut enregistrer les routes historiques.
+
+- Raison actuelle: eviter une rupture immediate si `photovault-core` n'est pas actif.
+- Direction: supprimer ces fallbacks apres verification runtime complete des trois plugins actifs.
+- Tests a ajouter avant suppression: activation/desactivation plugin, absence de fatal error, routes servies uniquement par le plugin actif.
+
+## Matrice de tests prioritaire
+
+1. Anonyme: aucun acces aux listes media, aucune action admin, preview publique seulement si media public.
+2. User non verifie: acces limite aux previews autorisees, aucun download sensible.
+3. User verifie sans grant: pas d'acces aux medias prives hors ownership.
+4. User verifie avec grant: acces aux collections accordees seulement.
+5. Owner: previews et downloads de ses medias selon regles protected.
+6. Media manager: acces complet media et actions PhotoVault.
+7. Admin: acces complet, export newsletter, reglages identity.
+8. Nonces invalides: refus sur toutes les actions state-changing sauf liens email/tokenises publics justifies.
+9. ID guessing: impossible d'obtenir un media prive/protege par changement d'ID.
+10. Regression HTML: supprimer `required` ou modifier le frontend ne doit pas contourner la validation serveur.

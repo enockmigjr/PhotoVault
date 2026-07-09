@@ -27,7 +27,7 @@ Legende:
 - [x] Ajouter validation serveur pour inscriptions, profils, uploads media et abonnements newsletter.
 - [x] Eviter les secrets dans les nouveaux fichiers versionnes.
 - [x] Ajouter `SECURITY.md` avec posture, regles et gaps connus.
-- [~] Terminer l'inventaire REST/AJAX avec classification public/auth/capability/ownership/protected.
+- [x] Terminer l'inventaire REST/AJAX avec classification public/auth/capability/ownership/protected.
 - [ ] Ajouter tests automatises CSRF, privilege escalation, IDOR, REST unauthorized et suppression de `required` HTML.
 
 ## 3. PhotoVault Core - medias, galerie, acces
@@ -163,11 +163,11 @@ Legende:
 - [~] Ajouter README principal complet.
 - [~] Ajouter README par plugin.
 - [ ] Ajouter matrice capabilities par role.
-- [ ] Ajouter inventaire REST/AJAX complet.
+- [x] Ajouter inventaire REST/AJAX complet.
 - [ ] Ajouter threat models media, identity, newsletter.
 
 ## Statut global
 
-Progression estimee: 83%.
+Progression estimee: 84%.
 
 Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.

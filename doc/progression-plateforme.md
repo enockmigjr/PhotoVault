@@ -1,10 +1,11 @@
 # Progression plateforme PhotoVault
 
-Derniere mise a jour: 2026-07-08
+Derniere mise a jour: 2026-07-09
 
 ## Objectif initial
 
 Checklist detaillee: [tasks-objectif-initial.md](tasks-objectif-initial.md).
+Inventaire REST/AJAX: [rest-ajax-inventory.md](rest-ajax-inventory.md).
 
 Faire evoluer PhotoVault d'un theme WordPress centre sur l'affichage vers une plateforme modulaire, securisee, extensible et exploitable en production.
 
@@ -106,6 +107,11 @@ PhotoVault
 - IP hachee, user-agent tronque, contexte nettoye.
 - Page admin `Audit media`.
 
+### Securite des points d'entree
+
+- Inventaire REST/AJAX/admin-post ajoute avec exposition, controles, risques residuels et tests attendus.
+- Les routes media et image sont classees entre liste authentifiee et endpoint public de transport avec garde-fous internes.
+- Les actions admin-post sensibles sont cartographiees par capability, nonce et scenario de test.
 ## Diagnostic actuel
 
 ### Critique
@@ -115,7 +121,7 @@ PhotoVault
 ### Eleve
 
 - Les originaux sensibles disposent maintenant d'une premiere migration vers stockage prive, mais les existants doivent etre traites en admin et la regle serveur Nginx/Apache doit etre verifiee en production.
-- Les tests automatises d'autorisation REST/AJAX/media ne sont pas encore en place.
+- L'inventaire REST/AJAX est documente, mais les tests automatises correspondants ne sont pas encore en place.
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Les politiques MFA/OTP/recovery codes ne sont pas encore implementees dans Identity Kit.
 - La newsletter n'a pas encore de queue d'envoi, state machine de campagne, provider abstraction ni reporting.
@@ -184,7 +190,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 83%.
+Estimation actuelle: 84%.
 
 Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit, enrichissement public et depots plugins separes.
 
