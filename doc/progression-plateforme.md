@@ -134,7 +134,7 @@ PhotoVault
 
 ### P0 - Securite media reelle
 
-1. Traiter les originaux existants depuis l'admin PhotoVault par lots de 25.
+1. Traiter les originaux existants depuis l'admin PhotoVault par lots de 25 ou via `wp photovault secure-originals`.
 2. Verifier que le serveur web refuse directement `wp-content/photovault-private/` en Apache et Nginx.
 3. Ajouter tests d'ID guessing sur REST, preview et download.
 

@@ -33,4 +33,4 @@ The storage directories are hardened with `index.php` and Apache `.htaccess` den
 ## Follow-up
 - Add automated tests for ID guessing and unauthorized download attempts.
 - Add Docker/Nginx deny rules for `wp-content/photovault-private/`.
-- Add a WP-CLI command for bulk migration once WP-CLI is available.
+- Use `wp photovault secure-originals --limit=100` for bulk migration once WP-CLI is installed in the environment.
