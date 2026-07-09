@@ -8,6 +8,7 @@ Checklist detaillee: [tasks-objectif-initial.md](tasks-objectif-initial.md).
 Inventaire REST/AJAX: [rest-ajax-inventory.md](rest-ajax-inventory.md).
 Matrice capabilities: [capabilities-matrix.md](capabilities-matrix.md).
 Surfaces plugins: [plugin-surfaces.md](plugin-surfaces.md).
+Threat models: [media](threat-model-media.md), [identity](threat-model-identity.md), [newsletter](threat-model-newsletter.md).
 
 Faire evoluer PhotoVault d'un theme WordPress centre sur l'affichage vers une plateforme modulaire, securisee, extensible et exploitable en production.
 
@@ -117,6 +118,7 @@ PhotoVault
 - La matrice des capabilities documente les permissions actuelles et la delegation cible par profil.
 - Les tables, options, filtres et actions publiques des trois plugins sont inventories.
 - README principal et README par plugin ajoutes pour faciliter la reprise projet.
+- Threat models media, identity et newsletter ajoutes avec actifs, menaces, controles, gaps et tests minimum.
 ## Diagnostic actuel
 
 ### Critique
@@ -191,11 +193,11 @@ PhotoVault
 1. Ajouter PHPCS/WordPress Coding Standards si Composer est introduit.
 2. Ajouter tests unitaires/integration ciblant les regles critiques.
 3. Transformer la matrice d'autorisation documentee en tests automatises.
-4. Ajouter ADR supplementaires.
+4. Ajouter ADR supplementaires si les decisions runtime changent.
 
 ## Definition de progression
 
-Estimation actuelle: 87%.
+Estimation actuelle: 88%.
 
 Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit, enrichissement public et depots plugins separes.
 

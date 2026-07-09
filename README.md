@@ -43,6 +43,9 @@ La configuration a ete validee avec `docker compose config`, mais `docker compos
 - [Inventaire REST/AJAX](doc/rest-ajax-inventory.md)
 - [Matrice capabilities](doc/capabilities-matrix.md)
 - [Tables, options et hooks](doc/plugin-surfaces.md)
+- [Threat model media](doc/threat-model-media.md)
+- [Threat model identity](doc/threat-model-identity.md)
+- [Threat model newsletter](doc/threat-model-newsletter.md)
 - [ADR separation plugins](doc/adr/ADR-001-plugin-separation.md)
 - [ADR stockage prive](doc/adr/ADR-002-protected-media-storage.md)
 

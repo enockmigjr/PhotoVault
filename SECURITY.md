@@ -30,7 +30,7 @@ PhotoVault is being migrated from a theme-heavy implementation to a modular Word
 
 ## Known Gaps
 - Existing originals uploaded before the private-storage migration must be processed from the PhotoVault admin workspace. Nginx deployments must still deny direct access to `wp-content/photovault-private/` explicitly.
-- Identity Kit does not yet implement email verification, OTP, TOTP/MFA, recovery codes or grace-period enforcement.
+- Identity Kit implements email verification, but OTP, TOTP/MFA, recovery codes and grace-period enforcement are not yet implemented.
 - Newsletter Kit does not yet implement sending queue, campaign state machine, provider abstraction or per-campaign reporting.
 - Automated security tests are still missing.
 - Runtime activation could not be fully rechecked while MySQL/XAMPP was refusing connections.

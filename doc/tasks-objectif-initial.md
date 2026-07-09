@@ -77,7 +77,7 @@ Legende:
 - [ ] Ajouter recovery codes.
 - [ ] Ajouter grace period MFA 15 jours et enforcement wp-admin privilegie.
 - [ ] Ajouter invalidation de sessions sur evenement sensible.
-- [ ] Ajouter threat model identity documente.
+- [x] Ajouter threat model identity documente.
 
 ## 6. Newsletter Campaign Kit
 
@@ -93,7 +93,7 @@ Legende:
 - [ ] Ajouter provider abstraction SMTP/API.
 - [ ] Ajouter reporting campagne.
 - [ ] Ajouter audit newsletter.
-- [ ] Ajouter threat model newsletter.
+- [x] Ajouter threat model newsletter.
 
 ## 7. Experience publique PhotoVault
 
@@ -164,10 +164,10 @@ Legende:
 - [x] Ajouter README par plugin.
 - [x] Ajouter matrice capabilities par role.
 - [x] Ajouter inventaire REST/AJAX complet.
-- [ ] Ajouter threat models media, identity, newsletter.
+- [x] Ajouter threat models media, identity, newsletter.
 
 ## Statut global
 
-Progression estimee: 87%.
+Progression estimee: 88%.
 
 Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.
