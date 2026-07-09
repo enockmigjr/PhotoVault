@@ -19,7 +19,10 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | Option | Usage | Remarque |
 | --- | --- | --- |
 | `photovault_core_version` | Version installee/migration | Mise a jour a l'activation et pendant les upgrades |
-| `photovault_watermark_text` | Texte du filigrane serveur | Defaut `PHOTOVAULT` |
+| `photovault_watermark_text` | Texte du filigrane serveur | Defaut `PHOTOVAULT`, longueur bornee a 48 caracteres |
+| `photovault_watermark_opacity` | Opacite du filigrane | Valeur bornee 10-100 |
+| `photovault_watermark_spacing` | Densite/espacement du filigrane | Valeur bornee 35-180 px |
+| `photovault_watermark_quality` | Qualite JPEG du cache filigrane | Valeur bornee 60-95 |
 
 ### Post types, taxonomies et meta
 
