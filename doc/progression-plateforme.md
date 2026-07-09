@@ -168,10 +168,10 @@ PhotoVault
 
 ### P2 - Exploitation
 
-1. Ajouter Docker Compose avec Nginx, PHP-FPM, DB, Mailpit, wpcli/cron selon besoin.
-2. Ajouter `.env.example`.
+1. Verifier `docker compose up --build` sur une machine avec reseau Docker disponible.
+2. Finaliser les secrets de `.env` local hors Git.
 3. Ajouter README principal production/dev.
-4. Ajouter healthchecks et docs cron.
+4. Ajouter procedures de sauvegarde/restauration DB et medias.
 
 ### P3 - Qualite
 
@@ -182,7 +182,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 81%.
+Estimation actuelle: 83%.
 
 Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit, enrichissement public et depots plugins separes.
 
