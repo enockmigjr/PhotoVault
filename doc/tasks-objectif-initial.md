@@ -49,7 +49,7 @@ Legende:
 - [x] Ajouter ADR-002 pour le stockage prive des originaux.
 - [~] Verifier en runtime les migrations DB, pages admin et traitement des originaux existants.
 - [~] Verifier que Nginx/Apache bloque effectivement `wp-content/photovault-private/` en environnement cible.
-- [ ] Ajouter cache/derivatives pour ne pas recalculer le filigrane a chaque requete.
+- [x] Ajouter cache/derivatives pour ne pas recalculer le filigrane a chaque requete.
 - [ ] Ajouter tests d'ID guessing sur REST, preview et download.
 
 ## 4. Filigrane, thumbnails et telechargement
@@ -168,6 +168,6 @@ Legende:
 
 ## Statut global
 
-Progression estimee: 88%.
+Progression estimee: 89%.
 
 Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.

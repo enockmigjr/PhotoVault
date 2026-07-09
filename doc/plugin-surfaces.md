@@ -40,6 +40,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `photovault_max_upload_dimension` | Filter | Modifier la dimension maximale image |
 | `photovault_max_upload_files` | Filter | Modifier le nombre de fichiers par lot |
 | `photovault_private_originals_dir` | Filter | Modifier le dossier de stockage prive des originaux |
+| `photovault_protected_preview_cache_dir` | Filter | Modifier le dossier de cache des previews filigranees |
 
 ### Actions WordPress utilisees
 
