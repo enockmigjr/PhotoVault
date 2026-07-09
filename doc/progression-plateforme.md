@@ -116,6 +116,7 @@ PhotoVault
 - Les actions admin-post sensibles sont cartographiees par capability, nonce et scenario de test.
 - La matrice des capabilities documente les permissions actuelles et la delegation cible par profil.
 - Les tables, options, filtres et actions publiques des trois plugins sont inventories.
+- README principal et README par plugin ajoutes pour faciliter la reprise projet.
 ## Diagnostic actuel
 
 ### Critique
@@ -135,7 +136,7 @@ PhotoVault
 - Le header mobile et le dashboard utilisateur doivent etre testes visuellement sur petits ecrans.
 - La pagination blog et les etats loading doivent etre verifies sur donnees reelles.
 - L'audit media n'a pas encore de retention/export.
-- Les README par plugin doivent encore reprendre les surfaces techniques avec exemples d'integration.
+- Les README existent; ils devront etre enrichis avec exemples d'integration apres validation runtime.
 
 ### Faible
 
@@ -182,7 +183,7 @@ PhotoVault
 
 1. Verifier `docker compose up --build` sur une machine avec reseau Docker disponible.
 2. Finaliser les secrets de `.env` local hors Git.
-3. Ajouter README principal production/dev.
+3. Enrichir README principal avec les commandes runtime confirmees apres validation Docker/XAMPP.
 4. Ajouter procedures de sauvegarde/restauration DB et medias.
 
 ### P3 - Qualite
@@ -194,7 +195,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 86%.
+Estimation actuelle: 87%.
 
 Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit, enrichissement public et depots plugins separes.
 
