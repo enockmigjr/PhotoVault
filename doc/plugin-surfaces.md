@@ -128,6 +128,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `{$wpdb->prefix}newsletter_campaign_tags` | `newsletter_campaign_kit_get_tags_table()` | Tags de segmentation | Nom, slug, couleur |
 | `{$wpdb->prefix}newsletter_campaign_subscriber_lists` | `newsletter_campaign_kit_get_subscriber_lists_table()` | Liaison abonne/liste | Cle composee abonne + liste |
 | `{$wpdb->prefix}newsletter_campaign_subscriber_tags` | `newsletter_campaign_kit_get_subscriber_tags_table()` | Liaison abonne/tag | Cle composee abonne + tag |
+| `{$wpdb->prefix}newsletter_campaign_audit` | `newsletter_campaign_kit_get_audit_table()` | Audit inscriptions, desinscriptions, statuts, exports et segments | IP hash, user-agent tronque, contexte nettoye |
 
 ### Options
 
@@ -140,7 +141,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | Hook | Callback principal | Usage |
 | --- | --- | --- |
 | `init` | Upgrade plugin | Schema/version newsletter |
-| `admin_menu` | Admin abonnes | UI abonnes et export |
+| `admin_menu` | Admin newsletter | UI abonnes, segments, audit et export |
 | `admin_post_nopriv_newsletter_campaign_kit_subscribe` | Subscribe | Formulaire public |
 | `admin_post_newsletter_campaign_kit_subscribe` | Subscribe | Formulaire authentifie |
 | `admin_post_nopriv_newsletter_campaign_kit_unsubscribe` | Unsubscribe | Lien public tokenise |

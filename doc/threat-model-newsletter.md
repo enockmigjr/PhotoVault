@@ -1,10 +1,10 @@
 # Threat model - Newsletter Campaign Kit
 
-Derniere mise a jour: 2026-07-09
+Derniere mise a jour: 2026-07-10
 
 ## Scope
 
-Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockage abonnes, listes, tags, unsubscribe tokenise, UI admin abonnes, changements de statut et export CSV. Les modules campagnes, queue et provider sont des cibles futures.
+Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockage abonnes, listes, tags, unsubscribe tokenise, UI admin abonnes, changements de statut, export CSV et audit operationnel. Les modules campagnes, queue et provider sont des cibles futures.
 
 ## Actifs a proteger
 
@@ -14,6 +14,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Statuts d'abonnement: subscribed, unsubscribed, suppressed.
 - Listes editoriales, tags et liaisons de segmentation.
 - Export CSV contenant des emails en clair.
+- Journal audit newsletter sans IP brute, token ni email dans le contexte.
 - Futures campagnes, templates, provider credentials et rapports.
 
 ## Acteurs
@@ -47,7 +48,8 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 | Stockage excessif | Garder IP brute/user-agent complet | IP hash, user-agent tronque | Ajouter retention/suppression |
 | Injection CSV | Email ou source mal interprete dans tableur | `fputcsv` | Ajouter neutralisation formules si export publicise |
 | Provider secret leak | Futures clefs SMTP/API en DB ou Git | Non implemente | Secrets hors Git/options protegees |
-| Envoi abusif | Campagne envoyee sans confirmation/audit | Non implemente | Ajouter workflow, confirmation, audit, rate limit |
+| Audit exposure | Journaliser des donnees personnelles inutiles | Contexte nettoye, IP hash, user-agent tronque | Tester absence email/token/IP brute |
+| Envoi abusif | Campagne envoyee sans confirmation/audit | Audit de base implemente, campagne non implemente | Ajouter workflow, confirmation, rate limit |
 
 ## Controles existants
 
@@ -57,7 +59,10 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Admin abonnes protege par `newsletter_manage_subscribers`.
 - Export CSV protege par `newsletter_view_reports` et nonce.
 - Status whitelist: `subscribed`, `unsubscribed`, `suppressed`.
-- Creation liste/tag protegee par `newsletter_manage_lists` et nonce.
+- Creation liste/tag protegee par capability newsletter_manage_lists et nonce.
+ewsletter_manage_lists et nonce.
+- Audit newsletter protege par capability newsletter_view_reports, avec IP hash, user-agent tronque et contexte nettoye.
+ewsletter_view_reports, avec IP hash, user-agent tronque et contexte nettoye.
 
 ## Gaps prioritaires
 
@@ -65,7 +70,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 2. Ajouter retention/suppression des donnees abonnes.
 3. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
 4. Finaliser imports/exports robustes pour listes, segments et tags.
-5. Ajouter campagnes, templates, transitions serveur et audit.
+5. Ajouter campagnes, templates et transitions serveur.
 6. Ajouter queue batch avec retry/backoff et provider abstraction.
 7. Ajouter reporting campagne et journal d'envoi.
 
@@ -81,3 +86,4 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 8. Update status refuse statut hors whitelist.
 9. Export CSV refuse utilisateur sans `newsletter_view_reports`.
 10. Export CSV ne contient pas IP brute ni token de desinscription si non necessaire.
+11. Audit newsletter trace subscribe, unsubscribe, statut, export, liste et tag sans email/token/IP brute.

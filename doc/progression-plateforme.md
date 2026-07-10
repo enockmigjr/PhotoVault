@@ -1,6 +1,6 @@
 # Progression plateforme PhotoVault
 
-Derniere mise a jour: 2026-07-09
+Derniere mise a jour: 2026-07-10
 
 ## Objectif initial
 
@@ -45,7 +45,7 @@ PhotoVault
 |   |-- subscribers
 |   |-- consentement
 |   |-- unsubscribe tokenise
-|   `-- base admin newsletter
+|   |-- base admin newsletter`r`n|   `-- audit newsletter
 `-- doc
     |-- architecture
     |-- securite
@@ -97,6 +97,7 @@ PhotoVault
 - Stockage des metadonnees sensibles sous forme hashee lorsque pertinent.
 - Desinscription via token serveur.
 - Premiere interface admin abonnes.
+- Audit newsletter ajoute pour inscriptions, desinscriptions, changements de statut, exports, listes et tags.
 
 ### Experience publique
 
@@ -135,7 +136,7 @@ PhotoVault
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Les politiques MFA/OTP/recovery codes ne sont pas encore implementees dans Identity Kit.
-- La newsletter n'a pas encore de queue d'envoi, state machine de campagne, provider abstraction ni reporting.
+- La newsletter n'a pas encore de queue d'envoi, state machine de campagne, provider abstraction ni reporting campagne.
 
 ### Moyen
 
@@ -161,12 +162,12 @@ PhotoVault
 
 1. Demarrer XAMPP/MySQL.
 2. Activer/verifier les trois plugins actifs.
-3. Verifier les tables creees: access requests, grants, media audit, identity audit, newsletter subscribers.
+3. Verifier les tables creees: access requests, grants, media audit, identity audit, newsletter subscribers, newsletter lists/tags et newsletter audit.
 4. Tester les roles: anonymous, user non verifie, user verifie, owner, media manager, admin.
 
 ### P1 - Newsletter Kit
 
-- Newsletter Kit dispose maintenant de listes, tags, tables de liaison et page admin de segmentation.
+- Newsletter Kit dispose maintenant de listes, tags, tables de liaison, page admin de segmentation et page audit.
 - Les nouveaux abonnements publics sont rattaches a une liste editoriale par defaut.
 
 ### P1 - Identity Kit
@@ -206,9 +207,9 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 93%.
+Estimation actuelle: 94%.
 
-Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit, enrichissement public et depots plugins separes.
+Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit media/identite/newsletter, enrichissement public et depots plugins separes.
 
 Elle ne signifie pas encore "production ready". Les deux gros blocs qui empechent ce label sont:
 
