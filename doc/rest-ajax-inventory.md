@@ -137,6 +137,9 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 - Validation: provider whitelist `wp_mail`/`external_filter`, from email valide, from name borne.
 - Secrets: aucun token/API key n'est stocke par ce plugin; les providers API doivent etre branches par filtre avec secrets hors Git.
 - Tests a ajouter: non-admin, nonce invalide, provider inconnu, email invalide, sauvegarde valide.
+
+Note: les reports sont des pages admin protegees par la capability newsletter_view_reports; ils n ajoutent pas d action state-changing.
+ewsletter_view_reports; ils n'ajoutent pas d'action state-changing.
 ## Fallbacks theme legacy
 
 Le theme conserve des modules legacy lorsque `PHOTOVAULT_CORE_VERSION` n'est pas defini. Dans ce mode, `inc/ajax-filters.php` peut enregistrer les routes historiques.

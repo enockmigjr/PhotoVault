@@ -92,7 +92,7 @@ Legende:
 - [~] Ajouter campagnes, templates, etats et transitions serveur. Fait: table campagnes, brouillons, UI admin et transitions serveur. Reste: templates reutilisables/previsualisation.
 - [~] Ajouter queue d'envoi batch + retry/backoff. Fait: table queue, enqueue sur transition sending, batch manuel, tentatives et backoff. Reste: cron/runtime et provider reel.
 - [~] Ajouter provider abstraction SMTP/API. Fait: provider `wp_mail`, reglages admin, filtre adaptateur externe. Reste: provider API dedie avec secrets hors Git.
-- [ ] Ajouter reporting campagne.
+- [~] Ajouter reporting campagne. Fait: rapports de livraison depuis la queue. Reste: tracking ouvertures/clics et exports avances.
 - [x] Ajouter audit newsletter.
 - [x] Ajouter threat model newsletter.
 
@@ -169,6 +169,6 @@ Legende:
 
 ## Statut global
 
-Progression estimee: 97%.
+Progression estimee: 98%.
 
-Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes, queue et provider, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.
+Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes, queue, provider et reporting, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.

@@ -152,7 +152,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | Hook | Callback principal | Usage |
 | --- | --- | --- |
 | `init` | Upgrade plugin | Schema/version newsletter |
-| `admin_menu` | Admin newsletter | UI abonnes, segments, audit et export |
+| `admin_menu` | Admin newsletter | UI abonnes, segments, campagnes, queue, settings, reports, audit et export |
 | `admin_post_nopriv_newsletter_campaign_kit_subscribe` | Subscribe | Formulaire public |
 | `admin_post_newsletter_campaign_kit_subscribe` | Subscribe | Formulaire authentifie |
 | `admin_post_nopriv_newsletter_campaign_kit_unsubscribe` | Unsubscribe | Lien public tokenise |

@@ -52,6 +52,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 | Audit exposure | Journaliser des donnees personnelles inutiles | Contexte nettoye, IP hash, user-agent tronque | Tester absence email/token/IP brute |
 | Campaign tampering | Passer une campagne en sending/sent sans droit | Transitions serveur + capabilities create/send + nonce | Tests roles create vs send |
 | Queue delivery abuse | Declencher un batch ou retenter trop vite | Capability send, nonce, limite batch, backoff | Tests role/nonce/backoff |
+| Reporting exposure | Montrer des donnees de campagne a un role non autorise | Capability newsletter_view_reports | Tests roles reports |
 | Envoi abusif | Campagne envoyee sans confirmation/audit | Audit de base implemente, campagne non implemente | Ajouter workflow, confirmation, rate limit |
 
 ## Controles existants
@@ -67,6 +68,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Campagnes protegees par capability newsletter_create_campaigns; transitions d'envoi protegees par newsletter_send_campaigns.
 - Queue batch protegee par newsletter_send_campaigns, limite de traitement et retry/backoff.
 - Provider wp_mail configurable sans secret; providers API externes attendus via filtre et secrets hors Git.
+- Reports campagne limites aux totaux queue et proteges par newsletter_view_reports.
 
 ## Gaps prioritaires
 
@@ -94,3 +96,4 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 12. Campagne refuse creation sans newsletter_create_campaigns et refuse transition d'envoi sans newsletter_send_campaigns.
 13. Queue refuse traitement sans newsletter_send_campaigns et applique retry/backoff si provider absent.
 14. Provider refuse sauvegarde sans newsletter_manage_settings et ne stocke pas de secret.
+15. Reports refusent acces sans newsletter_view_reports et ne pretendent pas tracker ouvertures/clics.

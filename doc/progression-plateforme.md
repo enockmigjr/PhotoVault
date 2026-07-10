@@ -103,6 +103,7 @@ PhotoVault
 - Base campagnes ajoutee avec brouillons, cible liste, statuts serveur et transitions controlees par capabilities.
 - Queue newsletter ajoutee avec table dediee, enqueue sur transition sending, traitement batch manuel, retry/backoff et filtre provider.
 - Provider wp_mail ajoute avec reglages from name/from email, page Settings et filtre pour adaptateur externe.
+- Reporting campagne ajoute depuis la queue: totaux par campagne, sent, failed, pending et taux de livraison simple.
 
 ### Experience publique
 
@@ -141,7 +142,7 @@ PhotoVault
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Les politiques MFA/OTP/recovery codes ne sont pas encore implementees dans Identity Kit.
-- La newsletter n'a pas encore de provider API externe dedie avec secrets hors Git, cron runtime confirme, templates reutilisables avances ni reporting campagne.
+- La newsletter n'a pas encore de provider API externe dedie avec secrets hors Git, cron runtime confirme, templates reutilisables avances ni tracking ouvertures/clics.
 
 ### Moyen
 
@@ -172,7 +173,7 @@ PhotoVault
 
 ### P1 - Newsletter Kit
 
-- Newsletter Kit dispose maintenant de listes, tags, tables de liaison, page admin de segmentation, page audit, base campagnes, queue batch et provider wp_mail.
+- Newsletter Kit dispose maintenant de listes, tags, tables de liaison, page admin de segmentation, page audit, base campagnes, queue batch, provider wp_mail et reporting de livraison.
 - Les nouveaux abonnements publics sont rattaches a une liste editoriale par defaut.
 
 ### P1 - Identity Kit
@@ -187,7 +188,7 @@ PhotoVault
 1. Ajouter templates reutilisables avances et previsualisation email.
 2. Brancher un provider API externe dedie si necessaire et confirmer le cron de traitement queue.
 3. Ajouter unsubscribe/suppression robuste.
-4. Ajouter reporting de base.
+4. Ajouter tracking ouvertures/clics et exports de reporting avances.
 
 ### P2 - UX metier PhotoVault
 
@@ -212,9 +213,9 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 97%.
+Estimation actuelle: 98%.
 
-Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit media/identite/newsletter, base campagnes, queue newsletter et provider, enrichissement public et depots plugins separes.
+Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit media/identite/newsletter, base campagnes, queue newsletter, provider et reporting, enrichissement public et depots plugins separes.
 
 Elle ne signifie pas encore "production ready". Les deux gros blocs qui empechent ce label sont:
 
