@@ -164,6 +164,11 @@ PhotoVault
 3. Verifier les tables creees: access requests, grants, media audit, identity audit, newsletter subscribers.
 4. Tester les roles: anonymous, user non verifie, user verifie, owner, media manager, admin.
 
+### P1 - Newsletter Kit
+
+- Newsletter Kit dispose maintenant de listes, tags, tables de liaison et page admin de segmentation.
+- Les nouveaux abonnements publics sont rattaches a une liste editoriale par defaut.
+
 ### P1 - Identity Kit
 
 1. Ajouter OTP email avec expiration, tentatives et anti-replay.
@@ -201,7 +206,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 92%.
+Estimation actuelle: 93%.
 
 Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit, enrichissement public et depots plugins separes.
 

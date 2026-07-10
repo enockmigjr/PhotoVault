@@ -124,6 +124,10 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | Table | Fonction | Usage | Donnees sensibles |
 | --- | --- | --- | --- |
 | `{$wpdb->prefix}newsletter_campaign_subscribers` | `newsletter_campaign_kit_get_subscribers_table()` | Abonnes, consentement, unsubscribe | Email clair, email hash, token unsubscribe, IP hash |
+| `{$wpdb->prefix}newsletter_campaign_lists` | `newsletter_campaign_kit_get_lists_table()` | Listes editoriales | Nom, slug, description, statut |
+| `{$wpdb->prefix}newsletter_campaign_tags` | `newsletter_campaign_kit_get_tags_table()` | Tags de segmentation | Nom, slug, couleur |
+| `{$wpdb->prefix}newsletter_campaign_subscriber_lists` | `newsletter_campaign_kit_get_subscriber_lists_table()` | Liaison abonne/liste | Cle composee abonne + liste |
+| `{$wpdb->prefix}newsletter_campaign_subscriber_tags` | `newsletter_campaign_kit_get_subscriber_tags_table()` | Liaison abonne/tag | Cle composee abonne + tag |
 
 ### Options
 
@@ -143,10 +147,12 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_unsubscribe` | Unsubscribe | Lien authentifie tokenise |
 | `admin_post_newsletter_campaign_kit_update_subscriber_status` | Update status | Changement statut admin |
 | `admin_post_newsletter_campaign_kit_export_subscribers` | Export CSV | Export donnees abonnes |
+| `admin_post_newsletter_campaign_kit_create_list` | Creation liste | Capability `newsletter_manage_lists`, nonce |
+| `admin_post_newsletter_campaign_kit_create_tag` | Creation tag | Capability `newsletter_manage_lists`, nonce |
 
 ## Points de verification runtime
 
-1. Confirmer que `dbDelta` cree les cinq tables attendues avec les index declares.
+1. Confirmer que `dbDelta` cree les tables attendues avec les index declares.
 2. Confirmer que les options de version sont presentes apres activation/upgrade.
 3. Confirmer que les reglages Identity restent bornes meme si le POST envoie des valeurs extremes.
 4. Confirmer que `photovault_private_originals_dir` pointe vers un dossier non servi publiquement en production.

@@ -4,7 +4,7 @@ Derniere mise a jour: 2026-07-09
 
 ## Scope
 
-Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockage abonnes, unsubscribe tokenise, UI admin abonnes, changements de statut et export CSV. Les modules campagnes, queue et provider sont des cibles futures.
+Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockage abonnes, listes, tags, unsubscribe tokenise, UI admin abonnes, changements de statut et export CSV. Les modules campagnes, queue et provider sont des cibles futures.
 
 ## Actifs a proteger
 
@@ -12,6 +12,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Tokens de desinscription.
 - Hash email et IP hash.
 - Statuts d'abonnement: subscribed, unsubscribed, suppressed.
+- Listes editoriales, tags et liaisons de segmentation.
 - Export CSV contenant des emails en clair.
 - Futures campagnes, templates, provider credentials et rapports.
 
@@ -30,7 +31,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 
 - Formulaire public newsletter vers `admin-post.php`.
 - Lien email unsubscribe vers `admin-post.php`.
-- Admin abonnes vers table custom et export CSV.
+- Admin abonnes/listes/tags vers tables custom et export CSV.
 - Future queue d'envoi vers provider email externe.
 
 ## Menaces principales
@@ -56,13 +57,14 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Admin abonnes protege par `newsletter_manage_subscribers`.
 - Export CSV protege par `newsletter_view_reports` et nonce.
 - Status whitelist: `subscribed`, `unsubscribed`, `suppressed`.
+- Creation liste/tag protegee par `newsletter_manage_lists` et nonce.
 
 ## Gaps prioritaires
 
 1. Ajouter rate limiting et/ou double opt-in pour inscription publique.
 2. Ajouter retention/suppression des donnees abonnes.
 3. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
-4. Ajouter listes, segments, tags et imports/exports robustes.
+4. Finaliser imports/exports robustes pour listes, segments et tags.
 5. Ajouter campagnes, templates, transitions serveur et audit.
 6. Ajouter queue batch avec retry/backoff et provider abstraction.
 7. Ajouter reporting campagne et journal d'envoi.
