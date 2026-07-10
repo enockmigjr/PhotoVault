@@ -90,7 +90,7 @@ Legende:
 - [x] Documenter capabilities et tables newsletter.
 - [~] Ajouter listes, segments, tags et imports/exports. Fait: listes/tags/admin/liaisons. Reste: imports/exports avances.
 - [~] Ajouter campagnes, templates, etats et transitions serveur. Fait: table campagnes, brouillons, UI admin et transitions serveur. Reste: templates reutilisables/previsualisation.
-- [ ] Ajouter queue d'envoi batch + retry/backoff.
+- [~] Ajouter queue d'envoi batch + retry/backoff. Fait: table queue, enqueue sur transition sending, batch manuel, tentatives et backoff. Reste: cron/runtime et provider reel.
 - [ ] Ajouter provider abstraction SMTP/API.
 - [ ] Ajouter reporting campagne.
 - [x] Ajouter audit newsletter.
@@ -169,6 +169,6 @@ Legende:
 
 ## Statut global
 
-Progression estimee: 95%.
+Progression estimee: 96%.
 
-Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit et campagnes, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.
+Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes et queue, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.

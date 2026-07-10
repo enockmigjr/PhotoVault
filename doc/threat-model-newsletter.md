@@ -51,6 +51,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 | Provider secret leak | Futures clefs SMTP/API en DB ou Git | Non implemente | Secrets hors Git/options protegees |
 | Audit exposure | Journaliser des donnees personnelles inutiles | Contexte nettoye, IP hash, user-agent tronque | Tester absence email/token/IP brute |
 | Campaign tampering | Passer une campagne en sending/sent sans droit | Transitions serveur + capabilities create/send + nonce | Tests roles create vs send |
+| Queue delivery abuse | Declencher un batch ou retenter trop vite | Capability send, nonce, limite batch, backoff | Tests role/nonce/backoff |
 | Envoi abusif | Campagne envoyee sans confirmation/audit | Audit de base implemente, campagne non implemente | Ajouter workflow, confirmation, rate limit |
 
 ## Controles existants
@@ -64,6 +65,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Creation liste/tag protegee par capability newsletter_manage_lists et nonce.
 - Audit newsletter protege par capability newsletter_view_reports, avec IP hash, user-agent tronque et contexte nettoye.
 - Campagnes protegees par capability newsletter_create_campaigns; transitions d'envoi protegees par newsletter_send_campaigns.
+- Queue batch protegee par newsletter_send_campaigns, limite de traitement et retry/backoff.
 
 ## Gaps prioritaires
 
@@ -72,7 +74,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 3. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
 4. Finaliser imports/exports robustes pour listes, segments et tags.
 5. Ajouter templates reutilisables avances et previsualisation email.
-6. Ajouter queue batch avec retry/backoff et provider abstraction.
+6. Brancher provider SMTP/API reel et confirmer le cron de traitement queue.
 7. Ajouter reporting campagne et journal d'envoi.
 
 ## Tests minimum avant production
@@ -89,3 +91,4 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 10. Export CSV ne contient pas IP brute ni token de desinscription si non necessaire.
 11. Audit newsletter trace subscribe, unsubscribe, statut, export, liste et tag sans email/token/IP brute.
 12. Campagne refuse creation sans newsletter_create_campaigns et refuse transition d'envoi sans newsletter_send_campaigns.
+13. Queue refuse traitement sans newsletter_send_campaigns et applique retry/backoff si provider absent.

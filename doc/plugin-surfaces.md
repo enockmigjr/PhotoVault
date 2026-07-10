@@ -1,6 +1,6 @@
 # Inventaire tables, options et hooks
 
-Derniere mise a jour: 2026-07-09
+Derniere mise a jour: 2026-07-10
 
 Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault afin de faciliter les migrations, tests, audits et futures integrations.
 
@@ -45,6 +45,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `photovault_max_upload_files` | Filter | Modifier le nombre de fichiers par lot |
 | `photovault_private_originals_dir` | Filter | Modifier le dossier de stockage prive des originaux |
 | `photovault_protected_preview_cache_dir` | Filter | Modifier le dossier de cache des previews filigranees |
+
 
 ### Actions WordPress utilisees
 
@@ -105,6 +106,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `identity_security_kit_password_reset_failed` | Action emise | Integrations audit/alerte reset echoue |
 | `identity_security_kit_password_reset_mail_failed` | Action emise | Integrations audit/alerte email reset echoue |
 
+
 ### Actions WordPress utilisees
 
 | Hook | Callback principal | Usage |
@@ -130,12 +132,19 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `{$wpdb->prefix}newsletter_campaign_subscriber_tags` | `newsletter_campaign_kit_get_subscriber_tags_table()` | Liaison abonne/tag | Cle composee abonne + tag |
 | `{$wpdb->prefix}newsletter_campaign_audit` | `newsletter_campaign_kit_get_audit_table()` | Audit inscriptions, desinscriptions, statuts, exports et segments | IP hash, user-agent tronque, contexte nettoye |
 | `{$wpdb->prefix}newsletter_campaign_campaigns` | `newsletter_campaign_kit_get_campaigns_table()` | Brouillons, ciblage, statuts et transitions campagne | Sujet, contenu, cible liste, auteurs |
+| `{$wpdb->prefix}newsletter_campaign_queue` | `newsletter_campaign_kit_get_queue_table()` | File de livraison batch, tentatives et backoff | IDs campagne/abonne, statut, erreurs provider |
 
 ### Options
 
 | Option | Usage | Remarque |
 | --- | --- | --- |
 | `newsletter_campaign_kit_version` | Version installee/migration | Mise a jour a l'activation/upgrade |
+
+### Filtres publics
+
+| Hook | Type | Usage |
+| --- | --- | --- |
+| `newsletter_campaign_kit_send_email` | Filter | Brancher un provider SMTP/API; retourne `true` en succes ou `WP_Error` en echec |
 
 ### Actions WordPress utilisees
 
@@ -153,6 +162,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_create_tag` | Creation tag | Capability `newsletter_manage_lists`, nonce |
 | `admin_post_newsletter_campaign_kit_create_campaign` | Creation campagne | Capability `newsletter_create_campaigns`, nonce |
 | `admin_post_newsletter_campaign_kit_transition_campaign` | Transition campagne | Capability `newsletter_create_campaigns`, `newsletter_send_campaigns` pour envoi, nonce |
+| `admin_post_newsletter_campaign_kit_process_queue` | Traitement queue | Capability `newsletter_send_campaigns`, nonce |
 
 ## Points de verification runtime
 

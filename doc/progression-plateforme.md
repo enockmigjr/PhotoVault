@@ -101,6 +101,7 @@ PhotoVault
 - Premiere interface admin abonnes.
 - Audit newsletter ajoute pour inscriptions, desinscriptions, changements de statut, exports, listes et tags.
 - Base campagnes ajoutee avec brouillons, cible liste, statuts serveur et transitions controlees par capabilities.
+- Queue newsletter ajoutee avec table dediee, enqueue sur transition sending, traitement batch manuel, retry/backoff et filtre provider.
 
 ### Experience publique
 
@@ -139,7 +140,7 @@ PhotoVault
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Les politiques MFA/OTP/recovery codes ne sont pas encore implementees dans Identity Kit.
-- La newsletter n'a pas encore de queue d'envoi, templates reutilisables avances, provider abstraction ni reporting campagne.
+- La newsletter n'a pas encore de provider SMTP/API reel, cron runtime confirme, templates reutilisables avances ni reporting campagne.
 
 ### Moyen
 
@@ -170,7 +171,7 @@ PhotoVault
 
 ### P1 - Newsletter Kit
 
-- Newsletter Kit dispose maintenant de listes, tags, tables de liaison, page admin de segmentation, page audit et base campagnes.
+- Newsletter Kit dispose maintenant de listes, tags, tables de liaison, page admin de segmentation, page audit, base campagnes et queue batch.
 - Les nouveaux abonnements publics sont rattaches a une liste editoriale par defaut.
 
 ### P1 - Identity Kit
@@ -183,7 +184,7 @@ PhotoVault
 ### P1 - Newsletter Kit
 
 1. Ajouter templates reutilisables avances et previsualisation email.
-2. Ajouter queue d'envoi par batch.
+2. Brancher provider SMTP/API reel et confirmer le cron de traitement queue.
 3. Ajouter unsubscribe/suppression robuste.
 4. Ajouter reporting de base.
 
@@ -210,9 +211,9 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 95%.
+Estimation actuelle: 96%.
 
-Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit media/identite/newsletter, base campagnes, enrichissement public et depots plugins separes.
+Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit media/identite/newsletter, base campagnes et queue newsletter, enrichissement public et depots plugins separes.
 
 Elle ne signifie pas encore "production ready". Les deux gros blocs qui empechent ce label sont:
 

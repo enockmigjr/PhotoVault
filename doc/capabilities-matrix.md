@@ -54,7 +54,7 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 | `newsletter_manage_subscribers` | `administrator` | Menu abonnes, changement de statut | Capability operationnelle actuelle |
 | `newsletter_manage_lists` | `administrator` | Listes, tags et segments | Operationnelle pour segmentation de base |
 | `newsletter_create_campaigns` | `administrator` | Creation brouillons et transitions non-envoi | Operationnelle pour base campagnes |
-| `newsletter_send_campaigns` | `administrator` | Transitions scheduled/sending/sent | Tres sensible: envoi reel encore non branche |
+| `newsletter_send_campaigns` | `administrator` | Transitions scheduled/sending/sent, traitement queue | Tres sensible: provider reel encore non branche |
 | `newsletter_view_reports` | `administrator` | Export CSV abonnes, futurs rapports | Donne acces a des emails en clair |
 | `newsletter_manage_settings` | `administrator` | Cible future reglages provider/SMTP | A traiter comme sensible |
 
@@ -64,6 +64,7 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 - La desinscription est publique par token, sans email brut dans l'URL.
 - L'export CSV contient des emails en clair et doit rester limite aux roles de confiance.
 - Les campagnes utilisent des transitions serveur: creation via newsletter_create_campaigns, passage vers scheduled/sending/sent via newsletter_send_campaigns.
+- La queue batch exige newsletter_send_campaigns et applique retry/backoff avant provider reel.
 
 ## Matrice cible de delegation
 
