@@ -139,12 +139,13 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | Option | Usage | Remarque |
 | --- | --- | --- |
 | `newsletter_campaign_kit_version` | Version installee/migration | Mise a jour a l'activation/upgrade |
+| `newsletter_campaign_kit_provider_settings` | Provider livraison | `wp_mail` ou adaptateur externe, from name/from email, sans secret |
 
 ### Filtres publics
 
 | Hook | Type | Usage |
 | --- | --- | --- |
-| `newsletter_campaign_kit_send_email` | Filter | Brancher un provider SMTP/API; retourne `true` en succes ou `WP_Error` en echec |
+| `newsletter_campaign_kit_send_email` | Filter | Brancher/remplacer le provider de livraison; retourne `true` en succes ou `WP_Error` en echec |
 
 ### Actions WordPress utilisees
 
@@ -163,6 +164,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_create_campaign` | Creation campagne | Capability `newsletter_create_campaigns`, nonce |
 | `admin_post_newsletter_campaign_kit_transition_campaign` | Transition campagne | Capability `newsletter_create_campaigns`, `newsletter_send_campaigns` pour envoi, nonce |
 | `admin_post_newsletter_campaign_kit_process_queue` | Traitement queue | Capability `newsletter_send_campaigns`, nonce |
+| `admin_post_newsletter_campaign_kit_save_provider_settings` | Reglages provider | Capability `newsletter_manage_settings`, nonce |
 
 ## Points de verification runtime
 

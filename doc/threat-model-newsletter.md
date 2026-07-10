@@ -66,6 +66,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Audit newsletter protege par capability newsletter_view_reports, avec IP hash, user-agent tronque et contexte nettoye.
 - Campagnes protegees par capability newsletter_create_campaigns; transitions d'envoi protegees par newsletter_send_campaigns.
 - Queue batch protegee par newsletter_send_campaigns, limite de traitement et retry/backoff.
+- Provider wp_mail configurable sans secret; providers API externes attendus via filtre et secrets hors Git.
 
 ## Gaps prioritaires
 
@@ -74,7 +75,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 3. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
 4. Finaliser imports/exports robustes pour listes, segments et tags.
 5. Ajouter templates reutilisables avances et previsualisation email.
-6. Brancher provider SMTP/API reel et confirmer le cron de traitement queue.
+6. Brancher provider API externe si besoin et confirmer le cron de traitement queue.
 7. Ajouter reporting campagne et journal d'envoi.
 
 ## Tests minimum avant production
@@ -92,3 +93,4 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 11. Audit newsletter trace subscribe, unsubscribe, statut, export, liste et tag sans email/token/IP brute.
 12. Campagne refuse creation sans newsletter_create_campaigns et refuse transition d'envoi sans newsletter_send_campaigns.
 13. Queue refuse traitement sans newsletter_send_campaigns et applique retry/backoff si provider absent.
+14. Provider refuse sauvegarde sans newsletter_manage_settings et ne stocke pas de secret.

@@ -25,6 +25,7 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_campaign` | Admin | `newsletter_create_campaigns`, nonce creation | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_transition_campaign` | Admin | `newsletter_create_campaigns`, `newsletter_send_campaigns` pour transitions envoi, nonce par campagne | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_process_queue` | Admin | `newsletter_send_campaigns`, nonce traitement queue | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_save_provider_settings` | Admin | `newsletter_manage_settings`, nonce reglages provider | A tester |
 
 ## PhotoVault Core
 
@@ -127,6 +128,15 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 - Risque residuel: export limite actuellement a 100 entrees; documenter pagination/export complet avant usage production.
 - Tests a ajouter: non-admin, nonce invalide, role lecture rapports, headers CSV, absence d'acces public.
 
+
+### `newsletter_campaign_kit_save_provider_settings`
+
+- Exposition: admin-post authentifie.
+- Controle actuel: capability `newsletter_manage_settings`.
+- CSRF: nonce `newsletter_campaign_kit_save_provider_settings`.
+- Validation: provider whitelist `wp_mail`/`external_filter`, from email valide, from name borne.
+- Secrets: aucun token/API key n'est stocke par ce plugin; les providers API doivent etre branches par filtre avec secrets hors Git.
+- Tests a ajouter: non-admin, nonce invalide, provider inconnu, email invalide, sauvegarde valide.
 ## Fallbacks theme legacy
 
 Le theme conserve des modules legacy lorsque `PHOTOVAULT_CORE_VERSION` n'est pas defini. Dans ce mode, `inc/ajax-filters.php` peut enregistrer les routes historiques.
