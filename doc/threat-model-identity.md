@@ -66,7 +66,7 @@ Ce threat model couvre `identity-security-kit`: login, inscription, profil, avat
 2. Ajouter TOTP/MFA et recovery codes.
 3. Ajouter grace period MFA et enforcement wp-admin privilegie.
 4. Ajouter invalidation de sessions sur changement email/password/MFA.
-5. Ajouter rate limiting login/register/forgot/resend verification.
+5. Rate limiting login/register/forgot/resend verification ajoute avec seuils admin bornes.
 6. Ajouter tests automatises sur tokens, replay et audit sans secrets.
 
 ## Tests minimum avant production

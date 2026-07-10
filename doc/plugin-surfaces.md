@@ -73,7 +73,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 
 | Option | Usage | Remarque |
 | --- | --- | --- |
-| `identity_security_kit_settings` | Politiques de securite | Valeurs bornees serveur |
+| `identity_security_kit_settings` | Politiques de securite | Mot de passe, avatar, verification email et rate limiting bornes serveur |
 | `identity_security_kit_version` | Version installee/migration | Mise a jour a l'activation/upgrade |
 
 ### User meta
@@ -89,6 +89,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | Hook | Type | Usage |
 | --- | --- | --- |
 | `identity_security_kit_routes` | Filter | Modifier les routes login/register/profile/forgot |
+| `identity_security_kit_rate_limit()` | Helper | Transient rate limit par empreinte HMAC IP/user-agent ou user ID |
 | `identity_security_kit_allowed_image_mimes` | Filter | Modifier les MIME autorises pour avatar |
 | `identity_security_kit_max_avatar_size` | Filter | Modifier la taille avatar maximale |
 | `identity_security_kit_max_avatar_dimension` | Filter | Modifier la dimension avatar maximale |

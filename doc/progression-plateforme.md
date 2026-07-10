@@ -133,6 +133,7 @@ PhotoVault
 - Les originaux sensibles disposent maintenant d'une premiere migration vers stockage prive, mais les existants doivent etre traites en admin et la regle serveur Nginx/Apache doit etre verifiee en production.
 - L'inventaire REST/AJAX est documente, mais les tests automatises correspondants ne sont pas encore en place.
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
+- Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Les politiques MFA/OTP/recovery codes ne sont pas encore implementees dans Identity Kit.
 - La newsletter n'a pas encore de queue d'envoi, state machine de campagne, provider abstraction ni reporting.
 
@@ -200,7 +201,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 91%.
+Estimation actuelle: 92%.
 
 Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit, enrichissement public et depots plugins separes.
 

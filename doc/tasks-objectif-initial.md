@@ -70,7 +70,7 @@ Legende:
 - [x] Ajouter verification email.
 - [x] Ajouter renvoi de verification email.
 - [x] Ajouter audit identite sans secrets, reset keys ou IP brute.
-- [~] Ajouter reglages bornes pour politiques de securite deja exposees.
+- [x] Ajouter reglages bornes pour politiques de securite deja exposees.
 - [ ] Ajouter OTP email avec expiration, tentatives, anti-replay et rate limiting.
 - [ ] Ajouter OTP SMS/provider abstraction.
 - [ ] Ajouter TOTP/MFA.
@@ -78,6 +78,7 @@ Legende:
 - [ ] Ajouter grace period MFA 15 jours et enforcement wp-admin privilegie.
 - [ ] Ajouter invalidation de sessions sur evenement sensible.
 - [x] Ajouter threat model identity documente.
+- [x] Ajouter rate limiting login/register/forgot/resend verification configurable.
 
 ## 6. Newsletter Campaign Kit
 
@@ -168,6 +169,6 @@ Legende:
 
 ## Statut global
 
-Progression estimee: 91%.
+Progression estimee: 92%.
 
 Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.
