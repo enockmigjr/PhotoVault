@@ -1,6 +1,6 @@
 # Inventaire REST/AJAX et admin-post
 
-Derniere mise a jour: 2026-07-09
+Derniere mise a jour: 2026-07-10
 
 Objectif: classer les points d'entree publics, authentifies et privilegies afin de preparer les tests de securite REST/AJAX, CSRF, IDOR et privilege escalation.
 
@@ -22,6 +22,8 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_unsubscribe` | Authentifie lien email | Token 64 hex, pas d'email brut dans l'URL | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_subscriber_status` | Admin | `newsletter_manage_subscribers`, nonce par abonne, whitelist status | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_export_subscribers` | Admin | `newsletter_view_reports`, nonce export | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_campaign` | Admin | `newsletter_create_campaigns`, nonce creation | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_transition_campaign` | Admin | `newsletter_create_campaigns`, `newsletter_send_campaigns` pour transitions envoi, nonce par campagne | A tester |
 
 ## PhotoVault Core
 

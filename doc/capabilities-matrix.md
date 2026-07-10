@@ -1,6 +1,6 @@
 # Matrice capabilities PhotoVault
 
-Derniere mise a jour: 2026-07-09
+Derniere mise a jour: 2026-07-10
 
 Objectif: rendre visibles les roles, capabilities et controles d'acces deja presents afin de guider les tests et la future delegation fine des permissions.
 
@@ -52,9 +52,9 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 | Capability | Attribuee actuellement | Zones protegees | Commentaire |
 | --- | --- | --- | --- |
 | `newsletter_manage_subscribers` | `administrator` | Menu abonnes, changement de statut | Capability operationnelle actuelle |
-| `newsletter_manage_lists` | `administrator` | Cible future listes/segments | Pas encore module complet |
-| `newsletter_create_campaigns` | `administrator` | Cible future creation campagne | Pas encore module complet |
-| `newsletter_send_campaigns` | `administrator` | Cible future envoi campagne | Tres sensible: devra exiger confirmations et audit |
+| `newsletter_manage_lists` | `administrator` | Listes, tags et segments | Operationnelle pour segmentation de base |
+| `newsletter_create_campaigns` | `administrator` | Creation brouillons et transitions non-envoi | Operationnelle pour base campagnes |
+| `newsletter_send_campaigns` | `administrator` | Transitions scheduled/sending/sent | Tres sensible: envoi reel encore non branche |
 | `newsletter_view_reports` | `administrator` | Export CSV abonnes, futurs rapports | Donne acces a des emails en clair |
 | `newsletter_manage_settings` | `administrator` | Cible future reglages provider/SMTP | A traiter comme sensible |
 
@@ -63,6 +63,7 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 - L'inscription newsletter est publique par design, mais protegee par nonce, consentement et validation email.
 - La desinscription est publique par token, sans email brut dans l'URL.
 - L'export CSV contient des emails en clair et doit rester limite aux roles de confiance.
+- Les campagnes utilisent des transitions serveur: creation via newsletter_create_campaigns, passage vers scheduled/sending/sent via newsletter_send_campaigns.
 
 ## Matrice cible de delegation
 
@@ -83,7 +84,7 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 4. Verifier qu'un utilisateur avec `newsletter_manage_subscribers` mais sans `newsletter_view_reports` ne voit pas l'export CSV.
 5. Verifier qu'un utilisateur avec `identity_view_security_audit` mais sans `identity_manage_settings` ne peut pas sauvegarder les reglages.
 6. Verifier que `manage_options` garde le role de super-admin applicatif dans PhotoVault Core.
-7. Verifier que chaque capability future reste sans effet tant que le module correspondant n'est pas implemente.
+7. Verifier qu'un utilisateur avec newsletter_create_campaigns mais sans newsletter_send_campaigns ne peut pas passer une campagne en scheduled, sending ou sent.
 
 ## Gaps
 

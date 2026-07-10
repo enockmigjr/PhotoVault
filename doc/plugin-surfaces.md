@@ -129,6 +129,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `{$wpdb->prefix}newsletter_campaign_subscriber_lists` | `newsletter_campaign_kit_get_subscriber_lists_table()` | Liaison abonne/liste | Cle composee abonne + liste |
 | `{$wpdb->prefix}newsletter_campaign_subscriber_tags` | `newsletter_campaign_kit_get_subscriber_tags_table()` | Liaison abonne/tag | Cle composee abonne + tag |
 | `{$wpdb->prefix}newsletter_campaign_audit` | `newsletter_campaign_kit_get_audit_table()` | Audit inscriptions, desinscriptions, statuts, exports et segments | IP hash, user-agent tronque, contexte nettoye |
+| `{$wpdb->prefix}newsletter_campaign_campaigns` | `newsletter_campaign_kit_get_campaigns_table()` | Brouillons, ciblage, statuts et transitions campagne | Sujet, contenu, cible liste, auteurs |
 
 ### Options
 
@@ -150,6 +151,8 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_export_subscribers` | Export CSV | Export donnees abonnes |
 | `admin_post_newsletter_campaign_kit_create_list` | Creation liste | Capability `newsletter_manage_lists`, nonce |
 | `admin_post_newsletter_campaign_kit_create_tag` | Creation tag | Capability `newsletter_manage_lists`, nonce |
+| `admin_post_newsletter_campaign_kit_create_campaign` | Creation campagne | Capability `newsletter_create_campaigns`, nonce |
+| `admin_post_newsletter_campaign_kit_transition_campaign` | Transition campagne | Capability `newsletter_create_campaigns`, `newsletter_send_campaigns` pour envoi, nonce |
 
 ## Points de verification runtime
 
