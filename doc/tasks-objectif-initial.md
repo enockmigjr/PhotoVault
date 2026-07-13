@@ -75,7 +75,8 @@ Legende:
 - [x] Ajouter OTP email avec expiration, tentatives, anti-replay et rate limiting; moteur et refus critiques valides dans WordPress.
 - [~] Ajouter OTP SMS/provider abstraction. Moteur, adapter generique, Twilio et fail-closed testes; credentials et livraison SMS reelle restent a valider.
 - [~] Ajouter telephone international E.164 avec prefixe et unicite serveur. Stockage, unicite et verification OTP valides; librairie de plans et migration restent a faire.
-- [~] Brancher les seconds facteurs email et telephone au challenge de connexion MFA generique. Enrollment et login runtime valides; remplacement/desactivation et E2E navigateur restent a faire.
+- [~] Brancher les seconds facteurs email et telephone au challenge de connexion MFA generique. Enrollment, login et desactivation runtime valides; parcours guide de remplacement et E2E navigateur restent a faire.
+- [x] Ajouter la desactivation TOTP/email/SMS avec mot de passe ou preuve du canal, invalidation des autres sessions et interdiction de retirer le dernier facteur obligatoire.
 - [~] Ajouter TOTP/MFA. Enrolement, secret chiffre, anti-rejeu et login runtime valides; QR et E2E navigateur restent a faire.
 - [x] Ajouter recovery codes avec generation 80 bits, hashes, affichage unique, consommation et anti-rejeu valides en runtime.
 - [~] Ajouter grace period MFA 15 jours et enforcement wp-admin privilegie. Calcul jour 15 valide; rappels et matrice HTTP wp-admin/AJAX restent a faire.
@@ -174,7 +175,7 @@ Legende:
 
 ## Statut global
 
-Progression corrigee: 55% d'implementation fonctionnelle et 44% de preparation production stricte.
+Progression corrigee: 56% d'implementation fonctionnelle et 45% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 

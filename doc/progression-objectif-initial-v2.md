@@ -10,8 +10,8 @@ Le cahier initial contient 113 sections techniques ou fonctionnelles mesurables,
 
 La progression est desormais publiee avec deux mesures:
 
-- **implementation fonctionnelle: 55%**;
-- **preparation production stricte: 44%**.
+- **implementation fonctionnelle: 56%**;
+- **preparation production stricte: 45%**.
 
 Le premier chiffre mesure le code et le cablage reel deja presents. Le second retire les fonctions sans tests d'integration, sans validation WordPress runtime ou sans verification de l'environnement cible. Aucun simple fichier Markdown ne fait progresser la preparation production.
 
@@ -20,7 +20,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 | Domaine du cahier initial | Sections | Implementation | Production | Etat reel |
 | --- | ---: | ---: | ---: | --- |
 | Audit, architecture, securite de base | 1-16 | 65% | 48% | Plugins separes, inventaires et controles principaux presents; fallbacks, audit exhaustif et tests restent incomplets. |
-| Identity Security Kit | 17-33 | 61% | 54% | Email initial et changement confirme, E.164, OTP, TOTP, recovery, MFA multicanal et grace testes; phone library, QR, remplacement des facteurs, SMS reel et E2E navigateur restent a faire. |
+| Identity Security Kit | 17-33 | 65% | 58% | Email initial et changement confirme, E.164, OTP, TOTP, recovery, MFA multicanal, retrait securise des facteurs et grace testes; phone library, QR, SMS reel, rappels et E2E navigateur restent a faire. |
 | Newsletter Campaign Kit | 34-61 | 52% | 44% | Abonnes, segmentation, campagnes, programmation, one-click unsubscribe et suppression avant envoi valides; preferences, suppression-list durable, templates, tracking, bounces et privacy restent majeurs. |
 | PhotoVault metier et experience | 62-76 | 57% | 43% | Home, galerie, detail, medias proteges, watermark et downloads avances; dashboard, favoris, shootings, upload complet et tests d'autorisation manquent. |
 | Docker et exploitation | 77-89 | 82% | 70% | WordPress initialise, services healthy, plugins/migrations valides, cron reel et expediteur wp_mail vers Mailpit testes; sauvegardes, restauration et image de production restent a faire. |
@@ -40,6 +40,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Base OTP commune email/SMS avec purpose, canal, destination HMAC, expiration, tentatives et consommation atomique.
 - Abstraction SMS avec adaptateur Twilio sans secret en base ou dans Git et extension par filtres.
 - Enrollment MFA email/SMS explicite, destination verifiee, preference et challenge login multicanal.
+- Desactivation TOTP/email/SMS re-authentifiee, OTP lie au canal, invalidation des autres sessions et controle reitere du dernier facteur obligatoire.
 - Runtime Identity valide sur vrais utilisateurs, tables et metadonnees: email lie et single-use, E.164 unique, OTP purpose/expiry/attempts/replay, TOTP, recovery, login email/SMS/TOTP et grace 15 jours.
 - Douze emails Identity remis a Mailpit avec reponse SMTP 250; le template fatal de verification/reset a ete corrige.
 - Changement d'email differe valide: mot de passe actuel, adresse proposee chiffree, confirmation expirable/single-use, notification ancienne adresse et revocation des preuves email.
@@ -53,7 +54,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 
 - Validation des numeros: E.164 canonique et extension disponible, mais pas encore de librairie de plans de numerotation ni de selecteur pays complet.
 - MFA 15 jours: grace et blocage admin presents, mais rappels, changements de politique et cas multisite non couverts.
-- Changement de facteur: activation et preference re-authentifiees; desactivation email/SMS et remplacement avec verification du facteur courant restent a faire.
+- Changement de facteur: activation, preference et desactivation re-authentifiees; le remplacement passe par retrait/re-enrolement, mais son parcours guide et les changements concurrents restent a valider en navigateur.
 - SMS: moteur, provider generique et fail-closed valides avec adapter controle; Twilio reel reste sans credential ni preuve staging.
 - Docker: runtime local valide et services healthy; sauvegardes, restauration, rotation des secrets et image immutable de production restent incomplets.
 - Newsletter: ciblage, cron et one-click unsubscribe valides; preferences thematiques, suppression-list durable, providers, bounces et observabilite restent incomplets.
@@ -75,7 +76,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Ajouter une librairie reconnue pour les plans de numerotation et l'UX pays/indicatif.
 - Ajouter connexion par telephone optionnelle, uniquement pour numero verifie, avec anti-enumeration.
 - Ajouter QR Code TOTP accessible.
-- Ajouter desactivation/remplacement email et SMS avec mot de passe et facteur existant.
+- Ajouter un parcours guide de remplacement des facteurs et le valider en navigateur.
 - Ajouter rappels J+1/J+7/J+12 et gestion des changements de capabilities/politique.
 - Completer les tests OTP restants: mauvais utilisateur, resend concurrent, changement de destination et rate-limit distribue.
 

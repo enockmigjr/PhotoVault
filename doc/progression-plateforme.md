@@ -190,7 +190,7 @@ PhotoVault
 ### P1 - Identity Kit
 
 1. Valider un provider SMS reel en staging sans exposer ses secrets.
-2. Ajouter QR TOTP et remplacement/desactivation des facteurs.
+2. Ajouter QR TOTP et parcours guide de remplacement des facteurs; la desactivation securisee est validee en runtime.
 3. Tester en navigateur le challenge login et l'enforcement wp-admin/AJAX par role.
 4. Ajouter rappels J+1/J+7/J+12 et gestion des changements de politique/capabilities.
 5. Ajouter page admin Security Audit/Policies complete.
@@ -225,7 +225,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation corrigee: 55% d implementation fonctionnelle et 44% de preparation production stricte.
+Estimation corrigee: 56% d implementation fonctionnelle et 45% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -236,6 +236,6 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - verification serveur du stockage prive sur l'environnement cible;
 - initialisation WordPress dans Docker puis verification runtime complete des plugins et migrations;
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
-- validation runtime Identity: MFA email/telephone, provider SMS reel, remplacement des facteurs et tests d integration;
+- validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
 - UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;
 - Newsletter avancee: lifecycle des segments, templates reutilisables, preview email, preferences/suppression-list, tracking ouvertures/clics et exports.
