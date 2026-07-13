@@ -116,6 +116,8 @@ PhotoVault
 - Segments dynamiques all/any ajoutes sur listes, tags, source et anciennete, avec thematiques de campagne, affectations admin et preuve runtime des destinataires.
 - One-click unsubscribe RFC 8058 ajoute avec POST idempotent, URL HTTPS, confirmation DKIM explicite et en-tetes verifies dans Mailpit.
 - Les jetons de desinscription tournent a la reactivation; un contact `suppressed` ne peut plus etre reactive publiquement et reste annule au dernier controle avant envoi.
+- Les templates editoriaux reutilisables disposent de creation, edition, duplication, archivage/restauration et heritage par campagne.
+- La preview admin HTML/texte exige capability et nonce, applique une CSP restrictive et les emails sont remis en multipart avec `AltBody` valide dans PHPMailer/Mailpit.
 
 ### Experience publique
 
@@ -154,7 +156,7 @@ PhotoVault
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Le noyau TOTP/recovery/grace et les MFA email/SMS sont valides par services dans WordPress; les parcours navigateur, le SMS reel et la migration des comptes existants restent a valider.
-- La newsletter dispose maintenant de preferences thematiques, suppression-list durable et outils Privacy; provider API externe, templates avances, imports et tracking ouvertures/clics restent absents.
+- La newsletter dispose maintenant de preferences thematiques, suppression-list durable, outils Privacy et templates multipart; provider API externe, imports et tracking ouvertures/clics restent absents.
 
 ### Moyen
 
@@ -197,7 +199,7 @@ PhotoVault
 
 ### P1 - Newsletter Kit
 
-1. Ajouter templates reutilisables avances et previsualisation email.
+1. Ajouter edition/duplication de campagnes et blocs editoriaux reutilisables.
 2. Brancher un provider API externe dedie et ajouter supervision/alertes du cron de traitement.
 3. Ajouter webhooks signes pour bounces/complaints et brancher le registre de suppression au futur import.
 4. Ajouter tracking ouvertures/clics et exports de reporting avances.
@@ -211,10 +213,9 @@ PhotoVault
 
 ### P2 - Exploitation
 
-1. Terminer l'installation WordPress Docker et confirmer l'activation des trois plugins.
-2. Tester `wp_mail()` depuis WordPress apres installation; le transport SMTP direct vers Mailpit est deja valide.
-3. Enrichir README principal avec les commandes applicatives confirmees apres initialisation.
-4. Ajouter procedures de sauvegarde/restauration DB et medias.
+1. Ajouter procedures de sauvegarde/restauration DB et medias, puis les tester.
+2. Documenter rotation des secrets et strategie d'image immutable de production.
+3. Ajouter un smoke test Docker automatise en CI.
 
 ### P3 - Qualite
 
@@ -225,7 +226,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation corrigee: 60% d implementation fonctionnelle et 49% de preparation production stricte.
+Estimation recalculee: 62% d implementation fonctionnelle et 51% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -234,8 +235,8 @@ Les fondations les plus importantes sont posees: modularisation, securite media 
 Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label sont:
 
 - verification serveur du stockage prive sur l'environnement cible;
-- initialisation WordPress dans Docker puis verification runtime complete des plugins et migrations;
+- sauvegarde/restauration et smoke tests automatises de l'environnement Docker;
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
 - UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;
-- Newsletter avancee: lifecycle des segments, templates reutilisables, preview email, imports, webhooks provider, tracking ouvertures/clics et exports.
+- Newsletter avancee: lifecycle des segments, edition campagne, imports, webhooks provider, tracking ouvertures/clics et exports.

@@ -98,7 +98,7 @@ Legende:
 - [x] Ajouter premiere UI admin abonnes.
 - [x] Documenter capabilities et tables newsletter.
 - [~] Ajouter listes, segments, tags et imports/exports. Fait: listes, tags, affectations admin, segments dynamiques all/any et tests runtime. Reste: edition, preview des volumes et imports/exports avances.
-- [~] Ajouter campagnes, templates, etats et transitions serveur. Fait: campagnes, thematiques, ciblage liste/segment, programmation timezone-aware et transitions serveur. Reste: templates reutilisables/previsualisation.
+- [~] Ajouter campagnes, templates, etats et transitions serveur. Campagnes ciblees, programmation, templates reutilisables avec cycle de vie, preview protegee HTML/texte et multipart valides en runtime; edition/duplication de campagne restent a faire.
 - [~] Ajouter queue d'envoi batch + retry/backoff. Fait: queue idempotente, verrous atomiques, reprise stale, cron minute et test runtime. Reste: provider API et observabilite production.
 - [~] Ajouter provider abstraction SMTP/API. Fait: provider `wp_mail`, reglages admin, filtre adaptateur externe. Reste: provider API dedie avec secrets hors Git.
 - [~] Ajouter reporting campagne. Fait: rapports de livraison depuis la queue. Reste: tracking ouvertures/clics et exports avances.
@@ -158,7 +158,7 @@ Legende:
 - [~] Runtime Docker valide avec WordPress, WP-CLI, MariaDB, Nginx, Mailpit, cron et premiers flux Identity/Newsletter; parcours PhotoVault et E2E complets restent a valider.
 - [ ] Ajouter PHPCS / WordPress Coding Standards.
 - [~] Ajouter tests Identity: expiration, attempts, replay et purpose valides en runtime; mauvais utilisateur, concurrence resend, UI et politique HTTP restent a couvrir.
-- [~] Ajouter tests Newsletter: segmentation, suppression, unsubscribe, retry, idempotence. Segmentation, scheduler, one-click, preferences/CSRF, suppression durable, Privacy et idempotence valides; couverture retry exhaustive restante.
+- [~] Ajouter tests Newsletter: segmentation, suppression, unsubscribe, retry, idempotence. Segmentation, scheduler, one-click, preferences/CSRF, suppression durable, Privacy, templates/multipart et idempotence valides; couverture retry exhaustive restante.
 - [ ] Ajouter tests REST authorization matrix.
 - [ ] Ajouter tests e2e: register, verify email, login, gallery, protected media, newsletter subscribe/unsubscribe.
 
@@ -178,7 +178,7 @@ Legende:
 
 ## Statut global
 
-Progression corrigee: 60% d'implementation fonctionnelle et 49% de preparation production stricte.
+Progression recalculee: 62% d'implementation fonctionnelle et 51% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
