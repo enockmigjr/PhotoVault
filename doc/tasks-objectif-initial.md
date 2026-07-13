@@ -79,7 +79,8 @@ Legende:
 - [x] Ajouter la desactivation TOTP/email/SMS avec mot de passe ou preuve du canal, invalidation des autres sessions et interdiction de retirer le dernier facteur obligatoire.
 - [~] Ajouter TOTP/MFA. Enrolement, secret chiffre, anti-rejeu et login runtime valides; QR et E2E navigateur restent a faire.
 - [x] Ajouter recovery codes avec generation 80 bits, hashes, affichage unique, consommation et anti-rejeu valides en runtime.
-- [~] Ajouter grace period MFA 15 jours et enforcement wp-admin privilegie. Calcul jour 15 valide; rappels et matrice HTTP wp-admin/AJAX restent a faire.
+- [~] Ajouter grace period MFA 15 jours et enforcement wp-admin privilegie. Calcul J+15, rappels J+1/J+7/J+12 et changements de role/politique valides; matrice HTTP et multisite restent a faire.
+- [x] Ajouter un cron MFA horaire borne, pagine, sans doublon et nettoye a la desactivation.
 - [~] Ajouter invalidation de sessions sur evenement sensible. Autres sessions invalidees sur changement de mot de passe et changement MFA; autres evenements sensibles restent a inventorier.
 - [x] Ajouter threat model identity documente.
 - [x] Ajouter rate limiting login/register/forgot/resend verification configurable.
@@ -175,7 +176,7 @@ Legende:
 
 ## Statut global
 
-Progression corrigee: 56% d'implementation fonctionnelle et 45% de preparation production stricte.
+Progression corrigee: 57% d'implementation fonctionnelle et 46% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
