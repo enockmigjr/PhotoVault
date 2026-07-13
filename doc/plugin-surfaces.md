@@ -75,7 +75,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 
 | Option | Usage | Remarque |
 | --- | --- | --- |
-| `identity_security_kit_settings` | Politiques de securite | Mot de passe, avatar, verification email, OTP email et rate limiting bornes serveur |
+| `identity_security_kit_settings` | Politiques de securite | Mot de passe, avatar, email/OTP, telephone E.164, rate limiting et politique MFA par capabilities |
 | `identity_security_kit_version` | Version installee/migration | Mise a jour a l'activation/upgrade |
 
 ### User meta
@@ -85,7 +85,13 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `identity_email_verified` | Filtrable par `identity_security_kit_email_verified_meta_key` | Statut email verifie |
 | `identity_email_verification_pending` | Filtrable par `identity_security_kit_email_pending_meta_key` | Statut verification en attente |
 | `photovault_avatar_id` | Filtrable par `identity_security_kit_avatar_meta_key` | Avatar utilisateur |
-| `identity_email_otp_verified_at` | Identity Kit | Derniere verification OTP email reussie |
+| identity_email_otp_verified_at | Identity Kit | Derniere verification OTP email reussie |
+| identity_phone_e164 / identity_phone_verified | Identity Kit | Telephone normalise unique et futur statut de verification |
+| identity_mfa_totp_secret / identity_mfa_totp_pending | Identity Kit | Secret TOTP chiffre authentifie; pending expire apres 15 minutes |
+| identity_mfa_totp_last_counter / identity_mfa_enabled_at | Identity Kit | Anti-rejeu et date activation |
+| identity_mfa_recovery_codes | Identity Kit | Recovery codes hashes et consommes individuellement |
+| identity_mfa_grace_started_at | Identity Kit | Debut stable de la grace MFA |
+| identity_mfa_login_challenge | Identity Kit | Hash du challenge login temporaire actif |
 
 ### Filtres publics
 
@@ -99,7 +105,11 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `identity_security_kit_registration_role` | Filter | Modifier le role d'inscription par defaut |
 | `identity_security_kit_avatar_meta_key` | Filter | Modifier la meta avatar |
 | `identity_security_kit_email_verified_meta_key` | Filter | Modifier la meta email verifie |
-| `identity_security_kit_email_pending_meta_key` | Filter | Modifier la meta email pending |
+| identity_security_kit_email_pending_meta_key | Filter | Modifier la meta email pending |
+| identity_security_kit_phone_meta_key | Filter | Modifier la meta du telephone E.164 |
+| identity_security_kit_mfa_required_capabilities | Filter | Etendre les capabilities qui imposent MFA |
+| identity_security_kit_user_requires_mfa | Filter | Adapter la politique par utilisateur |
+| identity_security_kit_user_has_mfa | Filter | Declarer une methode MFA fournie par une integration |
 
 ### Actions publiques/emises
 
@@ -108,7 +118,9 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `identity_security_kit_password_reset_failed` | Action emise | Integrations audit/alerte reset echoue |
 | `identity_security_kit_password_reset_mail_failed` | Action emise | Integrations audit/alerte email reset echoue |
 | `identity_security_kit_email_otp_created` | Action emise | Challenge cree sans exposer le code |
-| `identity_security_kit_email_otp_verified` | Action emise | OTP consomme pour un user et un purpose |
+| identity_security_kit_email_otp_verified | Action emise | OTP consomme pour un user et un purpose |
+| identity_security_kit_mfa_enabled | Action emise | Methode MFA activee sans exposer le secret |
+| identity_security_kit_mfa_disabled | Action emise | Methode MFA desactivee |
 
 
 ### Actions WordPress utilisees
@@ -123,7 +135,13 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_identity_security_kit_verify_email` | Verify email | Lien email authentifie |
 | `admin_post_identity_security_kit_resend_email_verification` | Resend verification | Renvoi authentifie |
 | `admin_post_identity_security_kit_email_otp_request` | Request OTP | Session, nonce lie au purpose, cooldown |
-| `admin_post_identity_security_kit_email_otp_verify` | Verify OTP | Session, nonce lie au purpose, ownership, expiration et essais |
+| dmin_post_identity_security_kit_email_otp_verify | Verify OTP | Session, nonce lie au purpose, ownership, expiration et essais |
+| dmin_post_identity_security_kit_totp_start | Start TOTP | Session, nonce, mot de passe courant et secret pending chiffre |
+| dmin_post_identity_security_kit_totp_confirm | Confirm TOTP | Session, nonce, rate limit, fenetre temporelle et anti-rejeu |
+| dmin_post_identity_security_kit_totp_cancel | Cancel TOTP | Session et nonce |
+| dmin_post_identity_security_kit_recovery_regenerate | Replace recovery | Session, nonce et facteur courant |
+| dmin_post_identity_security_kit_totp_disable | Disable TOTP | Session, nonce, mot de passe et facteur courant |
+| wp_authenticate_user / login_form_identity_security_mfa | Challenge login | Challenge chiffre, lie au navigateur, expire et consomme une fois |
 
 ## Newsletter Campaign Kit
 

@@ -34,7 +34,19 @@ get_header();
 					case 'invalid_email':
 						$error_message = esc_html__( 'Adresse e-mail invalide.', 'photovault' );
 						break;
-					case 'weak_password':
+					case 'phone_required':
+						$error_message = esc_html__( 'Le numero de telephone international est obligatoire.', 'photovault' );
+						break;
+					case 'phone_country_code_required':
+					case 'phone_invalid':
+						$error_message = esc_html__( 'Saisissez un numero valide avec son prefixe, par exemple +229.', 'photovault' );
+						break;
+					case 'phone_exists':
+						$error_message = esc_html__( 'Ce numero de telephone est deja associe a un compte.', 'photovault' );
+						break;
+					case 'phone_save_failed':
+						$error_message = esc_html__( 'Le numero de telephone n\'a pas pu etre enregistre.', 'photovault' );
+						break;					case 'weak_password':
 						$error_message = esc_html__( 'Le mot de passe doit contenir au moins 8 caracteres.', 'photovault' );
 						break;
 					case 'password_mismatch':
@@ -81,6 +93,11 @@ get_header();
 				<input id="email" name="email" type="email" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="jean.dupont@example.com">
 			</div>
 
+			<div>
+				<label for="phone" class="block text-sm font-medium text-gray-200 mb-1">Telephone international</label>
+				<input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="+229 01 23 45 67 89">
+				<p class="mt-1 text-xs text-gray-500">Prefixe pays obligatoire. Le numero ne sert pas d'identifiant de connexion.</p>
+			</div>
 			<div class="grid grid-cols-2 gap-4">
 				<div>
 					<label for="password" class="block text-sm font-medium text-gray-200 mb-1">Mot de passe</label>

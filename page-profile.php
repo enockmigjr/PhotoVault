@@ -16,10 +16,16 @@ $avatar_url     = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbna
 $status         = isset( $_GET['profile'] ) ? sanitize_key( wp_unslash( $_GET['profile'] ) ) : '';
 $verify         = isset( $_GET['verify'] ) ? sanitize_key( wp_unslash( $_GET['verify'] ) ) : '';
 $email_verified = function_exists( 'identity_security_kit_is_email_verified' ) ? identity_security_kit_is_email_verified( $current_user->ID ) : true;
+$phone          = function_exists( 'identity_security_kit_phone_meta_key' ) ? (string) get_user_meta( $current_user->ID, identity_security_kit_phone_meta_key(), true ) : '';
 $messages       = array(
 	'success'                  => array( 'type' => 'success', 'text' => __( 'Profil mis a jour.', 'photovault' ) ),
 	'invalid_email'            => array( 'type' => 'error', 'text' => __( 'Adresse e-mail invalide.', 'photovault' ) ),
 	'email_exists'             => array( 'type' => 'error', 'text' => __( 'Cette adresse e-mail est deja utilisee.', 'photovault' ) ),
+	'phone_required'           => array( 'type' => 'error', 'text' => __( 'Le numero de telephone international est obligatoire.', 'photovault' ) ),
+	'phone_country_code_required' => array( 'type' => 'error', 'text' => __( 'Ajoutez le prefixe pays au numero de telephone.', 'photovault' ) ),
+	'phone_invalid'            => array( 'type' => 'error', 'text' => __( 'Numero de telephone international invalide.', 'photovault' ) ),
+	'phone_exists'             => array( 'type' => 'error', 'text' => __( 'Ce numero est deja associe a un autre compte.', 'photovault' ) ),
+	'phone_save_failed'        => array( 'type' => 'error', 'text' => __( 'Le numero de telephone n\'a pas pu etre enregistre.', 'photovault' ) ),
 	'current_password_invalid' => array( 'type' => 'error', 'text' => __( 'Mot de passe actuel incorrect.', 'photovault' ) ),
 	'weak_password'            => array( 'type' => 'error', 'text' => __( 'Le nouveau mot de passe doit contenir au moins 8 caracteres.', 'photovault' ) ),
 	'pwd_mismatch'             => array( 'type' => 'error', 'text' => __( 'Les nouveaux mots de passe ne correspondent pas.', 'photovault' ) ),
@@ -105,6 +111,11 @@ get_header();
 					</div>
 
 					<div class="sm:col-span-2">
+						<label class="mb-2 block text-sm font-semibold text-gray-200" for="phone"><?php esc_html_e( 'Telephone international', 'photovault' ); ?></label>
+						<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required value="<?php echo esc_attr( $phone ); ?>" placeholder="+229 01 23 45 67 89">
+						<p class="mt-2 text-xs text-gray-500"><?php esc_html_e( 'Le prefixe pays est obligatoire. Le numero ne permet pas de se connecter.', 'photovault' ); ?></p>
+					</div>
+					<div class="sm:col-span-2">
 						<label class="mb-2 block text-sm font-semibold text-gray-200" for="bio"><?php esc_html_e( 'Bio', 'photovault' ); ?></label>
 						<textarea class="min-h-32 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="bio" name="bio"><?php echo esc_textarea( $current_user->description ); ?></textarea>
 					</div>
@@ -141,6 +152,12 @@ get_header();
 				</div>
 			</form>
 		</section>
+
+		<?php if ( shortcode_exists( 'identity_security_mfa' ) ) : ?>
+			<section class="rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8 [&_form]:mt-4 [&_form]:space-y-4 [&_input]:rounded-lg [&_input]:border [&_input]:border-white/15 [&_input]:bg-black/40 [&_input]:px-3 [&_input]:py-2 [&_button]:rounded-full [&_button]:bg-amber-300 [&_button]:px-5 [&_button]:py-2 [&_button]:font-bold [&_button]:text-black">
+				<?php echo do_shortcode( '[identity_security_mfa]' ); ?>
+			</section>
+		<?php endif; ?>
 	</div>
 </main>
 

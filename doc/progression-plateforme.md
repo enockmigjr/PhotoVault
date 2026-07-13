@@ -92,6 +92,10 @@ PhotoVault
 - Verification email et renvoi du challenge.
 - Audit identite sans mot de passe, reset key, IP brute ou secret complet.
 - OTP email generique ajoute avec expiration, essais bornes, anti-rejeu, cooldown, shortcode et hooks publics.
+- Telephone international E.164 ajoute avec prefixe obligatoire, unicite serveur et connexion par telephone desactivee par defaut.
+- TOTP RFC 6238 ajoute avec secrets chiffres, anti-rejeu, challenge de connexion natif/PhotoVault et blocage XML-RPC par mot de passe.
+- Recovery codes a usage unique ajoutes avec 80 bits aleatoires, stockage hashe et affichage unique.
+- Grace MFA configurable ajoutee pour les comptes a capabilities sensibles, avec blocage wp-admin/AJAX apres 15 jours et invalidation des autres sessions.
 
 ### Newsletter
 
@@ -142,7 +146,7 @@ PhotoVault
 - L'inventaire REST/AJAX est documente, mais les tests automatises correspondants ne sont pas encore en place.
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
-- Les politiques MFA/OTP/recovery codes ne sont pas encore implementees dans Identity Kit.
+- Le noyau TOTP/recovery/grace est implemente et teste sur vecteurs RFC, mais les flux WordPress bout-en-bout, le second facteur email/telephone et la migration des comptes existants restent a valider.
 - La newsletter n'a pas encore de provider API externe dedie avec secrets hors Git, cron runtime confirme, templates reutilisables avances ni tracking ouvertures/clics.
 
 ### Moyen
@@ -179,10 +183,11 @@ PhotoVault
 
 ### P1 - Identity Kit
 
-1. Verifier en runtime et tester automatiquement le module OTP email.
-2. Ajouter base MFA/TOTP et recovery codes.
-3. Ajouter politiques configurables avec bornes serveur.
-4. Ajouter page admin Security Audit/Policies.
+1. Verifier en runtime le telephone E.164, l enrolement TOTP, le challenge login, le rejeu et les recovery codes.
+2. Ajouter provider SMS et verification du telephone.
+3. Brancher email et telephone comme methodes du challenge MFA generique.
+4. Ajouter tests d integration WordPress et finaliser le README Identity.
+5. Ajouter page admin Security Audit/Policies.
 
 ### P1 - Newsletter Kit
 
@@ -216,7 +221,7 @@ PhotoVault
 
 Estimation actuelle: 78%.
 
-Cette estimation remplace l'ancienne valeur trop optimiste de 98%. Elle mesure la completion production de l'objectif initial avec une regle simple: item termine = 1, item partiel = 0,5, item restant = 0. Le dernier comptage donne 87 items termines, 18 items partiels et 18 items restants, soit environ 78%.
+Cette estimation remplace l'ancienne valeur trop optimiste de 98%. Elle mesure la completion production de l'objectif initial avec une regle simple: item termine = 1, item partiel = 0,5, item restant = 0. Le dernier comptage donne 86 items termines, 24 items partiels et 15 items restants sur 125 items, soit environ 78%.
 
 Les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit media/identite/newsletter, base campagnes, queue newsletter, provider et reporting, enrichissement public et depots plugins separes.
 
@@ -225,6 +230,6 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - verification serveur du stockage prive sur l'environnement cible;
 - initialisation WordPress dans Docker puis verification runtime complete des plugins et migrations;
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
-- fonctions Identity avancees: MFA/TOTP, recovery codes, politique 15 jours et invalidation de sessions;
+- validation runtime Identity et fonctions restantes: second facteur email/telephone, provider SMS et tests d integration;
 - UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;
 - Newsletter avancee: templates reutilisables, preview email, cron runtime confirme, tracking ouvertures/clics et exports.

@@ -40,3 +40,20 @@ foreach ( $photovault_includes as $file ) {
 		require_once $filepath;
 	}
 }
+/**
+ * Require Identity Kit MFA for PhotoVault operational roles.
+ *
+ * @param string[] $capabilities Generic protected capabilities.
+ * @return string[]
+ */
+function photovault_identity_mfa_required_capabilities( $capabilities ) {
+	return array_values(
+		array_unique(
+			array_merge(
+				(array) $capabilities,
+				array( 'photovault_manage_platform', 'photovault_manage_media', 'photovault_manage_settings' )
+			)
+		)
+	);
+}
+add_filter( 'identity_security_kit_mfa_required_capabilities', 'photovault_identity_mfa_required_capabilities' );
