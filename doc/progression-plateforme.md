@@ -154,7 +154,7 @@ PhotoVault
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Le noyau TOTP/recovery/grace et les MFA email/SMS sont valides par services dans WordPress; les parcours navigateur, le SMS reel et la migration des comptes existants restent a valider.
-- La newsletter n'a pas encore de provider API externe dedie avec secrets hors Git, templates reutilisables avances, preferences thematiques, suppression-list durable ni tracking ouvertures/clics.
+- La newsletter dispose maintenant de preferences thematiques, suppression-list durable et outils Privacy; provider API externe, templates avances, imports et tracking ouvertures/clics restent absents.
 
 ### Moyen
 
@@ -199,7 +199,7 @@ PhotoVault
 
 1. Ajouter templates reutilisables avances et previsualisation email.
 2. Brancher un provider API externe dedie et ajouter supervision/alertes du cron de traitement.
-3. Ajouter preferences de desinscription thematiques et suppression-list durable pour imports, bounces et complaints.
+3. Ajouter webhooks signes pour bounces/complaints et brancher le registre de suppression au futur import.
 4. Ajouter tracking ouvertures/clics et exports de reporting avances.
 
 ### P2 - UX metier PhotoVault
@@ -225,7 +225,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation corrigee: 57% d implementation fonctionnelle et 46% de preparation production stricte.
+Estimation corrigee: 60% d implementation fonctionnelle et 49% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -238,4 +238,4 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
 - UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;
-- Newsletter avancee: lifecycle des segments, templates reutilisables, preview email, preferences/suppression-list, tracking ouvertures/clics et exports.
+- Newsletter avancee: lifecycle des segments, templates reutilisables, preview email, imports, webhooks provider, tracking ouvertures/clics et exports.

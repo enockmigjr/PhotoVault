@@ -92,7 +92,9 @@ Legende:
 - [x] Stocker metadata sensible de maniere minimisee/hashee quand pertinent.
 - [x] Ajouter unsubscribe via token serveur.
 - [x] Ajouter one-click unsubscribe RFC 8058 avec POST idempotent et en-tetes HTTPS/DKIM explicites.
-- [~] Ajouter suppression robuste. Fait: statut `suppressed` non reactivable publiquement et annulation juste avant envoi. Reste: registre durable partage avec imports, bounces et complaints.
+- [x] Ajouter suppression robuste avec registre HMAC durable, annulation de queue, refus audience/provider, levee explicite et blocage apres effacement/re-import.
+- [x] Ajouter preferences thematiques publiques avec token opaque, nonce, GET non mutatif et application aux audiences/campagnes.
+- [x] Integrer export, effacement et contenu de politique Privacy aux outils natifs WordPress.
 - [x] Ajouter premiere UI admin abonnes.
 - [x] Documenter capabilities et tables newsletter.
 - [~] Ajouter listes, segments, tags et imports/exports. Fait: listes, tags, affectations admin, segments dynamiques all/any et tests runtime. Reste: edition, preview des volumes et imports/exports avances.
@@ -156,7 +158,7 @@ Legende:
 - [~] Runtime Docker valide avec WordPress, WP-CLI, MariaDB, Nginx, Mailpit, cron et premiers flux Identity/Newsletter; parcours PhotoVault et E2E complets restent a valider.
 - [ ] Ajouter PHPCS / WordPress Coding Standards.
 - [~] Ajouter tests Identity: expiration, attempts, replay et purpose valides en runtime; mauvais utilisateur, concurrence resend, UI et politique HTTP restent a couvrir.
-- [~] Ajouter tests Newsletter: segmentation, suppression, unsubscribe, retry, idempotence. Segmentation, scheduler, endpoint one-click, suppression et idempotence valides; couverture retry exhaustive restante.
+- [~] Ajouter tests Newsletter: segmentation, suppression, unsubscribe, retry, idempotence. Segmentation, scheduler, one-click, preferences/CSRF, suppression durable, Privacy et idempotence valides; couverture retry exhaustive restante.
 - [ ] Ajouter tests REST authorization matrix.
 - [ ] Ajouter tests e2e: register, verify email, login, gallery, protected media, newsletter subscribe/unsubscribe.
 
@@ -176,7 +178,7 @@ Legende:
 
 ## Statut global
 
-Progression corrigee: 57% d'implementation fonctionnelle et 46% de preparation production stricte.
+Progression corrigee: 60% d'implementation fonctionnelle et 49% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
