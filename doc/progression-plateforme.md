@@ -134,7 +134,7 @@ PhotoVault
 
 ### Critique
 
-- La verification runtime complete depend de XAMPP/MySQL actif. Sans base accessible, les migrations `dbDelta`, pages admin et flux bout-en-bout ne peuvent pas etre confirmes.
+- La pile Docker est operationnelle, mais son volume MariaDB neuf attend encore l'installation WordPress. Les migrations `dbDelta`, pages admin et flux bout-en-bout ne sont donc pas encore confirmes.
 
 ### Eleve
 
@@ -167,7 +167,7 @@ PhotoVault
 
 ### P1 - Verification runtime
 
-1. Demarrer XAMPP/MySQL.
+1. Terminer l'assistant d'installation Docker avec des identifiants administrateur choisis par le proprietaire.
 2. Activer/verifier les trois plugins actifs.
 3. Verifier les tables creees: access requests, grants, media audit, identity audit, newsletter subscribers, newsletter lists/tags et newsletter audit.
 4. Tester les roles: anonymous, user non verifie, user verifie, owner, media manager, admin.
@@ -200,9 +200,9 @@ PhotoVault
 
 ### P2 - Exploitation
 
-1. Verifier `docker compose up --build` sur une machine avec reseau Docker disponible.
-2. Finaliser les secrets de `.env` local hors Git.
-3. Enrichir README principal avec les commandes runtime confirmees apres validation Docker/XAMPP.
+1. Terminer l'installation WordPress Docker et confirmer l'activation des trois plugins.
+2. Tester `wp_mail()` depuis WordPress apres installation; le transport SMTP direct vers Mailpit est deja valide.
+3. Enrichir README principal avec les commandes applicatives confirmees apres initialisation.
 4. Ajouter procedures de sauvegarde/restauration DB et medias.
 
 ### P3 - Qualite
@@ -214,16 +214,16 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 76%.
+Estimation actuelle: 78%.
 
-Cette estimation remplace l'ancienne valeur trop optimiste de 98%. Elle mesure la completion production de l'objectif initial avec une regle simple: item termine = 1, item partiel = 0,5, item restant = 0. Le dernier comptage donne 86 items termines, 19 items partiels et 21 items restants, soit environ 76%.
+Cette estimation remplace l'ancienne valeur trop optimiste de 98%. Elle mesure la completion production de l'objectif initial avec une regle simple: item termine = 1, item partiel = 0,5, item restant = 0. Le dernier comptage donne 87 items termines, 18 items partiels et 18 items restants, soit environ 78%.
 
 Les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit media/identite/newsletter, base campagnes, queue newsletter, provider et reporting, enrichissement public et depots plugins separes.
 
 Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label sont:
 
 - verification serveur du stockage prive sur l'environnement cible;
-- verification runtime complete avec WordPress, XAMPP/MySQL ou Docker actif;
+- initialisation WordPress dans Docker puis verification runtime complete des plugins et migrations;
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
 - fonctions Identity avancees: MFA/TOTP, recovery codes, politique 15 jours et invalidation de sessions;
 - UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;

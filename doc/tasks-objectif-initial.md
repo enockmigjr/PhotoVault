@@ -48,7 +48,7 @@ Legende:
 - [x] Ajouter commande WP-CLI `wp photovault secure-originals`.
 - [x] Ajouter ADR-002 pour le stockage prive des originaux.
 - [~] Verifier en runtime les migrations DB, pages admin et traitement des originaux existants.
-- [~] Verifier que Nginx/Apache bloque effectivement `wp-content/photovault-private/` en environnement cible.
+- [~] Verifier que Nginx/Apache bloque effectivement `wp-content/photovault-private/` en environnement cible. Nginx Docker valide; Apache et production restent a confirmer.
 - [x] Ajouter cache/derivatives pour ne pas recalculer le filigrane a chaque requete.
 - [ ] Ajouter tests d'ID guessing sur REST, preview et download.
 
@@ -136,9 +136,9 @@ Legende:
 - [x] Ajouter config Nginx bloquant `wp-content/photovault-private/`.
 - [x] Valider `docker compose config`.
 - [x] Ajouter doc Docker versionnee dans le theme.
-- [~] Les fichiers Docker racine ne sont pas versionnes car la racine WordPress n'est pas un depot Git.
-- [ ] Lancer `docker compose up --build` avec reseau disponible.
-- [ ] Verifier installation WordPress, plugins actifs, Mailpit et cron dans Docker.
+- [x] Initialiser un depot Git d'infrastructure a la racine WordPress et versionner Docker sans inclure le coeur, les uploads, `.env` ni les depots imbriques.
+- [x] Construire et lancer `docker compose up --build`; valider MariaDB, PHP-FPM, Nginx et Mailpit sains.
+- [~] Verifier installation WordPress, plugins actifs, Mailpit et cron dans Docker. Mailpit, transport SMTP et cron valides; installation WordPress et plugins en attente d'initialisation admin.
 - [ ] Ajouter procedures sauvegarde/restauration DB et medias.
 - [~] Ajouter README principal installation/dev/prod: base complete ajoutee, a finaliser apres verification runtime/prod.
 
@@ -146,7 +146,7 @@ Legende:
 
 - [x] Lints PHP `php -l` lances sur les fichiers modifies lors des lots critiques.
 - [x] `git diff --check` utilise avant commits.
-- [~] Runtime bloque localement: WP-CLI absent sur host et MySQL `127.0.0.1:3306` indisponible.
+- [~] Runtime Docker disponible avec WP-CLI 2.12.0, MariaDB, Nginx, Mailpit et cron; installation WordPress et flux applicatifs complets encore a initialiser.
 - [ ] Ajouter PHPCS / WordPress Coding Standards.
 - [ ] Ajouter tests unitaires Identity: OTP expiration, attempts, replay, purpose.
 - [ ] Ajouter tests Newsletter: segmentation, suppression, unsubscribe, retry, idempotence.
@@ -169,8 +169,8 @@ Legende:
 
 ## Statut global
 
-Progression estimee: 76%.
+Progression estimee: 78%.
 
-Calcul: 86 items termines, 19 items partiels et 21 items restants. Les items partiels comptent pour 0,5 afin de mesurer la completion production de l'objectif initial, pas seulement le volume de code ou de documentation deja ajoute.
+Calcul: 87 items termines, 18 items partiels et 18 items restants. Les items partiels comptent pour 0,5 afin de mesurer la completion production de l'objectif initial, pas seulement le volume de code ou de documentation deja ajoute.
 
 Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes, queue, provider et reporting, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises, les fonctions Identity avancees, les tests d'autorisation, le dashboard utilisateur, le module shootings et la configuration serveur cible n'ont pas ete verifies ou termines.
