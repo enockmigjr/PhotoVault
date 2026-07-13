@@ -10,8 +10,8 @@ Le cahier initial contient 113 sections techniques ou fonctionnelles mesurables,
 
 La progression est desormais publiee avec deux mesures:
 
-- **implementation fonctionnelle: 53%**;
-- **preparation production stricte: 41%**.
+- **implementation fonctionnelle: 54%**;
+- **preparation production stricte: 43%**.
 
 Le premier chiffre mesure le code et le cablage reel deja presents. Le second retire les fonctions sans tests d'integration, sans validation WordPress runtime ou sans verification de l'environnement cible. Aucun simple fichier Markdown ne fait progresser la preparation production.
 
@@ -20,11 +20,11 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 | Domaine du cahier initial | Sections | Implementation | Production | Etat reel |
 | --- | ---: | ---: | ---: | --- |
 | Audit, architecture, securite de base | 1-16 | 65% | 48% | Plugins separes, inventaires et controles principaux presents; fallbacks, audit exhaustif et tests restent incomplets. |
-| Identity Security Kit | 17-33 | 50% | 34% | Email verification, OTP generique, TOTP, recovery, grace MFA et base multicanal presents; email change, phone library, QR, changement de facteurs et runtime complet restent a faire. |
+| Identity Security Kit | 17-33 | 55% | 47% | Email, E.164, OTP, TOTP, recovery, MFA email/SMS et grace testes dans WordPress; email change, phone library, QR, remplacement des facteurs, SMS reel et E2E navigateur restent a faire. |
 | Newsletter Campaign Kit | 34-61 | 52% | 44% | Abonnes, segmentation, campagnes, programmation, one-click unsubscribe et suppression avant envoi valides; preferences, suppression-list durable, templates, tracking, bounces et privacy restent majeurs. |
 | PhotoVault metier et experience | 62-76 | 57% | 43% | Home, galerie, detail, medias proteges, watermark et downloads avances; dashboard, favoris, shootings, upload complet et tests d'autorisation manquent. |
 | Docker et exploitation | 77-89 | 82% | 70% | WordPress initialise, services healthy, plugins/migrations valides, cron reel et expediteur wp_mail vers Mailpit testes; sauvegardes, restauration et image de production restent a faire. |
-| Tests fonctionnels et securite | 90-96 | 18% | 16% | Tests cibles OTP, SMS, scheduler, segmentation et suppression Newsletter plus preuves runtime; matrices REST, CSRF, IDOR, MFA complet et E2E restent absentes. |
+| Tests fonctionnels et securite | 90-96 | 24% | 21% | OTP, SMS adapter, Identity runtime, scheduler, segmentation et suppression Newsletter testes; matrices REST, CSRF, IDOR et E2E navigateur restent absentes. |
 | Qualite, migrations, UI, a11y, i18n | 97-105 | 25% | 16% | Migrations versionnees et premieres UI; PHPCS, analyse statique, lifecycle complet, accessibilite, i18n et templates email uniformes incomplets. |
 | Threat models et durcissement transversal | 106-111 | 46% | 33% | Trois threat models et plusieurs rate limits; correlation, alertes, changements de facteur et tests anti-abus incomplets. |
 | Compatibilite et documentation | 112-113 | 55% | 43% | Documentation centrale riche; compatibilite, multisite, hooks et guides providers encore incomplets. |
@@ -40,6 +40,8 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Base OTP commune email/SMS avec purpose, canal, destination HMAC, expiration, tentatives et consommation atomique.
 - Abstraction SMS avec adaptateur Twilio sans secret en base ou dans Git et extension par filtres.
 - Enrollment MFA email/SMS explicite, destination verifiee, preference et challenge login multicanal.
+- Runtime Identity valide sur vrais utilisateurs, tables et metadonnees: email lie et single-use, E.164 unique, OTP purpose/expiry/attempts/replay, TOTP, recovery, login email/SMS/TOTP et grace 15 jours.
+- Douze emails Identity remis a Mailpit avec reponse SMTP 250; le template fatal de verification/reset a ete corrige.
 - Abonnes newsletter, consentement, desinscription tokenisee, listes, tags, segments dynamiques, campagnes ciblees, queue batch, programmation WP-Cron idempotente et rapports.
 - One-click unsubscribe RFC 8058 avec endpoint POST idempotent, en-tetes HTTPS conditionnes a la confirmation DKIM, rotation des jetons et preuve Mailpit.
 - Statut `suppressed` non reactivable publiquement et reverifie juste avant chaque remise au provider.
@@ -51,7 +53,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Validation des numeros: E.164 canonique et extension disponible, mais pas encore de librairie de plans de numerotation ni de selecteur pays complet.
 - MFA 15 jours: grace et blocage admin presents, mais rappels, changements de politique et cas multisite non couverts.
 - Changement de facteur: activation et preference re-authentifiees; desactivation email/SMS et remplacement avec verification du facteur courant restent a faire.
-- SMS: Twilio et adapter hook presents; aucune credentielle reelle ni verification de livraison runtime.
+- SMS: moteur, provider generique et fail-closed valides avec adapter controle; Twilio reel reste sans credential ni preuve staging.
 - Docker: runtime local valide et services healthy; sauvegardes, restauration, rotation des secrets et image immutable de production restent incomplets.
 - Newsletter: ciblage, cron et one-click unsubscribe valides; preferences thematiques, suppression-list durable, providers, bounces et observabilite restent incomplets.
 - Interfaces publiques: la home est enrichie, mais la verification responsive et clavier n'est pas terminee.
@@ -68,14 +70,14 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 
 ### P1 - Identity
 
-- Valider en runtime verification email, telephone, TOTP, email MFA, SMS MFA, recovery et grace 15 jours.
+- Valider les parcours navigateur register/verify/login/MFA et les refus wp-admin/AJAX par role.
 - Ajouter une librairie reconnue pour les plans de numerotation et l'UX pays/indicatif.
 - Ajouter changement d'email securise avec confirmation du nouvel email et notification de l'ancien.
 - Ajouter connexion par telephone optionnelle, uniquement pour numero verifie, avec anti-enumeration.
 - Ajouter QR Code TOTP accessible.
 - Ajouter desactivation/remplacement email et SMS avec mot de passe et facteur existant.
 - Ajouter rappels J+1/J+7/J+12 et gestion des changements de capabilities/politique.
-- Completer les tests OTP: expiration, purpose, mauvais utilisateur, resend, replay, lockout.
+- Completer les tests OTP restants: mauvais utilisateur, resend concurrent, changement de destination et rate-limit distribue.
 
 ### P1 - Newsletter
 

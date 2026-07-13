@@ -18,7 +18,7 @@ Legende:
 - [x] Ajouter ADR-001 pour la separation theme/plugins.
 - [x] Ajouter un document de progression globale de plateforme.
 - [~] Supprimer les fallbacks legacy du theme une fois toute la logique confirmee dans les plugins actifs.
-- [~] Documenter exhaustivement les hooks publics, filtres, tables, options et capabilities de chaque plugin. Les surfaces MFA nouvelles restent a reporter dans le README Identity apres l echec du sandbox.
+- [~] Documenter exhaustivement les hooks publics, filtres, tables, options et capabilities de chaque plugin. README Identity actualise; exemples providers et compatibilite multisite restent a completer.
 
 ## 2. Securite fondamentale WordPress
 
@@ -71,13 +71,13 @@ Legende:
 - [x] Ajouter renvoi de verification email.
 - [x] Ajouter audit identite sans secrets, reset keys ou IP brute.
 - [x] Ajouter reglages bornes pour politiques de securite deja exposees.
-- [~] Ajouter OTP email avec expiration, tentatives, anti-replay et rate limiting. Backend generique, shortcode, hooks, reglages bornes et audit ajoutes; reste validation runtime et tests automatises.
-- [~] Ajouter OTP SMS/provider abstraction. Moteur OTP multicanal, adapter Twilio sans secrets, hook provider et test cible ajoutes; credentials et livraison runtime restent a valider.
-- [~] Ajouter telephone international E.164 avec prefixe et unicite serveur. Plugin et formulaires PhotoVault implementes; verification telephone runtime et migration des comptes existants restent a valider.
-- [~] Brancher les seconds facteurs email et telephone au challenge de connexion MFA generique. Enrollment explicite, preference, choix login et recovery sont cables; runtime WordPress et remplacement/desactivation des facteurs restent a valider.
-- [~] Ajouter TOTP/MFA. Moteur RFC 6238, secret chiffre, anti-rejeu, enrolement et challenge de connexion implementes; runtime WordPress bout-en-bout reste a valider.
-- [~] Ajouter recovery codes. Generation 80 bits, hashes, affichage unique et consommation atomique implementes; runtime reste a valider.
-- [~] Ajouter grace period MFA 15 jours et enforcement wp-admin privilegie. Politique par capabilities, avertissement, blocage admin/AJAX et allowlist d enrolement implementes; runtime reste a valider.
+- [x] Ajouter OTP email avec expiration, tentatives, anti-replay et rate limiting; moteur et refus critiques valides dans WordPress.
+- [~] Ajouter OTP SMS/provider abstraction. Moteur, adapter generique, Twilio et fail-closed testes; credentials et livraison SMS reelle restent a valider.
+- [~] Ajouter telephone international E.164 avec prefixe et unicite serveur. Stockage, unicite et verification OTP valides; librairie de plans et migration restent a faire.
+- [~] Brancher les seconds facteurs email et telephone au challenge de connexion MFA generique. Enrollment et login runtime valides; remplacement/desactivation et E2E navigateur restent a faire.
+- [~] Ajouter TOTP/MFA. Enrolement, secret chiffre, anti-rejeu et login runtime valides; QR et E2E navigateur restent a faire.
+- [x] Ajouter recovery codes avec generation 80 bits, hashes, affichage unique, consommation et anti-rejeu valides en runtime.
+- [~] Ajouter grace period MFA 15 jours et enforcement wp-admin privilegie. Calcul jour 15 valide; rappels et matrice HTTP wp-admin/AJAX restent a faire.
 - [~] Ajouter invalidation de sessions sur evenement sensible. Autres sessions invalidees sur changement de mot de passe et changement MFA; autres evenements sensibles restent a inventorier.
 - [x] Ajouter threat model identity documente.
 - [x] Ajouter rate limiting login/register/forgot/resend verification configurable.
@@ -142,7 +142,7 @@ Legende:
 - [x] Ajouter doc Docker versionnee dans le theme.
 - [x] Initialiser un depot Git d'infrastructure a la racine WordPress et versionner Docker sans inclure le coeur, les uploads, `.env` ni les depots imbriques.
 - [x] Construire et lancer `docker compose up --build`; valider MariaDB, PHP-FPM, Nginx et Mailpit sains.
-- [~] Verifier installation WordPress, plugins actifs, Mailpit et cron dans Docker. Mailpit, transport SMTP et cron valides; installation WordPress et plugins en attente d'initialisation admin.
+- [x] Verifier installation WordPress, trois plugins actifs, migrations, Mailpit et cron dans Docker.
 - [ ] Ajouter procedures sauvegarde/restauration DB et medias.
 - [~] Ajouter README principal installation/dev/prod: base complete ajoutee, a finaliser apres verification runtime/prod.
 
@@ -150,9 +150,9 @@ Legende:
 
 - [x] Lints PHP `php -l` lances sur les fichiers modifies lors des lots critiques.
 - [x] `git diff --check` utilise avant commits.
-- [~] Runtime Docker disponible avec WP-CLI 2.12.0, MariaDB, Nginx, Mailpit et cron; installation WordPress et flux applicatifs complets encore a initialiser.
+- [~] Runtime Docker valide avec WordPress, WP-CLI, MariaDB, Nginx, Mailpit, cron et premiers flux Identity/Newsletter; parcours PhotoVault et E2E complets restent a valider.
 - [ ] Ajouter PHPCS / WordPress Coding Standards.
-- [ ] Ajouter tests unitaires Identity: OTP expiration, attempts, replay, purpose.
+- [~] Ajouter tests Identity: expiration, attempts, replay et purpose valides en runtime; mauvais utilisateur, concurrence resend, UI et politique HTTP restent a couvrir.
 - [~] Ajouter tests Newsletter: segmentation, suppression, unsubscribe, retry, idempotence. Segmentation, scheduler, endpoint one-click, suppression et idempotence valides; couverture retry exhaustive restante.
 - [ ] Ajouter tests REST authorization matrix.
 - [ ] Ajouter tests e2e: register, verify email, login, gallery, protected media, newsletter subscribe/unsubscribe.
@@ -173,7 +173,7 @@ Legende:
 
 ## Statut global
 
-Progression corrigee: 53% d'implementation fonctionnelle et 41% de preparation production stricte.
+Progression corrigee: 54% d'implementation fonctionnelle et 43% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 

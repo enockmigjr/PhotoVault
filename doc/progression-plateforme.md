@@ -96,6 +96,8 @@ PhotoVault
 - TOTP RFC 6238 ajoute avec secrets chiffres, anti-rejeu, challenge de connexion natif/PhotoVault et blocage XML-RPC par mot de passe.
 - Recovery codes a usage unique ajoutes avec 80 bits aleatoires, stockage hashe et affichage unique.
 - Grace MFA configurable ajoutee pour les comptes a capabilities sensibles, avec blocage wp-admin/AJAX apres 15 jours et invalidation des autres sessions.
+- Test runtime Identity ajoute sur WordPress/MySQL: verification email liee a l'adresse, OTP email/SMS, telephone E.164 unique, TOTP, recovery, login multicanal et expiration J+15.
+- Les emails Identity sont maintenant verifies via le transport Docker/Mailpit; une erreur fatale des templates verification/reset a ete corrigee.
 
 ### Newsletter
 
@@ -142,7 +144,7 @@ PhotoVault
 
 ### Critique
 
-- La pile Docker est operationnelle, mais son volume MariaDB neuf attend encore l'installation WordPress. Les migrations `dbDelta`, pages admin et flux bout-en-bout ne sont donc pas encore confirmes.
+- Aucun blocage d'installation Docker n'est encore ouvert: WordPress, migrations, plugins, cron et transport email sont operationnels. Les blockers restants concernent surtout les tests d'autorisation et les fonctions metier inachevees.
 
 ### Eleve
 
@@ -150,7 +152,7 @@ PhotoVault
 - L'inventaire REST/AJAX est documente, mais les tests automatises correspondants ne sont pas encore en place.
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
-- Le noyau TOTP/recovery/grace est implemente et teste sur vecteurs RFC, mais les flux WordPress bout-en-bout, le MFA email/SMS nouvellement cable et la migration des comptes existants restent a valider.
+- Le noyau TOTP/recovery/grace et les MFA email/SMS sont valides par services dans WordPress; les parcours navigateur, le SMS reel et la migration des comptes existants restent a valider.
 - La newsletter n'a pas encore de provider API externe dedie avec secrets hors Git, templates reutilisables avances, preferences thematiques, suppression-list durable ni tracking ouvertures/clics.
 
 ### Moyen
@@ -175,10 +177,9 @@ PhotoVault
 
 ### P1 - Verification runtime
 
-1. Terminer l'assistant d'installation Docker avec des identifiants administrateur choisis par le proprietaire.
-2. Activer/verifier les trois plugins actifs.
-3. Verifier les tables creees: access requests, grants, media audit, identity audit, newsletter subscribers, newsletter lists/tags et newsletter audit.
-4. Tester les roles: anonymous, user non verifie, user verifie, owner, media manager, admin.
+1. Tester les roles: anonymous, user non verifie, user verifie, owner, media manager et admin.
+2. Transformer l'inventaire REST/AJAX en matrice automatisee de refus et acces.
+3. Valider les parcours HTTP navigateur register, verification email, login MFA et recuperation.
 
 ### P1 - Newsletter Kit
 
@@ -187,11 +188,11 @@ PhotoVault
 
 ### P1 - Identity Kit
 
-1. Verifier en runtime le telephone E.164, l enrolement TOTP, le challenge login, le rejeu et les recovery codes.
-2. Valider le provider SMS, la verification du telephone et le fail-closed en runtime.
-3. Brancher email et telephone comme methodes du challenge MFA generique.
-4. Ajouter tests d integration WordPress et finaliser le README Identity.
-5. Ajouter page admin Security Audit/Policies.
+1. Valider un provider SMS reel en staging sans exposer ses secrets.
+2. Ajouter changement d'email securise, QR TOTP et remplacement/desactivation des facteurs.
+3. Tester en navigateur le challenge login et l'enforcement wp-admin/AJAX par role.
+4. Ajouter rappels J+1/J+7/J+12 et gestion des changements de politique/capabilities.
+5. Ajouter page admin Security Audit/Policies complete.
 
 ### P1 - Newsletter Kit
 
@@ -223,7 +224,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation corrigee: 53% d implementation fonctionnelle et 41% de preparation production stricte.
+Estimation corrigee: 54% d implementation fonctionnelle et 43% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
