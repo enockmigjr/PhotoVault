@@ -111,6 +111,8 @@ PhotoVault
 - Reporting campagne ajoute depuis la queue: totaux par campagne, sent, failed, pending et taux de livraison simple.
 - Programmation timezone-aware et WP-Cron minute valides en runtime avec verrouillage atomique, reprise stale, finalisation et absence de duplication.
 - Segments dynamiques all/any ajoutes sur listes, tags, source et anciennete, avec thematiques de campagne, affectations admin et preuve runtime des destinataires.
+- One-click unsubscribe RFC 8058 ajoute avec POST idempotent, URL HTTPS, confirmation DKIM explicite et en-tetes verifies dans Mailpit.
+- Les jetons de desinscription tournent a la reactivation; un contact `suppressed` ne peut plus etre reactive publiquement et reste annule au dernier controle avant envoi.
 
 ### Experience publique
 
@@ -149,7 +151,7 @@ PhotoVault
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Le noyau TOTP/recovery/grace est implemente et teste sur vecteurs RFC, mais les flux WordPress bout-en-bout, le MFA email/SMS nouvellement cable et la migration des comptes existants restent a valider.
-- La newsletter n'a pas encore de provider API externe dedie avec secrets hors Git, templates reutilisables avances, standard one-click unsubscribe ni tracking ouvertures/clics.
+- La newsletter n'a pas encore de provider API externe dedie avec secrets hors Git, templates reutilisables avances, preferences thematiques, suppression-list durable ni tracking ouvertures/clics.
 
 ### Moyen
 
@@ -195,7 +197,7 @@ PhotoVault
 
 1. Ajouter templates reutilisables avances et previsualisation email.
 2. Brancher un provider API externe dedie et ajouter supervision/alertes du cron de traitement.
-3. Ajouter unsubscribe/suppression robuste.
+3. Ajouter preferences de desinscription thematiques et suppression-list durable pour imports, bounces et complaints.
 4. Ajouter tracking ouvertures/clics et exports de reporting avances.
 
 ### P2 - UX metier PhotoVault
@@ -221,7 +223,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation corrigee: 52% d implementation fonctionnelle et 40% de preparation production stricte.
+Estimation corrigee: 53% d implementation fonctionnelle et 41% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -234,4 +236,4 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
 - validation runtime Identity: MFA email/telephone, provider SMS reel, remplacement des facteurs et tests d integration;
 - UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;
-- Newsletter avancee: segments conditionnels, templates reutilisables, preview email, one-click unsubscribe, tracking ouvertures/clics et exports.
+- Newsletter avancee: lifecycle des segments, templates reutilisables, preview email, preferences/suppression-list, tracking ouvertures/clics et exports.

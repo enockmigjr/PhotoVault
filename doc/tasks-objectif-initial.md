@@ -88,6 +88,8 @@ Legende:
 - [x] Ajouter capture d'abonnement avec consentement et nonce.
 - [x] Stocker metadata sensible de maniere minimisee/hashee quand pertinent.
 - [x] Ajouter unsubscribe via token serveur.
+- [x] Ajouter one-click unsubscribe RFC 8058 avec POST idempotent et en-tetes HTTPS/DKIM explicites.
+- [~] Ajouter suppression robuste. Fait: statut `suppressed` non reactivable publiquement et annulation juste avant envoi. Reste: registre durable partage avec imports, bounces et complaints.
 - [x] Ajouter premiere UI admin abonnes.
 - [x] Documenter capabilities et tables newsletter.
 - [~] Ajouter listes, segments, tags et imports/exports. Fait: listes, tags, affectations admin, segments dynamiques all/any et tests runtime. Reste: edition, preview des volumes et imports/exports avances.
@@ -151,7 +153,7 @@ Legende:
 - [~] Runtime Docker disponible avec WP-CLI 2.12.0, MariaDB, Nginx, Mailpit et cron; installation WordPress et flux applicatifs complets encore a initialiser.
 - [ ] Ajouter PHPCS / WordPress Coding Standards.
 - [ ] Ajouter tests unitaires Identity: OTP expiration, attempts, replay, purpose.
-- [ ] Ajouter tests Newsletter: segmentation, suppression, unsubscribe, retry, idempotence.
+- [~] Ajouter tests Newsletter: segmentation, suppression, unsubscribe, retry, idempotence. Segmentation, scheduler, endpoint one-click, suppression et idempotence valides; couverture retry exhaustive restante.
 - [ ] Ajouter tests REST authorization matrix.
 - [ ] Ajouter tests e2e: register, verify email, login, gallery, protected media, newsletter subscribe/unsubscribe.
 
@@ -171,7 +173,7 @@ Legende:
 
 ## Statut global
 
-Progression corrigee: 52% d'implementation fonctionnelle et 40% de preparation production stricte.
+Progression corrigee: 53% d'implementation fonctionnelle et 41% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
