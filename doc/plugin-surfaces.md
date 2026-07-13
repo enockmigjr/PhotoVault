@@ -69,7 +69,8 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | --- | --- | --- | --- |
 | `{$wpdb->prefix}identity_security_audit` | `identity_security_kit_get_audit_table()` | Audit login, register, profile, reset, verification | IP hash, user-agent, contexte nettoye |
 | `{$wpdb->prefix}identity_security_email_challenges` | `identity_security_kit_get_email_verification_table()` | Challenges verification email | Email hash, token hash, expiration |
-| `{$wpdb->prefix}identity_security_email_otp` | `identity_security_kit_get_email_otp_table()` | OTP email par user/purpose | Destination HMAC, code hash, essais, expiration |
+| `{$wpdb->prefix}identity_security_email_otp` | `identity_security_kit_get_email_otp_table()` | Table legacy des challenges email avant schema 0.4 | Destination HMAC, code hash, essais, expiration |
+| `{$wpdb->prefix}identity_security_otp_challenges` | `identity_security_kit_get_otp_table()` | OTP generiques email/SMS par user, purpose et canal | Destination HMAC, code hash, essais, correlation et idempotence |
 
 ### Options
 
@@ -86,7 +87,9 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `identity_email_verification_pending` | Filtrable par `identity_security_kit_email_pending_meta_key` | Statut verification en attente |
 | `photovault_avatar_id` | Filtrable par `identity_security_kit_avatar_meta_key` | Avatar utilisateur |
 | identity_email_otp_verified_at | Identity Kit | Derniere verification OTP email reussie |
-| identity_phone_e164 / identity_phone_verified | Identity Kit | Telephone normalise unique et futur statut de verification |
+| `identity_phone_e164` / `identity_phone_verified` / `identity_phone_verified_hash` | Identity Kit | Telephone canonique, preuve liee au numero courant et date de verification |
+| `identity_mfa_email_enabled` / `identity_mfa_sms_enabled` | Identity Kit | Enrollment explicite des facteurs distants |
+| `identity_mfa_preferred_method` | Identity Kit | Methode preferee parmi les facteurs encore utilisables |
 | identity_mfa_totp_secret / identity_mfa_totp_pending | Identity Kit | Secret TOTP chiffre authentifie; pending expire apres 15 minutes |
 | identity_mfa_totp_last_counter / identity_mfa_enabled_at | Identity Kit | Anti-rejeu et date activation |
 | identity_mfa_recovery_codes | Identity Kit | Recovery codes hashes et consommes individuellement |
@@ -106,7 +109,13 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `identity_security_kit_avatar_meta_key` | Filter | Modifier la meta avatar |
 | `identity_security_kit_email_verified_meta_key` | Filter | Modifier la meta email verifie |
 | identity_security_kit_email_pending_meta_key | Filter | Modifier la meta email pending |
-| identity_security_kit_phone_meta_key | Filter | Modifier la meta du telephone E.164 |
+| `identity_security_kit_phone_meta_key` | Filter | Modifier la meta du telephone E.164 |
+| `identity_security_kit_normalized_phone` | Filter | Brancher une librairie de plans de numerotation reconnue |
+| `identity_security_kit_sms_provider` | Filter | Selectionner un provider SMS |
+| `identity_security_kit_sms_provider_available` | Filter | Declarer un adapter custom disponible |
+| `identity_security_kit_sms_delivery` | Filter | Adapter provider; retourne `true` ou `WP_Error` |
+| `identity_security_kit_allowed_mfa_methods` | Filter | Borner les facteurs autorises par utilisateur/politique |
+| `identity_security_kit_user_mfa_methods` | Filter | Etendre les facteurs effectivement enrolles |
 | identity_security_kit_mfa_required_capabilities | Filter | Etendre les capabilities qui imposent MFA |
 | identity_security_kit_user_requires_mfa | Filter | Adapter la politique par utilisateur |
 | identity_security_kit_user_has_mfa | Filter | Declarer une methode MFA fournie par une integration |
@@ -118,7 +127,10 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `identity_security_kit_password_reset_failed` | Action emise | Integrations audit/alerte reset echoue |
 | `identity_security_kit_password_reset_mail_failed` | Action emise | Integrations audit/alerte email reset echoue |
 | `identity_security_kit_email_otp_created` | Action emise | Challenge cree sans exposer le code |
-| identity_security_kit_email_otp_verified | Action emise | OTP consomme pour un user et un purpose |
+| `identity_security_kit_otp_created` | Action emise | Challenge generique cree sans exposer le code |
+| `identity_security_kit_otp_verified` | Action emise | Challenge generique consomme avec purpose et canal |
+| `identity_security_kit_email_otp_verified` | Action emise | OTP email consomme pour un user et un purpose |
+| `identity_security_kit_phone_verified` | Action emise | Telephone courant confirme par SMS |
 | identity_security_kit_mfa_enabled | Action emise | Methode MFA activee sans exposer le secret |
 | identity_security_kit_mfa_disabled | Action emise | Methode MFA desactivee |
 
@@ -141,7 +153,10 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | dmin_post_identity_security_kit_totp_cancel | Cancel TOTP | Session et nonce |
 | dmin_post_identity_security_kit_recovery_regenerate | Replace recovery | Session, nonce et facteur courant |
 | dmin_post_identity_security_kit_totp_disable | Disable TOTP | Session, nonce, mot de passe et facteur courant |
-| wp_authenticate_user / login_form_identity_security_mfa | Challenge login | Challenge chiffre, lie au navigateur, expire et consomme une fois |
+| `admin_post_identity_security_kit_phone_otp_request` / `verify` | Verification telephone | Session, nonce, destination courante, cooldown et essais |
+| `admin_post_identity_security_kit_channel_mfa_start` / `confirm` | Enrollment email/SMS | Mot de passe courant, destination verifiee et OTP purpose-bound |
+| `admin_post_identity_security_kit_mfa_preference` | Preference MFA | Mot de passe courant et methode deja active |
+| `wp_authenticate_user` / `login_form_identity_security_mfa` | Challenge login | Challenge chiffre lie au navigateur, choix de facteur et consommation unique |
 
 ## Newsletter Campaign Kit
 

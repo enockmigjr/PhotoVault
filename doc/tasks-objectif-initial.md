@@ -72,9 +72,9 @@ Legende:
 - [x] Ajouter audit identite sans secrets, reset keys ou IP brute.
 - [x] Ajouter reglages bornes pour politiques de securite deja exposees.
 - [~] Ajouter OTP email avec expiration, tentatives, anti-replay et rate limiting. Backend generique, shortcode, hooks, reglages bornes et audit ajoutes; reste validation runtime et tests automatises.
-- [ ] Ajouter OTP SMS/provider abstraction.
+- [~] Ajouter OTP SMS/provider abstraction. Moteur OTP multicanal, adapter Twilio sans secrets, hook provider et test cible ajoutes; credentials et livraison runtime restent a valider.
 - [~] Ajouter telephone international E.164 avec prefixe et unicite serveur. Plugin et formulaires PhotoVault implementes; verification telephone runtime et migration des comptes existants restent a valider.
-- [ ] Brancher les seconds facteurs email et telephone au challenge de connexion MFA generique.
+- [~] Brancher les seconds facteurs email et telephone au challenge de connexion MFA generique. Enrollment explicite, preference, choix login et recovery sont cables; runtime WordPress et remplacement/desactivation des facteurs restent a valider.
 - [~] Ajouter TOTP/MFA. Moteur RFC 6238, secret chiffre, anti-rejeu, enrolement et challenge de connexion implementes; runtime WordPress bout-en-bout reste a valider.
 - [~] Ajouter recovery codes. Generation 80 bits, hashes, affichage unique et consommation atomique implementes; runtime reste a valider.
 - [~] Ajouter grace period MFA 15 jours et enforcement wp-admin privilegie. Politique par capabilities, avertissement, blocage admin/AJAX et allowlist d enrolement implementes; runtime reste a valider.
@@ -171,8 +171,8 @@ Legende:
 
 ## Statut global
 
-Progression estimee: 78%.
+Progression corrigee: 44% d'implementation fonctionnelle et 32% de preparation production stricte.
 
-Calcul: 86 items termines, 24 items partiels et 15 items restants. Les items partiels comptent pour 0,5 afin de mesurer la completion production de l'objectif initial, pas seulement le volume de code ou de documentation deja ajoute.
+L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
 Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes, queue, provider et reporting, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises, les fonctions Identity avancees, les tests d'autorisation, le dashboard utilisateur, le module shootings et la configuration serveur cible n'ont pas ete verifies ou termines.
