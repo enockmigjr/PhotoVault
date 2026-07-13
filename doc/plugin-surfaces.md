@@ -1,6 +1,6 @@
 # Inventaire tables, options et hooks
 
-Derniere mise a jour: 2026-07-10
+Derniere mise a jour: 2026-07-13
 
 Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault afin de faciliter les migrations, tests, audits et futures integrations.
 
@@ -69,12 +69,13 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | --- | --- | --- | --- |
 | `{$wpdb->prefix}identity_security_audit` | `identity_security_kit_get_audit_table()` | Audit login, register, profile, reset, verification | IP hash, user-agent, contexte nettoye |
 | `{$wpdb->prefix}identity_security_email_challenges` | `identity_security_kit_get_email_verification_table()` | Challenges verification email | Email hash, token hash, expiration |
+| `{$wpdb->prefix}identity_security_email_otp` | `identity_security_kit_get_email_otp_table()` | OTP email par user/purpose | Destination HMAC, code hash, essais, expiration |
 
 ### Options
 
 | Option | Usage | Remarque |
 | --- | --- | --- |
-| `identity_security_kit_settings` | Politiques de securite | Mot de passe, avatar, verification email et rate limiting bornes serveur |
+| `identity_security_kit_settings` | Politiques de securite | Mot de passe, avatar, verification email, OTP email et rate limiting bornes serveur |
 | `identity_security_kit_version` | Version installee/migration | Mise a jour a l'activation/upgrade |
 
 ### User meta
@@ -84,6 +85,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `identity_email_verified` | Filtrable par `identity_security_kit_email_verified_meta_key` | Statut email verifie |
 | `identity_email_verification_pending` | Filtrable par `identity_security_kit_email_pending_meta_key` | Statut verification en attente |
 | `photovault_avatar_id` | Filtrable par `identity_security_kit_avatar_meta_key` | Avatar utilisateur |
+| `identity_email_otp_verified_at` | Identity Kit | Derniere verification OTP email reussie |
 
 ### Filtres publics
 
@@ -105,6 +107,8 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | --- | --- | --- |
 | `identity_security_kit_password_reset_failed` | Action emise | Integrations audit/alerte reset echoue |
 | `identity_security_kit_password_reset_mail_failed` | Action emise | Integrations audit/alerte email reset echoue |
+| `identity_security_kit_email_otp_created` | Action emise | Challenge cree sans exposer le code |
+| `identity_security_kit_email_otp_verified` | Action emise | OTP consomme pour un user et un purpose |
 
 
 ### Actions WordPress utilisees
@@ -118,6 +122,8 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_nopriv_identity_security_kit_verify_email` | Verify email | Lien public email |
 | `admin_post_identity_security_kit_verify_email` | Verify email | Lien email authentifie |
 | `admin_post_identity_security_kit_resend_email_verification` | Resend verification | Renvoi authentifie |
+| `admin_post_identity_security_kit_email_otp_request` | Request OTP | Session, nonce lie au purpose, cooldown |
+| `admin_post_identity_security_kit_email_otp_verify` | Verify OTP | Session, nonce lie au purpose, ownership, expiration et essais |
 
 ## Newsletter Campaign Kit
 

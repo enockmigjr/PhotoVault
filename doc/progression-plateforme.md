@@ -1,6 +1,6 @@
 # Progression plateforme PhotoVault
 
-Derniere mise a jour: 2026-07-10
+Derniere mise a jour: 2026-07-13
 
 ## Objectif initial
 
@@ -91,6 +91,7 @@ PhotoVault
 - Inscription, connexion, profil, reset password et validation serveur.
 - Verification email et renvoi du challenge.
 - Audit identite sans mot de passe, reset key, IP brute ou secret complet.
+- OTP email generique ajoute avec expiration, essais bornes, anti-rejeu, cooldown, shortcode et hooks publics.
 
 ### Newsletter
 
@@ -178,7 +179,7 @@ PhotoVault
 
 ### P1 - Identity Kit
 
-1. Ajouter OTP email avec expiration, tentatives et anti-replay.
+1. Verifier en runtime et tester automatiquement le module OTP email.
 2. Ajouter base MFA/TOTP et recovery codes.
 3. Ajouter politiques configurables avec bornes serveur.
 4. Ajouter page admin Security Audit/Policies.
@@ -213,11 +214,17 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation actuelle: 98%.
+Estimation actuelle: 76%.
 
-Cette estimation reflete que les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit media/identite/newsletter, base campagnes, queue newsletter, provider et reporting, enrichissement public et depots plugins separes.
+Cette estimation remplace l'ancienne valeur trop optimiste de 98%. Elle mesure la completion production de l'objectif initial avec une regle simple: item termine = 1, item partiel = 0,5, item restant = 0. Le dernier comptage donne 86 items termines, 19 items partiels et 21 items restants, soit environ 76%.
 
-Elle ne signifie pas encore "production ready". Les deux gros blocs qui empechent ce label sont:
+Les fondations les plus importantes sont posees: modularisation, securite media applicative, verification email, demandes d'acces, audit media/identite/newsletter, base campagnes, queue newsletter, provider et reporting, enrichissement public et depots plugins separes.
+
+Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label sont:
 
 - verification serveur du stockage prive sur l'environnement cible;
-- tests runtime automatises et verification complete avec WordPress actif.
+- verification runtime complete avec WordPress, XAMPP/MySQL ou Docker actif;
+- tests automatises de securite, autorisation REST/AJAX, previews et downloads;
+- fonctions Identity avancees: MFA/TOTP, recovery codes, politique 15 jours et invalidation de sessions;
+- UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;
+- Newsletter avancee: templates reutilisables, preview email, cron runtime confirme, tracking ouvertures/clics et exports.

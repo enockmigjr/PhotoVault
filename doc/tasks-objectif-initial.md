@@ -1,6 +1,6 @@
 # Tasks - objectif initial PhotoVault
 
-Derniere mise a jour: 2026-07-09
+Derniere mise a jour: 2026-07-13
 
 Legende:
 
@@ -71,7 +71,7 @@ Legende:
 - [x] Ajouter renvoi de verification email.
 - [x] Ajouter audit identite sans secrets, reset keys ou IP brute.
 - [x] Ajouter reglages bornes pour politiques de securite deja exposees.
-- [ ] Ajouter OTP email avec expiration, tentatives, anti-replay et rate limiting.
+- [~] Ajouter OTP email avec expiration, tentatives, anti-replay et rate limiting. Backend generique, shortcode, hooks, reglages bornes et audit ajoutes; reste validation runtime et tests automatises.
 - [ ] Ajouter OTP SMS/provider abstraction.
 - [ ] Ajouter TOTP/MFA.
 - [ ] Ajouter recovery codes.
@@ -169,6 +169,8 @@ Legende:
 
 ## Statut global
 
-Progression estimee: 98%.
+Progression estimee: 76%.
 
-Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes, queue, provider et reporting, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises et la configuration serveur cible n'ont pas ete verifies.
+Calcul: 86 items termines, 19 items partiels et 21 items restants. Les items partiels comptent pour 0,5 afin de mesurer la completion production de l'objectif initial, pas seulement le volume de code ou de documentation deja ajoute.
+
+Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes, queue, provider et reporting, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises, les fonctions Identity avancees, les tests d'autorisation, le dashboard utilisateur, le module shootings et la configuration serveur cible n'ont pas ete verifies ou termines.

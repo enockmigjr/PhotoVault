@@ -1,6 +1,6 @@
 # Threat model - Identity Security Kit
 
-Derniere mise a jour: 2026-07-09
+Derniere mise a jour: 2026-07-13
 
 ## Scope
 
@@ -14,7 +14,7 @@ Ce threat model couvre `identity-security-kit`: login, inscription, profil, avat
 - Avatar upload et metadonnees profil.
 - Reglages de politiques d'identite.
 - Audit identite.
-- Futures preuves OTP, TOTP secrets et recovery codes.
+- Preuves OTP email, futurs secrets TOTP et recovery codes.
 
 ## Acteurs
 
@@ -47,13 +47,15 @@ Ce threat model couvre `identity-security-kit`: login, inscription, profil, avat
 | Privilege escalation role | Inscription cree role trop privilegie via filtre | Role filtrable sanitize | Documenter allowlist cible/test filtre |
 | Audit fuite secret | Logs contiennent reset key/token/IP brute | Audit nettoye/hache | Tests absence secrets logs |
 | Session persistante risquee | Apres changement sensible, sessions restent actives | Non implemente | Ajouter invalidation sessions |
-| MFA absent | Compte admin protege seulement par mot de passe | Non implemente | OTP/TOTP/recovery codes |
+| OTP brute force/rejeu | Code court devine ou reutilise | Hash, expiration, essais bornes, cooldown, consommation atomique | Tests automatises requis |
+| MFA absent | Compte admin protege seulement par mot de passe | OTP email disponible mais pas branche au login | TOTP/recovery/enforcement requis |
 
 ## Controles existants
 
 - Validation serveur registration/profile/reset.
 - Reglages bornes cote serveur.
 - Verification email par token long hashe, statut et expiration.
+- OTP email par code hashe, destination HMAC, expiration courte, essais/cooldown bornes et anti-rejeu.
 - Renvoi verification avec session + nonce.
 - Reset password anti-enumeration.
 - Audit identite sans secrets, reset keys ni IP brute.
@@ -62,7 +64,7 @@ Ce threat model couvre `identity-security-kit`: login, inscription, profil, avat
 
 ## Gaps prioritaires
 
-1. Ajouter OTP email avec expiration, tentatives, anti-replay et rate limiting.
+1. Ajouter les tests runtime/automatises OTP email et son integration future au MFA.
 2. Ajouter TOTP/MFA et recovery codes.
 3. Ajouter grace period MFA et enforcement wp-admin privilegie.
 4. Ajouter invalidation de sessions sur changement email/password/MFA.

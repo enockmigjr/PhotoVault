@@ -1,6 +1,6 @@
 # Inventaire REST/AJAX et admin-post
 
-Derniere mise a jour: 2026-07-10
+Derniere mise a jour: 2026-07-13
 
 Objectif: classer les points d'entree publics, authentifies et privilegies afin de preparer les tests de securite REST/AJAX, CSRF, IDOR et privilege escalation.
 
@@ -16,6 +16,8 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Identity Security Kit | `admin_post_nopriv_identity_security_kit_verify_email` | Public lien email | Token long, hash serveur, statut pending, expiration | A tester |
 | Identity Security Kit | `admin_post_identity_security_kit_verify_email` | Authentifie lien email | Token long, hash serveur, statut pending, expiration | A tester |
 | Identity Security Kit | `admin_post_identity_security_kit_resend_email_verification` | Authentifie | Session, nonce, politique de renvoi | A tester |
+| Identity Security Kit | `admin_post_identity_security_kit_email_otp_request` | Authentifie | Session, nonce lie au purpose, cooldown DB | A tester |
+| Identity Security Kit | `admin_post_identity_security_kit_email_otp_verify` | Authentifie | Session, nonce lie au purpose, ownership, expiration, essais, consommation atomique | A tester |
 | Newsletter Campaign Kit | `admin_post_nopriv_newsletter_campaign_kit_subscribe` | Public formulaire | Nonce, consentement, email valide, IP hash | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_subscribe` | Authentifie formulaire | Nonce, consentement, email valide, IP hash | A tester |
 | Newsletter Campaign Kit | `admin_post_nopriv_newsletter_campaign_kit_unsubscribe` | Public lien email | Token 64 hex, pas d'email brut dans l'URL | A tester |
@@ -92,6 +94,14 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 - Controle actuel: session obligatoire + nonce `identity_security_kit_resend_email_verification`.
 - Risque residuel: ajouter ou verifier un rate limiting strict lorsque le module OTP/MFA sera ajoute.
 - Tests a ajouter: anonyme, nonce invalide, email deja verifie, renvoi valide, limite de frequence.
+
+### identity_security_kit_email_otp_request / identity_security_kit_email_otp_verify
+
+- Exposition: utilisateur connecte, pour son propre compte.
+- CSRF: nonce lie au purpose afin qu'une modification du champ cache invalide la requete.
+- Protection: destination HMAC, code hashe, expiration 2-30 minutes, 3-10 essais, cooldown 1-30 minutes, remplacement des anciens challenges et effacement du hash apres fin.
+- Anti-rejeu: consommation conditionnelle atomique du challenge pending.
+- Tests a ajouter: code correct, incorrect, expire, rejoue, verrouille, mauvais user, mauvais purpose, email modifie, resend trop rapide et nonce invalide.
 
 ## Newsletter Campaign Kit
 
