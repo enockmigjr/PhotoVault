@@ -84,6 +84,7 @@ Legende:
 - [~] Ajouter invalidation de sessions sur evenement sensible. Autres sessions invalidees sur changement de mot de passe et changement MFA; autres evenements sensibles restent a inventorier.
 - [x] Ajouter threat model identity documente.
 - [x] Ajouter rate limiting login/register/forgot/resend verification configurable.
+- [x] Uniformiser les sept flux email Identity en templates professionnels HTML/texte multipart, avec CTA, OTP, branding filtrable et preuve Mailpit.
 
 ## 6. Newsletter Campaign Kit
 
@@ -178,7 +179,7 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 62% d'implementation fonctionnelle et 51% de preparation production stricte.
+Progression recalculee: 63% d'implementation fonctionnelle et 52% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 

@@ -99,6 +99,7 @@ PhotoVault
 - Test runtime Identity ajoute sur WordPress/MySQL: verification email liee a l'adresse, OTP email/SMS, telephone E.164 unique, TOTP, recovery, login multicanal et expiration J+15.
 - Les emails Identity sont maintenant verifies via le transport Docker/Mailpit; une erreur fatale des templates verification/reset a ete corrigee.
 - Le profil conserve l'email courant jusqu'a confirmation de la nouvelle adresse; demande chiffree, expiration, anti-rejeu, notifications et revocation MFA email sont valides en runtime.
+- Les sept flux email Identity partagent maintenant un template professionnel responsive, une version texte PHPMailer, des CTA/OTP semantiques et un branding filtrable.
 
 ### Newsletter
 
@@ -226,7 +227,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 62% d implementation fonctionnelle et 51% de preparation production stricte.
+Estimation recalculee: 63% d implementation fonctionnelle et 52% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
