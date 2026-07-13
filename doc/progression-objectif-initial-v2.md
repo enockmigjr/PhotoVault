@@ -10,8 +10,8 @@ Le cahier initial contient 113 sections techniques ou fonctionnelles mesurables,
 
 La progression est desormais publiee avec deux mesures:
 
-- **implementation fonctionnelle: 44%**;
-- **preparation production stricte: 32%**.
+- **implementation fonctionnelle: 48%**;
+- **preparation production stricte: 36%**.
 
 Le premier chiffre mesure le code et le cablage reel deja presents. Le second retire les fonctions sans tests d'integration, sans validation WordPress runtime ou sans verification de l'environnement cible. Aucun simple fichier Markdown ne fait progresser la preparation production.
 
@@ -21,10 +21,10 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 | --- | ---: | ---: | ---: | --- |
 | Audit, architecture, securite de base | 1-16 | 65% | 48% | Plugins separes, inventaires et controles principaux presents; fallbacks, audit exhaustif et tests restent incomplets. |
 | Identity Security Kit | 17-33 | 50% | 34% | Email verification, OTP generique, TOTP, recovery, grace MFA et base multicanal presents; email change, phone library, QR, changement de facteurs et runtime complet restent a faire. |
-| Newsletter Campaign Kit | 34-61 | 29% | 18% | Abonnes, consentement, listes, tags, campagnes simples, queue et reporting de livraison presents; segmentation, programmation, cron, templates, tracking, bounces et privacy restent majeurs. |
+| Newsletter Campaign Kit | 34-61 | 36% | 29% | Abonnes, consentement, listes, tags, campagnes, programmation timezone-aware, cron idempotent, reprise de verrous et reporting valides; segmentation dynamique, templates, tracking, bounces et privacy restent majeurs. |
 | PhotoVault metier et experience | 62-76 | 57% | 43% | Home, galerie, detail, medias proteges, watermark et downloads avances; dashboard, favoris, shootings, upload complet et tests d'autorisation manquent. |
-| Docker et exploitation | 77-89 | 58% | 40% | Compose, Nginx, PHP-FPM, MariaDB, Mailpit, cron et WP-CLI presents; installation WordPress Docker et procedures d'exploitation restent a valider. |
-| Tests fonctionnels et securite | 90-96 | 9% | 7% | Quelques tests unitaires cibles; matrices REST, CSRF, IDOR, OTP, MFA, newsletter et E2E absentes. |
+| Docker et exploitation | 77-89 | 75% | 58% | WordPress initialise, trois plugins actifs, migrations et envoi Mailpit valides; healthcheck Nginx, expediteur global, sauvegardes et procedures d'exploitation restent a durcir. |
+| Tests fonctionnels et securite | 90-96 | 12% | 10% | Tests cibles OTP, SMS et scheduler Newsletter plus preuve runtime; matrices REST, CSRF, IDOR, MFA complet et E2E restent absentes. |
 | Qualite, migrations, UI, a11y, i18n | 97-105 | 25% | 16% | Migrations versionnees et premieres UI; PHPCS, analyse statique, lifecycle complet, accessibilite, i18n et templates email uniformes incomplets. |
 | Threat models et durcissement transversal | 106-111 | 46% | 33% | Trois threat models et plusieurs rate limits; correlation, alertes, changements de facteur et tests anti-abus incomplets. |
 | Compatibilite et documentation | 112-113 | 55% | 43% | Documentation centrale riche; compatibilite, multisite, hooks et guides providers encore incomplets. |
@@ -40,8 +40,8 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Base OTP commune email/SMS avec purpose, canal, destination HMAC, expiration, tentatives et consommation atomique.
 - Abstraction SMS avec adaptateur Twilio sans secret en base ou dans Git et extension par filtres.
 - Enrollment MFA email/SMS explicite, destination verifiee, preference et challenge login multicanal.
-- Abonnes newsletter, consentement, desinscription tokenisee, listes, tags, campagnes simples, queue batch et rapports de livraison.
-- Environnement Docker Nginx, PHP-FPM, MariaDB, Mailpit, cron et WP-CLI versionne.
+- Abonnes newsletter, consentement, desinscription tokenisee, listes, tags, campagnes, queue batch, programmation WP-Cron idempotente et rapports de livraison.
+- Environnement Docker Nginx, PHP-FPM, MariaDB, Mailpit, cron et WP-CLI versionne, WordPress initialise et trois plugins actifs.
 
 ## Fonctionnalites partielles
 
@@ -49,16 +49,16 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - MFA 15 jours: grace et blocage admin presents, mais rappels, changements de politique et cas multisite non couverts.
 - Changement de facteur: activation et preference re-authentifiees; desactivation email/SMS et remplacement avec verification du facteur courant restent a faire.
 - SMS: Twilio et adapter hook presents; aucune credentielle reelle ni verification de livraison runtime.
-- Docker: services sains lors du dernier controle, mais WordPress Docker n'est pas initialise avec les plugins et les migrations.
-- Newsletter: queue et retry de base presents, mais programmation et cron applicatif non valides.
+- Docker: WordPress, plugins, tables et email Newsletter sont valides; Nginx est actuellement signale unhealthy et le mail WordPress global doit etre stabilise.
+- Newsletter: programmation et cron applicatif valides; segmentation conditionnelle, standards unsubscribe, providers et observabilite restent incomplets.
 - Interfaces publiques: la home est enrichie, mais la verification responsive et clavier n'est pas terminee.
 
 ## Restant prioritaire
 
 ### P0 - Preuves de securite
 
-- Initialiser WordPress dans Docker et activer les trois plugins.
-- Executer les migrations `dbDelta` et verifier les index/tables en base.
+- Corriger le healthcheck Nginx et confirmer durablement les reponses HTTP.
+- Stabiliser l'expediteur email WordPress global dans Docker sans configuration locale implicite.
 - Ajouter la matrice automatisee REST/AJAX, CSRF, IDOR et privilege escalation.
 - Tester anonymous, user non verifie, user verifie, owner, manager et admin.
 - Tester les medias prives par ID guessing et acces direct serveur.
@@ -78,7 +78,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 
 - Implementer segments dynamiques et moteur de conditions testable.
 - Ajouter thematiques/categories de campagne et ciblage combine listes/tags/segments.
-- Ajouter programmation timezone-aware, cron idempotent et verrouillage anti-double envoi.
+- Ajouter supervision du cron, cle d'idempotence provider et configuration des tailles de lot.
 - Ajouter templates reutilisables, preview HTML/texte et emails multipart.
 - Ajouter one-click unsubscribe standard, suppression/suppression-list et privacy export/erase.
 - Ajouter bounces, complaints, webhooks signes et providers API.

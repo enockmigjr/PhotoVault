@@ -109,6 +109,7 @@ PhotoVault
 - Queue newsletter ajoutee avec table dediee, enqueue sur transition sending, traitement batch manuel, retry/backoff et filtre provider.
 - Provider wp_mail ajoute avec reglages from name/from email, page Settings et filtre pour adaptateur externe.
 - Reporting campagne ajoute depuis la queue: totaux par campagne, sent, failed, pending et taux de livraison simple.
+- Programmation timezone-aware et WP-Cron minute valides en runtime avec verrouillage atomique, reprise stale, finalisation et absence de duplication.
 
 ### Experience publique
 
@@ -147,7 +148,7 @@ PhotoVault
 - Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Le noyau TOTP/recovery/grace est implemente et teste sur vecteurs RFC, mais les flux WordPress bout-en-bout, le MFA email/SMS nouvellement cable et la migration des comptes existants restent a valider.
-- La newsletter n'a pas encore de provider API externe dedie avec secrets hors Git, cron runtime confirme, templates reutilisables avances ni tracking ouvertures/clics.
+- La newsletter n'a pas encore de provider API externe dedie avec secrets hors Git, templates reutilisables avances, standard one-click unsubscribe ni tracking ouvertures/clics.
 
 ### Moyen
 
@@ -192,7 +193,7 @@ PhotoVault
 ### P1 - Newsletter Kit
 
 1. Ajouter templates reutilisables avances et previsualisation email.
-2. Brancher un provider API externe dedie si necessaire et confirmer le cron de traitement queue.
+2. Brancher un provider API externe dedie et ajouter supervision/alertes du cron de traitement.
 3. Ajouter unsubscribe/suppression robuste.
 4. Ajouter tracking ouvertures/clics et exports de reporting avances.
 
@@ -219,7 +220,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation corrigee: 44% d implementation fonctionnelle et 32% de preparation production stricte.
+Estimation corrigee: 48% d implementation fonctionnelle et 36% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -232,4 +233,4 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
 - validation runtime Identity: MFA email/telephone, provider SMS reel, remplacement des facteurs et tests d integration;
 - UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;
-- Newsletter avancee: templates reutilisables, preview email, cron runtime confirme, tracking ouvertures/clics et exports.
+- Newsletter avancee: segments conditionnels, templates reutilisables, preview email, one-click unsubscribe, tracking ouvertures/clics et exports.

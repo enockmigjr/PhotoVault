@@ -1,10 +1,10 @@
 # Threat model - Newsletter Campaign Kit
 
-Derniere mise a jour: 2026-07-10
+Derniere mise a jour: 2026-07-13
 
 ## Scope
 
-Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockage abonnes, listes, tags, unsubscribe tokenise, UI admin abonnes, changements de statut, export CSV, audit operationnel et base campagnes. Les modules queue et provider sont des cibles futures.
+Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockage abonnes, listes, tags, unsubscribe tokenise, UI admin, campagnes, programmation WP-Cron, queue de livraison, provider et reporting.
 
 ## Actifs a proteger
 
@@ -66,7 +66,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Creation liste/tag protegee par capability newsletter_manage_lists et nonce.
 - Audit newsletter protege par capability newsletter_view_reports, avec IP hash, user-agent tronque et contexte nettoye.
 - Campagnes protegees par capability newsletter_create_campaigns; transitions d'envoi protegees par newsletter_send_campaigns.
-- Queue batch protegee par newsletter_send_campaigns, limite de traitement et retry/backoff.
+- Queue batch protegee par newsletter_send_campaigns pour l'action manuelle, traitement cron borne, verrou atomique, contrainte campagne/abonne, reprise stale et retry/backoff.
 - Provider wp_mail configurable sans secret; providers API externes attendus via filtre et secrets hors Git.
 - Reports campagne limites aux totaux queue et proteges par newsletter_view_reports.
 

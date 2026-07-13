@@ -190,7 +190,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 
 | Hook | Callback principal | Usage |
 | --- | --- | --- |
-| `init` | Upgrade plugin | Schema/version newsletter |
+| `init` | Upgrade et scheduler | Schema/version newsletter et enregistrement unique du cron minute |
 | `admin_menu` | Admin newsletter | UI abonnes, segments, campagnes, queue, settings, reports, audit et export |
 | `admin_post_nopriv_newsletter_campaign_kit_subscribe` | Subscribe | Formulaire public |
 | `admin_post_newsletter_campaign_kit_subscribe` | Subscribe | Formulaire authentifie |
@@ -202,8 +202,10 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_create_tag` | Creation tag | Capability `newsletter_manage_lists`, nonce |
 | `admin_post_newsletter_campaign_kit_create_campaign` | Creation campagne | Capability `newsletter_create_campaigns`, nonce |
 | `admin_post_newsletter_campaign_kit_transition_campaign` | Transition campagne | Capability `newsletter_create_campaigns`, `newsletter_send_campaigns` pour envoi, nonce |
+| `admin_post_newsletter_campaign_kit_schedule_campaign` | Programmer campagne | Capability `newsletter_send_campaigns`, nonce par campagne, date future convertie en UTC |
 | `admin_post_newsletter_campaign_kit_process_queue` | Traitement queue | Capability `newsletter_send_campaigns`, nonce |
 | `admin_post_newsletter_campaign_kit_save_provider_settings` | Reglages provider | Capability `newsletter_manage_settings`, nonce |
+| `newsletter_campaign_kit_run_scheduled` | Scheduler campagne | Reprise des verrous expires, campagnes echues, batch borne et finalisation |
 
 ## Points de verification runtime
 
