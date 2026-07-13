@@ -44,7 +44,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Grace MFA completee par rappels J+1/J+7/J+12, cron horaire borne, rattrapage sans rafale et reconciliation des changements de role/politique.
 - Runtime Identity valide sur vrais utilisateurs, tables et metadonnees: email lie et single-use, E.164 unique, OTP purpose/expiry/attempts/replay, TOTP, recovery, login email/SMS/TOTP et grace 15 jours.
 - Douze emails Identity remis a Mailpit avec reponse SMTP 250; le template fatal de verification/reset a ete corrige.
-- Les sept flux email Identity utilisent un layout professionnel responsive, CTA/OTP semantiques et `AltBody`; les regressions et remises SMTP 250 sont validees.
+- Les flux email Identity et les notices natives de changement email/mot de passe utilisent un layout professionnel responsive et `AltBody`; les regressions et remises SMTP 250 sont validees.
 - Changement d'email differe valide: mot de passe actuel, adresse proposee chiffree, confirmation expirable/single-use, notification ancienne adresse et revocation des preuves email.
 - Abonnes newsletter, consentement, desinscription tokenisee, listes, tags, segments dynamiques, campagnes ciblees, queue batch, programmation WP-Cron idempotente et rapports.
 - One-click unsubscribe RFC 8058 avec endpoint POST idempotent, en-tetes HTTPS conditionnes a la confirmation DKIM, rotation des jetons et preuve Mailpit.

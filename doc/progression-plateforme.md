@@ -99,7 +99,7 @@ PhotoVault
 - Test runtime Identity ajoute sur WordPress/MySQL: verification email liee a l'adresse, OTP email/SMS, telephone E.164 unique, TOTP, recovery, login multicanal et expiration J+15.
 - Les emails Identity sont maintenant verifies via le transport Docker/Mailpit; une erreur fatale des templates verification/reset a ete corrigee.
 - Le profil conserve l'email courant jusqu'a confirmation de la nouvelle adresse; demande chiffree, expiration, anti-rejeu, notifications et revocation MFA email sont valides en runtime.
-- Les sept flux email Identity partagent maintenant un template professionnel responsive, une version texte PHPMailer, des CTA/OTP semantiques et un branding filtrable.
+- Les flux email Identity et les notices natives email/mot de passe partagent maintenant un template professionnel responsive, une version texte PHPMailer, des CTA/OTP semantiques et un branding filtrable.
 
 ### Newsletter
 

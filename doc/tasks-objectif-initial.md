@@ -84,7 +84,7 @@ Legende:
 - [~] Ajouter invalidation de sessions sur evenement sensible. Autres sessions invalidees sur changement de mot de passe et changement MFA; autres evenements sensibles restent a inventorier.
 - [x] Ajouter threat model identity documente.
 - [x] Ajouter rate limiting login/register/forgot/resend verification configurable.
-- [x] Uniformiser les sept flux email Identity en templates professionnels HTML/texte multipart, avec CTA, OTP, branding filtrable et preuve Mailpit.
+- [x] Uniformiser les flux email Identity et les notifications natives de changement email/mot de passe en templates HTML/texte multipart, avec CTA, OTP, branding filtrable et preuve Mailpit.
 
 ## 6. Newsletter Campaign Kit
 
