@@ -53,7 +53,9 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 | Campaign tampering | Passer une campagne en sending/sent sans droit | Transitions serveur + capabilities create/send + nonce | Tests roles create vs send |
 | Queue delivery abuse | Declencher un batch ou retenter trop vite | Capability send, nonce, limite batch, backoff | Tests role/nonce/backoff |
 | Reporting exposure | Montrer des donnees de campagne a un role non autorise | Capability newsletter_view_reports | Tests roles reports |
-| Envoi abusif | Campagne envoyee sans confirmation/audit | Audit de base implemente, campagne non implemente | Ajouter workflow, confirmation, rate limit |
+| Segment injection | Injecter champ, operateur ou valeur dans le ciblage | Champs fixes, IDs bornes, valeurs via placeholders `wpdb::prepare` | Tester charges SQL et IDs inexistants |
+| Audience tampering | Affecter un abonne ou cibler un segment sans droit | Capability manage_lists/create/send, nonces et existence serveur | Tests de role et nonce |
+| Envoi abusif | Campagne envoyee sans confirmation/audit | Transitions, capabilities, audit et queue bornee | Ajouter confirmation finale et limites par campagne |
 
 ## Controles existants
 
@@ -63,7 +65,8 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Admin abonnes protege par `newsletter_manage_subscribers`.
 - Export CSV protege par `newsletter_view_reports` et nonce.
 - Status whitelist: `subscribed`, `unsubscribed`, `suppressed`.
-- Creation liste/tag protegee par capability newsletter_manage_lists et nonce.
+- Creation liste/tag/segment/thematique et affectations protegees par capability newsletter_manage_lists, nonce et validation serveur.
+- Regles dynamiques limitees a listes, tags, sources et dates; aucun identifiant SQL ne vient de la requete.
 - Audit newsletter protege par capability newsletter_view_reports, avec IP hash, user-agent tronque et contexte nettoye.
 - Campagnes protegees par capability newsletter_create_campaigns; transitions d'envoi protegees par newsletter_send_campaigns.
 - Queue batch protegee par newsletter_send_campaigns pour l'action manuelle, traitement cron borne, verrou atomique, contrainte campagne/abonne, reprise stale et retry/backoff.
@@ -77,8 +80,8 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 3. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
 4. Finaliser imports/exports robustes pour listes, segments et tags.
 5. Ajouter templates reutilisables avances et previsualisation email.
-6. Brancher provider API externe si besoin et confirmer le cron de traitement queue.
-7. Ajouter reporting campagne et journal d'envoi.
+6. Brancher provider API externe et superviser le cron de traitement queue.
+7. Ajouter snapshot d'audience, estimation avant envoi et journal de destinataires.
 
 ## Tests minimum avant production
 
@@ -97,3 +100,5 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 13. Queue refuse traitement sans newsletter_send_campaigns et applique retry/backoff si provider absent.
 14. Provider refuse sauvegarde sans newsletter_manage_settings et ne stocke pas de secret.
 15. Reports refusent acces sans newsletter_view_reports et ne pretendent pas tracker ouvertures/clics.
+16. Segment refuse regle vide, date invalide, liste/tag inconnu et charge SQL.
+17. Affectation abonne refuse capability, nonce, abonne ou audience inconnus.

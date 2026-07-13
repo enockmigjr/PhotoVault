@@ -169,6 +169,8 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `{$wpdb->prefix}newsletter_campaign_tags` | `newsletter_campaign_kit_get_tags_table()` | Tags de segmentation | Nom, slug, couleur |
 | `{$wpdb->prefix}newsletter_campaign_subscriber_lists` | `newsletter_campaign_kit_get_subscriber_lists_table()` | Liaison abonne/liste | Cle composee abonne + liste |
 | `{$wpdb->prefix}newsletter_campaign_subscriber_tags` | `newsletter_campaign_kit_get_subscriber_tags_table()` | Liaison abonne/tag | Cle composee abonne + tag |
+| `{$wpdb->prefix}newsletter_campaign_segments` | `newsletter_campaign_kit_get_segments_table()` | Audiences dynamiques all/any | Regles JSON normalisees, statut |
+| `{$wpdb->prefix}newsletter_campaign_topics` | `newsletter_campaign_kit_get_topics_table()` | Thematiques de campagne | Nom, slug, couleur, statut |
 | `{$wpdb->prefix}newsletter_campaign_audit` | `newsletter_campaign_kit_get_audit_table()` | Audit inscriptions, desinscriptions, statuts, exports et segments | IP hash, user-agent tronque, contexte nettoye |
 | `{$wpdb->prefix}newsletter_campaign_campaigns` | `newsletter_campaign_kit_get_campaigns_table()` | Brouillons, ciblage, statuts et transitions campagne | Sujet, contenu, cible liste, auteurs |
 | `{$wpdb->prefix}newsletter_campaign_queue` | `newsletter_campaign_kit_get_queue_table()` | File de livraison batch, tentatives et backoff | IDs campagne/abonne, statut, erreurs provider |
@@ -200,6 +202,9 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_export_subscribers` | Export CSV | Export donnees abonnes |
 | `admin_post_newsletter_campaign_kit_create_list` | Creation liste | Capability `newsletter_manage_lists`, nonce |
 | `admin_post_newsletter_campaign_kit_create_tag` | Creation tag | Capability `newsletter_manage_lists`, nonce |
+| `admin_post_newsletter_campaign_kit_create_segment` | Creation segment | Capability `newsletter_manage_lists`, nonce, regles validees |
+| `admin_post_newsletter_campaign_kit_create_topic` | Creation thematique | Capability `newsletter_manage_lists`, nonce |
+| `admin_post_newsletter_campaign_kit_update_assignment` | Affectation audience | Capability `newsletter_manage_lists`, nonce, IDs controles |
 | `admin_post_newsletter_campaign_kit_create_campaign` | Creation campagne | Capability `newsletter_create_campaigns`, nonce |
 | `admin_post_newsletter_campaign_kit_transition_campaign` | Transition campagne | Capability `newsletter_create_campaigns`, `newsletter_send_campaigns` pour envoi, nonce |
 | `admin_post_newsletter_campaign_kit_schedule_campaign` | Programmer campagne | Capability `newsletter_send_campaigns`, nonce par campagne, date future convertie en UTC |

@@ -90,8 +90,8 @@ Legende:
 - [x] Ajouter unsubscribe via token serveur.
 - [x] Ajouter premiere UI admin abonnes.
 - [x] Documenter capabilities et tables newsletter.
-- [~] Ajouter listes, segments, tags et imports/exports. Fait: listes/tags/admin/liaisons. Reste: imports/exports avances.
-- [~] Ajouter campagnes, templates, etats et transitions serveur. Fait: table campagnes, brouillons, UI admin, programmation timezone-aware et transitions serveur. Reste: templates reutilisables/previsualisation.
+- [~] Ajouter listes, segments, tags et imports/exports. Fait: listes, tags, affectations admin, segments dynamiques all/any et tests runtime. Reste: edition, preview des volumes et imports/exports avances.
+- [~] Ajouter campagnes, templates, etats et transitions serveur. Fait: campagnes, thematiques, ciblage liste/segment, programmation timezone-aware et transitions serveur. Reste: templates reutilisables/previsualisation.
 - [~] Ajouter queue d'envoi batch + retry/backoff. Fait: queue idempotente, verrous atomiques, reprise stale, cron minute et test runtime. Reste: provider API et observabilite production.
 - [~] Ajouter provider abstraction SMTP/API. Fait: provider `wp_mail`, reglages admin, filtre adaptateur externe. Reste: provider API dedie avec secrets hors Git.
 - [~] Ajouter reporting campagne. Fait: rapports de livraison depuis la queue. Reste: tracking ouvertures/clics et exports avances.
@@ -171,7 +171,7 @@ Legende:
 
 ## Statut global
 
-Progression corrigee: 48% d'implementation fonctionnelle et 36% de preparation production stricte.
+Progression corrigee: 51% d'implementation fonctionnelle et 39% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 

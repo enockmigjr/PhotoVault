@@ -110,6 +110,7 @@ PhotoVault
 - Provider wp_mail ajoute avec reglages from name/from email, page Settings et filtre pour adaptateur externe.
 - Reporting campagne ajoute depuis la queue: totaux par campagne, sent, failed, pending et taux de livraison simple.
 - Programmation timezone-aware et WP-Cron minute valides en runtime avec verrouillage atomique, reprise stale, finalisation et absence de duplication.
+- Segments dynamiques all/any ajoutes sur listes, tags, source et anciennete, avec thematiques de campagne, affectations admin et preuve runtime des destinataires.
 
 ### Experience publique
 
@@ -220,7 +221,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation corrigee: 48% d implementation fonctionnelle et 36% de preparation production stricte.
+Estimation corrigee: 51% d implementation fonctionnelle et 39% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 

@@ -27,6 +27,9 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_campaign` | Admin | `newsletter_create_campaigns`, nonce creation | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_transition_campaign` | Admin | `newsletter_create_campaigns`, `newsletter_send_campaigns` pour transitions envoi, nonce par campagne | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_schedule_campaign` | Admin | `newsletter_send_campaigns`, nonce par campagne, date future valide | Runtime scheduler valide; refus de role a automatiser |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_segment` | Admin | `newsletter_manage_lists`, nonce, champs et IDs bornes | Moteur/runtime valides; refus de role a automatiser |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_topic` | Admin | `newsletter_manage_lists`, nonce, nom/couleur nettoyes | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_assignment` | Admin | `newsletter_manage_lists`, nonce, abonne et audience existants | Helper/runtime valides; refus de role a automatiser |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_process_queue` | Admin | `newsletter_send_campaigns`, nonce traitement queue | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_save_provider_settings` | Admin | `newsletter_manage_settings`, nonce reglages provider | A tester |
 
