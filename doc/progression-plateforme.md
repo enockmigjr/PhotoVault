@@ -221,7 +221,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation corrigee: 51% d implementation fonctionnelle et 39% de preparation production stricte.
+Estimation corrigee: 52% d implementation fonctionnelle et 40% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 

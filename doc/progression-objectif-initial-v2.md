@@ -10,8 +10,8 @@ Le cahier initial contient 113 sections techniques ou fonctionnelles mesurables,
 
 La progression est desormais publiee avec deux mesures:
 
-- **implementation fonctionnelle: 51%**;
-- **preparation production stricte: 39%**.
+- **implementation fonctionnelle: 52%**;
+- **preparation production stricte: 40%**.
 
 Le premier chiffre mesure le code et le cablage reel deja presents. Le second retire les fonctions sans tests d'integration, sans validation WordPress runtime ou sans verification de l'environnement cible. Aucun simple fichier Markdown ne fait progresser la preparation production.
 
@@ -23,7 +23,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 | Identity Security Kit | 17-33 | 50% | 34% | Email verification, OTP generique, TOTP, recovery, grace MFA et base multicanal presents; email change, phone library, QR, changement de facteurs et runtime complet restent a faire. |
 | Newsletter Campaign Kit | 34-61 | 48% | 40% | Abonnes, listes, tags, affectations admin, segments dynamiques, thematiques, ciblage, programmation, cron idempotent et reporting valides; lifecycle des segments, templates, tracking, bounces et privacy restent majeurs. |
 | PhotoVault metier et experience | 62-76 | 57% | 43% | Home, galerie, detail, medias proteges, watermark et downloads avances; dashboard, favoris, shootings, upload complet et tests d'autorisation manquent. |
-| Docker et exploitation | 77-89 | 75% | 58% | WordPress initialise, trois plugins actifs, migrations et envoi Mailpit valides; healthcheck Nginx, expediteur global, sauvegardes et procedures d'exploitation restent a durcir. |
+| Docker et exploitation | 77-89 | 82% | 70% | WordPress initialise, services healthy, plugins/migrations valides, cron reel et expediteur wp_mail vers Mailpit testes; sauvegardes, restauration et image de production restent a faire. |
 | Tests fonctionnels et securite | 90-96 | 14% | 12% | Tests cibles OTP, SMS, scheduler et segmentation Newsletter plus preuves runtime; matrices REST, CSRF, IDOR, MFA complet et E2E restent absentes. |
 | Qualite, migrations, UI, a11y, i18n | 97-105 | 25% | 16% | Migrations versionnees et premieres UI; PHPCS, analyse statique, lifecycle complet, accessibilite, i18n et templates email uniformes incomplets. |
 | Threat models et durcissement transversal | 106-111 | 46% | 33% | Trois threat models et plusieurs rate limits; correlation, alertes, changements de facteur et tests anti-abus incomplets. |
@@ -42,6 +42,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Enrollment MFA email/SMS explicite, destination verifiee, preference et challenge login multicanal.
 - Abonnes newsletter, consentement, desinscription tokenisee, listes, tags, affectations admin, segments dynamiques, thematiques, campagnes ciblees, queue batch, programmation WP-Cron idempotente et rapports.
 - Environnement Docker Nginx, PHP-FPM, MariaDB, Mailpit, cron et WP-CLI versionne, WordPress initialise et trois plugins actifs.
+- Endpoint healthz Nginx sans redirection et expediteur WordPress global valides en runtime avec reponse SMTP 250.
 
 ## Fonctionnalites partielles
 
@@ -49,7 +50,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - MFA 15 jours: grace et blocage admin presents, mais rappels, changements de politique et cas multisite non couverts.
 - Changement de facteur: activation et preference re-authentifiees; desactivation email/SMS et remplacement avec verification du facteur courant restent a faire.
 - SMS: Twilio et adapter hook presents; aucune credentielle reelle ni verification de livraison runtime.
-- Docker: WordPress, plugins, tables et email Newsletter sont valides; Nginx est actuellement signale unhealthy et le mail WordPress global doit etre stabilise.
+- Docker: runtime local valide et services healthy; sauvegardes, restauration, rotation des secrets et image immutable de production restent incomplets.
 - Newsletter: ciblage conditionnel et cron applicatif valides; edition/preview des segments, standards unsubscribe, providers et observabilite restent incomplets.
 - Interfaces publiques: la home est enrichie, mais la verification responsive et clavier n'est pas terminee.
 
@@ -57,8 +58,8 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 
 ### P0 - Preuves de securite
 
-- Corriger le healthcheck Nginx et confirmer durablement les reponses HTTP.
-- Stabiliser l'expediteur email WordPress global dans Docker sans configuration locale implicite.
+- Ajouter tests automatises de smoke Docker dans la CI.
+- Tester sauvegarde/restauration de MariaDB, uploads et stockage prive.
 - Ajouter la matrice automatisee REST/AJAX, CSRF, IDOR et privilege escalation.
 - Tester anonymous, user non verifie, user verifie, owner, manager et admin.
 - Tester les medias prives par ID guessing et acces direct serveur.
