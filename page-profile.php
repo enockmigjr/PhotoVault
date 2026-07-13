@@ -17,10 +17,16 @@ $status         = isset( $_GET['profile'] ) ? sanitize_key( wp_unslash( $_GET['p
 $verify         = isset( $_GET['verify'] ) ? sanitize_key( wp_unslash( $_GET['verify'] ) ) : '';
 $email_verified = function_exists( 'identity_security_kit_is_email_verified' ) ? identity_security_kit_is_email_verified( $current_user->ID ) : true;
 $phone          = function_exists( 'identity_security_kit_phone_meta_key' ) ? (string) get_user_meta( $current_user->ID, identity_security_kit_phone_meta_key(), true ) : '';
+$email_change   = isset( $_GET['email_change'] ) ? sanitize_key( wp_unslash( $_GET['email_change'] ) ) : '';
+$pending_email  = function_exists( 'identity_security_kit_get_pending_email_change' ) ? identity_security_kit_get_pending_email_change( $current_user->ID ) : null;
 $messages       = array(
 	'success'                  => array( 'type' => 'success', 'text' => __( 'Profil mis a jour.', 'photovault' ) ),
 	'invalid_email'            => array( 'type' => 'error', 'text' => __( 'Adresse e-mail invalide.', 'photovault' ) ),
 	'email_exists'             => array( 'type' => 'error', 'text' => __( 'Cette adresse e-mail est deja utilisee.', 'photovault' ) ),
+	'email_change_invalid'     => array( 'type' => 'error', 'text' => __( 'La nouvelle adresse e-mail est invalide.', 'photovault' ) ),
+	'email_change_unchanged'   => array( 'type' => 'error', 'text' => __( 'La nouvelle adresse est identique a l\'adresse actuelle.', 'photovault' ) ),
+	'email_change_delivery_failed' => array( 'type' => 'error', 'text' => __( 'Le message de confirmation n\'a pas pu etre envoye.', 'photovault' ) ),
+	'email_change_rate_limited' => array( 'type' => 'error', 'text' => __( 'Veuillez patienter avant une nouvelle demande de changement.', 'photovault' ) ),
 	'phone_required'           => array( 'type' => 'error', 'text' => __( 'Le numero de telephone international est obligatoire.', 'photovault' ) ),
 	'phone_country_code_required' => array( 'type' => 'error', 'text' => __( 'Ajoutez le prefixe pays au numero de telephone.', 'photovault' ) ),
 	'phone_invalid'            => array( 'type' => 'error', 'text' => __( 'Numero de telephone international invalide.', 'photovault' ) ),
@@ -35,6 +41,13 @@ $messages       = array(
 	'image_too_large'          => array( 'type' => 'error', 'text' => __( 'Les dimensions de l\'image sont trop grandes.', 'photovault' ) ),
 	'avatar_upload_failed'     => array( 'type' => 'error', 'text' => __( 'L\'avatar n\'a pas pu etre enregistre.', 'photovault' ) ),
 	'failed'                   => array( 'type' => 'error', 'text' => __( 'La mise a jour du profil a echoue.', 'photovault' ) ),
+);
+$email_change_messages = array(
+	'pending'   => array( 'type' => 'info', 'text' => __( 'La demande est en attente. Confirmez la nouvelle adresse depuis le message recu.', 'photovault' ) ),
+	'confirmed' => array( 'type' => 'success', 'text' => __( 'Votre nouvelle adresse e-mail est confirmee.', 'photovault' ) ),
+	'cancelled' => array( 'type' => 'success', 'text' => __( 'La demande de changement a ete annulee.', 'photovault' ) ),
+	'email_change_expired' => array( 'type' => 'error', 'text' => __( 'La demande de changement a expire.', 'photovault' ) ),
+	'email_change_invalid' => array( 'type' => 'error', 'text' => __( 'Le lien de changement est invalide ou deja utilise.', 'photovault' ) ),
 );
 $verify_messages = array(
 	'pending'  => array( 'type' => 'info', 'text' => __( 'Un lien de verification vient d\'etre envoye a votre adresse e-mail.', 'photovault' ) ),
@@ -91,6 +104,12 @@ get_header();
 				<?php echo esc_html( $notice['text'] ); ?>
 			</div>
 		<?php endif; ?>
+		<?php if ( $email_change && isset( $email_change_messages[ $email_change ] ) ) : ?>
+			<?php $notice = $email_change_messages[ $email_change ]; ?>
+			<div class="rounded-xl border px-5 py-4 text-sm <?php echo 'success' === $notice['type'] ? 'border-emerald-400/40 bg-emerald-500/10 text-emerald-100' : ( 'info' === $notice['type'] ? 'border-amber-300/40 bg-amber-400/10 text-amber-100' : 'border-red-400/40 bg-red-500/10 text-red-100' ); ?>">
+				<?php echo esc_html( $notice['text'] ); ?>
+			</div>
+		<?php endif; ?>
 
 		<section class="grid gap-8 lg:grid-cols-[320px,1fr]">
 			<aside class="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
@@ -107,7 +126,7 @@ get_header();
 				<div class="grid gap-5 sm:grid-cols-2">
 					<div class="sm:col-span-2">
 						<label class="mb-2 block text-sm font-semibold text-gray-200" for="email"><?php esc_html_e( 'Adresse e-mail', 'photovault' ); ?></label>
-						<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="email" name="email" type="email" required value="<?php echo esc_attr( $current_user->user_email ); ?>">
+						<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-gray-400 outline-none" id="email" name="email" type="email" readonly value="<?php echo esc_attr( $current_user->user_email ); ?>">
 					</div>
 
 					<div class="sm:col-span-2">
@@ -126,6 +145,28 @@ get_header();
 						<p class="mt-2 text-xs text-gray-500"><?php esc_html_e( 'JPG, PNG ou WebP. Validation serveur obligatoire avant enregistrement.', 'photovault' ); ?></p>
 					</div>
 				</div>
+
+				<details class="mt-8 rounded-2xl border border-white/10 bg-black/20 p-5">
+					<summary class="cursor-pointer text-sm font-bold text-amber-200"><?php esc_html_e( 'Modifier l\'adresse e-mail', 'photovault' ); ?></summary>
+					<div class="mt-5 grid gap-5 sm:grid-cols-2">
+						<div>
+							<label class="mb-2 block text-sm font-semibold text-gray-200" for="new_email"><?php esc_html_e( 'Nouvelle adresse', 'photovault' ); ?></label>
+							<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="new_email" name="new_email" type="email" autocomplete="email">
+						</div>
+						<div>
+							<label class="mb-2 block text-sm font-semibold text-gray-200" for="email_current_password"><?php esc_html_e( 'Mot de passe actuel', 'photovault' ); ?></label>
+							<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="email_current_password" name="email_current_password" type="password" autocomplete="current-password">
+						</div>
+					</div>
+					<p class="mt-3 text-xs text-gray-500"><?php esc_html_e( 'L\'adresse actuelle reste active jusqu\'a la confirmation de la nouvelle adresse.', 'photovault' ); ?></p>
+				</details>
+
+				<?php if ( $pending_email ) : ?>
+					<div class="mt-5 flex flex-col gap-3 rounded-xl border border-amber-300/30 bg-amber-400/10 p-4 text-sm text-amber-100 sm:flex-row sm:items-center sm:justify-between">
+						<p><?php echo esc_html( sprintf( __( 'Changement en attente vers %s.', 'photovault' ), $pending_email['email'] ) ); ?></p>
+						<button class="rounded-full border border-amber-200/50 px-4 py-2 text-xs font-bold" form="identity-cancel-email-change" type="submit"><?php esc_html_e( 'Annuler', 'photovault' ); ?></button>
+					</div>
+				<?php endif; ?>
 
 				<details class="mt-8 rounded-2xl border border-white/10 bg-black/20 p-5">
 					<summary class="cursor-pointer text-sm font-bold text-amber-200"><?php esc_html_e( 'Modifier le mot de passe', 'photovault' ); ?></summary>
@@ -151,6 +192,12 @@ get_header();
 					</button>
 				</div>
 			</form>
+			<?php if ( $pending_email ) : ?>
+				<form id="identity-cancel-email-change" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
+					<input type="hidden" name="action" value="identity_security_kit_cancel_email_change">
+					<?php wp_nonce_field( 'identity_security_kit_cancel_email_change' ); ?>
+				</form>
+			<?php endif; ?>
 		</section>
 
 		<?php if ( shortcode_exists( 'identity_security_mfa' ) ) : ?>

@@ -69,6 +69,7 @@ Legende:
 - [x] Ajouter reponse anti-enumeration pour reset password.
 - [x] Ajouter verification email.
 - [x] Ajouter renvoi de verification email.
+- [x] Ajouter changement d'email differe avec mot de passe, stockage chiffre, confirmation expirable et notification de l'ancienne adresse.
 - [x] Ajouter audit identite sans secrets, reset keys ou IP brute.
 - [x] Ajouter reglages bornes pour politiques de securite deja exposees.
 - [x] Ajouter OTP email avec expiration, tentatives, anti-replay et rate limiting; moteur et refus critiques valides dans WordPress.
@@ -173,7 +174,7 @@ Legende:
 
 ## Statut global
 
-Progression corrigee: 54% d'implementation fonctionnelle et 43% de preparation production stricte.
+Progression corrigee: 55% d'implementation fonctionnelle et 44% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 

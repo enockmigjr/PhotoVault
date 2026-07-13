@@ -98,6 +98,7 @@ PhotoVault
 - Grace MFA configurable ajoutee pour les comptes a capabilities sensibles, avec blocage wp-admin/AJAX apres 15 jours et invalidation des autres sessions.
 - Test runtime Identity ajoute sur WordPress/MySQL: verification email liee a l'adresse, OTP email/SMS, telephone E.164 unique, TOTP, recovery, login multicanal et expiration J+15.
 - Les emails Identity sont maintenant verifies via le transport Docker/Mailpit; une erreur fatale des templates verification/reset a ete corrigee.
+- Le profil conserve l'email courant jusqu'a confirmation de la nouvelle adresse; demande chiffree, expiration, anti-rejeu, notifications et revocation MFA email sont valides en runtime.
 
 ### Newsletter
 
@@ -189,7 +190,7 @@ PhotoVault
 ### P1 - Identity Kit
 
 1. Valider un provider SMS reel en staging sans exposer ses secrets.
-2. Ajouter changement d'email securise, QR TOTP et remplacement/desactivation des facteurs.
+2. Ajouter QR TOTP et remplacement/desactivation des facteurs.
 3. Tester en navigateur le challenge login et l'enforcement wp-admin/AJAX par role.
 4. Ajouter rappels J+1/J+7/J+12 et gestion des changements de politique/capabilities.
 5. Ajouter page admin Security Audit/Policies complete.
@@ -224,7 +225,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation corrigee: 54% d implementation fonctionnelle et 43% de preparation production stricte.
+Estimation corrigee: 55% d implementation fonctionnelle et 44% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
