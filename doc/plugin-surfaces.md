@@ -203,9 +203,14 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_create_list` | Creation liste | Capability `newsletter_manage_lists`, nonce |
 | `admin_post_newsletter_campaign_kit_create_tag` | Creation tag | Capability `newsletter_manage_lists`, nonce |
 | `admin_post_newsletter_campaign_kit_create_segment` | Creation segment | Capability `newsletter_manage_lists`, nonce, regles validees |
+| `admin_post_newsletter_campaign_kit_update_segment` | Edition segment | Capability `newsletter_manage_lists`, nonce, segment actif et regles validees |
+| `admin_post_newsletter_campaign_kit_duplicate_segment` | Duplication segment | Capability `newsletter_manage_lists`, nonce, nouvelle copie active |
+| `admin_post_newsletter_campaign_kit_segment_status` | Archivage/restauration segment | Capability `newsletter_manage_lists`, nonce, verrou si campagne non terminale |
 | `admin_post_newsletter_campaign_kit_create_topic` | Creation thematique | Capability `newsletter_manage_lists`, nonce |
 | `admin_post_newsletter_campaign_kit_update_assignment` | Affectation audience | Capability `newsletter_manage_lists`, nonce, IDs controles |
 | `admin_post_newsletter_campaign_kit_create_campaign` | Creation campagne | Capability `newsletter_create_campaigns`, nonce |
+| `admin_post_newsletter_campaign_kit_update_campaign` | Edition campagne | Capability `newsletter_create_campaigns`, nonce, brouillon uniquement |
+| `admin_post_newsletter_campaign_kit_duplicate_campaign` | Duplication campagne | Capability `newsletter_create_campaigns`, nonce, nouvelle copie sans etat de livraison |
 | `admin_post_newsletter_campaign_kit_transition_campaign` | Transition campagne | Capability `newsletter_create_campaigns`, `newsletter_send_campaigns` pour envoi, nonce |
 | `admin_post_newsletter_campaign_kit_schedule_campaign` | Programmer campagne | Capability `newsletter_send_campaigns`, nonce par campagne, date future convertie en UTC |
 | `admin_post_newsletter_campaign_kit_process_queue` | Traitement queue | Capability `newsletter_send_campaigns`, nonce |

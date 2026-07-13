@@ -11,7 +11,7 @@ Le projet est organise autour d'un theme editorial et de trois plugins metier re
 
 ## Etat actuel
 
-Progression estimee: 86%.
+Progression reelle estimee: 64% fonctionnel, 53% production stricte.
 
 Les fondations principales sont en place: separation theme/plugins, controles serveur sur les medias sensibles, previews/miniatures au lieu des originaux HD dans les vues ensemble, endpoint de telechargement controle, verification email, audit, newsletter de base, documentation securite et Docker.
 

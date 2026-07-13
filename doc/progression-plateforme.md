@@ -200,7 +200,7 @@ PhotoVault
 
 ### P1 - Newsletter Kit
 
-1. Ajouter edition/duplication de campagnes et blocs editoriaux reutilisables.
+1. Ajouter blocs editoriaux reutilisables et snapshots d'audience immuables.
 2. Brancher un provider API externe dedie et ajouter supervision/alertes du cron de traitement.
 3. Ajouter webhooks signes pour bounces/complaints et brancher le registre de suppression au futur import.
 4. Ajouter tracking ouvertures/clics et exports de reporting avances.
@@ -227,7 +227,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 63% d implementation fonctionnelle et 52% de preparation production stricte.
+Estimation recalculee: 64% d implementation fonctionnelle et 53% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -240,4 +240,4 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
 - UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;
-- Newsletter avancee: lifecycle des segments, edition campagne, imports, webhooks provider, tracking ouvertures/clics et exports.
+- Newsletter avancee: lifecycle segments/campagnes valide; restent imports, snapshots d'audience, webhooks provider, tracking ouvertures/clics et exports.

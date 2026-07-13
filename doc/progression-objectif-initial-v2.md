@@ -10,8 +10,8 @@ Le cahier initial contient 113 sections techniques ou fonctionnelles mesurables,
 
 La progression est desormais publiee avec deux mesures:
 
-- **implementation fonctionnelle: 63%**;
-- **preparation production stricte: 52%**.
+- **implementation fonctionnelle: 64%**;
+- **preparation production stricte: 53%**.
 
 Le premier chiffre mesure le code et le cablage reel deja presents. Le second retire les fonctions sans tests d'integration, sans validation WordPress runtime ou sans verification de l'environnement cible. Aucun simple fichier Markdown ne fait progresser la preparation production.
 
@@ -21,7 +21,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 | --- | ---: | ---: | ---: | --- |
 | Audit, architecture, securite de base | 1-16 | 65% | 48% | Plugins separes, inventaires et controles principaux presents; fallbacks, audit exhaustif et tests restent incomplets. |
 | Identity Security Kit | 17-33 | 72% | 67% | Verification, reset, changement email, OTP, TOTP, recovery, MFA multicanal, retrait, rappels et templates multipart testes; phone library, QR, SMS reel, multisite et E2E navigateur restent a faire. |
-| Newsletter Campaign Kit | 34-61 | 72% | 64% | Abonnes, segmentation, campagnes, programmation, templates HTML/texte, multipart, one-click, preferences, suppression durable et Privacy valides; imports, tracking, webhooks/provider et lifecycle des segments restent majeurs. |
+| Newsletter Campaign Kit | 34-61 | 78% | 70% | Abonnes, segmentation et lifecycle des segments, campagnes editables/duplicables, programmation, templates multipart, one-click, preferences, suppression durable et Privacy valides; imports, snapshots, tracking et webhooks/provider restent majeurs. |
 | PhotoVault metier et experience | 62-76 | 57% | 43% | Home, galerie, detail, medias proteges, watermark et downloads avances; dashboard, favoris, shootings, upload complet et tests d'autorisation manquent. |
 | Docker et exploitation | 77-89 | 82% | 70% | WordPress initialise, services healthy, plugins/migrations valides, cron reel et expediteur wp_mail vers Mailpit testes; sauvegardes, restauration et image de production restent a faire. |
 | Tests fonctionnels et securite | 90-96 | 27% | 24% | OTP, SMS adapter, Identity runtime et changement email, scheduler, segmentation et suppression Newsletter testes; matrices REST, CSRF, IDOR et E2E navigateur restent absentes. |
@@ -53,6 +53,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Export et effacement Privacy WordPress avec conservation documentee du seul HMAC d'une suppression active.
 - Templates newsletter reutilisables: creation, edition, duplication, archivage/restauration, heritage campagne et preview admin protegee.
 - Emails newsletter multipart HTML/texte valides dans PHPMailer et remis a Mailpit avec reponse SMTP 250.
+- Campagnes editables uniquement en brouillon, duplication sans etat de livraison, segments editables/duplicables/archivables, volumes exacts et garde d'archivage valides en runtime.
 - Environnement Docker Nginx, PHP-FPM, MariaDB, Mailpit, cron et WP-CLI versionne, WordPress initialise et trois plugins actifs.
 - Endpoint healthz Nginx sans redirection et expediteur WordPress global valides en runtime avec reponse SMTP 250.
 
@@ -63,7 +64,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Changement de facteur: activation, preference et desactivation re-authentifiees; le remplacement passe par retrait/re-enrolement, mais son parcours guide et les changements concurrents restent a valider en navigateur.
 - SMS: moteur, provider generique et fail-closed valides avec adapter controle; Twilio reel reste sans credential ni preuve staging.
 - Docker: runtime local valide et services healthy; sauvegardes, restauration, rotation des secrets et image immutable de production restent incomplets.
-- Newsletter: ciblage, cron, templates multipart, one-click, preferences, suppression durable et Privacy valides; imports, providers/webhooks, bounces et observabilite restent incomplets.
+- Newsletter: ciblage, lifecycles campagne/segment, cron, templates multipart, one-click, preferences, suppression durable et Privacy valides; imports, snapshots, providers/webhooks, bounces et observabilite restent incomplets.
 - Interfaces publiques: la home est enrichie, mais la verification responsive et clavier n'est pas terminee.
 
 ## Restant prioritaire
@@ -88,10 +89,9 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 
 ### P1 - Newsletter
 
-- Ajouter edition, duplication, archivage et estimation du volume des segments.
 - Ajouter historique/snapshot d'audience pour expliquer chaque ciblage apres envoi.
 - Ajouter supervision du cron, cle d'idempotence provider et configuration des tailles de lot.
-- Ajouter edition/duplication des campagnes et bibliotheque de blocs editoriaux au-dela des templates complets.
+- Ajouter une bibliotheque de blocs editoriaux au-dela des templates complets.
 - Ajouter bounces, complaints, webhooks signes et providers API.
 - Ajouter tracking configurable ouvertures/clics, statistiques et exports avances.
 - Ajouter imports CSV avec dry-run, mapping, validation et rapport d'erreurs.

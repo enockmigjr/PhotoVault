@@ -25,9 +25,14 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_subscriber_status` | Admin | `newsletter_manage_subscribers`, nonce par abonne, whitelist status | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_export_subscribers` | Admin | `newsletter_view_reports`, nonce export | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_campaign` | Admin | `newsletter_create_campaigns`, nonce creation | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_campaign` | Admin | `newsletter_create_campaigns`, nonce par campagne, brouillon uniquement | Runtime lifecycle valide; refus de role a automatiser |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_duplicate_campaign` | Admin | `newsletter_create_campaigns`, nonce par campagne, copie forcee en brouillon | Runtime lifecycle valide; refus de role a automatiser |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_transition_campaign` | Admin | `newsletter_create_campaigns`, `newsletter_send_campaigns` pour transitions envoi, nonce par campagne | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_schedule_campaign` | Admin | `newsletter_send_campaigns`, nonce par campagne, date future valide | Runtime scheduler valide; refus de role a automatiser |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_segment` | Admin | `newsletter_manage_lists`, nonce, champs et IDs bornes | Moteur/runtime valides; refus de role a automatiser |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_segment` | Admin | `newsletter_manage_lists`, nonce par segment, segment actif | Runtime lifecycle valide; refus de role a automatiser |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_duplicate_segment` | Admin | `newsletter_manage_lists`, nonce par segment, copie active | Runtime lifecycle valide; refus de role a automatiser |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_segment_status` | Admin | `newsletter_manage_lists`, nonce par segment, archivage bloque si campagne non terminale | Runtime lifecycle valide; refus de role a automatiser |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_topic` | Admin | `newsletter_manage_lists`, nonce, nom/couleur nettoyes | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_assignment` | Admin | `newsletter_manage_lists`, nonce, abonne et audience existants | Helper/runtime valides; refus de role a automatiser |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_process_queue` | Admin | `newsletter_send_campaigns`, nonce traitement queue | A tester |
