@@ -110,8 +110,12 @@ try {
 	photovault_dashboard_runtime_assert( false !== strpos( $newsletter, 'Gerer mes thematiques' ), 'Newsletter section did not expose the owner preference center.' );
 	$bookings = $render_dashboard( 'bookings' );
 	photovault_dashboard_runtime_assert( false !== strpos( $bookings, 'Porto-Novo runtime studio' ) && false !== strpos( $bookings, 'Nouvelle reservation' ), 'Bookings section did not render the owner reservation.' );
+	$GLOBALS['wp_query']->is_page           = true;
+	$GLOBALS['wp_query']->queried_object    = $profile_page;
+	$GLOBALS['wp_query']->queried_object_id = (int) $profile_page->ID;
 	$profile = $render_profile();
 	photovault_dashboard_runtime_assert( false !== strpos( $profile, 'templates/dashboard-sidebar' ) || false !== strpos( $profile, 'Informations et securite' ), 'The profile did not render inside the dashboard experience.' );
+	photovault_dashboard_runtime_assert( false === strpos( $profile, '<header class="glass-effect' ) && false === strpos( $profile, '<footer class="bg-[#090808]' ), 'The public header or footer leaked into the dashboard profile surface.' );
 	photovault_dashboard_runtime_assert( false !== strpos( $profile, 'profile-avatar-dialog' ) && false !== strpos( $profile, 'name="profile_action" value="avatar"' ), 'The independent avatar flow is missing.' );
 	photovault_dashboard_runtime_assert( false !== strpos( $profile, 'profile-phone-dialog' ) && false !== strpos( $profile, 'name="profile_action" value="phone"' ), 'The independent phone flow is missing.' );
 	photovault_dashboard_runtime_assert( false !== strpos( $profile, 'data-pv-toast-close' ), 'Profile notifications cannot be dismissed.' );

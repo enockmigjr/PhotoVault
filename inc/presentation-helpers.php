@@ -9,6 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/** Identify pages rendered inside the private Dashboard shell. */
+function photovault_is_dashboard_surface() {
+	return is_page_template( 'page-dashboard.php' ) || is_page_template( 'page-profile.php' );
+}
+
 if ( ! function_exists( 'photovault_render_post_visual' ) ) {
 	function photovault_render_post_visual( $size = 'medium_large', $image_class = 'w-full h-full object-cover' ) {
 		if ( has_post_thumbnail() ) {

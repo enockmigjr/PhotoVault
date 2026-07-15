@@ -60,7 +60,7 @@ $role_label = $is_manager ? __( 'Administrateur', 'photovault' ) : __( 'Client',
 		</nav>
 
 		<div class="mt-6 border-t border-white/10 pt-5">
-			<a href="<?php echo esc_url( home_url( '/profile/' ) ); ?>" class="flex items-center rounded-md px-4 py-3 text-sm font-semibold text-gray-300 transition hover:bg-white/[0.06] hover:text-white">
+			<a href="<?php echo esc_url( home_url( '/profile/' ) ); ?>" class="flex items-center rounded-md px-4 py-3 text-sm font-semibold transition <?php echo esc_attr( 'profile' === $section ? 'bg-amber-300 text-black' : 'text-gray-300 hover:bg-white/[0.06] hover:text-white' ); ?>" <?php echo 'profile' === $section ? 'aria-current="page"' : ''; ?>>
 				<svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 21a8 8 0 00-16 0m12-13a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
 				<?php esc_html_e( 'Profil', 'photovault' ); ?>
 			</a>

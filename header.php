@@ -10,7 +10,7 @@
 
 <?php
 // Ne pas afficher le menu public sur les templates de dashboard
-$is_dashboard_template = is_page_template( 'page-dashboard.php' );
+$is_dashboard_template = function_exists( 'photovault_is_dashboard_surface' ) ? photovault_is_dashboard_surface() : is_page_template( 'page-dashboard.php' );
 ?>
 
 <?php if ( ! $is_dashboard_template ) : ?>

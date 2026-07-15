@@ -41,6 +41,7 @@ $messages = array(
 	'phone_required'                => array( 'type' => 'error', 'text' => __( 'Le numero de telephone international est obligatoire.', 'photovault' ) ),
 	'phone_country_code_required'   => array( 'type' => 'error', 'text' => __( 'Ajoutez le prefixe pays au numero de telephone.', 'photovault' ) ),
 	'phone_invalid'                 => array( 'type' => 'error', 'text' => __( 'Numero de telephone international invalide.', 'photovault' ) ),
+	'phone_validation_unavailable'  => array( 'type' => 'error', 'text' => __( 'La validation des numeros est temporairement indisponible.', 'photovault' ) ),
 	'phone_exists'                  => array( 'type' => 'error', 'text' => __( 'Ce numero est deja associe a un autre compte.', 'photovault' ) ),
 	'phone_save_failed'             => array( 'type' => 'error', 'text' => __( 'Le numero n a pas pu etre enregistre.', 'photovault' ) ),
 	'weak_password'                 => array( 'type' => 'error', 'text' => __( 'Le nouveau mot de passe ne respecte pas la longueur minimale.', 'photovault' ) ),
@@ -126,7 +127,7 @@ get_header();
 			</section>
 
 			<?php if ( shortcode_exists( 'identity_security_mfa' ) ) : ?>
-				<section class="border-t border-white/10 py-10 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-8 [&_h3]:text-lg [&_h3]:font-bold [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-gray-400 [&_form]:mt-4 [&_form]:space-y-4 [&_input]:max-w-full [&_input]:rounded-md [&_input]:border [&_input]:border-white/15 [&_input]:bg-black/40 [&_input]:px-3 [&_input]:py-2 [&_input]:text-white [&_button]:rounded-md [&_button]:bg-amber-300 [&_button]:px-5 [&_button]:py-2.5 [&_button]:font-bold [&_button]:text-black">
+				<section class="pv-profile-mfa border-t border-white/10 py-10">
 					<div class="mb-6 flex items-end justify-between gap-5"><div><p class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500"><?php esc_html_e( 'Securite', 'photovault' ); ?></p><h2 class="mt-2 text-2xl font-bold"><?php esc_html_e( 'Double authentification', 'photovault' ); ?></h2></div><span class="text-xs font-bold <?php echo $mfa_methods ? 'text-emerald-300' : 'text-amber-200'; ?>"><?php echo esc_html( $mfa_methods ? sprintf( __( '%d methode(s) active(s)', 'photovault' ), count( $mfa_methods ) ) : __( 'Aucune methode active', 'photovault' ) ); ?></span></div>
 					<?php echo do_shortcode( '[identity_security_mfa]' ); ?>
 				</section>
