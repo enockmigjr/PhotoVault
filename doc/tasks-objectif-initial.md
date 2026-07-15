@@ -90,6 +90,7 @@ Legende:
 
 - [x] Creer plugin generique `newsletter-campaign-kit`.
 - [x] Ajouter capture d'abonnement avec consentement et nonce.
+- [x] Ajouter double opt-in public avec pending hors audience, token HMAC expirable/single-use, cooldown, email multipart, reponse neutre et rate limits reseau/adresse valides via Nginx et Mailpit.
 - [x] Stocker metadata sensible de maniere minimisee/hashee quand pertinent.
 - [x] Ajouter unsubscribe via token serveur.
 - [x] Ajouter one-click unsubscribe RFC 8058 avec POST idempotent et en-tetes HTTPS/DKIM explicites.
@@ -180,7 +181,7 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 75% d'implementation fonctionnelle et 65% de preparation production stricte.
+Progression recalculee: 76% d'implementation fonctionnelle et 66% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 

@@ -27,6 +27,8 @@ PhotoVault is being migrated from a theme-heavy implementation to a modular Word
 - Subscriber metadata stores hashed IP data instead of raw IP addresses.
 - Public unsubscribe uses a server-side token and does not expose the email address in the URL.
 - Admin subscriber management requires dedicated newsletter capabilities.
+- Public subscriptions remain pending until a single-use, expiring email capability is confirmed; only its HMAC is stored.
+- Independent network and address rate limits reduce list bombing while public responses remain neutral for known or suppressed contacts.
 - Campaign delivery supports `wp_mail` and a generic HTTPS API with server-side-only credentials and stable idempotency keys.
 - Bounce and complaint events require a timestamped HMAC signature, use a durable replay guard and never store the raw email in the event registry.
 

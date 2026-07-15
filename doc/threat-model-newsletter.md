@@ -42,7 +42,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 | Menace | Scenario | Controle actuel | Gap/test requis |
 | --- | --- | --- | --- |
 | CSRF subscribe | Soumettre un email sans intention | Nonce + consentement | Tester nonce/consentement manquants |
-| Liste bombing | Abonner massivement des emails tiers | Email valide + nonce | Ajouter rate limit/double opt-in |
+| Liste bombing | Abonner massivement des emails tiers | Double opt-in, cooldown et limites independantes reseau/adresse | Ajouter supervision distribuee en production |
 | Enumeration abonnes | Deduire si email existe | Redirects generiques partiels | Tester messages neutres |
 | Unsubscribe abuse | Deviner token pour desabonner quelqu'un | Token 64 hex HMAC | Tester token invalide/inconnu/idempotence |
 | Export fuite | Role non autorise exporte CSV | `newsletter_view_reports` + nonce | Test role matrix |
@@ -67,6 +67,8 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 ## Controles existants
 
 - Subscribe public avec nonce, consentement et validation email.
+- Subscribe public cree un statut pending hors audience; confirmation par token HMAC expirable et single-use avant activation.
+- Cooldown de renvoi, reponse neutre et compteurs transients independants par reseau et adresse.
 - Email hash et IP hash stockes.
 - Unsubscribe public par token serveur sans email dans l'URL.
 - Admin abonnes protege par `newsletter_manage_subscribers`.
@@ -88,13 +90,12 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 
 ## Gaps prioritaires
 
-1. Ajouter rate limiting et/ou double opt-in pour inscription publique.
-2. Ajouter retention/suppression des donnees abonnes.
-3. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
-4. Ajouter exports robustes pour listes, segments et tags; l'import des abonnes et affectations est operationnel.
-5. Ajouter templates reutilisables avances et previsualisation email.
-6. Brancher un fournisseur reel sur le contrat HTTP valide et superviser le cron de traitement queue.
-7. Ajouter estimation/confirmation finale avant envoi et politique de retention des preuves de ciblage.
+1. Ajouter retention/suppression des donnees abonnes pending expirees.
+2. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
+3. Ajouter exports robustes pour listes, segments et tags; l'import des abonnes et affectations est operationnel.
+4. Ajouter templates reutilisables avances et previsualisation email.
+5. Brancher un fournisseur reel sur le contrat HTTP valide et superviser le cron de traitement queue.
+6. Ajouter estimation/confirmation finale avant envoi et politique de retention des preuves de ciblage.
 
 ## Tests minimum avant production
 

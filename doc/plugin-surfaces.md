@@ -171,7 +171,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 
 | Table | Fonction | Usage | Donnees sensibles |
 | --- | --- | --- | --- |
-| `{$wpdb->prefix}newsletter_campaign_subscribers` | `newsletter_campaign_kit_get_subscribers_table()` | Abonnes, consentement, unsubscribe | Email clair, email hash, token unsubscribe, IP hash |
+| `{$wpdb->prefix}newsletter_campaign_subscribers` | `newsletter_campaign_kit_get_subscribers_table()` | Abonnes, consentement, double opt-in, unsubscribe | Email clair, email hash, token unsubscribe, HMAC/expiration confirmation, IP hash |
 | `{$wpdb->prefix}newsletter_campaign_lists` | `newsletter_campaign_kit_get_lists_table()` | Listes editoriales | Nom, slug, description, statut |
 | `{$wpdb->prefix}newsletter_campaign_tags` | `newsletter_campaign_kit_get_tags_table()` | Tags de segmentation | Nom, slug, couleur |
 | `{$wpdb->prefix}newsletter_campaign_subscriber_lists` | `newsletter_campaign_kit_get_subscriber_lists_table()` | Liaison abonne/liste | Cle composee abonne + liste |
@@ -207,6 +207,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_menu` | Admin newsletter | UI abonnes, segments, campagnes, queue, settings, reports, audit et export |
 | `admin_post_nopriv_newsletter_campaign_kit_subscribe` | Subscribe | Formulaire public |
 | `admin_post_newsletter_campaign_kit_subscribe` | Subscribe | Formulaire authentifie |
+| `admin_post_nopriv_newsletter_campaign_kit_confirm_subscription` / `admin_post_newsletter_campaign_kit_confirm_subscription` | Confirmation | Lien email HMAC expirable, activation atomique du statut pending |
 | `admin_post_nopriv_newsletter_campaign_kit_unsubscribe` | Unsubscribe | Lien public tokenise |
 | `admin_post_newsletter_campaign_kit_unsubscribe` | Unsubscribe | Lien authentifie tokenise |
 | `admin_post_newsletter_campaign_kit_update_subscriber_status` | Update status | Changement statut admin |

@@ -24,8 +24,9 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Identity Security Kit | `admin_post_identity_security_kit_resend_email_verification` | Authentifie | Session, nonce, politique de renvoi | A tester |
 | Identity Security Kit | `admin_post_identity_security_kit_email_otp_request` | Authentifie | Session, nonce lie au purpose, cooldown DB | A tester |
 | Identity Security Kit | `admin_post_identity_security_kit_email_otp_verify` | Authentifie | Session, nonce lie au purpose, ownership, expiration, essais, consommation atomique | A tester |
-| Newsletter Campaign Kit | `admin_post_nopriv_newsletter_campaign_kit_subscribe` | Public formulaire | Nonce, consentement, email valide, IP hash | A tester |
-| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_subscribe` | Authentifie formulaire | Nonce, consentement, email valide, IP hash | A tester |
+| Newsletter Campaign Kit | `admin_post_nopriv_newsletter_campaign_kit_subscribe` | Public formulaire | Nonce, consentement, email valide, double opt-in pending, limites reseau/adresse et reponse neutre | Runtime HTTP nonce, rate limit, Mailpit et pending valides |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_subscribe` | Authentifie formulaire | Nonce, consentement, email valide, double opt-in pending et limites reseau/adresse | Meme handler public valide; matrice de role globale restante |
+| Newsletter Campaign Kit | `admin_post_nopriv_newsletter_campaign_kit_confirm_subscription` / `admin_post_newsletter_campaign_kit_confirm_subscription` | Public lien email | Token 64 hex dont seul le HMAC est stocke, expiration, statut pending et update atomique single-use | Runtime service et HTTP confirmation/rejeu/expiration valides |
 | Newsletter Campaign Kit | `admin_post_nopriv_newsletter_campaign_kit_unsubscribe` | Public lien email | Token 64 hex, pas d'email brut dans l'URL | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_unsubscribe` | Authentifie lien email | Token 64 hex, pas d'email brut dans l'URL | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_subscriber_status` | Admin | `newsletter_manage_subscribers`, nonce par abonne, whitelist status | A tester |

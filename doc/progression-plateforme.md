@@ -231,7 +231,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 75% d implementation fonctionnelle et 65% de preparation production stricte.
+Estimation recalculee: 76% d implementation fonctionnelle et 66% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -244,4 +244,4 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - matrices Identity/Newsletter/admin-post, CSRF HTTP et acces directs aux fichiers;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
 - UX metier incomplete: preuve multipart post-correction et validation responsive de l'import, du dashboard et des reservations;
-- Newsletter avancee: lifecycle segments/campagnes, import CSV, snapshots, provider HTTP et webhooks signes valides; restent integration fournisseur staging, tracking ouvertures/clics et exports avances.
+- Newsletter avancee: double opt-in, lifecycle segments/campagnes, import, snapshots, provider HTTP et webhooks signes valides; restent integration fournisseur staging, tracking ouvertures/clics et exports avances.
