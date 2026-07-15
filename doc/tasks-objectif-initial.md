@@ -115,8 +115,8 @@ Legende:
 - [x] Ajouter distinction galerie publique / collections protegees.
 - [x] Garder style portfolio premium/editorial plutot que SaaS generique.
 - [~] Verifier visuellement home, galerie, blog, detail media, profil et dashboard sur mobile/desktop.
-- [ ] Finaliser accessibilite clavier, focus visible, menu mobile, fermeture ESC/overlay.
-- [~] Ajouter et tester favoris, preferences et pages utilisateur completes. Favoris, historique, acces, newsletter et securite sont integres et verifies en runtime; reservations et validation responsive navigateur restent a faire.
+- [~] Finaliser accessibilite clavier, focus visible, menu mobile, fermeture ESC/overlay. Le dashboard gere clavier, overlay et Echap; l'audit transversal reste a faire.
+- [x] Ajouter et tester favoris, preferences et pages utilisateur completes: favoris, historique, acces, newsletter, securite et reservations sont integres avec isolation par compte.
 
 ## 8. Upload media et admin PhotoVault
 
@@ -127,8 +127,8 @@ Legende:
 - [x] Ajouter page admin audit media.
 - [~] Ameliorer l'UX upload: progression, nom, taille, statut, succes/erreur.
 - [~] Permettre edition rapide apres upload: titre, description, categorie, collection, confidentialite, tags.
-- [ ] Ajouter module `Shootings` avec types, dates, lieux, contact, statuts et transitions serveur.
-- [~] Ajouter dashboard utilisateur complet: overview, profil, favoris, downloads, acces, preferences, securite et newsletter sont implementes avec isolation par compte; les reservations dependent encore du module Shootings.
+- [x] Ajouter module `Shootings` avec types, dates, lieux, contact, statuts, ownership, e-mails professionnels et transitions serveur verifies en runtime.
+- [x] Ajouter dashboard utilisateur complet: overview, profil, favoris, downloads, acces, preferences, securite, newsletter et reservations avec isolation par compte.
 
 ## 9. Blog, header, profil, pages connues
 
@@ -179,8 +179,8 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 66% d'implementation fonctionnelle et 55% de preparation production stricte.
+Progression recalculee: 67% d'implementation fonctionnelle et 56% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
-Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes, queue, provider et reporting, une experience publique enrichie, une bibliotheque personnelle et un dashboard role-aware verifies en runtime. Il ne doit pas encore etre declare production-ready tant que les matrices d'autorisation, les parcours navigateur critiques, le module shootings, l'upload complet et l'exploitation de production n'ont pas ete verifies ou termines.
+Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec campagnes et reporting, une experience publique enrichie, une bibliotheque personnelle, un dashboard role-aware et le cycle complet des reservations verifies en runtime. Il ne doit pas encore etre declare production-ready tant que les matrices d'autorisation, les parcours navigateur critiques, l'upload complet et l'exploitation de production n'ont pas ete verifies ou termines.

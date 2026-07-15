@@ -18,6 +18,7 @@ $menu_items    = array(
 	'favorites' => array( 'label' => __( 'Favoris', 'photovault' ), 'url' => add_query_arg( 'section', 'favorites', $dashboard_url ), 'icon' => 'M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z' ),
 	'downloads' => array( 'label' => __( 'Telechargements', 'photovault' ), 'url' => add_query_arg( 'section', 'downloads', $dashboard_url ), 'icon' => 'M12 3v12m0 0l-4-4m4 4l4-4M5 21h14' ),
 	'access' => array( 'label' => __( 'Collections', 'photovault' ), 'url' => add_query_arg( 'section', 'access', $dashboard_url ), 'icon' => 'M7 10V7a5 5 0 0110 0v3m-11 0h12v10H6V10z' ),
+	'bookings' => array( 'label' => __( 'Reservations', 'photovault' ), 'url' => add_query_arg( 'section', 'bookings', $dashboard_url ), 'icon' => 'M8 3v3m8-3v3M4 9h16M5 5h14a1 1 0 011 1v14H4V6a1 1 0 011-1zm3 8h3v3H8v-3z' ),
 	'newsletter' => array( 'label' => __( 'Newsletter', 'photovault' ), 'url' => add_query_arg( 'section', 'newsletter', $dashboard_url ), 'icon' => 'M3 6h18v12H3V6zm0 1l9 6 9-6' ),
 	'security' => array( 'label' => __( 'Securite', 'photovault' ), 'url' => add_query_arg( 'section', 'security', $dashboard_url ), 'icon' => 'M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z' ),
 );

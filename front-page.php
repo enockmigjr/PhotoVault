@@ -61,7 +61,7 @@ $current_year = (int) date( 'Y' );
 			<p class="mt-8 max-w-2xl text-base sm:text-xl text-gray-200 leading-relaxed">Le cabinet de curiosites visuelles et le portfolio officiel de l'artiste. Explorez les cliches libres en haute definition, accedez aux collections privees ou reservez une creation photographique sur mesure.</p>
 			<div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-md sm:max-w-none">
 				<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all shadow-lg border border-indigo-400/20 text-center cursor-pointer">Explorer la galerie</a>
-				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="px-8 py-4 bg-white/10 hover:bg-white/15 text-white font-bold rounded-xl border border-white/20 transition-all text-center cursor-pointer backdrop-blur-md">Reserver un shooting</a>
+				<a href="<?php echo esc_url( home_url( '/booking/' ) ); ?>" class="px-8 py-4 bg-white/10 hover:bg-white/15 text-white font-bold rounded-xl border border-white/20 transition-all text-center cursor-pointer backdrop-blur-md">Reserver un shooting</a>
 			</div>
 		</div>
 		<a href="#manifeste" class="mt-16 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.25em] text-gray-200 hover:text-white transition-colors">Decouvrir <span class="h-10 w-px bg-indigo-400/70"></span></a>
@@ -333,7 +333,7 @@ $current_year = (int) date( 'Y' );
 	<div class="relative max-w-5xl mx-auto px-4 text-center">
 		<h2 class="text-4xl sm:text-6xl font-black text-white leading-tight">Certains instants passent. D'autres meritent de rester.</h2>
 		<p class="text-gray-200 text-lg mt-6 max-w-2xl mx-auto">Explorez les archives existantes ou creons ensemble les prochaines images.</p>
-		<div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center"><a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl">Explorer la galerie</a><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="px-8 py-4 bg-white/10 hover:bg-white/15 text-white font-bold rounded-xl border border-white/20">Reserver un shooting</a></div>
+		<div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center"><a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl">Explorer la galerie</a><a href="<?php echo esc_url( home_url( '/booking/' ) ); ?>" class="px-8 py-4 bg-white/10 hover:bg-white/15 text-white font-bold rounded-xl border border-white/20">Reserver un shooting</a></div>
 	</div>
 </section>
 

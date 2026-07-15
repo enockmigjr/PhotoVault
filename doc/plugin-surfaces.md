@@ -31,11 +31,13 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | Element | Type | Usage |
 | --- | --- | --- |
 | `media_item` | CPT | Oeuvres/media PhotoVault |
+| `photovault_shooting` | CPT prive | Reservations possedees par un compte, non publiques et absentes de REST |
 | `media_folder` | Taxonomie | Collections/dossiers media |
 | `media_category` | Taxonomie | Categories media |
 | `is_protected` | Post meta | Active preview filigranee et bloque download non privilegie |
 | `_photovault_original_url` / `_photovault_private_original_path` | Post meta | Suivi original public/prive apres securisation |
 | `_photovault_private_original_secured_at` | Post meta | Horodatage migration stockage prive |
+| `_photovault_shooting_*` | Post meta | Type, date, lieu, message, contact, statut et date de transition d'une reservation |
 
 ### Filtres publics
 
@@ -46,6 +48,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `photovault_max_upload_files` | Filter | Modifier le nombre de fichiers par lot |
 | `photovault_private_originals_dir` | Filter | Modifier le dossier de stockage prive des originaux |
 | `photovault_protected_preview_cache_dir` | Filter | Modifier le dossier de cache des previews filigranees |
+| `photovault_shooting_types` | Filter | Etendre les types de shootings proposes sans modifier le lifecycle |
 
 
 ### Actions WordPress utilisees
@@ -55,9 +58,11 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `init` | CPT, taxonomies, login redirect | Enregistre types/taxonomies et garde-fous init |
 | `rest_api_init` | `photovault_register_rest_routes`, `photovault_register_user_library_routes` | Routes `/media`, `/secure-image` et `/favorites` |
 | `template_redirect` | Upload/delete/enforce login | Traitements frontend sensibles |
-| `admin_menu` | Menus acces/audit/settings | Pages admin PhotoVault |
+| `admin_menu` | Menus acces/audit/settings/shootings | Pages admin PhotoVault |
 | `admin_post_photovault_update_access_request_status` | `photovault_handle_access_request_status_update` | Validation admin des demandes d'acces |
 | `admin_post_photovault_secure_existing_originals` | `photovault_handle_secure_existing_originals` | Migration par lots des originaux existants |
+| `admin_post_photovault_create_shooting` | `photovault_handle_create_shooting` | Creation owner-only avec nonce, identite, validation et rate limit |
+| `admin_post_photovault_shooting_transition` | `photovault_handle_shooting_transition` | Annulation owner ou transitions reservees a `photovault_manage_shootings` |
 | `upload_dir` | `photovault_custom_upload_dir` | Dossier upload media personnalise |
 | `save_post` / `before_delete_post` | Cache stats | Nettoyage des transients stats |
 | `wp_footer` | Protection script | Clic droit/raccourcis pour medias proteges |

@@ -33,7 +33,7 @@ get_header();
 						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Téléchargement direct inclus</li>
 					</ul>
 				</div>
-				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mt-8 w-full py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold rounded-xl text-center block transition-all cursor-pointer">Réserver la séance</a>
+				<a href="<?php echo esc_url( home_url( '/booking/' ) ); ?>" class="mt-8 w-full py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold rounded-xl text-center block transition-all cursor-pointer">Réserver la séance</a>
 			</div>
 
 			<!-- Pro (Mis en avant) -->
@@ -53,7 +53,7 @@ get_header();
 						<li class="flex items-center"><span class="text-indigo-400 mr-2">&checkmark;</span> Droits d'utilisation commerciale</li>
 					</ul>
 				</div>
-				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mt-8 w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-center block transition-all shadow-lg cursor-pointer">Réserver la séance</a>
+				<a href="<?php echo esc_url( home_url( '/booking/' ) ); ?>" class="mt-8 w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-center block transition-all shadow-lg cursor-pointer">Réserver la séance</a>
 			</div>
 
 			<!-- Studio -->
@@ -72,7 +72,7 @@ get_header();
 						<li class="flex items-center"><span class="text-emerald-500 mr-2">&checkmark;</span> Clé USB & tirages physiques</li>
 					</ul>
 				</div>
-				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="mt-8 w-full py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold rounded-xl text-center block transition-all cursor-pointer">Demander un devis</a>
+				<a href="<?php echo esc_url( add_query_arg( 'type', 'custom', home_url( '/booking/' ) ) ); ?>" class="mt-8 w-full py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold rounded-xl text-center block transition-all cursor-pointer">Demander un devis</a>
 			</div>
 		</div>
 		<section class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left border-t border-gray-900 pt-10">

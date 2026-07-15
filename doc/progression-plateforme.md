@@ -129,6 +129,7 @@ PhotoVault
 - Page detail media avec affichage protege, filigrane, metadata, download controle et medias similaires.
 - Dashboard role-aware avec overview, favoris persistants, historique des telechargements, demandes/grants, etats Identity et abonnement Newsletter.
 - Page profil provisionnee automatiquement sur les installations deja actives; navigation mobile du dashboard fermable par overlay et touche Echap.
+- Reservations de shootings avec formulaire authentifie, ownership, date/type/contact valides, cycle `pending/confirmed/cancelled/completed`, administration et e-mails multipart prouves dans Mailpit.
 
 ### Observabilite
 
@@ -210,9 +211,7 @@ PhotoVault
 ### P2 - UX metier PhotoVault
 
 1. Ameliorer upload media admin.
-2. Ajouter module shooting: type, date, lieu, contact, statut.
-3. Relier les reservations au dashboard apres implementation du module Shootings.
-4. Verifier responsive mobile et accessibilite clavier.
+2. Verifier responsive mobile et accessibilite clavier du dashboard et du formulaire de reservation.
 
 ### P2 - Exploitation
 
@@ -229,7 +228,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 66% d implementation fonctionnelle et 55% de preparation production stricte.
+Estimation recalculee: 67% d implementation fonctionnelle et 56% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -241,5 +240,5 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - sauvegarde/restauration et smoke tests automatises de l'environnement Docker;
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
-- UX metier incomplete: reservations/shootings, upload avec progression et edition rapide, validation responsive du dashboard;
+- UX metier incomplete: upload avec progression et edition rapide, validation responsive du dashboard et des reservations;
 - Newsletter avancee: lifecycle segments/campagnes valide; restent imports, snapshots d'audience, webhooks provider, tracking ouvertures/clics et exports.

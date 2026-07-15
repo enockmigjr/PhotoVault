@@ -14,6 +14,8 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | PhotoVault Core | `POST/DELETE /wp-json/photovault/v1/favorites/{id}` | Authentifie | Cookie WordPress + nonce REST, ownership strict, media accessible, mutation idempotente | Runtime isolation valide |
 | PhotoVault Core | `admin_post_photovault_update_access_request_status` | Admin | `photovault_manage_media`, nonce par demande | A tester |
 | PhotoVault Core | `admin_post_photovault_secure_existing_originals` | Admin | `photovault_manage_media`, nonce global | A tester |
+| PhotoVault Core | `admin_post_photovault_create_shooting` | Authentifie | Nonce, identite verifiee, ownership, e-mail du compte, validation, anti-doublon et rate limit | Runtime service valide |
+| PhotoVault Core | `admin_post_photovault_shooting_transition` | Authentifie/Admin | Nonce par reservation, owner limite a annulation, capability pour confirmation/completion | Runtime lifecycle valide |
 | Identity Security Kit | `admin_post_identity_security_kit_save_settings` | Admin | `identity_manage_settings`, nonce reglages | A tester |
 | Identity Security Kit | `admin_post_nopriv_identity_security_kit_verify_email` | Public lien email | Token long, hash serveur, statut pending, expiration | A tester |
 | Identity Security Kit | `admin_post_identity_security_kit_verify_email` | Authentifie lien email | Token long, hash serveur, statut pending, expiration | A tester |
@@ -88,6 +90,15 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 - CSRF: nonce `photovault_secure_existing_originals`.
 - Effet: traite un lot d'originaux proteges/prives existants vers le stockage prive.
 - Tests a ajouter: anonyme, utilisateur standard, media manager/admin, nonce invalide, lot vide, chemin original manquant, idempotence.
+
+### Actions Shootings
+
+- Creation: session obligatoire, nonce, e-mail verifie du compte, date aujourd'hui a deux ans, type whitelist, champs bornes, telephone E.164 optionnel, anti-doublon et cinq demandes par heure.
+- Lecture: le dashboard interroge seulement les posts prives appartenant au compte; `photovault_manage_shootings` peut lire toutes les demandes.
+- Transitions: `pending` vers `confirmed/cancelled`, `confirmed` vers `completed/cancelled`; les statuts terminaux sont immuables.
+- Client: peut uniquement annuler sa propre demande encore active.
+- Administration: confirme, annule ou termine depuis l'espace Shootings; chaque transition est auditee et notifiee en HTML/texte.
+- Verification actuelle: validation, e-mail lie au compte, isolation de deux clients, transitions, page admin et notifications couvertes par `runtime-shootings.php`.
 
 ## Identity Security Kit
 

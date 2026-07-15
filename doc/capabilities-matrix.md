@@ -1,6 +1,6 @@
 # Matrice capabilities PhotoVault
 
-Derniere mise a jour: 2026-07-10
+Derniere mise a jour: 2026-07-15
 
 Objectif: rendre visibles les roles, capabilities et controles d'acces deja presents afin de guider les tests et la future delegation fine des permissions.
 
@@ -24,6 +24,7 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 | `photovault_manage_media` | `administrator` | Admin media, demandes d'acces, grants, audit media, secure originals, bypass email verification | Capability la plus sensible cote media |
 | `photovault_view_private_media` | `administrator` | Cible prevue pour lecture private media | Peu utilisee directement pour l'instant; les grants/ownership portent l'acces fin |
 | `photovault_manage_settings` | `administrator` | Reglages PhotoVault Core | A renforcer avec pages settings dediees |
+| `photovault_manage_shootings` | `administrator` | Toutes les reservations, confirmation, annulation et completion | Les clients ne peuvent lire et annuler que leurs propres demandes actives |
 | `upload_files` | Role WordPress standard | Upload media frontend/admin | Controle combine avec ownership et validation serveur |
 
 ### Decisions actuelles
@@ -32,6 +33,7 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 - Les medias prives ne sont visibles que si l'utilisateur est owner, admin/media manager ou beneficie d'un grant applicable.
 - Les admins/media managers gardent acces complet aux previews, downloads et outils de securisation des originaux.
 - Les downloads sensibles exigent une session, un nonce REST et une identite verifiee pour les non privilegies.
+- Les reservations exigent une identite verifiee; les transitions metier sont refusees hors de la matrice serveur.
 
 ## Identity Security Kit
 
@@ -72,6 +74,7 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 | Profil futur | Capabilities minimales | A ne pas donner par defaut |
 | --- | --- | --- |
 | Media manager | `read`, `upload_files`, `photovault_manage_media`, `photovault_view_private_media` | `manage_options`, `identity_manage_settings`, `newsletter_view_reports` |
+| Studio manager | `read`, `photovault_manage_shootings` | `manage_options`, `photovault_manage_settings`, donnees newsletter |
 | Curator/Archiviste | `read`, `upload_files`, `photovault_view_private_media` | `photovault_manage_platform`, `photovault_manage_settings` |
 | Identity manager | `read`, `identity_manage_settings`, `identity_view_security_audit` | `manage_options`, `newsletter_send_campaigns` |
 | Security officer | `read`, `identity_manage_security`, `identity_view_security_audit` | Reglages plateforme non lies a la securite |
