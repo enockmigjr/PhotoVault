@@ -157,7 +157,7 @@ PhotoVault
 
 - Les originaux sensibles disposent maintenant d'une premiere migration vers stockage prive, mais les existants doivent etre traites en admin et la regle serveur Nginx/Apache doit etre verifiee en production.
 - L'inventaire REST/AJAX est documente, mais les tests automatises correspondants ne sont pas encore en place.
-- Le workflow upload admin doit encore offrir une UX plus complete: progression, statut, edition rapide des metadonnees apres selection.
+- Le workflow upload admin offre maintenant selection visible, progression XHR, statuts et edition rapide; la preuve multipart HTTP post-correction et la validation navigateur restent a rejouer.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Le noyau TOTP/recovery/grace et les MFA email/SMS sont valides par services dans WordPress; les parcours navigateur, le SMS reel et la migration des comptes existants restent a valider.
 - La newsletter dispose maintenant de preferences thematiques, suppression-list durable, outils Privacy et templates multipart; provider API externe, imports et tracking ouvertures/clics restent absents.
@@ -210,7 +210,7 @@ PhotoVault
 
 ### P2 - UX metier PhotoVault
 
-1. Ameliorer upload media admin.
+1. Rejouer l'upload multipart HTTP corrige et valider l'espace d'import admin en navigateur.
 2. Verifier responsive mobile et accessibilite clavier du dashboard et du formulaire de reservation.
 
 ### P2 - Exploitation
@@ -228,7 +228,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 67% d implementation fonctionnelle et 56% de preparation production stricte.
+Estimation recalculee: 68% d implementation fonctionnelle et 57% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -240,5 +240,5 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - sauvegarde/restauration et smoke tests automatises de l'environnement Docker;
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
-- UX metier incomplete: upload avec progression et edition rapide, validation responsive du dashboard et des reservations;
+- UX metier incomplete: preuve multipart post-correction et validation responsive de l'import, du dashboard et des reservations;
 - Newsletter avancee: lifecycle segments/campagnes valide; restent imports, snapshots d'audience, webhooks provider, tracking ouvertures/clics et exports.

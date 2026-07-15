@@ -10,8 +10,8 @@ Le cahier initial contient 113 sections techniques ou fonctionnelles mesurables,
 
 La progression est desormais publiee avec deux mesures:
 
-- **implementation fonctionnelle: 67%**;
-- **preparation production stricte: 56%**.
+- **implementation fonctionnelle: 68%**;
+- **preparation production stricte: 57%**.
 
 Le premier chiffre mesure le code et le cablage reel deja presents. Le second retire les fonctions sans tests d'integration, sans validation WordPress runtime ou sans verification de l'environnement cible. Aucun simple fichier Markdown ne fait progresser la preparation production.
 
@@ -22,9 +22,9 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 | Audit, architecture, securite de base | 1-16 | 65% | 48% | Plugins separes, inventaires et controles principaux presents; fallbacks, audit exhaustif et tests restent incomplets. |
 | Identity Security Kit | 17-33 | 72% | 67% | Verification, reset, changement email, OTP, TOTP, recovery, MFA multicanal, retrait, rappels et templates multipart testes; phone library, QR, SMS reel, multisite et E2E navigateur restent a faire. |
 | Newsletter Campaign Kit | 34-61 | 78% | 70% | Abonnes, segmentation et lifecycle des segments, campagnes editables/duplicables, programmation, templates multipart, one-click, preferences, suppression durable et Privacy valides; imports, snapshots, tracking et webhooks/provider restent majeurs. |
-| PhotoVault metier et experience | 62-76 | 74% | 63% | Home, galerie, medias proteges, favoris, dashboard et reservations avec transitions sont verifies en runtime; upload complet et validation navigateur restent incomplets. |
+| PhotoVault metier et experience | 62-76 | 78% | 65% | Home, galerie, medias proteges, favoris, dashboard, reservations et espace d'import sont verifies en runtime; preuve multipart post-correction et validation navigateur restent incompletes. |
 | Docker et exploitation | 77-89 | 82% | 70% | WordPress initialise, services healthy, plugins/migrations valides, cron reel et expediteur wp_mail vers Mailpit testes; sauvegardes, restauration et image de production restent a faire. |
-| Tests fonctionnels et securite | 90-96 | 35% | 32% | Les runtimes couvrent favoris, isolation, dashboard et lifecycle Shootings; matrices REST, CSRF, IDOR et E2E navigateur restent absentes. |
+| Tests fonctionnels et securite | 90-96 | 38% | 34% | Les runtimes couvrent favoris, isolation, dashboard, lifecycle Shootings et gestion des metadonnees media; matrices REST, CSRF, IDOR et E2E navigateur restent absentes. |
 | Qualite, migrations, UI, a11y, i18n | 97-105 | 29% | 22% | Migrations versionnees, premieres UI et emails Identity/Newsletter multipart; PHPCS, analyse statique, lifecycle complet, accessibilite et i18n restent incomplets. |
 | Threat models et durcissement transversal | 106-111 | 46% | 33% | Trois threat models et plusieurs rate limits; correlation, alertes, changements de facteur et tests anti-abus incomplets. |
 | Compatibilite et documentation | 112-113 | 55% | 43% | Documentation centrale riche; compatibilite, multisite, hooks et guides providers encore incomplets. |
@@ -66,6 +66,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Docker: runtime local valide et services healthy; sauvegardes, restauration, rotation des secrets et image immutable de production restent incomplets.
 - Newsletter: ciblage, lifecycles campagne/segment, cron, templates multipart, one-click, preferences, suppression durable et Privacy valides; imports, snapshots, providers/webhooks, bounces et observabilite restent incomplets.
 - Interfaces publiques: la home est enrichie, mais la verification responsive et clavier n'est pas terminee.
+- Import media: progression XHR, statuts, metadonnees, tags et permissions sont implementes et testes en runtime; le test multipart a revele puis fait corriger le controle `test_form`, sans qu'une quatrieme tentative HTTP soit lancee.
 
 ## Restant prioritaire
 
@@ -98,7 +99,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 
 ### P1 - PhotoVault
 
-- Terminer l'upload avec progression, statuts et edition des metadonnees.
+- Rejouer la preuve multipart HTTP de l'upload corrige et valider l'espace d'import en navigateur.
 - Valider le dashboard et le formulaire de reservation en responsive navigateur.
 - Regenerer les thumbnails existants et securiser les originaux historiques en runtime.
 - Terminer mobile, clavier, focus, overlay et fermeture ESC.

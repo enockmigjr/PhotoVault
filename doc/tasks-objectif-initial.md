@@ -125,8 +125,8 @@ Legende:
 - [x] Ajouter page admin acces/downloads.
 - [x] Ajouter page admin demandes d'acces.
 - [x] Ajouter page admin audit media.
-- [~] Ameliorer l'UX upload: progression, nom, taille, statut, succes/erreur.
-- [~] Permettre edition rapide apres upload: titre, description, categorie, collection, confidentialite, tags.
+- [x] Ameliorer l'UX upload: selection visible, progression par fichier, nom, taille, statut et succes/erreur.
+- [x] Permettre edition rapide apres upload: titre, description, categorie, collection, confidentialite et tags, avec isolation owner/admin validee en runtime.
 - [x] Ajouter module `Shootings` avec types, dates, lieux, contact, statuts, ownership, e-mails professionnels et transitions serveur verifies en runtime.
 - [x] Ajouter dashboard utilisateur complet: overview, profil, favoris, downloads, acces, preferences, securite, newsletter et reservations avec isolation par compte.
 
@@ -179,8 +179,8 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 67% d'implementation fonctionnelle et 56% de preparation production stricte.
+Progression recalculee: 68% d'implementation fonctionnelle et 57% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
-Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec campagnes et reporting, une experience publique enrichie, une bibliotheque personnelle, un dashboard role-aware et le cycle complet des reservations verifies en runtime. Il ne doit pas encore etre declare production-ready tant que les matrices d'autorisation, les parcours navigateur critiques, l'upload complet et l'exploitation de production n'ont pas ete verifies ou termines.
+Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec campagnes et reporting, une experience publique enrichie, une bibliotheque personnelle, un dashboard role-aware, le cycle complet des reservations et l'espace d'import media verifies en runtime. Il ne doit pas encore etre declare production-ready tant que les matrices d'autorisation, les parcours navigateur critiques, la preuve multipart post-correction et l'exploitation de production n'ont pas ete verifies ou termines.

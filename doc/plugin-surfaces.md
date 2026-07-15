@@ -34,6 +34,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `photovault_shooting` | CPT prive | Reservations possedees par un compte, non publiques et absentes de REST |
 | `media_folder` | Taxonomie | Collections/dossiers media |
 | `media_category` | Taxonomie | Categories media |
+| `media_tag` | Taxonomie | Tags libres bornes utilises par l'edition rapide apres import |
 | `is_protected` | Post meta | Active preview filigranee et bloque download non privilegie |
 | `_photovault_original_url` / `_photovault_private_original_path` | Post meta | Suivi original public/prive apres securisation |
 | `_photovault_private_original_secured_at` | Post meta | Horodatage migration stockage prive |
@@ -56,9 +57,9 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | Hook | Callback principal | Usage |
 | --- | --- | --- |
 | `init` | CPT, taxonomies, login redirect | Enregistre types/taxonomies et garde-fous init |
-| `rest_api_init` | `photovault_register_rest_routes`, `photovault_register_user_library_routes` | Routes `/media`, `/secure-image` et `/favorites` |
+| `rest_api_init` | `photovault_register_rest_routes`, `photovault_register_user_library_routes`, `photovault_register_media_management_routes` | Routes de consultation, import, edition, image securisee et favoris |
 | `template_redirect` | Upload/delete/enforce login | Traitements frontend sensibles |
-| `admin_menu` | Menus acces/audit/settings/shootings | Pages admin PhotoVault |
+| `admin_menu` | Menus acces/audit/settings/shootings/import | Pages admin PhotoVault et espace d'import progressif |
 | `admin_post_photovault_update_access_request_status` | `photovault_handle_access_request_status_update` | Validation admin des demandes d'acces |
 | `admin_post_photovault_secure_existing_originals` | `photovault_handle_secure_existing_originals` | Migration par lots des originaux existants |
 | `admin_post_photovault_create_shooting` | `photovault_handle_create_shooting` | Creation owner-only avec nonce, identite, validation et rate limit |

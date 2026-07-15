@@ -9,6 +9,8 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Zone | Endpoint/action | Exposition | Controle principal | Etat |
 | --- | --- | --- | --- | --- |
 | PhotoVault Core | `GET /wp-json/photovault/v1/media` | Authentifie | `is_user_logged_in`, sanitizers REST, filtrage `photovault_user_can_access_media` | A tester |
+| PhotoVault Core | `POST /wp-json/photovault/v1/media/upload` | Admin/media manager | Nonce REST, `upload_files`, `photovault_manage_media`, MIME/ext/taille/dimensions reels | Runtime permissions validees; multipart post-correction a rejouer |
+| PhotoVault Core | `POST/PUT/PATCH /wp-json/photovault/v1/media/{id}` | Owner/admin | Nonce REST, ownership ou `photovault_manage_media`, taxonomies existantes, champs bornes | Runtime isolation valide |
 | PhotoVault Core | `GET /wp-json/photovault/v1/secure-image` | Public transport | Validation ID/display/download, controles internes private/protected/download, nonce download, audit | A tester |
 | PhotoVault Core | `GET /wp-json/photovault/v1/favorites` | Authentifie | Cookie WordPress + nonce REST, utilisateur courant uniquement | Runtime isolation valide |
 | PhotoVault Core | `POST/DELETE /wp-json/photovault/v1/favorites/{id}` | Authentifie | Cookie WordPress + nonce REST, ownership strict, media accessible, mutation idempotente | Runtime isolation valide |
@@ -43,6 +45,15 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_save_provider_settings` | Admin | `newsletter_manage_settings`, nonce reglages provider | A tester |
 
 ## PhotoVault Core
+
+### Import et edition media
+
+- Upload: un fichier JPG, PNG ou WebP par requete pour exposer une progression XHR exacte et isoler les erreurs.
+- Valeurs par defaut: media prive et protege; l'original sensible est deplace vers le stockage prive.
+- Autorisation upload: `upload_files` et `photovault_manage_media`; un client ne peut pas importer.
+- Edition: owner du media ou gestionnaire; titre, description, collection, categorie, confidentialite, protection et dix tags au maximum.
+- Verification actuelle: normalisation, taxonomies, isolation de deux comptes, acces administrateur et rendu de l'espace couverts par `runtime-media-management.php`.
+- Preuve restante: relancer le multipart HTTP apres la correction `media_handle_upload(..., test_form => false)` puis valider le parcours navigateur.
 
 ### `GET /wp-json/photovault/v1/media`
 
