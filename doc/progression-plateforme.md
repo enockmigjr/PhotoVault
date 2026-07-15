@@ -156,7 +156,7 @@ PhotoVault
 ### Eleve
 
 - Les originaux sensibles disposent maintenant d'une premiere migration vers stockage prive, mais les existants doivent etre traites en admin et la regle serveur Nginx/Apache doit etre verifiee en production.
-- L'inventaire REST/AJAX est documente, mais les tests automatises correspondants ne sont pas encore en place.
+- L'inventaire REST/AJAX est documente et la matrice media Core est automatisee; Identity, Newsletter, admin-post et CSRF HTTP restent a couvrir.
 - Le workflow upload admin offre maintenant selection visible, progression XHR, statuts et edition rapide; la preuve multipart HTTP post-correction et la validation navigateur restent a rejouer.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Le noyau TOTP/recovery/grace et les MFA email/SMS sont valides par services dans WordPress; les parcours navigateur, le SMS reel et la migration des comptes existants restent a valider.
@@ -180,12 +180,12 @@ PhotoVault
 
 1. Traiter les originaux existants depuis l'admin PhotoVault par lots de 25 ou via `wp photovault secure-originals`.
 2. Verifier que le serveur web refuse directement `wp-content/photovault-private/` en Apache et Nginx.
-3. Ajouter tests d'ID guessing sur REST, preview et download.
+3. Etendre les tests d'ID guessing aux acces directs serveur et aux variantes de cache; REST Core est valide.
 
 ### P1 - Verification runtime
 
-1. Tester les roles: anonymous, user non verifie, user verifie, owner, media manager et admin.
-2. Transformer l'inventaire REST/AJAX en matrice automatisee de refus et acces.
+1. Etendre les roles deja testes sur Core aux routes Identity et Newsletter.
+2. Ajouter la matrice admin-post, CSRF et privilege escalation HTTP.
 3. Valider les parcours HTTP navigateur register, verification email, login MFA et recuperation.
 
 ### P1 - Newsletter Kit
@@ -223,12 +223,12 @@ PhotoVault
 
 1. Ajouter PHPCS/WordPress Coding Standards si Composer est introduit.
 2. Ajouter tests unitaires/integration ciblant les regles critiques.
-3. Transformer la matrice d'autorisation documentee en tests automatises.
+3. Etendre la matrice d'autorisation automatisee Core aux deux plugins independants.
 4. Ajouter ADR supplementaires si les decisions runtime changent.
 
 ## Definition de progression
 
-Estimation recalculee: 68% d implementation fonctionnelle et 57% de preparation production stricte.
+Estimation recalculee: 69% d implementation fonctionnelle et 58% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -238,7 +238,7 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 
 - verification serveur du stockage prive sur l'environnement cible;
 - sauvegarde/restauration et smoke tests automatises de l'environnement Docker;
-- tests automatises de securite, autorisation REST/AJAX, previews et downloads;
+- matrices Identity/Newsletter/admin-post, CSRF HTTP et acces directs aux fichiers;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
 - UX metier incomplete: preuve multipart post-correction et validation responsive de l'import, du dashboard et des reservations;
 - Newsletter avancee: lifecycle segments/campagnes valide; restent imports, snapshots d'audience, webhooks provider, tracking ouvertures/clics et exports.

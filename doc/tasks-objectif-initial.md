@@ -28,7 +28,7 @@ Legende:
 - [x] Eviter les secrets dans les nouveaux fichiers versionnes.
 - [x] Ajouter `SECURITY.md` avec posture, regles et gaps connus.
 - [x] Terminer l'inventaire REST/AJAX avec classification public/auth/capability/ownership/protected.
-- [ ] Ajouter tests automatises CSRF, privilege escalation, IDOR, REST unauthorized et suppression de `required` HTML.
+- [~] Ajouter tests automatises CSRF, privilege escalation, IDOR, REST unauthorized et suppression de `required` HTML. Matrice media Core validee pour anonyme, non verifie, verifie, owner, grant, manager et admin; actions admin-post et autres plugins restantes.
 
 ## 3. PhotoVault Core - medias, galerie, acces
 
@@ -160,7 +160,7 @@ Legende:
 - [ ] Ajouter PHPCS / WordPress Coding Standards.
 - [~] Ajouter tests Identity: expiration, attempts, replay et purpose valides en runtime; mauvais utilisateur, concurrence resend, UI et politique HTTP restent a couvrir.
 - [~] Ajouter tests Newsletter: segmentation, suppression, unsubscribe, retry, idempotence. Segmentation, scheduler, one-click, preferences/CSRF, suppression durable, Privacy, templates/multipart et idempotence valides; couverture retry exhaustive restante.
-- [ ] Ajouter tests REST authorization matrix.
+- [~] Ajouter tests REST authorization matrix. Core media couvre liste, ID guessing, pagination privee, grants, favoris, import, nonce et refus download; Identity, Newsletter et matrice HTTP complete restent a faire.
 - [ ] Ajouter tests e2e: register, verify email, login, gallery, protected media, newsletter subscribe/unsubscribe.
 
 ## 12. Documentation et reprise equipe
@@ -179,8 +179,8 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 68% d'implementation fonctionnelle et 57% de preparation production stricte.
+Progression recalculee: 69% d'implementation fonctionnelle et 58% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
-Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec campagnes et reporting, une experience publique enrichie, une bibliotheque personnelle, un dashboard role-aware, le cycle complet des reservations et l'espace d'import media verifies en runtime. Il ne doit pas encore etre declare production-ready tant que les matrices d'autorisation, les parcours navigateur critiques, la preuve multipart post-correction et l'exploitation de production n'ont pas ete verifies ou termines.
+Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec campagnes et reporting, une experience publique enrichie, une bibliotheque personnelle, un dashboard role-aware, les reservations, l'import media et la matrice d'autorisation Core verifies en runtime. Il ne doit pas encore etre declare production-ready tant que les matrices Identity/Newsletter/admin-post, les parcours navigateur critiques, la preuve multipart post-correction et l'exploitation de production n'ont pas ete verifies ou termines.

@@ -39,8 +39,8 @@ Ce threat model couvre `photovault-core`: medias, collections, previews, downloa
 
 | Menace | Scenario | Controle actuel | Gap/test requis |
 | --- | --- | --- | --- |
-| IDOR media prive | Changer `id` dans `secure-image` pour obtenir un media prive | `photovault_user_can_access_media`, owner/admin/grant | Test ID guessing obligatoire |
-| Enumeration liste | Filtrer `/media` pour decouvrir des medias prives | REST login + filtrage private | Tester user sans grant, folder/category/search |
+| IDOR media prive | Changer `id` dans `secure-image` pour obtenir un media prive | Refus masque en `404`, owner/admin/grant, matrice runtime | Valide en runtime; preuve HTTP a conserver |
+| Enumeration liste | Filtrer `/media` pour decouvrir des medias prives | Restriction SQL avant pagination selon owner/grants | Fuite de resultat et volume fermee en runtime |
 | Download protege | Ajouter `download=1` sur un media protege | Nonce REST, login, email verifie, refus non owner/non admin | Tester tous roles et nonce invalide |
 | Exposition original | Acces direct a un fichier original par URL | Migration vers stockage prive, docs Nginx | Verifier Apache/Nginx et migrer existants |
 | Scraping previews | Aspirer toutes les previews publiques | Variantes card/preview, watermark protege | Ajouter rate limiting/cache des previews |
@@ -67,7 +67,7 @@ Ce threat model couvre `photovault-core`: medias, collections, previews, downloa
 1. Verifier runtime des tables, migrations et pages admin.
 2. Executer la migration des originaux existants.
 3. Verifier le blocage serveur de `wp-content/photovault-private/`.
-4. Ajouter tests IDOR et authorization matrix.
+4. Etendre la matrice IDOR Core validee aux plugins Identity/Newsletter et aux actions admin-post.
 5. Ajouter cache/derivatives pour previews filigranees.
 6. Ajouter rate limiting sur endpoints couteux.
 7. Ajouter options admin pour opacite, densite et texte/image du watermark.

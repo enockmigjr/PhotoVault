@@ -8,10 +8,10 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 
 | Zone | Endpoint/action | Exposition | Controle principal | Etat |
 | --- | --- | --- | --- | --- |
-| PhotoVault Core | `GET /wp-json/photovault/v1/media` | Authentifie | `is_user_logged_in`, sanitizers REST, filtrage `photovault_user_can_access_media` | A tester |
+| PhotoVault Core | `GET /wp-json/photovault/v1/media` | Authentifie | `is_user_logged_in`, sanitizers REST, filtrage SQL owner/grants avant pagination | Runtime authorization matrix valide |
 | PhotoVault Core | `POST /wp-json/photovault/v1/media/upload` | Admin/media manager | Nonce REST, `upload_files`, `photovault_manage_media`, MIME/ext/taille/dimensions reels | Runtime permissions validees; multipart post-correction a rejouer |
 | PhotoVault Core | `POST/PUT/PATCH /wp-json/photovault/v1/media/{id}` | Owner/admin | Nonce REST, ownership ou `photovault_manage_media`, taxonomies existantes, champs bornes | Runtime isolation valide |
-| PhotoVault Core | `GET /wp-json/photovault/v1/secure-image` | Public transport | Validation ID/display/download, controles internes private/protected/download, nonce download, audit | A tester |
+| PhotoVault Core | `GET /wp-json/photovault/v1/secure-image` | Public transport | Validation ID/display/download, private masque en 404, nonce, identite verifiee, protection et audit | Runtime refus/IDOR valides; succes binaire HTTP restant |
 | PhotoVault Core | `GET /wp-json/photovault/v1/favorites` | Authentifie | Cookie WordPress + nonce REST, utilisateur courant uniquement | Runtime isolation valide |
 | PhotoVault Core | `POST/DELETE /wp-json/photovault/v1/favorites/{id}` | Authentifie | Cookie WordPress + nonce REST, ownership strict, media accessible, mutation idempotente | Runtime isolation valide |
 | PhotoVault Core | `admin_post_photovault_update_access_request_status` | Admin | `photovault_manage_media`, nonce par demande | A tester |
@@ -70,12 +70,14 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 - Exposition: public par necessite technique, car les balises `img` doivent pouvoir charger une image via URL.
 - Controle actuel: `permission_callback => __return_true`, puis controles internes dans le callback.
 - Validation actuelle: `id` requis positif, `display` limite aux variantes attendues, `download` filtre binaire.
-- Protection private: un media prive renvoie `403` si `photovault_user_can_access_media()` refuse l'utilisateur courant.
+- Protection private: un media prive non autorise renvoie le meme `404` qu'un ID inexistant afin de ne pas confirmer son existence.
+- Pagination: owner et grants sont appliques dans la clause SQL avant `found_posts`, donc les pages et volumes prives non autorises ne fuient plus.
 - Protection download: `download=1` exige nonce REST, utilisateur connecte, email verifie pour non privilegies, et refuse le download d'un media protege a un non-admin/non-owner.
 - Protection preview: les medias proteges non admin/non owner recoivent une preview filigranee cote serveur.
 - Audit: refus, previews, previews protegees et downloads sont journalises quand l'audit media est disponible.
 - Risque residuel: endpoint volontairement public a documenter dans les tests afin d'eviter une regression vers un simple `__return_true` sans garde-fous.
-- Tests a ajouter: image publique preview, media prive anonyme, media prive user sans grant, media prive user avec grant, download nonce invalide, download user non verifie, download protege non owner, download admin.
+- Verification runtime: media prive anonyme/sans grant masque, grant limite a une collection, nonce invalide refuse, utilisateur non verifie refuse, protege non owner refuse, owner/manager/admin autorises.
+- Reste: succes binaire preview/download en HTTP, acces direct serveur et cache filigrane selon role.
 
 ### `/wp-json/photovault/v1/favorites`
 
@@ -84,7 +86,7 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 - Mutation: `POST` ajoute et `DELETE` retire un media pour l'utilisateur courant; aucune cible utilisateur n'est acceptee depuis la requete.
 - Validation: ID positif, CPT `media_item`, controle `photovault_user_can_access_media()` et unicite DB `(user_id, media_id)`.
 - Verification actuelle: migration, idempotence, isolation entre deux comptes, media prive owner, refus anonyme et suppression REST valides par `runtime-user-library.php`.
-- Reste: matrice HTTP complete nonce absent/invalide et tentative d'ID guessing sur media prive non owner.
+- Reste: matrice HTTP cookie/nonce complete et couverture des routes Identity/Newsletter/admin-post.
 
 ### `admin_post_photovault_update_access_request_status`
 

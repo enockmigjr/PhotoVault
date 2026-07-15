@@ -84,7 +84,7 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 ## Tests a ajouter
 
 1. Verifier qu'un `client` ne peut pas acceder a `wp-admin` ni aux admin-post privilegies.
-2. Verifier qu'un utilisateur connecte sans grant ne peut pas lire un media prive par REST ou secure-image.
+2. [Valide Core runtime] Un utilisateur connecte sans grant ne peut pas lister ou identifier un media prive par REST/secure-image.
 3. Verifier qu'un media manager peut approuver une demande d'acces et securiser les originaux existants.
 4. Verifier qu'un utilisateur avec `newsletter_manage_subscribers` mais sans `newsletter_view_reports` ne voit pas l'export CSV.
 5. Verifier qu'un utilisateur avec `identity_view_security_audit` mais sans `identity_manage_settings` ne peut pas sauvegarder les reglages.
@@ -95,4 +95,4 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 
 - Creer des roles dedies n'est pas encore implemente automatiquement hors `client`.
 - Les capabilities Identity/Newsletter sont toutes attribuees aux administrateurs, mais pas encore proposees dans une UI de delegation.
-- La matrice doit etre transformee en tests automatises avant de declarer la plateforme production-ready.
+- La matrice Core media est automatisee; Identity, Newsletter, admin-post et les preuves HTTP restent obligatoires avant production.

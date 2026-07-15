@@ -11,7 +11,7 @@ Le projet est organise autour d'un theme editorial et de trois plugins metier re
 
 ## Etat actuel
 
-Progression reelle estimee: 68% fonctionnel, 57% production stricte.
+Progression reelle estimee: 69% fonctionnel, 58% production stricte.
 
 Les fondations principales sont en place: separation theme/plugins, controles serveur sur les medias sensibles, previews/miniatures au lieu des originaux HD dans les vues ensemble, endpoint de telechargement controle, verification email, audit, campagnes newsletter, dashboard personnel, reservations de shootings et Docker.
 
@@ -80,9 +80,9 @@ Le theme et les plugins actifs sont des depots Git separes. Quand un plugin acti
 ## Reste majeur
 
 - Verification runtime WordPress/MySQL/Docker.
-- Tests REST/AJAX, CSRF, IDOR, privilege escalation et e2e.
-- Matrices automatisees REST/AJAX, CSRF, IDOR et privilege escalation.
+- Etendre la matrice REST/IDOR Core aux actions admin-post, a Identity et a Newsletter.
+- Tests CSRF, privilege escalation HTTP et e2e.
 - Validation navigateur des parcours MFA, profil et dashboard responsive.
 - Provider SMS reel et providers newsletter API avec secrets hors Git.
-- Upload media avec progression et edition rapide.
+- Preuve multipart HTTP post-correction et validation navigateur de l'import media.
 - README plus oriente production lorsque l'environnement cible sera valide.
