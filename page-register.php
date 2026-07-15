@@ -6,121 +6,82 @@
  */
 
 if ( is_user_logged_in() ) {
-	wp_redirect( home_url( '/dashboard/' ) );
+	wp_safe_redirect( home_url( '/dashboard/' ) );
 	exit;
 }
+
+$register_status = isset( $_GET['register'] ) ? sanitize_key( wp_unslash( $_GET['register'] ) ) : '';
+$error_code      = isset( $_GET['err'] ) ? sanitize_key( wp_unslash( $_GET['err'] ) ) : '';
+$error_messages  = array(
+	'fields_required'             => __( 'Remplissez tous les champs obligatoires.', 'photovault' ),
+	'invalid_email'               => __( 'Cette adresse e-mail est invalide.', 'photovault' ),
+	'phone_required'              => __( 'Le numéro de téléphone international est obligatoire.', 'photovault' ),
+	'phone_country_code_required' => __( 'Ajoutez le préfixe international, par exemple +229.', 'photovault' ),
+	'phone_invalid'               => __( 'Ce numéro de téléphone international est invalide.', 'photovault' ),
+	'phone_exists'                => __( 'Ce numéro est déjà associé à un compte.', 'photovault' ),
+	'phone_save_failed'           => __( 'Le numéro de téléphone n’a pas pu être enregistré.', 'photovault' ),
+	'weak_password'               => __( 'Choisissez un mot de passe d’au moins 8 caractères.', 'photovault' ),
+	'password_mismatch'           => __( 'Les deux mots de passe ne correspondent pas.', 'photovault' ),
+	'email_exists'                => __( 'Cette adresse e-mail est déjà utilisée.', 'photovault' ),
+	'username_exists'             => __( 'Ce nom d’utilisateur est déjà pris.', 'photovault' ),
+	'failed'                      => __( 'L’inscription n’a pas abouti. Réessayez dans quelques instants.', 'photovault' ),
+);
+$error_message   = 'failed' === $register_status ? ( $error_messages[ $error_code ] ?? __( 'L’inscription n’a pas abouti.', 'photovault' ) ) : '';
 
 get_header();
 ?>
 
-<div class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-[#0d0c0b]">
-	<div class="max-w-md w-full space-y-8 glass-effect p-8 rounded-2xl shadow-xl transition-all-300 hover:border-gray-700">
+<main class="pv-auth-shell pv-auth-shell--register">
+	<section class="pv-auth-context" aria-labelledby="register-context-title">
 		<div>
-			<h2 class="mt-6 text-center text-4xl font-extrabold text-white tracking-tight">
-				Rejoindre <span class="text-indigo-500">PhotoVault</span>
-			</h2>
-			<p class="mt-2 text-center text-sm text-gray-300">
-				Créez votre compte pour accéder à nos galeries de photographies
-			</p>
+			<p class="pv-auth-eyebrow"><?php esc_html_e( 'PhotoVault / Accès', 'photovault' ); ?></p>
+			<h1 id="register-context-title" class="pv-auth-context__title"><?php esc_html_e( 'Entrer dans une archive pensée pour durer.', 'photovault' ); ?></h1>
 		</div>
- 
-		<?php if ( isset( $_GET['register'] ) && 'failed' === $_GET['register'] ) : 
-			$error_message = esc_html__( 'Erreur d\'inscription.', 'photovault' );
-			if ( isset( $_GET['err'] ) ) {
-				switch ( sanitize_text_field( $_GET['err'] ) ) {
-					case 'fields_required':
-						$error_message = esc_html__( 'Veuillez remplir tous les champs obligatoires.', 'photovault' );
-						break;
-					case 'invalid_email':
-						$error_message = esc_html__( 'Adresse e-mail invalide.', 'photovault' );
-						break;
-					case 'phone_required':
-						$error_message = esc_html__( 'Le numero de telephone international est obligatoire.', 'photovault' );
-						break;
-					case 'phone_country_code_required':
-					case 'phone_invalid':
-						$error_message = esc_html__( 'Saisissez un numero valide avec son prefixe, par exemple +229.', 'photovault' );
-						break;
-					case 'phone_exists':
-						$error_message = esc_html__( 'Ce numero de telephone est deja associe a un compte.', 'photovault' );
-						break;
-					case 'phone_save_failed':
-						$error_message = esc_html__( 'Le numero de telephone n\'a pas pu etre enregistre.', 'photovault' );
-						break;					case 'weak_password':
-						$error_message = esc_html__( 'Le mot de passe doit contenir au moins 8 caracteres.', 'photovault' );
-						break;
-					case 'password_mismatch':
-						$error_message = esc_html__( 'Les mots de passe ne correspondent pas.', 'photovault' );
-						break;
-					case 'email_exists':
-						$error_message = esc_html__( 'Cette adresse e-mail est deja utilisee.', 'photovault' );
-						break;
-					case 'username_exists':
-						$error_message = esc_html__( 'Ce nom d\'utilisateur est déjà pris.', 'photovault' );
-						break;
-					case 'failed':
-						$error_message = esc_html__( 'Une erreur s\'est produite lors de l\'inscription.', 'photovault' );
-						break;
-				}
-			}
-		?>
-			<div class="bg-red-900/30 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm text-center">
-				<?php echo $error_message; ?>
-			</div>
-		<?php endif; ?>
+		<p class="pv-auth-context__copy"><?php esc_html_e( 'Un compte permet de demander l’accès aux collections privées, conserver des favoris et recevoir vos livrables.', 'photovault' ); ?></p>
+	</section>
 
-		<form class="mt-8 space-y-4" action="<?php echo esc_url( home_url( '/register/' ) ); ?>" method="POST">
-			<?php wp_nonce_field( 'photovault_register_action', 'photovault_register_nonce' ); ?>
-			
-			<div class="grid grid-cols-2 gap-4">
-				<div>
-					<label for="first_name" class="block text-sm font-medium text-gray-200 mb-1">Prénom</label>
-					<input id="first_name" name="first_name" type="text" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Jean">
+	<section class="pv-auth-form-wrap" aria-labelledby="register-title">
+		<div class="w-full max-w-xl">
+			<p class="pv-auth-eyebrow"><?php esc_html_e( 'Créer votre espace', 'photovault' ); ?></p>
+			<h2 id="register-title" class="mt-3 text-4xl font-bold text-white"><?php esc_html_e( 'Rejoindre PhotoVault', 'photovault' ); ?></h2>
+			<p class="mt-3 text-sm leading-6 text-gray-400"><?php esc_html_e( 'Vos informations servent uniquement à sécuriser et personnaliser votre accès.', 'photovault' ); ?></p>
+
+			<?php if ( $error_message ) : ?>
+				<div class="pv-auth-notice is-error" role="alert" data-pv-toast>
+					<span><?php echo esc_html( $error_message ); ?></span>
+					<button type="button" class="pv-auth-notice__close" aria-label="<?php esc_attr_e( 'Fermer la notification', 'photovault' ); ?>" data-pv-toast-close><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M6 6l12 12M18 6L6 18" /></svg></button>
 				</div>
-				<div>
-					<label for="last_name" class="block text-sm font-medium text-gray-200 mb-1">Nom</label>
-					<input id="last_name" name="last_name" type="text" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Dupont">
+			<?php endif; ?>
+
+			<form class="mt-9 space-y-5" action="<?php echo esc_url( home_url( '/register/' ) ); ?>" method="post">
+				<?php wp_nonce_field( 'photovault_register_action', 'photovault_register_nonce' ); ?>
+				<div class="grid gap-5 sm:grid-cols-2">
+					<div><label for="first_name" class="pv-auth-label"><?php esc_html_e( 'Prénom', 'photovault' ); ?></label><input id="first_name" name="first_name" type="text" autocomplete="given-name" required class="pv-auth-input" placeholder="Aïcha"></div>
+					<div><label for="last_name" class="pv-auth-label"><?php esc_html_e( 'Nom', 'photovault' ); ?></label><input id="last_name" name="last_name" type="text" autocomplete="family-name" required class="pv-auth-input" placeholder="Mensah"></div>
 				</div>
-			</div>
-
-			<div>
-				<label for="username" class="block text-sm font-medium text-gray-200 mb-1">Pseudo / Nom d'utilisateur</label>
-				<input id="username" name="username" type="text" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="jeandupont">
-			</div>
-
-			<div>
-				<label for="email" class="block text-sm font-medium text-gray-200 mb-1">Adresse E-mail</label>
-				<input id="email" name="email" type="email" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="jean.dupont@example.com">
-			</div>
-
-			<div>
-				<label for="phone" class="block text-sm font-medium text-gray-200 mb-1">Telephone international</label>
-				<input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="+229 01 23 45 67 89">
-				<p class="mt-1 text-xs text-gray-500">Prefixe pays obligatoire. Le numero ne sert pas d'identifiant de connexion.</p>
-			</div>
-			<div class="grid grid-cols-2 gap-4">
+				<div><label for="username" class="pv-auth-label"><?php esc_html_e( 'Nom d’utilisateur', 'photovault' ); ?></label><input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required class="pv-auth-input" placeholder="aicha.mensah"></div>
+				<div><label for="email" class="pv-auth-label"><?php esc_html_e( 'Adresse e-mail', 'photovault' ); ?></label><input id="email" name="email" type="email" autocomplete="email" required class="pv-auth-input" placeholder="aicha@exemple.com"></div>
 				<div>
-					<label for="password" class="block text-sm font-medium text-gray-200 mb-1">Mot de passe</label>
-					<input id="password" name="password" type="password" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="••••••••">
+					<label for="phone" class="pv-auth-label"><?php esc_html_e( 'Téléphone international', 'photovault' ); ?></label>
+					<input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required class="pv-auth-input" aria-describedby="phone-help" placeholder="+229 01 23 45 67 89">
+					<p id="phone-help" class="mt-2 text-xs leading-5 text-gray-500"><?php esc_html_e( 'Incluez le préfixe pays. Ce numéro ne remplace pas votre identifiant.', 'photovault' ); ?></p>
 				</div>
-				<div>
-					<label for="password_confirm" class="block text-sm font-medium text-gray-200 mb-1">Confirmation</label>
-					<input id="password_confirm" name="password_confirm" type="password" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="••••••••">
+				<div class="grid gap-5 sm:grid-cols-2">
+					<div>
+						<label for="password" class="pv-auth-label"><?php esc_html_e( 'Mot de passe', 'photovault' ); ?></label>
+						<div class="relative"><input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required class="pv-auth-input pr-12" placeholder="8 caractères minimum"><button type="button" class="pv-password-toggle" aria-label="<?php esc_attr_e( 'Afficher le mot de passe', 'photovault' ); ?>" aria-pressed="false" data-pv-password-toggle="password"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z" /><circle cx="12" cy="12" r="2.5" /></svg></button></div>
+					</div>
+					<div>
+						<label for="password_confirm" class="pv-auth-label"><?php esc_html_e( 'Confirmation', 'photovault' ); ?></label>
+						<div class="relative"><input id="password_confirm" name="password_confirm" type="password" autocomplete="new-password" minlength="8" required class="pv-auth-input pr-12" placeholder="Répétez le mot de passe"><button type="button" class="pv-password-toggle" aria-label="<?php esc_attr_e( 'Afficher la confirmation', 'photovault' ); ?>" aria-pressed="false" data-pv-password-toggle="password_confirm"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z" /><circle cx="12" cy="12" r="2.5" /></svg></button></div>
+					</div>
 				</div>
-			</div>
+				<button type="submit" class="pv-auth-submit"><?php esc_html_e( 'Créer mon espace', 'photovault' ); ?></button>
+			</form>
 
-			<div class="pt-2">
-				<button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all cursor-pointer">
-					Créer mon compte
-				</button>
-			</div>
-		</form>
-
-		<div class="text-center mt-4">
-			<span class="text-sm text-gray-300">Déjà inscrit ?</span>
-			<a href="<?php echo esc_url( home_url( '/login/' ) ); ?>" class="text-sm font-medium text-indigo-400 hover:text-indigo-300 ml-1 transition-colors">Connexion</a>
+			<p class="mt-8 border-t border-white/10 pt-6 text-sm text-gray-400"><?php esc_html_e( 'Vous avez déjà un compte ?', 'photovault' ); ?> <a href="<?php echo esc_url( home_url( '/login/' ) ); ?>" class="font-bold text-white hover:text-indigo-400"><?php esc_html_e( 'Se connecter', 'photovault' ); ?></a></p>
 		</div>
-	</div>
-</div>
+	</section>
+</main>
 
 <?php get_footer(); ?>

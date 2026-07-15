@@ -12,60 +12,48 @@ if ( is_user_logged_in() ) {
 
 $status   = isset( $_GET['forgot'] ) ? sanitize_key( wp_unslash( $_GET['forgot'] ) ) : '';
 $messages = array(
-	'sent'            => array(
-		'type' => 'success',
-		'text' => __( 'Si un compte correspond a ces informations, un e-mail de reinitialisation vient d\'etre envoye.', 'photovault' ),
-	),
-	'fields_required' => array(
-		'type' => 'error',
-		'text' => __( 'Veuillez saisir votre identifiant ou votre adresse e-mail.', 'photovault' ),
-	),
-	'security_failed' => array(
-		'type' => 'error',
-		'text' => __( 'Verification de securite impossible. Rechargez la page puis reessayez.', 'photovault' ),
-	),
+	'sent'            => array( 'type' => 'success', 'text' => __( 'Si un compte correspond, un e-mail de réinitialisation vient d’être envoyé.', 'photovault' ) ),
+	'fields_required' => array( 'type' => 'error', 'text' => __( 'Saisissez votre identifiant ou votre adresse e-mail.', 'photovault' ) ),
+	'security_failed' => array( 'type' => 'error', 'text' => __( 'La vérification de sécurité a échoué. Rechargez la page puis réessayez.', 'photovault' ) ),
 );
+$notice   = isset( $messages[ $status ] ) ? $messages[ $status ] : null;
 
 get_header();
 ?>
 
-<div class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-[#0d0c0b]">
-	<div class="max-w-md w-full space-y-8 glass-effect p-8 rounded-2xl shadow-xl transition-all-300 hover:border-gray-700">
+<main class="pv-auth-shell">
+	<section class="pv-auth-context" aria-labelledby="forgot-context-title">
 		<div>
-			<h2 class="mt-6 text-center text-4xl font-extrabold text-white tracking-tight">
-				Mot de passe oublie
-			</h2>
-			<p class="mt-2 text-center text-sm text-gray-300">
-				Saisissez vos informations pour recevoir un lien de reinitialisation securise.
-			</p>
+			<p class="pv-auth-eyebrow"><?php esc_html_e( 'PhotoVault / Sécurité', 'photovault' ); ?></p>
+			<h1 id="forgot-context-title" class="pv-auth-context__title"><?php esc_html_e( 'Reprendre l’accès sans exposer votre compte.', 'photovault' ); ?></h1>
 		</div>
+		<p class="pv-auth-context__copy"><?php esc_html_e( 'La réponse reste volontairement identique, qu’une adresse soit connue ou non.', 'photovault' ); ?></p>
+	</section>
 
-		<?php if ( isset( $messages[ $status ] ) ) : ?>
-			<?php $notice = $messages[ $status ]; ?>
-			<div class="<?php echo 'success' === $notice['type'] ? 'bg-emerald-900/30 border-emerald-500 text-emerald-200' : 'bg-red-900/30 border-red-500 text-red-200'; ?> border px-4 py-3 rounded-lg text-sm text-center">
-				<?php echo esc_html( $notice['text'] ); ?>
-			</div>
-		<?php endif; ?>
+	<section class="pv-auth-form-wrap" aria-labelledby="forgot-title">
+		<div class="w-full max-w-md">
+			<a href="<?php echo esc_url( home_url( '/login/' ) ); ?>" class="inline-flex min-h-11 items-center text-sm font-semibold text-gray-400 hover:text-white"><span class="mr-2" aria-hidden="true">&larr;</span><?php esc_html_e( 'Retour à la connexion', 'photovault' ); ?></a>
+			<p class="pv-auth-eyebrow mt-8"><?php esc_html_e( 'Récupération', 'photovault' ); ?></p>
+			<h2 id="forgot-title" class="mt-3 text-4xl font-bold text-white"><?php esc_html_e( 'Mot de passe oublié', 'photovault' ); ?></h2>
+			<p class="mt-3 text-sm leading-6 text-gray-400"><?php esc_html_e( 'Nous enverrons un lien temporaire à l’adresse associée au compte.', 'photovault' ); ?></p>
 
-		<form class="mt-8 space-y-6" action="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" method="POST">
-			<?php wp_nonce_field( 'photovault_forgot_action', 'photovault_forgot_nonce' ); ?>
+			<?php if ( $notice ) : ?>
+				<div class="pv-auth-notice <?php echo 'success' === $notice['type'] ? 'is-success' : 'is-error'; ?>" role="<?php echo 'error' === $notice['type'] ? 'alert' : 'status'; ?>" data-pv-toast>
+					<span><?php echo esc_html( $notice['text'] ); ?></span>
+					<button type="button" class="pv-auth-notice__close" aria-label="<?php esc_attr_e( 'Fermer la notification', 'photovault' ); ?>" data-pv-toast-close><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M6 6l12 12M18 6L6 18" /></svg></button>
+				</div>
+			<?php endif; ?>
 
-			<div>
-				<label for="user_login" class="block text-sm font-medium text-gray-200 mb-1">Identifiant ou E-mail</label>
-				<input id="user_login" name="user_login" type="text" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="photographe@example.com">
-			</div>
-
-			<div>
-				<button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all cursor-pointer">
-					Envoyer le lien de reinitialisation
-				</button>
-			</div>
-		</form>
-
-		<div class="text-center mt-4">
-			<a href="<?php echo esc_url( home_url( '/login/' ) ); ?>" class="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors">Retour a la connexion</a>
+			<form class="mt-9 space-y-6" action="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" method="post">
+				<?php wp_nonce_field( 'photovault_forgot_action', 'photovault_forgot_nonce' ); ?>
+				<div>
+					<label for="user_login" class="pv-auth-label"><?php esc_html_e( 'Identifiant ou e-mail', 'photovault' ); ?></label>
+					<input id="user_login" name="user_login" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required class="pv-auth-input" placeholder="vous@exemple.com">
+				</div>
+				<button type="submit" class="pv-auth-submit"><?php esc_html_e( 'Envoyer le lien sécurisé', 'photovault' ); ?></button>
+			</form>
 		</div>
-	</div>
-</div>
+	</section>
+</main>
 
 <?php get_footer(); ?>

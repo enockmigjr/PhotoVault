@@ -6,84 +6,73 @@
  */
 
 if ( is_user_logged_in() ) {
-	if ( current_user_can( 'manage_options' ) ) {
-		wp_redirect( home_url( '/dashboard/' ) );
-	} else {
-		wp_redirect( get_post_type_archive_link( 'media_item' ) );
-	}
+	wp_safe_redirect( home_url( '/dashboard/' ) );
 	exit;
 }
 
-$verify = isset( $_GET['verify'] ) ? sanitize_key( wp_unslash( $_GET['verify'] ) ) : '';
+$verify          = isset( $_GET['verify'] ) ? sanitize_key( wp_unslash( $_GET['verify'] ) ) : '';
+$login_status    = isset( $_GET['login'] ) ? sanitize_key( wp_unslash( $_GET['login'] ) ) : '';
 $verify_messages = array(
-	'success' => array( 'type' => 'success', 'text' => __( 'Adresse e-mail verifiee. Vous pouvez vous connecter.', 'photovault' ) ),
-	'invalid' => array( 'type' => 'error', 'text' => __( 'Lien de verification invalide.', 'photovault' ) ),
-	'expired' => array( 'type' => 'error', 'text' => __( 'Lien de verification expire. Connectez-vous puis demandez un nouveau lien depuis votre profil.', 'photovault' ) ),
+	'success' => array( 'type' => 'success', 'text' => __( 'Votre adresse e-mail est vérifiée. Vous pouvez maintenant vous connecter.', 'photovault' ) ),
+	'invalid' => array( 'type' => 'error', 'text' => __( 'Ce lien de vérification est invalide.', 'photovault' ) ),
+	'expired' => array( 'type' => 'error', 'text' => __( 'Ce lien a expiré. Connectez-vous puis demandez un nouveau lien depuis votre profil.', 'photovault' ) ),
 );
+$notice          = isset( $verify_messages[ $verify ] ) ? $verify_messages[ $verify ] : null;
+if ( 'failed' === $login_status ) {
+	$notice = array( 'type' => 'error', 'text' => __( 'L’identifiant ou le mot de passe est incorrect.', 'photovault' ) );
+}
 
 get_header();
 ?>
 
-<div class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-[#0d0c0b]">
-	<div class="max-w-md w-full space-y-8 glass-effect p-8 rounded-2xl shadow-xl transition-all-300 hover:border-gray-700">
+<main class="pv-auth-shell">
+	<section class="pv-auth-context" aria-labelledby="login-context-title">
 		<div>
-			<h2 class="mt-6 text-center text-4xl font-extrabold text-white tracking-tight">
-				Photo<span class="text-indigo-500">Vault</span>
-			</h2>
-			<p class="mt-2 text-center text-sm text-gray-300">
-				Connectez-vous a votre espace client
-			</p>
+			<p class="pv-auth-eyebrow"><?php esc_html_e( 'PhotoVault / Espace privé', 'photovault' ); ?></p>
+			<h1 id="login-context-title" class="pv-auth-context__title"><?php esc_html_e( 'Retrouver les images qui vous sont confiées.', 'photovault' ); ?></h1>
 		</div>
+		<p class="pv-auth-context__copy"><?php esc_html_e( 'Votre espace rassemble vos collections autorisées, vos favoris, vos téléchargements et le suivi de vos séances.', 'photovault' ); ?></p>
+	</section>
 
-		<?php if ( $verify && isset( $verify_messages[ $verify ] ) ) : ?>
-			<?php $notice = $verify_messages[ $verify ]; ?>
-			<div class="<?php echo 'success' === $notice['type'] ? 'bg-emerald-900/30 border-emerald-500 text-emerald-100' : 'bg-red-900/30 border-red-500 text-red-200'; ?> border px-4 py-3 rounded-lg text-sm text-center">
-				<?php echo esc_html( $notice['text'] ); ?>
-			</div>
-		<?php endif; ?>
+	<section class="pv-auth-form-wrap" aria-labelledby="login-title">
+		<div class="w-full max-w-md">
+			<p class="pv-auth-eyebrow"><?php esc_html_e( 'Accès sécurisé', 'photovault' ); ?></p>
+			<h2 id="login-title" class="mt-3 text-4xl font-bold text-white"><?php esc_html_e( 'Connexion', 'photovault' ); ?></h2>
+			<p class="mt-3 text-sm leading-6 text-gray-400"><?php esc_html_e( 'Utilisez votre identifiant ou votre adresse e-mail.', 'photovault' ); ?></p>
 
-		<?php if ( isset( $_GET['login'] ) && 'failed' === $_GET['login'] ) : ?>
-			<div class="bg-red-900/30 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm text-center">
-				Identifiants incorrects. Veuillez reessayer.
-			</div>
-		<?php endif; ?>
+			<?php if ( $notice ) : ?>
+				<div class="pv-auth-notice <?php echo 'success' === $notice['type'] ? 'is-success' : 'is-error'; ?>" role="<?php echo 'error' === $notice['type'] ? 'alert' : 'status'; ?>" data-pv-toast>
+					<span><?php echo esc_html( $notice['text'] ); ?></span>
+					<button type="button" class="pv-auth-notice__close" aria-label="<?php esc_attr_e( 'Fermer la notification', 'photovault' ); ?>" data-pv-toast-close><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M6 6l12 12M18 6L6 18" /></svg></button>
+				</div>
+			<?php endif; ?>
 
-		<form class="mt-8 space-y-6" action="<?php echo esc_url( home_url( '/login/' ) ); ?>" method="POST">
-			<?php wp_nonce_field( 'photovault_login_action', 'photovault_login_nonce' ); ?>
-			
-			<div class="rounded-md space-y-4">
+			<form class="mt-9 space-y-6" action="<?php echo esc_url( home_url( '/login/' ) ); ?>" method="post">
+				<?php wp_nonce_field( 'photovault_login_action', 'photovault_login_nonce' ); ?>
 				<div>
-					<label for="username" class="block text-sm font-medium text-gray-200 mb-1">Identifiant ou E-mail</label>
-					<input id="username" name="log" type="text" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="photographe@example.com">
+					<label for="username" class="pv-auth-label"><?php esc_html_e( 'Identifiant ou e-mail', 'photovault' ); ?></label>
+					<input id="username" name="log" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required class="pv-auth-input" placeholder="vous@exemple.com">
 				</div>
 				<div>
-					<div class="flex justify-between items-center mb-1">
-						<label for="password" class="block text-sm font-medium text-gray-200">Mot de passe</label>
-						<a href="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">Oublie ?</a>
+					<div class="mb-2 flex items-center justify-between gap-4">
+						<label for="password" class="pv-auth-label mb-0"><?php esc_html_e( 'Mot de passe', 'photovault' ); ?></label>
+						<a href="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300"><?php esc_html_e( 'Mot de passe oublié ?', 'photovault' ); ?></a>
 					</div>
-					<input id="password" name="pwd" type="password" required class="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-800 placeholder-gray-500 text-white bg-gray-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Mot de passe">
+					<div class="relative">
+						<input id="password" name="pwd" type="password" autocomplete="current-password" required class="pv-auth-input pr-12" placeholder="••••••••">
+						<button type="button" class="pv-password-toggle" aria-label="<?php esc_attr_e( 'Afficher le mot de passe', 'photovault' ); ?>" aria-pressed="false" data-pv-password-toggle="password"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z" /><circle cx="12" cy="12" r="2.5" /></svg></button>
+					</div>
 				</div>
-			</div>
+				<label class="flex min-h-11 items-center gap-3 text-sm text-gray-300">
+					<input id="rememberme" name="rememberme" type="checkbox" class="h-4 w-4 border-gray-700 bg-gray-950 text-indigo-500">
+					<span><?php esc_html_e( 'Rester connecté sur cet appareil', 'photovault' ); ?></span>
+				</label>
+				<button type="submit" class="pv-auth-submit"><?php esc_html_e( 'Ouvrir mon espace', 'photovault' ); ?></button>
+			</form>
 
-			<div class="flex items-center justify-between">
-				<div class="flex items-center">
-					<input id="rememberme" name="rememberme" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-800 rounded bg-gray-900/50">
-					<label for="rememberme" class="ml-2 block text-sm text-gray-200">Se souvenir de moi</label>
-				</div>
-			</div>
-
-			<div>
-				<button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all cursor-pointer">
-					Connexion
-				</button>
-			</div>
-		</form>
-
-		<div class="text-center mt-4">
-			<span class="text-sm text-gray-300">Nouveau sur la plateforme ?</span>
-			<a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="text-sm font-medium text-indigo-400 hover:text-indigo-300 ml-1 transition-colors">Creer un compte</a>
+			<p class="mt-8 border-t border-white/10 pt-6 text-sm text-gray-400"><?php esc_html_e( 'Pas encore de compte ?', 'photovault' ); ?> <a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="font-bold text-white hover:text-indigo-400"><?php esc_html_e( 'Créer un compte', 'photovault' ); ?></a></p>
 		</div>
-	</div>
-</div>
+	</section>
+</main>
 
 <?php get_footer(); ?>

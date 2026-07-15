@@ -137,6 +137,24 @@ document.addEventListener('click', function(event) {
 	}
 });
 
+/** Password visibility controls preserve labels and password-manager semantics. */
+document.addEventListener('click', function(event) {
+	const toggle = event.target.closest('[data-pv-password-toggle]');
+	if (!toggle) {
+		return;
+	}
+
+	const field = document.getElementById(toggle.getAttribute('data-pv-password-toggle'));
+	if (!field || (field.type !== 'password' && field.type !== 'text')) {
+		return;
+	}
+
+	const willShow = field.type === 'password';
+	field.type = willShow ? 'text' : 'password';
+	toggle.setAttribute('aria-pressed', willShow ? 'true' : 'false');
+	toggle.setAttribute('aria-label', willShow ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+});
+
 /** Personal favorites backed by authenticated WordPress REST endpoints. */
 document.addEventListener('DOMContentLoaded', function() {
     const config = window.photovault_ajax || {};
