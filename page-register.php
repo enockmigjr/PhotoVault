@@ -79,7 +79,7 @@ get_header();
 				<button type="submit" class="pv-auth-submit"><?php esc_html_e( 'Créer mon espace', 'photovault' ); ?></button>
 			</form>
 
-			<p class="mt-8 border-t border-white/10 pt-6 text-sm text-gray-400"><?php esc_html_e( 'Vous avez déjà un compte ?', 'photovault' ); ?> <a href="<?php echo esc_url( home_url( '/login/' ) ); ?>" class="font-bold text-white hover:text-indigo-400"><?php esc_html_e( 'Se connecter', 'photovault' ); ?></a></p>
+			<p class="mt-8 border-t border-white/10 pt-6 text-sm text-gray-400"><?php esc_html_e( 'Vous avez déjà un compte ?', 'photovault' ); ?> <a href="<?php echo esc_url( home_url( '/login/' ) ); ?>" class="font-bold text-white hover:text-amber-200"><?php esc_html_e( 'Se connecter', 'photovault' ); ?></a></p>
 		</div>
 	</section>
 </main>

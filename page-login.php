@@ -58,7 +58,7 @@ get_header();
 				<div>
 					<div class="mb-2 flex items-center justify-between gap-4">
 						<label for="password" class="pv-auth-label mb-0"><?php esc_html_e( 'Mot de passe', 'photovault' ); ?></label>
-						<a href="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300"><?php esc_html_e( 'Mot de passe oublié ?', 'photovault' ); ?></a>
+						<a href="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" class="text-xs font-semibold text-amber-200 hover:text-white"><?php esc_html_e( 'Mot de passe oublié ?', 'photovault' ); ?></a>
 					</div>
 					<div class="relative">
 						<input id="password" name="pwd" type="password" autocomplete="current-password" required class="pv-auth-input pr-12" placeholder="••••••••">
@@ -66,13 +66,13 @@ get_header();
 					</div>
 				</div>
 				<label class="flex min-h-11 items-center gap-3 text-sm text-gray-300">
-					<input id="rememberme" name="rememberme" type="checkbox" class="h-4 w-4 border-gray-700 bg-gray-950 text-indigo-500">
+					<input id="rememberme" name="rememberme" type="checkbox" class="h-4 w-4 border-gray-700 bg-gray-950 text-amber-200">
 					<span><?php esc_html_e( 'Rester connecté sur cet appareil', 'photovault' ); ?></span>
 				</label>
 				<button type="submit" class="pv-auth-submit"><?php esc_html_e( 'Ouvrir mon espace', 'photovault' ); ?></button>
 			</form>
 
-			<p class="mt-8 border-t border-white/10 pt-6 text-sm text-gray-400"><?php esc_html_e( 'Pas encore de compte ?', 'photovault' ); ?> <a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="font-bold text-white hover:text-indigo-400"><?php esc_html_e( 'Créer un compte', 'photovault' ); ?></a></p>
+			<p class="mt-8 border-t border-white/10 pt-6 text-sm text-gray-400"><?php esc_html_e( 'Pas encore de compte ?', 'photovault' ); ?> <a href="<?php echo esc_url( home_url( '/register/' ) ); ?>" class="font-bold text-white hover:text-amber-200"><?php esc_html_e( 'Créer un compte', 'photovault' ); ?></a></p>
 		</div>
 	</section>
 </main>
