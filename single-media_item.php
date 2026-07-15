@@ -1,7 +1,6 @@
 <?php
 /**
- * Page de détail d'un média PhotoVault (single-media_item.php).
- * Premium Portfolio Layout.
+ * Media detail template.
  *
  * @package PhotoVault
  */
@@ -9,235 +8,110 @@
 get_header();
 
 if ( have_posts() ) :
-	while ( have_posts() ) : the_post();
-		$media_id = get_the_ID();
-		$author_id = get_the_author_meta( 'ID' );
-		$is_private = 'private' === get_post_status( $media_id );
-		$is_admin = current_user_can( 'manage_options' );
-		$is_owner = is_user_logged_in() && (get_current_user_id() === $author_id);
-		$has_verified_identity = function_exists( 'photovault_user_has_verified_identity' ) ? photovault_user_has_verified_identity( get_current_user_id() ) : true;
-		$can_access_media = function_exists( 'photovault_user_can_access_media' ) ? photovault_user_can_access_media( $media_id, get_current_user_id() ) : ( ! $is_private || $is_admin || $is_owner );
+	while ( have_posts() ) :
+		the_post();
+		$media_id             = get_the_ID();
+		$author_id            = (int) get_the_author_meta( 'ID' );
+		$current_user_id      = get_current_user_id();
+		$is_private           = 'private' === get_post_status( $media_id );
+		$is_admin             = current_user_can( 'manage_options' );
+		$is_owner             = $current_user_id && $current_user_id === $author_id;
+		$is_protected         = '1' === get_post_meta( $media_id, 'is_protected', true );
+		$has_verified_identity = function_exists( 'photovault_user_has_verified_identity' ) ? photovault_user_has_verified_identity( $current_user_id ) : true;
+		$can_access_media     = function_exists( 'photovault_user_can_access_media' ) ? photovault_user_can_access_media( $media_id, $current_user_id ) : ( ! $is_private || $is_admin || $is_owner );
 
-		// 1. Restriction d'accès stricte pour les posts privés.
-		if ( $is_private && ! $can_access_media && $has_verified_identity ) {
+		if ( $is_private && ! $can_access_media ) {
 			if ( function_exists( 'photovault_log_media_event' ) ) {
-				photovault_log_media_event( 'access_denied', 'warning', $media_id, array( 'reason' => 'private_detail_view' ) );
+				photovault_log_media_event( 'access_denied', 'warning', $media_id, array( 'reason' => $has_verified_identity ? 'private_detail_view' : 'email_unverified_detail_view' ) );
 			}
 			?>
-			<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#0d0c0b]">
-				<div class="p-4 rounded-full bg-red-950/20 border border-red-500/20 text-red-500 mb-6 animate-pulse">
-					<svg class="h-14 w-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-				</div>
-				<h2 class="text-3xl font-black text-white">Contenu Privé</h2>
-				<p class="text-gray-300 mt-2 max-w-md text-sm">Ce média est configuré en mode confidentiel et est uniquement accessible au propriétaire de la galerie.</p>
-				<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="mt-8 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-indigo-500/20 cursor-pointer text-sm">Retourner à la galerie</a>
-			</div>
+			<main class="min-h-[78vh] bg-[#0d0c0b] text-gray-100">
+				<section class="mx-auto flex min-h-[78vh] max-w-4xl flex-col justify-center px-5 py-20 sm:px-8" aria-labelledby="media-access-title">
+					<p class="text-xs font-extrabold uppercase text-amber-200"><?php echo esc_html( $has_verified_identity ? __( 'Archive confidentielle', 'photovault' ) : __( 'Identité à confirmer', 'photovault' ) ); ?></p>
+					<h1 id="media-access-title" class="mt-6 font-serif text-5xl leading-tight text-white sm:text-6xl"><?php echo esc_html( $has_verified_identity ? __( 'Cette œuvre reste hors du regard public.', 'photovault' ) : __( 'Confirmez votre e-mail avant d’ouvrir cette archive.', 'photovault' ) ); ?></h1>
+					<p class="mt-6 max-w-2xl text-base leading-8 text-gray-400"><?php echo esc_html( $has_verified_identity ? __( 'L’accès à ce média est limité à son propriétaire, aux personnes autorisées et aux administrateurs PhotoVault.', 'photovault' ) : __( 'La confirmation protège les collections privées et relie chaque consultation à une identité vérifiée.', 'photovault' ) ); ?></p>
+					<div class="mt-9 flex flex-wrap gap-3"><a class="pv-header-cta min-h-12 px-6" href="<?php echo esc_url( $has_verified_identity ? home_url( '/contact/' ) : home_url( '/profile/' ) ); ?>"><?php echo esc_html( $has_verified_identity ? __( 'Demander un accès', 'photovault' ) : __( 'Ouvrir mon profil', 'photovault' ) ); ?></a><a class="inline-flex min-h-12 items-center border border-white/15 px-6 text-sm font-bold hover:border-amber-200/60" href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>"><?php esc_html_e( 'Retour à la galerie', 'photovault' ); ?></a></div>
+				</section>
+			</main>
 			<?php
 			get_footer();
-			exit;
+			return;
 		}
 
-		if ( $is_private && ! $can_access_media && ! $has_verified_identity ) {
-			if ( function_exists( 'photovault_log_media_event' ) ) {
-				photovault_log_media_event( 'access_denied', 'warning', $media_id, array( 'reason' => 'email_unverified_detail_view' ) );
-			}
-			?>
-			<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 bg-[#0d0c0b]">
-				<div class="p-4 rounded-full bg-amber-950/20 border border-amber-400/20 text-amber-300 mb-6">
-					<svg class="h-14 w-14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V8a2 2 0 00-2-2H3a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
-				</div>
-				<h2 class="text-3xl font-black text-white">Verification e-mail requise</h2>
-				<p class="text-gray-300 mt-2 max-w-md text-sm">Confirmez votre adresse e-mail avant d'ouvrir cette archive confidentielle.</p>
-				<a href="<?php echo esc_url( home_url( '/profile/' ) ); ?>" class="mt-8 px-6 py-3 bg-amber-300 hover:bg-amber-200 text-black font-bold rounded-xl transition-all cursor-pointer text-sm">Verifier mon e-mail</a>
-			</div>
-			<?php
-			get_footer();
-			exit;
-		}
-
-		$is_protected = get_post_meta( $media_id, 'is_protected', true ) === '1';
-		$folders = get_the_terms( $media_id, 'media_folder' );
+		$folders    = get_the_terms( $media_id, 'media_folder' );
 		$categories = get_the_terms( $media_id, 'media_category' );
-		$image_url = photovault_get_secure_image_url( $media_id, 'preview' );
-		
+		$image_url  = photovault_get_secure_image_url( $media_id, 'preview' );
+		$can_download = is_user_logged_in() && $has_verified_identity && ( ! $is_protected || $is_admin || $is_owner );
+		$download_url = $can_download ? photovault_get_secure_image_url( $media_id, 'full', true ) : '';
+
+		$previous_media = get_previous_post();
+		$next_media     = get_next_post();
+		if ( $previous_media && function_exists( 'photovault_user_can_access_media' ) && ! photovault_user_can_access_media( $previous_media->ID, $current_user_id ) ) {
+			$previous_media = null;
+		}
+		if ( $next_media && function_exists( 'photovault_user_can_access_media' ) && ! photovault_user_can_access_media( $next_media->ID, $current_user_id ) ) {
+			$next_media = null;
+		}
+
 		if ( function_exists( 'photovault_log_media_event' ) ) {
 			photovault_log_media_event( 'media_view', 'info', $media_id, array( 'private' => $is_private, 'protected' => $is_protected, 'owner' => $is_owner, 'admin' => $is_admin ) );
 		}
-
-		// Incrémenter les vues
 		if ( ! $is_admin ) {
-			$views = (int) get_post_meta( $media_id, 'photovault_views_count', true );
-			update_post_meta( $media_id, 'photovault_views_count', $views + 1 );
+			update_post_meta( $media_id, 'photovault_views_count', (int) get_post_meta( $media_id, 'photovault_views_count', true ) + 1 );
 		}
 		?>
+		<main class="min-h-screen bg-[#0d0c0b] text-gray-100">
+			<nav class="mx-auto flex max-w-[90rem] flex-wrap items-center justify-between gap-5 border-b border-white/10 px-5 py-5 text-xs font-bold text-gray-400 sm:px-8 lg:px-12" aria-label="<?php esc_attr_e( 'Navigation entre les œuvres', 'photovault' ); ?>">
+				<a class="inline-flex min-h-11 items-center hover:text-white" href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>"><span class="mr-2" aria-hidden="true">&larr;</span><?php esc_html_e( 'Toutes les œuvres', 'photovault' ); ?></a>
+				<div class="flex items-center gap-5"><?php if ( $previous_media ) : ?><a class="inline-flex min-h-11 items-center hover:text-amber-200" href="<?php echo esc_url( get_permalink( $previous_media ) ); ?>"><?php esc_html_e( 'Précédente', 'photovault' ); ?></a><?php endif; ?><?php if ( $next_media ) : ?><a class="inline-flex min-h-11 items-center hover:text-amber-200" href="<?php echo esc_url( get_permalink( $next_media ) ); ?>"><?php esc_html_e( 'Suivante', 'photovault' ); ?></a><?php endif; ?></div>
+			</nav>
 
-		<div class="py-16 bg-[#0d0c0b] min-h-screen text-gray-200">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				
-				<!-- Fil d'Ariane & Navigation entre médias -->
-				<div class="flex justify-between items-center mb-10 text-xs text-gray-300">
-					<div class="flex items-center gap-1.5">
-						<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="hover:text-white transition-colors">Galerie</a>
-						<span>/</span>
-						<span class="text-gray-300 truncate max-w-[200px]"><?php the_title(); ?></span>
-					</div>
-					
-					<div class="flex gap-4">
-						<?php 
-						$prev_post = get_previous_post();
-						$next_post = get_next_post();
-						if ( $prev_post ) :
-						?>
-							<a href="<?php echo esc_url( get_permalink( $prev_post->ID ) ); ?>" class="hover:text-white transition-colors flex items-center gap-1 font-semibold">&larr; Précédent</a>
-						<?php endif; ?>
-						<?php if ( $prev_post && $next_post ) : ?><span>|</span><?php endif; ?>
-						<?php if ( $next_post ) : ?>
-							<a href="<?php echo esc_url( get_permalink( $next_post->ID ) ); ?>" class="hover:text-white transition-colors flex items-center gap-1 font-semibold">Suivant &rarr;</a>
-						<?php endif; ?>
-					</div>
+			<article class="mx-auto grid max-w-[90rem] gap-12 px-5 py-10 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-16">
+				<div id="media-grid" class="lg:col-span-8" data-pv-lightbox-scope>
+					<figure class="group relative flex min-h-[55vh] items-center justify-center overflow-hidden rounded-md border border-white/10 bg-[#080807]" data-pv-lightbox-item data-title="<?php echo esc_attr( get_the_title() ); ?>" data-meta="<?php echo esc_attr( get_the_date( 'Y' ) . ' / ' . get_the_author() ); ?>" data-preview-url="<?php echo esc_url( $image_url ); ?>" data-detail-url="<?php echo esc_url( get_permalink() ); ?>">
+						<?php if ( $image_url ) : ?><img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" class="block max-h-[78vh] max-w-full select-none object-contain" draggable="false"><?php else : ?><div class="py-28 text-sm text-gray-600"><?php esc_html_e( 'Aucun aperçu disponible.', 'photovault' ); ?></div><?php endif; ?>
+						<?php if ( $image_url ) : ?><button type="button" class="absolute inset-0 cursor-zoom-in" data-pv-lightbox-open <?php echo $is_protected && ! $is_admin ? 'data-pv-protection-guard' : ''; ?> data-pv-message="<?php esc_attr_e( 'Cet aperçu est protégé. Le fichier original reste hors du navigateur.', 'photovault' ); ?>" aria-label="<?php esc_attr_e( 'Afficher l’œuvre dans la visionneuse PhotoVault', 'photovault' ); ?>"></button><?php endif; ?>
+						<?php if ( $is_protected && ! $is_admin ) : ?><div class="watermark font-extrabold" aria-hidden="true"><?php for ( $watermark_index = 0; $watermark_index < 30; $watermark_index++ ) : ?><span><?php echo esc_html( get_option( 'photovault_watermark_text', 'PHOTOVAULT' ) ); ?></span><?php endfor; ?></div><?php endif; ?>
+					</figure>
+					<p class="mt-4 text-xs leading-6 text-gray-500"><?php esc_html_e( 'Cliquez sur l’image pour l’ouvrir dans la visionneuse. L’aperçu reste distinct du fichier haute définition.', 'photovault' ); ?></p>
 				</div>
 
-				<!-- Grille de présentation du média -->
-				<div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-					
-					<!-- Image principale à gauche -->
-					<div class="lg:col-span-2 space-y-6">
-						<div class="glass-effect rounded-3xl overflow-hidden p-3 border border-gray-800 shadow-2xl relative">
-							<div class="relative overflow-hidden rounded-2xl bg-black/40 <?php echo $is_protected ? 'protected-media-container' : ''; ?>">
-								<?php if ( $image_url ) : ?>
-									<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" class="w-full h-auto max-h-[75vh] object-contain mx-auto select-none pointer-events-none rounded-xl">
-									
-									<?php if ( $is_protected ) : ?>
-										<div class="watermark font-extrabold select-none" aria-hidden="true">
-											<?php for ( $i = 0; $i < 30; $i++ ) : ?>
-												<span><?php echo esc_html( get_option( 'photovault_watermark_text', 'PHOTOVAULT' ) ); ?></span>
-											<?php endfor; ?>
-										</div>
-									<?php endif; ?>
-								<?php else : ?>
-									<div class="w-full h-[50vh] flex items-center justify-center bg-gray-900/50 text-gray-700">
-										<svg class="h-16 w-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-									</div>
-								<?php endif; ?>
-							</div>
-						</div>
+				<aside class="lg:col-span-4">
+					<div class="flex flex-wrap gap-2 text-[0.65rem] font-extrabold uppercase"><span class="border border-white/15 px-2.5 py-1 text-gray-300"><?php echo esc_html( $is_private ? __( 'Accès privé', 'photovault' ) : __( 'Galerie publique', 'photovault' ) ); ?></span><?php if ( $is_protected ) : ?><span class="border border-amber-200/30 px-2.5 py-1 text-amber-200"><?php esc_html_e( 'Aperçu protégé', 'photovault' ); ?></span><?php endif; ?></div>
+					<h1 class="mt-6 font-serif text-4xl leading-tight text-white sm:text-5xl"><?php the_title(); ?></h1>
+					<p class="mt-4 text-xs font-semibold uppercase text-gray-500"><time datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time> / <?php the_author(); ?></p>
+
+					<?php if ( get_the_content() ) : ?><div class="pv-editorial-content mt-8 border-t border-white/10 pt-7 text-sm leading-7 text-gray-300"><?php the_content(); ?></div><?php endif; ?>
+
+					<?php if ( ( $folders && ! is_wp_error( $folders ) ) || ( $categories && ! is_wp_error( $categories ) ) ) : ?><div class="mt-8 border-t border-white/10 pt-7"><p class="text-xs font-extrabold uppercase text-gray-500"><?php esc_html_e( 'Classification', 'photovault' ); ?></p><div class="mt-4 flex flex-wrap gap-2"><?php foreach ( array_merge( is_array( $folders ) ? $folders : array(), is_array( $categories ) ? $categories : array() ) as $term ) : ?><a href="<?php echo esc_url( get_term_link( $term ) ); ?>" class="border border-white/15 px-3 py-2 text-xs font-bold text-gray-300 hover:border-amber-200/50 hover:text-amber-100"><?php echo esc_html( $term->name ); ?></a><?php endforeach; ?></div></div><?php endif; ?>
+
+					<div class="mt-8 border-t border-white/10 pt-7">
+						<?php if ( $can_download ) : ?><a class="pv-header-cta min-h-12 w-full justify-center" href="<?php echo esc_url( $download_url ); ?>"><?php esc_html_e( 'Télécharger la haute définition', 'photovault' ); ?></a><p class="mt-3 text-xs leading-5 text-gray-500"><?php esc_html_e( 'Le fichier original sera demandé au serveur uniquement après cette action.', 'photovault' ); ?></p>
+						<?php elseif ( ! is_user_logged_in() ) : ?><a class="pv-header-cta min-h-12 w-full justify-center" href="<?php echo esc_url( add_query_arg( 'redirect_to', get_permalink(), home_url( '/login/' ) ) ); ?>"><?php esc_html_e( 'Se connecter pour télécharger', 'photovault' ); ?></a>
+						<?php elseif ( ! $has_verified_identity ) : ?><a class="pv-header-cta min-h-12 w-full justify-center" href="<?php echo esc_url( home_url( '/profile/' ) ); ?>"><?php esc_html_e( 'Vérifier mon identité', 'photovault' ); ?></a>
+						<?php else : ?><div class="border-l-2 border-amber-200/50 pl-4"><p class="text-sm font-bold text-white"><?php esc_html_e( 'Original non téléchargeable', 'photovault' ); ?></p><p class="mt-2 text-xs leading-6 text-gray-400"><?php esc_html_e( 'Cette œuvre peut être consultée, mais son fichier haute définition reste réservé au propriétaire et aux administrateurs.', 'photovault' ); ?></p></div><?php endif; ?>
 					</div>
+				</aside>
+			</article>
 
-					<!-- Métadonnées & Actions à droite -->
-					<div class="space-y-6 lg:col-span-1">
-						<div class="glass-effect p-8 rounded-3xl border border-gray-800 shadow-2xl space-y-6 bg-gray-950/20">
-							<div>
-								<div class="flex items-center gap-2 mb-3">
-									<?php if ( $is_protected ) : ?>
-										<span class="bg-indigo-600/90 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-indigo-400/20 backdrop-blur-md">🔒 PROTÉGÉ</span>
-									<?php else : ?>
-										<span class="bg-emerald-600/20 text-emerald-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/20">🔓 PUBLIC</span>
-									<?php endif; ?>
-									<?php if ( $is_private ) : ?>
-										<span class="bg-gray-800 text-gray-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-gray-700">👁️ PRIVÉ</span>
-									<?php endif; ?>
-								</div>
-								<h1 class="text-3xl font-black text-white leading-tight tracking-tight"><?php the_title(); ?></h1>
-								<p class="text-xs text-gray-300 mt-2">Publié le <?php echo get_the_date(); ?></p>
-							</div>
-
-							<?php if ( get_the_content() ) : ?>
-								<div class="prose prose-invert text-sm text-gray-300 leading-relaxed border-t border-gray-800/60 pt-5">
-									<?php the_content(); ?>
-								</div>
-							<?php endif; ?>
-
-							<!-- Détails Auteur -->
-							<div class="border-t border-gray-800/60 pt-5 flex items-center">
-								<div class="h-10 w-10 rounded-full bg-indigo-600/10 text-indigo-400 flex items-center justify-center font-bold text-xs border border-indigo-500/20">
-									<?php echo esc_html( strtoupper( substr( get_the_author(), 0, 2 ) ) ); ?>
-								</div>
-								<div class="ml-3">
-									<p class="text-sm font-bold text-white"><?php the_author(); ?></p>
-									<p class="text-xs text-gray-300">Propriétaire de l'œuvre</p>
-								</div>
-							</div>
-
-							<!-- Catégories & Dossiers -->
-							<div class="border-t border-gray-800/60 pt-5 space-y-4">
-								<?php if ( ! empty( $folders ) && ! is_wp_error( $folders ) ) : ?>
-									<div>
-										<span class="block text-xs font-bold text-gray-300 uppercase tracking-wider">Dossier / Projet</span>
-										<div class="flex flex-wrap gap-2 mt-2">
-											<?php foreach ( $folders as $folder ) : ?>
-												<a href="<?php echo esc_url( get_term_link( $folder ) ); ?>" class="text-[11px] font-semibold bg-gray-900 border border-gray-800 hover:border-indigo-500/40 text-indigo-400 px-3 py-1.5 rounded-xl transition-all"><?php echo esc_html( $folder->name ); ?></a>
-											<?php endforeach; ?>
-										</div>
-									</div>
-								<?php endif; ?>
-
-								<?php if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) : ?>
-									<div>
-										<span class="block text-xs font-bold text-gray-300 uppercase tracking-wider">Catégories</span>
-										<div class="flex flex-wrap gap-2 mt-2">
-											<?php foreach ( $categories as $cat ) : ?>
-												<a href="<?php echo esc_url( get_term_link( $cat ) ); ?>" class="text-[11px] font-semibold bg-gray-900 border border-gray-800 hover:border-gray-600 text-gray-200 px-3 py-1.5 rounded-xl transition-all"><?php echo esc_html( $cat->name ); ?></a>
-											<?php endforeach; ?>
-										</div>
-									</div>
-								<?php endif; ?>
-							</div>
-
-							<!-- Actions de téléchargement sécurisées par proxy -->
-							<div class="border-t border-gray-800/60 pt-6">
-								<?php if ( $is_protected && ! $is_admin && ! $is_owner ) : ?>
-									<div class="bg-indigo-950/20 border border-indigo-500/20 text-indigo-400/90 p-4 rounded-2xl text-xs flex items-center leading-relaxed">
-										<span class="mr-2.5 text-base">🔒</span> Ce média est sous haute protection. Le téléchargement est désactivé.
-									</div>
-								<?php else : 
-									$download_url = photovault_get_secure_image_url( $media_id, 'full', true );
-								?>
-									<a href="<?php echo esc_url( $download_url ); ?>" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl text-center block transition-all shadow-lg hover:shadow-indigo-500/10 cursor-pointer text-sm">
-										Télécharger en haute définition
-									</a>
-								<?php endif; ?>
-							</div>
-						</div>
-					</div>
-
-				</div>
-
-				<!-- Section Médias Similaires -->
-				<?php 
-				$related_args = array(
+			<?php
+			$related_query = new WP_Query(
+				array(
 					'post_type'      => 'media_item',
 					'post_status'    => 'publish',
 					'posts_per_page' => 3,
 					'post__not_in'   => array( $media_id ),
-				);
-				if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) {
-					$related_args['tax_query'] = array(
-						array(
-							'taxonomy' => 'media_category',
-							'field'    => 'term_id',
-							'terms'    => wp_list_pluck( $categories, 'term_id' )
-						)
-					);
-				}
-				$related_query = new WP_Query( $related_args );
-				if ( $related_query->have_posts() ) :
+					'tax_query'      => $categories && ! is_wp_error( $categories ) ? array( array( 'taxonomy' => 'media_category', 'field' => 'term_id', 'terms' => wp_list_pluck( $categories, 'term_id' ) ) ) : array(),
+				)
+			);
+			if ( $related_query->have_posts() ) :
 				?>
-					<div class="border-t border-gray-900 pt-16 mt-16 space-y-8">
-						<h2 class="text-2xl font-black text-white tracking-tight">Médias similaires</h2>
-						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-							<?php while ( $related_query->have_posts() ) : $related_query->the_post(); ?>
-								<?php get_template_part( 'templates/media-card' ); ?>
-							<?php endwhile; wp_reset_postdata(); ?>
-						</div>
-					</div>
-				<?php endif; ?>
-
-			</div>
-		</div>
-
+				<section class="mx-auto max-w-[90rem] border-t border-white/10 px-5 py-16 sm:px-8 lg:px-12" aria-labelledby="related-media-title"><h2 id="related-media-title" class="font-serif text-3xl text-white"><?php esc_html_e( 'Œuvres similaires', 'photovault' ); ?></h2><div class="mt-9 grid gap-8 sm:grid-cols-2 lg:grid-cols-3" data-pv-lightbox-scope><?php while ( $related_query->have_posts() ) : $related_query->the_post(); get_template_part( 'templates/media-card' ); endwhile; wp_reset_postdata(); ?></div></section>
+			<?php endif; ?>
+		</main>
+		<?php get_template_part( 'templates/gallery-lightbox' ); ?>
 		<?php
 	endwhile;
 endif;
 
 get_footer();
-?>

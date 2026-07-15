@@ -217,11 +217,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const meta = dialog.querySelector('[data-pv-lightbox-meta]');
     const count = dialog.querySelector('[data-pv-lightbox-count]');
     const detail = dialog.querySelector('[data-pv-lightbox-detail]');
+    const navigationButtons = dialog.querySelectorAll('[data-pv-lightbox-prev], [data-pv-lightbox-next]');
     let currentIndex = 0;
     let pointerStart = null;
+	let activeScope = document.getElementById('media-grid');
 
     function items() {
-        return Array.from(document.querySelectorAll('#media-grid [data-pv-lightbox-item]'));
+		return activeScope ? Array.from(activeScope.querySelectorAll('[data-pv-lightbox-item]')) : [];
     }
 
     function render(index) {
@@ -240,6 +242,9 @@ document.addEventListener('DOMContentLoaded', function() {
         meta.textContent = item.getAttribute('data-meta') || '';
         detail.href = item.getAttribute('data-detail-url') || '#';
         count.textContent = String(currentIndex + 1).padStart(2, '0') + ' / ' + String(collection.length).padStart(2, '0');
+		navigationButtons.forEach(function(button) {
+			button.hidden = collection.length < 2;
+		});
     }
 
     function closeViewer() {
@@ -250,6 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(event) {
         const opener = event.target.closest('[data-pv-lightbox-open]');
         if (opener) {
+			activeScope = opener.closest('[data-pv-lightbox-scope]') || document.getElementById('media-grid');
             const item = opener.closest('[data-pv-lightbox-item]');
             currentIndex = Math.max(0, items().indexOf(item));
             render(currentIndex);
