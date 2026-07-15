@@ -74,6 +74,7 @@ $publication_posts = new WP_Query(
 );
 ?>
 
+<main id="main-content">
 <section class="relative min-h-[88vh] overflow-hidden bg-[#0d0c0b] flex items-end">
 	<?php if ( $hero_image ) : ?>
 		<div class="absolute inset-0 bg-cover bg-center scale-105 motion-safe:animate-[pvHeroDrift_18s_ease-in-out_infinite_alternate]" style="background-image:url('<?php echo esc_url( $hero_image ); ?>');"></div>
@@ -347,5 +348,6 @@ $publication_posts = new WP_Query(
 		<div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row"><a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="pv-header-cta min-h-12 justify-center px-7">Explorer la galerie</a><a href="<?php echo esc_url( home_url( '/booking/' ) ); ?>" class="inline-flex min-h-12 items-center justify-center border border-white/20 bg-black/20 px-7 font-bold text-white transition hover:border-amber-200/60 hover:text-amber-100">Réserver un shooting</a></div>
 	</div>
 </section>
+</main>
 
 <?php get_footer(); ?>
