@@ -1,6 +1,6 @@
 # Tasks - objectif initial PhotoVault
 
-Derniere mise a jour: 2026-07-13
+Derniere mise a jour: 2026-07-15
 
 Legende:
 
@@ -116,7 +116,7 @@ Legende:
 - [x] Garder style portfolio premium/editorial plutot que SaaS generique.
 - [~] Verifier visuellement home, galerie, blog, detail media, profil et dashboard sur mobile/desktop.
 - [ ] Finaliser accessibilite clavier, focus visible, menu mobile, fermeture ESC/overlay.
-- [ ] Ajouter et tester favoris, preferences et pages utilisateur completes.
+- [~] Ajouter et tester favoris, preferences et pages utilisateur completes. Favoris, historique, acces, newsletter et securite sont integres et verifies en runtime; reservations et validation responsive navigateur restent a faire.
 
 ## 8. Upload media et admin PhotoVault
 
@@ -128,7 +128,7 @@ Legende:
 - [~] Ameliorer l'UX upload: progression, nom, taille, statut, succes/erreur.
 - [~] Permettre edition rapide apres upload: titre, description, categorie, collection, confidentialite, tags.
 - [ ] Ajouter module `Shootings` avec types, dates, lieux, contact, statuts et transitions serveur.
-- [ ] Ajouter dashboard utilisateur complet: overview, profil, favoris, downloads, acces, preferences, securite, newsletter, reservations.
+- [~] Ajouter dashboard utilisateur complet: overview, profil, favoris, downloads, acces, preferences, securite et newsletter sont implementes avec isolation par compte; les reservations dependent encore du module Shootings.
 
 ## 9. Blog, header, profil, pages connues
 
@@ -179,8 +179,8 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 64% d'implementation fonctionnelle et 53% de preparation production stricte.
+Progression recalculee: 66% d'implementation fonctionnelle et 55% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
-Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes, queue, provider et reporting, une experience publique enrichie et une base Docker. Il ne doit pas encore etre declare production-ready tant que le runtime WordPress, les tests automatises, les fonctions Identity avancees, les tests d'autorisation, le dashboard utilisateur, le module shootings et la configuration serveur cible n'ont pas ete verifies ou termines.
+Le projet a maintenant ses fondations modulaires, une securite media applicative solide, une premiere protection de stockage prive, l'identite email, l'audit, les bases newsletter avec audit, campagnes, queue, provider et reporting, une experience publique enrichie, une bibliotheque personnelle et un dashboard role-aware verifies en runtime. Il ne doit pas encore etre declare production-ready tant que les matrices d'autorisation, les parcours navigateur critiques, le module shootings, l'upload complet et l'exploitation de production n'ont pas ete verifies ou termines.

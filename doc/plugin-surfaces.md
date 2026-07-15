@@ -1,6 +1,6 @@
 # Inventaire tables, options et hooks
 
-Derniere mise a jour: 2026-07-13
+Derniere mise a jour: 2026-07-15
 
 Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault afin de faciliter les migrations, tests, audits et futures integrations.
 
@@ -13,6 +13,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `{$wpdb->prefix}photovault_access_requests` | `photovault_get_access_requests_table()` | Demandes d'acces aux collections protegees | Email, message, IP hash, user-agent |
 | `{$wpdb->prefix}photovault_access_grants` | `photovault_get_access_grants_table()` | Grants par email hash, utilisateur et collection | Email hash, statut, dates |
 | `{$wpdb->prefix}photovault_media_audit` | `photovault_get_media_audit_table()` | Audit vues, previews, downloads, refus, grants | IP hash, user-agent, contexte nettoye |
+| `{$wpdb->prefix}photovault_favorites` | `photovault_get_favorites_table()` | Bibliotheque personnelle, unique par utilisateur/media | IDs utilisateur/media, date |
 
 ### Options
 
@@ -52,7 +53,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | Hook | Callback principal | Usage |
 | --- | --- | --- |
 | `init` | CPT, taxonomies, login redirect | Enregistre types/taxonomies et garde-fous init |
-| `rest_api_init` | `photovault_register_rest_routes` | Routes `/media` et `/secure-image` |
+| `rest_api_init` | `photovault_register_rest_routes`, `photovault_register_user_library_routes` | Routes `/media`, `/secure-image` et `/favorites` |
 | `template_redirect` | Upload/delete/enforce login | Traitements frontend sensibles |
 | `admin_menu` | Menus acces/audit/settings | Pages admin PhotoVault |
 | `admin_post_photovault_update_access_request_status` | `photovault_handle_access_request_status_update` | Validation admin des demandes d'acces |

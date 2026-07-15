@@ -1,6 +1,6 @@
 # Progression plateforme PhotoVault
 
-Derniere mise a jour: 2026-07-13
+Derniere mise a jour: 2026-07-15
 
 ## Objectif initial
 
@@ -127,6 +127,8 @@ PhotoVault
 - Illustration fallback lorsque l'image de blog manque.
 - Footer plus complet.
 - Page detail media avec affichage protege, filigrane, metadata, download controle et medias similaires.
+- Dashboard role-aware avec overview, favoris persistants, historique des telechargements, demandes/grants, etats Identity et abonnement Newsletter.
+- Page profil provisionnee automatiquement sur les installations deja actives; navigation mobile du dashboard fermable par overlay et touche Echap.
 
 ### Observabilite
 
@@ -161,7 +163,7 @@ PhotoVault
 
 ### Moyen
 
-- Le header mobile et le dashboard utilisateur doivent etre testes visuellement sur petits ecrans.
+- Le header mobile et le dashboard utilisateur doivent encore etre valides visuellement sur petits ecrans; le rendu PHP et l'isolation des roles sont testes.
 - La pagination blog et les etats loading doivent etre verifies sur donnees reelles.
 - L'audit media n'a pas encore de retention/export.
 - Les README existent; ils devront etre enrichis avec exemples d'integration apres validation runtime.
@@ -209,7 +211,7 @@ PhotoVault
 
 1. Ameliorer upload media admin.
 2. Ajouter module shooting: type, date, lieu, contact, statut.
-3. Completer dashboard utilisateur: profil, favoris, downloads, acces collections, preferences, securite, newsletter, reservations.
+3. Relier les reservations au dashboard apres implementation du module Shootings.
 4. Verifier responsive mobile et accessibilite clavier.
 
 ### P2 - Exploitation
@@ -227,7 +229,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 64% d implementation fonctionnelle et 53% de preparation production stricte.
+Estimation recalculee: 66% d implementation fonctionnelle et 55% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -239,5 +241,5 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - sauvegarde/restauration et smoke tests automatises de l'environnement Docker;
 - tests automatises de securite, autorisation REST/AJAX, previews et downloads;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
-- UX metier incomplete: dashboard utilisateur, shootings, upload avec progression et edition rapide;
+- UX metier incomplete: reservations/shootings, upload avec progression et edition rapide, validation responsive du dashboard;
 - Newsletter avancee: lifecycle segments/campagnes valide; restent imports, snapshots d'audience, webhooks provider, tracking ouvertures/clics et exports.

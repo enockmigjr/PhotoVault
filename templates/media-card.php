@@ -16,10 +16,16 @@ $is_private = 'private' === get_post_status( $media_id );
 $author_name = get_the_author();
 $is_admin = current_user_can( 'manage_options' );
 $image_url = photovault_get_secure_image_url( $media_id, 'card' );
+$is_favorite = is_user_logged_in() && function_exists( 'photovault_is_media_favorite' ) ? photovault_is_media_favorite( $media_id ) : false;
 ?>
 
 <div class="glass-effect rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:shadow-indigo-950/20 border border-gray-800/80 group flex flex-col justify-between h-full bg-gray-900/30">
 	<div class="relative aspect-[4/3] bg-gray-950 overflow-hidden rounded-t-3xl">
+		<?php if ( is_user_logged_in() && function_exists( 'photovault_is_media_favorite' ) ) : ?>
+			<button class="pv-favorite-button absolute left-3 top-3 z-30 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/65 text-white backdrop-blur-md transition hover:border-amber-200 hover:text-amber-200" type="button" data-pv-favorite data-media-id="<?php echo esc_attr( $media_id ); ?>" aria-pressed="<?php echo $is_favorite ? 'true' : 'false'; ?>" aria-label="<?php echo esc_attr( $is_favorite ? __( 'Retirer des favoris', 'photovault' ) : __( 'Ajouter aux favoris', 'photovault' ) ); ?>" title="<?php echo esc_attr( $is_favorite ? __( 'Retirer des favoris', 'photovault' ) : __( 'Ajouter aux favoris', 'photovault' ) ); ?>">
+				<svg class="h-5 w-5" viewBox="0 0 24 24" fill="<?php echo $is_favorite ? 'currentColor' : 'none'; ?>" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"></path></svg>
+			</button>
+		<?php endif; ?>
 		<?php if ( $image_url ) : ?>
 			<img class="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110" src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy" width="400" height="400" draggable="false">
 		<?php else : ?>

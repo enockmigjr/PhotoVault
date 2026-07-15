@@ -1,6 +1,6 @@
 # Inventaire REST/AJAX et admin-post
 
-Derniere mise a jour: 2026-07-13
+Derniere mise a jour: 2026-07-15
 
 Objectif: classer les points d'entree publics, authentifies et privilegies afin de preparer les tests de securite REST/AJAX, CSRF, IDOR et privilege escalation.
 
@@ -10,6 +10,8 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | --- | --- | --- | --- | --- |
 | PhotoVault Core | `GET /wp-json/photovault/v1/media` | Authentifie | `is_user_logged_in`, sanitizers REST, filtrage `photovault_user_can_access_media` | A tester |
 | PhotoVault Core | `GET /wp-json/photovault/v1/secure-image` | Public transport | Validation ID/display/download, controles internes private/protected/download, nonce download, audit | A tester |
+| PhotoVault Core | `GET /wp-json/photovault/v1/favorites` | Authentifie | Cookie WordPress + nonce REST, utilisateur courant uniquement | Runtime isolation valide |
+| PhotoVault Core | `POST/DELETE /wp-json/photovault/v1/favorites/{id}` | Authentifie | Cookie WordPress + nonce REST, ownership strict, media accessible, mutation idempotente | Runtime isolation valide |
 | PhotoVault Core | `admin_post_photovault_update_access_request_status` | Admin | `photovault_manage_media`, nonce par demande | A tester |
 | PhotoVault Core | `admin_post_photovault_secure_existing_originals` | Admin | `photovault_manage_media`, nonce global | A tester |
 | Identity Security Kit | `admin_post_identity_security_kit_save_settings` | Admin | `identity_manage_settings`, nonce reglages | A tester |
@@ -61,6 +63,15 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 - Audit: refus, previews, previews protegees et downloads sont journalises quand l'audit media est disponible.
 - Risque residuel: endpoint volontairement public a documenter dans les tests afin d'eviter une regression vers un simple `__return_true` sans garde-fous.
 - Tests a ajouter: image publique preview, media prive anonyme, media prive user sans grant, media prive user avec grant, download nonce invalide, download user non verifie, download protege non owner, download admin.
+
+### `/wp-json/photovault/v1/favorites`
+
+- Exposition: utilisateurs connectes avec authentification cookie WordPress et nonce `wp_rest` cote navigateur.
+- Lecture: retourne uniquement les IDs favoris encore accessibles a l'utilisateur courant.
+- Mutation: `POST` ajoute et `DELETE` retire un media pour l'utilisateur courant; aucune cible utilisateur n'est acceptee depuis la requete.
+- Validation: ID positif, CPT `media_item`, controle `photovault_user_can_access_media()` et unicite DB `(user_id, media_id)`.
+- Verification actuelle: migration, idempotence, isolation entre deux comptes, media prive owner, refus anonyme et suppression REST valides par `runtime-user-library.php`.
+- Reste: matrice HTTP complete nonce absent/invalide et tentative d'ID guessing sur media prive non owner.
 
 ### `admin_post_photovault_update_access_request_status`
 

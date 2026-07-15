@@ -125,3 +125,56 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+/** Personal favorites backed by authenticated WordPress REST endpoints. */
+document.addEventListener('DOMContentLoaded', function() {
+    const config = window.photovault_ajax || {};
+    const buttons = document.querySelectorAll('[data-pv-favorite]');
+
+    if (!buttons.length || !config.rest_url || !config.nonce) {
+        return;
+    }
+
+    buttons.forEach(function(button) {
+        button.addEventListener('click', async function() {
+            if (button.disabled) {
+                return;
+            }
+
+            const mediaId = button.getAttribute('data-media-id');
+            const isFavorite = button.getAttribute('aria-pressed') === 'true';
+            const icon = button.querySelector('svg');
+            button.disabled = true;
+
+            try {
+                const response = await fetch(config.rest_url.replace(/\/$/, '') + '/favorites/' + encodeURIComponent(mediaId), {
+                    method: isFavorite ? 'DELETE' : 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-WP-Nonce': config.nonce
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('favorite_request_failed');
+                }
+
+                const nextState = !isFavorite;
+                const label = nextState ? 'Retirer des favoris' : 'Ajouter aux favoris';
+                button.setAttribute('aria-pressed', nextState ? 'true' : 'false');
+                button.setAttribute('aria-label', label);
+                button.setAttribute('title', label);
+                if (icon) {
+                    icon.setAttribute('fill', nextState ? 'currentColor' : 'none');
+                }
+                document.dispatchEvent(new CustomEvent('photovault:favorite-changed', { detail: { mediaId: Number(mediaId), favorite: nextState } }));
+            } catch (error) {
+                if (window.PhotoVaultProtectionNotice) {
+                    window.PhotoVaultProtectionNotice('Le favori n\'a pas pu etre mis a jour. Rechargez la page puis reessayez.');
+                }
+            } finally {
+                button.disabled = false;
+            }
+        });
+    });
+});

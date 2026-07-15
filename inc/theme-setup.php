@@ -65,6 +65,7 @@ function photovault_create_app_pages() {
 		'register'        => array( 'title' => 'Inscription', 'template' => 'page-register.php' ),
 		'forgot-password' => array( 'title' => 'Mot de passe oublié', 'template' => 'page-forgot-password.php' ),
 		'dashboard'       => array( 'title' => 'Dashboard', 'template' => 'page-dashboard.php' ),
+		'profile'         => array( 'title' => 'Profil', 'template' => 'page-profile.php' ),
 		'pricing'         => array( 'title' => 'Tarifs', 'template' => 'page-pricing.php' ),
 		'about'           => array( 'title' => 'À Propos', 'template' => 'page-about.php' ),
 		'contact'         => array( 'title' => 'Contact', 'template' => 'page-contact.php' ),
@@ -73,7 +74,7 @@ function photovault_create_app_pages() {
 
 	foreach ( $pages_to_create as $slug => $data ) {
 		$page_check = get_page_by_path( $slug );
-		if ( ! isset( $page_check->ID ) ) {
+		if ( ! $page_check instanceof WP_Post ) {
 			$page_id = wp_insert_post( array(
 				'post_title'    => $data['title'],
 				'post_content'  => '',
@@ -85,7 +86,19 @@ function photovault_create_app_pages() {
 			if ( $page_id && ! is_wp_error( $page_id ) && ! empty( $data['template'] ) ) {
 				update_post_meta( $page_id, '_wp_page_template', $data['template'] );
 			}
+		} elseif ( ! empty( $data['template'] ) && get_page_template_slug( $page_check->ID ) !== $data['template'] ) {
+			update_post_meta( $page_check->ID, '_wp_page_template', $data['template'] );
 		}
 	}
+
+	update_option( 'photovault_app_pages_version', '1.1.0', false );
 }
 add_action( 'after_switch_theme', 'photovault_create_app_pages' );
+
+/** Provision newly introduced system pages on already active installations. */
+function photovault_maybe_create_app_pages() {
+	if ( '1.1.0' !== get_option( 'photovault_app_pages_version' ) ) {
+		photovault_create_app_pages();
+	}
+}
+add_action( 'init', 'photovault_maybe_create_app_pages', 20 );
