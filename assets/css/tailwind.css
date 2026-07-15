@@ -1,0 +1,8 @@
+@import "tailwindcss" source(none);
+
+@source "../../";
+@source not "../../plugins";
+@source not "../../doc";
+@source not "../../plans";
+@source not "../../tests";
+@source not "../../node_modules";

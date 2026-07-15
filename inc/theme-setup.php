@@ -33,12 +33,13 @@ function photovault_scripts() {
 	// Google Fonts: Outfit & Inter.
 	wp_enqueue_style( 'photovault-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap', array(), null );
 
-	// Tailwind CSS v4 CDN.
-	wp_enqueue_script( 'photovault-tailwind', 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4', array(), null, false );
+	// Tailwind is compiled locally and committed for a zero-runtime production frontend.
+	$tailwind_version = file_exists( PHOTOVAULT_DIR . '/css/tailwind.css' ) ? (string) filemtime( PHOTOVAULT_DIR . '/css/tailwind.css' ) : PHOTOVAULT_VERSION;
+	wp_enqueue_style( 'photovault-tailwind', PHOTOVAULT_URI . '/css/tailwind.css', array(), $tailwind_version );
 
 	// Style CSS custom du thème.
 	$style_version = file_exists( PHOTOVAULT_DIR . '/css/main.css' ) ? (string) filemtime( PHOTOVAULT_DIR . '/css/main.css' ) : PHOTOVAULT_VERSION;
-	wp_enqueue_style( 'photovault-style', PHOTOVAULT_URI . '/css/main.css', array(), $style_version );
+	wp_enqueue_style( 'photovault-style', PHOTOVAULT_URI . '/css/main.css', array( 'photovault-tailwind' ), $style_version );
 
 	// Script JS principal global.
 	$script_version = file_exists( PHOTOVAULT_DIR . '/js/main.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/main.js' ) : PHOTOVAULT_VERSION;

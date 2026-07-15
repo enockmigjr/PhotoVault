@@ -32,7 +32,18 @@ Une base Docker existe a la racine WordPress avec Nginx, PHP-FPM, MariaDB, Mailp
 
 Voir [doc/docker.md](doc/docker.md).
 
-La configuration a ete validee avec `docker compose config`, mais `docker compose up --build` n'a pas encore ete execute dans cet environnement.
+La pile a ete validee en execution avec `docker compose`: Nginx, WordPress/PHP-FPM, MariaDB, Mailpit et cron disposent de controles de sante.
+
+## Styles frontend
+
+Tailwind CSS est compile localement puis commite dans `css/tailwind.css`. Le theme ne depend donc pas du Play CDN en production.
+
+```bash
+pnpm install
+pnpm run build:css
+```
+
+Utiliser `pnpm run watch:css` pendant le developpement des templates. Le paquet natif optionnel `@parcel/watcher` reste desactive dans la configuration pnpm: le build CSS statique n'en depend pas.
 
 ## Documentation utile
 
