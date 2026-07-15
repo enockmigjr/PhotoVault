@@ -53,8 +53,8 @@ Note: `photovault_current_user_can()` et `photovault_user_can()` acceptent aussi
 
 | Capability | Attribuee actuellement | Zones protegees | Commentaire |
 | --- | --- | --- | --- |
-| `newsletter_manage_subscribers` | `administrator` | Menu abonnes, changement de statut | Capability operationnelle actuelle |
-| `newsletter_manage_lists` | `administrator` | Listes, tags, edition/duplication/lifecycle des segments et volumes | Operationnelle avec verrou d'archivage si campagne active |
+| `newsletter_manage_subscribers` | `administrator` | Menu abonnes, changement de statut et import avec `newsletter_manage_lists` | Capability operationnelle actuelle |
+| `newsletter_manage_lists` | `administrator` | Listes, tags, edition/duplication/lifecycle des segments, volumes et import avec `newsletter_manage_subscribers` | Operationnelle avec verrou d'archivage si campagne active |
 | `newsletter_create_campaigns` | `administrator` | Creation, edition de brouillons, duplication et transitions non-envoi | Une campagne hors brouillon est immuable; toute copie repart en brouillon |
 | `newsletter_send_campaigns` | `administrator` | Transitions scheduled/sending/sent, traitement queue | Tres sensible: provider reel encore non branche |
 | `newsletter_view_reports` | `administrator` | Export CSV abonnes, audit et reports campagne | Donne acces a des emails en clair et stats de livraison |

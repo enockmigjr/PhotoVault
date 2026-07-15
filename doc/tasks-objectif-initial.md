@@ -98,7 +98,7 @@ Legende:
 - [x] Integrer export, effacement et contenu de politique Privacy aux outils natifs WordPress.
 - [x] Ajouter premiere UI admin abonnes.
 - [x] Documenter capabilities et tables newsletter.
-- [~] Ajouter listes, segments, tags et imports/exports. Fait: listes, tags, affectations admin, segments dynamiques all/any, edition, duplication, archivage/restauration, volumes et tests runtime. Reste: imports/exports avances et snapshots d'audience.
+- [~] Ajouter listes, segments, tags et imports/exports. Fait: listes, tags, affectations admin, segments dynamiques all/any, lifecycle, volumes et import CSV avec preview/mapping/rapport valide en runtime. Reste: exports avances des audiences et snapshots d'audience.
 - [~] Ajouter campagnes, templates, etats et transitions serveur. Campagnes ciblees editables en brouillon, duplication sure, programmation, templates reutilisables avec cycle de vie, preview protegee HTML/texte et multipart valides en runtime; bibliotheque de blocs editoriaux restante.
 - [~] Ajouter queue d'envoi batch + retry/backoff. Fait: queue idempotente, verrous atomiques, reprise stale, cron minute et test runtime. Reste: provider API et observabilite production.
 - [~] Ajouter provider abstraction SMTP/API. Fait: provider `wp_mail`, reglages admin, filtre adaptateur externe. Reste: provider API dedie avec secrets hors Git.
@@ -179,7 +179,7 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 70% d'implementation fonctionnelle et 60% de preparation production stricte.
+Progression recalculee: 71% d'implementation fonctionnelle et 61% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 

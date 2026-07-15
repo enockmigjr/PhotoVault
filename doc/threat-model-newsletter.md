@@ -16,7 +16,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Export CSV contenant des emails en clair.
 - Journal audit newsletter sans IP brute, token ni email dans le contexte.
 - Brouillons de campagnes, sujets, contenus editoriaux, cibles listes et statuts.
-- Futures campagnes, templates, provider credentials et rapports.
+- Campagnes, templates, rapports d'import temporaires et futurs provider credentials.
 
 ## Acteurs
 
@@ -48,6 +48,8 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 | Status tampering | Changer statut par POST forge | `newsletter_manage_subscribers`, nonce, whitelist | Tests non-admin/status invalide |
 | Stockage excessif | Garder IP brute/user-agent complet | IP hash, user-agent tronque | Ajouter retention/suppression |
 | Injection CSV | Email ou source mal interprete dans tableur | `fputcsv` | Ajouter neutralisation formules si export publicise |
+| Import non consenti | Reactiver ou recreer une adresse supprimee | Double capability, nonce, suppression HMAC, consentement et reactivation explicites | Ajouter matrice HTTP role/nonce/upload |
+| Import partiel | Creer un abonne avant l'echec d'une audience | Validation avant ecriture et transaction par ligne | Runtime valide; tester panne DB forcee |
 | Provider secret leak | Futures clefs SMTP/API en DB ou Git | Non implemente | Secrets hors Git/options protegees |
 | Audit exposure | Journaliser des donnees personnelles inutiles | Contexte nettoye, IP hash, user-agent tronque | Tester absence email/token/IP brute |
 | Campaign tampering | Passer une campagne en sending/sent sans droit | Transitions serveur + capabilities create/send + nonce | Tests roles create vs send |
@@ -64,6 +66,8 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Unsubscribe public par token serveur sans email dans l'URL.
 - Admin abonnes protege par `newsletter_manage_subscribers`.
 - Export CSV protege par `newsletter_view_reports` et nonce.
+- Import CSV protege par `newsletter_manage_subscribers` et `newsletter_manage_lists`, nonce, taille/lignes bornees, preview non mutative et confirmation d'application.
+- Les doublons, listes/tags inconnus, suppressions actives et reactivations sans consentement explicite sont refuses avant ecriture.
 - Status whitelist: `subscribed`, `unsubscribed`, `suppressed`.
 - Creation liste/tag/segment/thematique et affectations protegees par capability newsletter_manage_lists, nonce et validation serveur.
 - Regles dynamiques limitees a listes, tags, sources et dates; aucun identifiant SQL ne vient de la requete.
@@ -78,7 +82,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 1. Ajouter rate limiting et/ou double opt-in pour inscription publique.
 2. Ajouter retention/suppression des donnees abonnes.
 3. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
-4. Finaliser imports/exports robustes pour listes, segments et tags.
+4. Ajouter exports robustes pour listes, segments et tags; l'import des abonnes et affectations est operationnel.
 5. Ajouter templates reutilisables avances et previsualisation email.
 6. Brancher provider API externe et superviser le cron de traitement queue.
 7. Ajouter snapshot d'audience, estimation avant envoi et journal de destinataires.
@@ -102,3 +106,5 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 15. Reports refusent acces sans newsletter_view_reports et ne pretendent pas tracker ouvertures/clics.
 16. Segment refuse regle vide, date invalide, liste/tag inconnu et charge SQL.
 17. Affectation abonne refuse capability, nonce, abonne ou audience inconnus.
+18. Import CSV refuse capability/nonce/upload invalides et ne contourne ni suppression ni consentement.
+19. Preview d'import reste non mutative; une audience inconnue ne laisse aucune ecriture partielle.

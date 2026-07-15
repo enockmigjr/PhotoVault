@@ -207,6 +207,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_unsubscribe` | Unsubscribe | Lien authentifie tokenise |
 | `admin_post_newsletter_campaign_kit_update_subscriber_status` | Update status | Changement statut admin |
 | `admin_post_newsletter_campaign_kit_export_subscribers` | Export CSV | Export donnees abonnes |
+| `admin_post_newsletter_campaign_kit_import_csv` | Import CSV | Double capability abonnes/listes, nonce, preview et confirmation apply |
 | `admin_post_newsletter_campaign_kit_create_list` | Creation liste | Capability `newsletter_manage_lists`, nonce |
 | `admin_post_newsletter_campaign_kit_create_tag` | Creation tag | Capability `newsletter_manage_lists`, nonce |
 | `admin_post_newsletter_campaign_kit_create_segment` | Creation segment | Capability `newsletter_manage_lists`, nonce, regles validees |

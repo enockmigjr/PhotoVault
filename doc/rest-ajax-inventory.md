@@ -30,6 +30,7 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_unsubscribe` | Authentifie lien email | Token 64 hex, pas d'email brut dans l'URL | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_subscriber_status` | Admin | `newsletter_manage_subscribers`, nonce par abonne, whitelist status | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_export_subscribers` | Admin | `newsletter_view_reports`, nonce export | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_import_csv` | Admin | `newsletter_manage_subscribers` + `newsletter_manage_lists`, nonce, upload CSV 5 MB/5000 lignes, preview ou confirmation apply | Service/runtime valides; refus HTTP de role/nonce/upload a automatiser |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_campaign` | Admin | `newsletter_create_campaigns`, nonce creation | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_campaign` | Admin | `newsletter_create_campaigns`, nonce par campagne, brouillon uniquement | Runtime lifecycle valide; refus de role a automatiser |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_duplicate_campaign` | Admin | `newsletter_create_campaigns`, nonce par campagne, copie forcee en brouillon | Runtime lifecycle valide; refus de role a automatiser |
@@ -181,6 +182,15 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 - Donnees: CSV avec emails, statuts, source et dates.
 - Risque residuel: export limite actuellement a 100 entrees; documenter pagination/export complet avant usage production.
 - Tests a ajouter: non-admin, nonce invalide, role lecture rapports, headers CSV, absence d'acces public.
+
+### `newsletter_campaign_kit_import_csv`
+
+- Exposition: admin-post authentifie.
+- Controle actuel: capabilities `newsletter_manage_subscribers` et `newsletter_manage_lists` cumulees.
+- CSRF: nonce `newsletter_campaign_kit_import_csv`; l'application exige aussi le mode `apply` et une confirmation explicite.
+- Validation: fichier `.csv` upload reel, 5 MB/5000 lignes maximum, mapping d'en-tetes, email/status, doublons, listes/tags existants, suppressions et consentement de reactivation.
+- Confidentialite: rapport transient 15 minutes lie a l'utilisateur, sans adresse email brute.
+- Preuve: preview non mutative, application, affectations, transactions par ligne et refus des suppressions valides dans `runtime-import.php`; matrice HTTP role/nonce/upload restante.
 
 
 ### `newsletter_campaign_kit_save_provider_settings`

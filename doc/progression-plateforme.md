@@ -119,6 +119,7 @@ PhotoVault
 - Les jetons de desinscription tournent a la reactivation; un contact `suppressed` ne peut plus etre reactive publiquement et reste annule au dernier controle avant envoi.
 - Les templates editoriaux reutilisables disposent de creation, edition, duplication, archivage/restauration et heritage par campagne.
 - La preview admin HTML/texte exige capability et nonce, applique une CSP restrictive et les emails sont remis en multipart avec `AltBody` valide dans PHPMailer/Mailpit.
+- L'import CSV admin propose mapping d'en-tetes, preview sans ecriture, validation des consentements/suppressions/audiences, application transactionnelle par ligne et rapport temporaire sans email brut.
 
 ### Experience publique
 
@@ -160,7 +161,7 @@ PhotoVault
 - Le workflow upload admin offre maintenant selection visible, progression XHR, statuts et edition rapide; la preuve multipart HTTP post-correction et la validation navigateur restent a rejouer.
 - Identity Kit limite maintenant login, inscription, reset password et renvoi de verification avec des seuils admin bornes.
 - Le noyau TOTP/recovery/grace et les MFA email/SMS sont valides par services dans WordPress; les parcours navigateur, le SMS reel et la migration des comptes existants restent a valider.
-- La newsletter dispose maintenant de preferences thematiques, suppression-list durable, outils Privacy et templates multipart; provider API externe, imports et tracking ouvertures/clics restent absents.
+- La newsletter dispose maintenant de preferences thematiques, suppression-list durable, outils Privacy, templates multipart et import CSV; provider API externe, snapshots et tracking ouvertures/clics restent absents.
 
 ### Moyen
 
@@ -228,7 +229,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 70% d implementation fonctionnelle et 60% de preparation production stricte.
+Estimation recalculee: 71% d implementation fonctionnelle et 61% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -241,4 +242,4 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - matrices Identity/Newsletter/admin-post, CSRF HTTP et acces directs aux fichiers;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
 - UX metier incomplete: preuve multipart post-correction et validation responsive de l'import, du dashboard et des reservations;
-- Newsletter avancee: lifecycle segments/campagnes valide; restent imports, snapshots d'audience, webhooks provider, tracking ouvertures/clics et exports.
+- Newsletter avancee: lifecycle segments/campagnes et import CSV valides; restent snapshots d'audience, webhooks provider, tracking ouvertures/clics et exports avances.
