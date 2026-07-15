@@ -1,7 +1,6 @@
 <?php
 /**
- * Template part: Carte Média de PhotoVault.
- * Inspired by Adobe Portfolio & Unsplash.
+ * Editorial media preview used by archives and related-work sections.
  *
  * @package PhotoVault
  */
@@ -10,72 +9,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$media_id = get_the_ID();
-$is_protected = get_post_meta( $media_id, 'is_protected', true ) === '1';
-$is_private = 'private' === get_post_status( $media_id );
-$author_name = get_the_author();
-$is_admin = current_user_can( 'manage_options' );
-$image_url = photovault_get_secure_image_url( $media_id, 'card' );
-$is_favorite = is_user_logged_in() && function_exists( 'photovault_is_media_favorite' ) ? photovault_is_media_favorite( $media_id ) : false;
+$media_id       = get_the_ID();
+$is_protected   = '1' === get_post_meta( $media_id, 'is_protected', true );
+$is_private     = 'private' === get_post_status( $media_id );
+$is_admin       = current_user_can( 'manage_options' );
+$author_name    = get_the_author();
+$card_url       = photovault_get_secure_image_url( $media_id, 'card' );
+$preview_url    = photovault_get_secure_image_url( $media_id, 'preview' );
+$is_favorite    = is_user_logged_in() && function_exists( 'photovault_is_media_favorite' ) ? photovault_is_media_favorite( $media_id ) : false;
+$attachment_id  = get_post_thumbnail_id( $media_id );
+$metadata       = $attachment_id ? wp_get_attachment_metadata( $attachment_id ) : array();
+$image_width    = ! empty( $metadata['width'] ) ? absint( $metadata['width'] ) : 4;
+$image_height   = ! empty( $metadata['height'] ) ? absint( $metadata['height'] ) : 3;
+$image_ratio    = $image_height > 0 ? min( 2.2, max( 0.55, $image_width / $image_height ) ) : 1.3333;
+$terms          = get_the_terms( $media_id, 'media_category' );
+$category_label = ! empty( $terms ) && ! is_wp_error( $terms ) ? $terms[0]->name : __( 'Photographie', 'photovault' );
 ?>
 
-<div class="glass-effect rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:shadow-indigo-950/20 border border-gray-800/80 group flex flex-col justify-between h-full bg-gray-900/30">
-	<div class="relative aspect-[4/3] bg-gray-950 overflow-hidden rounded-t-3xl">
-		<?php if ( is_user_logged_in() && function_exists( 'photovault_is_media_favorite' ) ) : ?>
-			<button class="pv-favorite-button absolute left-3 top-3 z-30 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/65 text-white backdrop-blur-md transition hover:border-amber-200 hover:text-amber-200" type="button" data-pv-favorite data-media-id="<?php echo esc_attr( $media_id ); ?>" aria-pressed="<?php echo $is_favorite ? 'true' : 'false'; ?>" aria-label="<?php echo esc_attr( $is_favorite ? __( 'Retirer des favoris', 'photovault' ) : __( 'Ajouter aux favoris', 'photovault' ) ); ?>" title="<?php echo esc_attr( $is_favorite ? __( 'Retirer des favoris', 'photovault' ) : __( 'Ajouter aux favoris', 'photovault' ) ); ?>">
-				<svg class="h-5 w-5" viewBox="0 0 24 24" fill="<?php echo $is_favorite ? 'currentColor' : 'none'; ?>" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"></path></svg>
-			</button>
-		<?php endif; ?>
-		<?php if ( $image_url ) : ?>
-			<img class="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110" src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy" width="400" height="400" draggable="false">
+<article class="pv-media-card group mb-8 break-inside-avoid" data-pv-lightbox-item data-media-id="<?php echo esc_attr( $media_id ); ?>" data-title="<?php echo esc_attr( get_the_title() ); ?>" data-author="<?php echo esc_attr( $author_name ); ?>" data-meta="<?php echo esc_attr( $category_label . ' / ' . get_the_date( 'Y' ) ); ?>" data-preview-url="<?php echo esc_url( $preview_url ); ?>" data-detail-url="<?php echo esc_url( get_permalink() ); ?>" data-protected="<?php echo $is_protected ? '1' : '0'; ?>">
+	<div class="relative overflow-hidden bg-[#171614]" style="aspect-ratio:<?php echo esc_attr( number_format( $image_ratio, 4, '.', '' ) ); ?>">
+		<?php if ( $card_url ) : ?>
+			<img class="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-[1.025]" src="<?php echo esc_url( $card_url ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy" width="400" height="<?php echo esc_attr( max( 1, (int) round( 400 / $image_ratio ) ) ); ?>" draggable="false">
 		<?php else : ?>
-			<div class="w-full h-full flex items-center justify-center bg-gray-900/50 text-gray-700">
-				<svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-			</div>
+			<div class="flex h-full w-full items-center justify-center border border-white/10 text-gray-600"><svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M4 16l4.6-4.6a2 2 0 012.8 0L16 16m-2-2l1.6-1.6a2 2 0 012.8 0L20 14M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
 		<?php endif; ?>
 
-		<?php if ( ! $is_admin ) : ?>
-			<div class="pv-card-guard absolute inset-0 z-[25]" data-pv-protection-guard data-pv-message="Les apercus de galerie ne sont pas telechargeables directement. Ouvrez la fiche pour les options de consultation et de telechargement." aria-hidden="true"></div>
+		<button class="absolute inset-0 z-10 cursor-zoom-in" type="button" data-pv-lightbox-open <?php echo ! $is_admin ? 'data-pv-protection-guard' : ''; ?> data-pv-message="<?php esc_attr_e( 'Cette miniature ouvre la visionneuse PhotoVault. Le fichier original reste protege.', 'photovault' ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Voir %s en grand', 'photovault' ), get_the_title() ) ); ?>"></button>
+
+		<div class="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-4 bg-gradient-to-t from-black/75 to-transparent px-4 pb-4 pt-12 opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100">
+			<span class="text-xs font-bold uppercase text-white"><?php esc_html_e( 'Voir l oeuvre', 'photovault' ); ?></span>
+			<?php if ( $is_protected || $is_private ) : ?><span class="border border-white/30 bg-black/45 px-2 py-1 text-[10px] font-bold uppercase text-white"><?php echo esc_html( $is_private ? __( 'Privee', 'photovault' ) : __( 'Protegee', 'photovault' ) ); ?></span><?php endif; ?>
+		</div>
+
+		<?php if ( is_user_logged_in() && function_exists( 'photovault_is_media_favorite' ) ) : ?>
+			<button class="pv-favorite-button absolute left-3 top-3 z-30 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/65 text-white transition hover:border-amber-200 hover:text-amber-200" type="button" data-pv-favorite data-media-id="<?php echo esc_attr( $media_id ); ?>" aria-pressed="<?php echo $is_favorite ? 'true' : 'false'; ?>" aria-label="<?php echo esc_attr( $is_favorite ? __( 'Retirer des favoris', 'photovault' ) : __( 'Ajouter aux favoris', 'photovault' ) ); ?>" title="<?php echo esc_attr( $is_favorite ? __( 'Retirer des favoris', 'photovault' ) : __( 'Ajouter aux favoris', 'photovault' ) ); ?>"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="<?php echo $is_favorite ? 'currentColor' : 'none'; ?>" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 00-7.8 7.8l8.9 8.8 8.8-8.8a5.5 5.5 0 000-7.8z"/></svg></button>
 		<?php endif; ?>
-
-		<!-- Overlay haut de gamme au survol -->
-		<div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-between p-5 z-10">
-			<!-- Badges en haut à droite -->
-			<div class="flex justify-end gap-1.5">
-				<?php if ( $is_protected ) : ?>
-					<span class="bg-indigo-600/90 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center shadow border border-indigo-400/20 backdrop-blur-md">🔒 PROTÉGÉ</span>
-				<?php endif; ?>
-				<?php if ( $is_private ) : ?>
-					<span class="bg-gray-900/90 text-gray-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center shadow border border-gray-700/30 backdrop-blur-md">👁️ PRIVÉ</span>
-				<?php endif; ?>
-			</div>
-
-			<!-- Titre & Auteur en bas -->
-			<div>
-				<h3 class="text-white text-base font-extrabold truncate leading-tight"><?php the_title(); ?></h3>
-				<p class="text-gray-300 text-xs mt-1 truncate flex items-center">
-					<span class="opacity-60">Par</span>&nbsp;<span class="font-semibold text-gray-200"><?php echo esc_html( $author_name ); ?></span>
-				</p>
-			</div>
-		</div>
-
-		<!-- Badges visibles par défaut sans survol -->
-		<div class="absolute top-3 right-3 flex gap-1 z-20 transition-opacity duration-300 group-hover:opacity-0">
-			<?php if ( $is_protected ) : ?>
-				<span class="bg-indigo-600/90 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full flex items-center shadow-lg border border-indigo-400/20 backdrop-blur-md">🔒</span>
-			<?php endif; ?>
-			<?php if ( $is_private ) : ?>
-				<span class="bg-gray-800/95 text-gray-200 text-[10px] font-semibold px-2 py-0.5 rounded-full flex items-center shadow-lg border border-gray-700/35 backdrop-blur-md">👁️</span>
-			<?php endif; ?>
-		</div>
 	</div>
-
-	<!-- Infos visibles au bas de la carte -->
-	<div class="p-4 border-t border-gray-800/80 flex items-center justify-between rounded-b-3xl bg-gray-950/10">
-		<span class="text-xs font-semibold text-gray-200 truncate max-w-[150px]"><?php the_title(); ?></span>
-		<a href="<?php the_permalink(); ?>" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors flex items-center group/btn">
-			Découvrir
-			<svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
-		</a>
+	<div class="flex items-start justify-between gap-5 pt-3">
+		<div class="min-w-0"><h2 class="truncate text-base font-bold text-white"><?php the_title(); ?></h2><p class="mt-1 text-xs text-gray-500"><?php echo esc_html( $category_label ); ?> / <?php echo esc_html( get_the_date( 'Y' ) ); ?></p></div>
+		<a class="relative z-30 shrink-0 text-xs font-bold text-amber-200 hover:text-white" href="<?php the_permalink(); ?>"><?php esc_html_e( 'Details', 'photovault' ); ?></a>
 	</div>
-</div>
+</article>
