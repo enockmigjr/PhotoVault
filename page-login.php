@@ -12,6 +12,7 @@ if ( is_user_logged_in() ) {
 
 $verify          = isset( $_GET['verify'] ) ? sanitize_key( wp_unslash( $_GET['verify'] ) ) : '';
 $login_status    = isset( $_GET['login'] ) ? sanitize_key( wp_unslash( $_GET['login'] ) ) : '';
+$redirect_to     = isset( $_GET['redirect_to'] ) ? wp_validate_redirect( wp_unslash( $_GET['redirect_to'] ), '' ) : '';
 $verify_messages = array(
 	'success' => array( 'type' => 'success', 'text' => __( 'Votre adresse e-mail est vérifiée. Vous pouvez maintenant vous connecter.', 'photovault' ) ),
 	'invalid' => array( 'type' => 'error', 'text' => __( 'Ce lien de vérification est invalide.', 'photovault' ) ),
@@ -49,6 +50,7 @@ get_header();
 
 			<form class="mt-9 space-y-6" action="<?php echo esc_url( home_url( '/login/' ) ); ?>" method="post">
 				<?php wp_nonce_field( 'photovault_login_action', 'photovault_login_nonce' ); ?>
+				<?php if ( $redirect_to ) : ?><input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ); ?>"><?php endif; ?>
 				<div>
 					<label for="username" class="pv-auth-label"><?php esc_html_e( 'Identifiant ou e-mail', 'photovault' ); ?></label>
 					<input id="username" name="log" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required class="pv-auth-input" placeholder="vous@exemple.com">

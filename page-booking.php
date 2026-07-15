@@ -6,7 +6,7 @@
  */
 
 if ( ! is_user_logged_in() ) {
-	wp_safe_redirect( add_query_arg( 'redirect_to', rawurlencode( home_url( '/booking/' ) ), home_url( '/login/' ) ) );
+	wp_safe_redirect( add_query_arg( 'redirect_to', home_url( '/booking/' ), home_url( '/login/' ) ) );
 	exit;
 }
 
