@@ -305,23 +305,31 @@ ul.page-numbers .next {
 /* Editorial archive and on-demand full-screen viewer. */
 .pv-gallery-filters {
 	display: grid;
-	grid-template-columns: minmax(15rem, 1.4fr) repeat(4, minmax(9rem, 1fr)) 2.75rem;
-	gap: 0.65rem;
-	align-items: center;
+	grid-template-columns: minmax(16rem, 1.6fr) repeat(4, minmax(8.5rem, 1fr)) 3rem;
+	gap: 0.75rem;
+	align-items: end;
 }
+
+.pv-gallery-filters label { display: grid; min-width: 0; gap: 0.45rem; }
+.pv-gallery-filter-label { color: #78716c; font-size: 0.62rem; font-weight: 800; line-height: 1; text-transform: uppercase; }
 
 .pv-gallery-filters select,
 .pv-gallery-filters input {
 	width: 100%;
-	height: 2.75rem;
+	height: 3rem;
 	border: 1px solid rgba(255, 255, 255, 0.12);
 	border-radius: 0.25rem;
-	background: #171614;
-	padding: 0 0.85rem;
+	background: #131210;
+	padding: 0 0.9rem;
 	color: #e7e5e4;
-	font-size: 0.78rem;
+	font-size: 0.8rem;
+	font-weight: 600;
 	outline: none;
+	transition: border-color 160ms ease, background-color 160ms ease;
 }
+
+.pv-gallery-filters select:hover,
+.pv-gallery-filters input:hover { border-color: rgba(255, 255, 255, 0.24); background: #171614; }
 
 .pv-gallery-filters select:focus,
 .pv-gallery-filters input:focus {
@@ -333,11 +341,14 @@ ul.page-numbers .next {
 .pv-gallery-search input { padding-left: 2.6rem; }
 .pv-gallery-search svg {
 	position: absolute;
-	top: 0.85rem;
+	top: 2.05rem;
 	left: 0.9rem;
-	width: 1rem;
-	height: 1rem;
+	width: 1rem !important;
+	height: 1rem !important;
+	max-width: 1rem;
+	max-height: 1rem;
 	color: #78716c;
+	pointer-events: none;
 }
 
 .pv-gallery-reset,
@@ -352,7 +363,7 @@ ul.page-numbers .next {
 	cursor: pointer;
 }
 
-.pv-gallery-reset { width: 2.75rem; height: 2.75rem; border-radius: 0.25rem; }
+.pv-gallery-reset { width: 3rem; height: 3rem; border-radius: 0.25rem; }
 .pv-gallery-reset svg,
 .pv-gallery-more svg,
 .pv-gallery-lightbox button svg { width: 1.1rem; height: 1.1rem; stroke-width: 1.7; }
@@ -457,25 +468,31 @@ ul.page-numbers .next {
 }
 
 /* Dashboard profile security flows. */
-.pv-profile-mfa #identity-security-mfa > h2 { display: none; }
-.pv-profile-mfa #identity-security-mfa > p,
-.pv-profile-mfa .identity-security-mfa-method > p,
-.pv-profile-mfa details p { margin: 0.75rem 0; color: #a8a29e; font-size: 0.85rem; line-height: 1.6; }
-.pv-profile-mfa #identity-security-mfa > form,
-.pv-profile-mfa #identity-security-mfa > details,
-.pv-profile-mfa .identity-security-mfa-method {
-	margin-top: 1rem;
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	border-radius: 0.25rem;
-	background: rgba(255, 255, 255, 0.025);
-	padding: 1.25rem;
-}
-.pv-profile-mfa .identity-security-mfa-channels { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 2rem; }
-.pv-profile-mfa .identity-security-mfa-channels > h3 { margin: 0 0 0.25rem; font-size: 1.1rem; color: #f5f5f4; }
-.pv-profile-mfa .identity-security-mfa-method { margin-top: 0; }
-.pv-profile-mfa .identity-security-mfa-method h4 { margin: 0; font-size: 1rem; color: #fff; }
-.pv-profile-mfa form { display: grid; width: 100%; max-width: 34rem; gap: 0.9rem; margin-top: 1rem; }
-.pv-profile-mfa label { display: grid; gap: 0.45rem; color: #d6d3d1; font-size: 0.78rem; font-weight: 700; }
+.pv-profile-mfa #identity-security-mfa > h2,
+.pv-profile-mfa .identity-security-mfa-channels > h3 { display: none; }
+.pv-profile-mfa .identity-security-mfa { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.pv-profile-mfa .identity-security-mfa-channels { display: contents; }
+.pv-profile-mfa .identity-security-mfa-method { border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5rem 0; }
+.pv-profile-mfa .identity-security-mfa-method__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; }
+.pv-profile-mfa .identity-security-mfa-method__header > div { min-width: 0; }
+.pv-profile-mfa .identity-security-mfa-method h3,
+.pv-profile-mfa .identity-security-mfa-method h4 { margin: 0; color: #f5f5f4; font-size: 0.98rem; font-weight: 750; }
+.pv-profile-mfa .identity-security-mfa-method__header p { margin: 0.45rem 0 0; color: #78716c; font-size: 0.78rem; line-height: 1.55; overflow-wrap: anywhere; }
+.pv-profile-mfa .identity-security-mfa-status { flex: none; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 999px; padding: 0.35rem 0.65rem; color: #a8a29e; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; }
+.pv-profile-mfa .identity-security-mfa-status.is-enabled { border-color: rgba(110, 231, 183, 0.28); background: rgba(16, 185, 129, 0.08); color: #6ee7b7; }
+.pv-profile-mfa .identity-security-mfa-status.is-pending { border-color: rgba(252, 211, 77, 0.28); color: #fcd34d; }
+.pv-profile-mfa .identity-security-mfa-status.is-unavailable { color: #57534e; }
+.pv-profile-mfa .identity-security-mfa-method__body { margin-top: 0.9rem; }
+.pv-profile-mfa .identity-security-mfa-method__body > p,
+.pv-profile-mfa details p { margin: 0.75rem 0; color: #a8a29e; font-size: 0.82rem; line-height: 1.6; }
+.pv-profile-mfa details { border-top: 1px solid rgba(255, 255, 255, 0.07); color: #d6d3d1; }
+.pv-profile-mfa details + details { margin-top: 0; }
+.pv-profile-mfa summary { position: relative; cursor: pointer; list-style: none; padding: 0.85rem 1.75rem 0.85rem 0; color: #dcc094; font-size: 0.78rem; font-weight: 750; }
+.pv-profile-mfa summary::-webkit-details-marker { display: none; }
+.pv-profile-mfa summary::after { position: absolute; top: 0.78rem; right: 0.2rem; content: "+"; color: #78716c; font-size: 1rem; }
+.pv-profile-mfa details[open] summary::after { content: "-"; }
+.pv-profile-mfa form { display: grid; width: 100%; max-width: 32rem; gap: 0.9rem; margin: 0.35rem 0 1rem; }
+.pv-profile-mfa label { display: grid; gap: 0.45rem; color: #d6d3d1; font-size: 0.75rem; font-weight: 700; }
 .pv-profile-mfa input,
 .pv-profile-mfa select {
 	width: 100%;
@@ -498,7 +515,21 @@ ul.page-numbers .next {
 	font-weight: 800;
 	cursor: pointer;
 }
-.pv-profile-mfa details { color: #d6d3d1; }
-.pv-profile-mfa summary { cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #dcc094; }
+.pv-profile-mfa .identity-security-mfa-secondary-action button { border: 1px solid rgba(255, 255, 255, 0.14); background: transparent; color: #d6d3d1; }
 .pv-profile-mfa .notice { margin: 1rem 0; border-left: 3px solid #dcc094; background: rgba(220, 192, 148, 0.08); padding: 0.8rem 1rem; }
 .pv-profile-mfa .identity-totp-qr { margin-top: 1rem; }
+
+@media (max-width: 560px) {
+	.pv-profile-mfa .identity-security-mfa-method__header { flex-direction: column; gap: 0.75rem; }
+}
+
+/* Keep the dashboard drawer deterministic before Tailwind's browser compiler runs. */
+@media (max-width: 1023px) {
+	#main-sidebar { transform: translateX(-100%); }
+	#main-sidebar[data-sidebar-open="true"] { transform: translateX(0); }
+	#sidebar-overlay[hidden] { display: none !important; }
+}
+
+@media (min-width: 1024px) {
+	#main-sidebar { transform: translateX(0); }
+}

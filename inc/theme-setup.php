@@ -37,10 +37,12 @@ function photovault_scripts() {
 	wp_enqueue_script( 'photovault-tailwind', 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4', array(), null, false );
 
 	// Style CSS custom du thème.
-	wp_enqueue_style( 'photovault-style', PHOTOVAULT_URI . '/css/main.css', array(), PHOTOVAULT_VERSION );
+	$style_version = file_exists( PHOTOVAULT_DIR . '/css/main.css' ) ? (string) filemtime( PHOTOVAULT_DIR . '/css/main.css' ) : PHOTOVAULT_VERSION;
+	wp_enqueue_style( 'photovault-style', PHOTOVAULT_URI . '/css/main.css', array(), $style_version );
 
 	// Script JS principal global.
-	wp_enqueue_script( 'photovault-main-js', PHOTOVAULT_URI . '/js/main.js', array(), PHOTOVAULT_VERSION, true );
+	$script_version = file_exists( PHOTOVAULT_DIR . '/js/main.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/main.js' ) : PHOTOVAULT_VERSION;
+	wp_enqueue_script( 'photovault-main-js', PHOTOVAULT_URI . '/js/main.js', array(), $script_version, true );
 	
 	// Configuration REST disponible avant le script principal et les scripts inline.
 	$photovault_frontend_config = array(

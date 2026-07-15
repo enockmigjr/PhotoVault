@@ -38,9 +38,9 @@ $role_label = $is_manager ? __( 'Administrateur', 'photovault' ) : __( 'Client',
 	</button>
 </div>
 
-<div id="sidebar-overlay" class="fixed inset-0 z-40 hidden bg-black/70 opacity-0 transition-opacity lg:hidden"></div>
+<div id="sidebar-overlay" class="fixed inset-0 z-40 hidden bg-black/70 opacity-0 transition-opacity lg:hidden" hidden></div>
 
-<aside id="main-sidebar" class="fixed inset-y-0 left-0 z-50 flex h-screen w-72 -translate-x-full flex-col justify-between border-r border-white/10 bg-[#11100f] shadow-2xl transition-transform duration-200 lg:sticky lg:top-0 lg:translate-x-0">
+<aside id="main-sidebar" class="fixed inset-y-0 left-0 z-50 flex h-screen w-72 -translate-x-full flex-col justify-between border-r border-white/10 bg-[#11100f] shadow-2xl transition-transform duration-200 lg:sticky lg:top-0 lg:translate-x-0" data-sidebar-open="false">
 	<div class="px-5 py-7">
 		<div class="mb-7 flex items-center justify-between">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="text-2xl font-black text-white">Photo<span class="text-amber-300">Vault</span></a>
@@ -92,7 +92,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	const overlay = document.getElementById('sidebar-overlay');
 	if (!toggle || !sidebar || !overlay) return;
 	function setOpen(open) {
+		sidebar.setAttribute('data-sidebar-open', open ? 'true' : 'false');
 		sidebar.classList.toggle('-translate-x-full', !open);
+		overlay.hidden = !open;
 		overlay.classList.toggle('hidden', !open);
 		overlay.classList.toggle('opacity-100', open);
 		toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
