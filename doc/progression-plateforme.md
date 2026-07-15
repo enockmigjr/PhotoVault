@@ -207,8 +207,8 @@ PhotoVault
 ### P1 - Newsletter Kit
 
 1. Ajouter des blocs editoriaux reutilisables au-dela des templates complets.
-2. Brancher un provider API externe dedie et ajouter supervision/alertes du cron de traitement.
-3. Ajouter webhooks signes pour bounces/complaints et brancher le registre de suppression au futur import.
+2. Valider le provider HTTP generique contre un fournisseur reel et ajouter supervision/alertes du cron de traitement.
+3. Configurer en staging le webhook HMAC deja valide en runtime avec les evenements bounces/complaints du fournisseur retenu.
 4. Ajouter tracking ouvertures/clics et exports de reporting avances.
 
 ### P2 - UX metier PhotoVault
@@ -231,7 +231,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 73% d implementation fonctionnelle et 63% de preparation production stricte.
+Estimation recalculee: 75% d implementation fonctionnelle et 65% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -244,4 +244,4 @@ Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label
 - matrices Identity/Newsletter/admin-post, CSRF HTTP et acces directs aux fichiers;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
 - UX metier incomplete: preuve multipart post-correction et validation responsive de l'import, du dashboard et des reservations;
-- Newsletter avancee: lifecycle segments/campagnes, import CSV et snapshots valides; restent webhooks provider, tracking ouvertures/clics et exports avances.
+- Newsletter avancee: lifecycle segments/campagnes, import CSV, snapshots, provider HTTP et webhooks signes valides; restent integration fournisseur staging, tracking ouvertures/clics et exports avances.

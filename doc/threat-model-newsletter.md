@@ -35,7 +35,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Formulaire public newsletter vers `admin-post.php`.
 - Lien email unsubscribe vers `admin-post.php`.
 - Admin abonnes/listes/tags vers tables custom et export CSV.
-- Future queue d'envoi vers provider email externe.
+- Queue d'envoi vers provider email externe et retour webhook vers WordPress.
 
 ## Menaces principales
 
@@ -51,7 +51,9 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 | Injection CSV | Email ou source mal interprete dans tableur | `fputcsv` | Ajouter neutralisation formules si export publicise |
 | Import non consenti | Reactiver ou recreer une adresse supprimee | Double capability, nonce, suppression HMAC, consentement et reactivation explicites | Ajouter matrice HTTP role/nonce/upload |
 | Import partiel | Creer un abonne avant l'echec d'une audience | Validation avant ecriture et transaction par ligne | Runtime valide; tester panne DB forcee |
-| Provider secret leak | Futures clefs SMTP/API en DB ou Git | Non implemente | Secrets hors Git/options protegees |
+| Provider secret leak | Cle API ou secret webhook exposes en DB, logs ou Git | Configuration serveur uniquement, diagnostic admin booleen | Valider rotation sur l'hebergeur final |
+| Provider SSRF | Endpoint configure vers le reseau interne | HTTPS obligatoire et `wp_safe_remote_post` | Tester la configuration finale |
+| Webhook forge/rejoue | Fausse plainte supprimant un abonne ou rejeu massif | HMAC timestamp/corps, fenetre 5 minutes, comparaison constante et cle anti-rejeu durable | Valider avec le fournisseur reel |
 | Audit exposure | Journaliser des donnees personnelles inutiles | Contexte nettoye, IP hash, user-agent tronque | Tester absence email/token/IP brute |
 | Campaign tampering | Passer une campagne en sending/sent sans droit | Transitions serveur + capabilities create/send + nonce | Tests roles create vs send |
 | Queue delivery abuse | Declencher un batch ou retenter trop vite | Capability send, nonce, limite batch, backoff | Tests role/nonce/backoff |
@@ -77,7 +79,9 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Audit newsletter protege par capability newsletter_view_reports, avec IP hash, user-agent tronque et contexte nettoye.
 - Campagnes protegees par capability newsletter_create_campaigns; transitions d'envoi protegees par newsletter_send_campaigns.
 - Queue batch protegee par newsletter_send_campaigns pour l'action manuelle, traitement cron borne, verrou atomique, contrainte campagne/abonne, reprise stale et retry/backoff.
-- Provider wp_mail configurable sans secret; providers API externes attendus via filtre et secrets hors Git.
+- Provider wp_mail et provider HTTP JSON generique; HTTPS obligatoire, secret serveur, timeout borne, zero redirection et idempotence stable par remise.
+- Webhook bounce/complaint signe HMAC, fenetre de cinq minutes, anti-rejeu en table et suppression durable avec annulation de queue.
+- Les preuves provider ne stockent pas l'email brut et perdent leur lien `subscriber_id` lors d'un effacement Privacy.
 - Reports campagne limites aux totaux queue et proteges par newsletter_view_reports.
 - Le premier envoi capture type, libelle, regles, topic et membres; les membres ne stockent ni email brut ni hash email, et perdent leur ID abonne lors d'un effacement Privacy.
 - Envoi manuel et cron creent snapshot et queue dans une transaction, puis toute relance reutilise les memes IDs.
@@ -89,7 +93,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 3. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
 4. Ajouter exports robustes pour listes, segments et tags; l'import des abonnes et affectations est operationnel.
 5. Ajouter templates reutilisables avances et previsualisation email.
-6. Brancher provider API externe et superviser le cron de traitement queue.
+6. Brancher un fournisseur reel sur le contrat HTTP valide et superviser le cron de traitement queue.
 7. Ajouter estimation/confirmation finale avant envoi et politique de retention des preuves de ciblage.
 
 ## Tests minimum avant production
@@ -114,3 +118,5 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 18. Import CSV refuse capability/nonce/upload invalides et ne contourne ni suppression ni consentement.
 19. Preview d'import reste non mutative; une audience inconnue ne laisse aucune ecriture partielle.
 20. Une audience modifiee apres snapshot ne change ni membres ni queue; une cible disparue ne laisse aucune donnee partielle.
+21. Provider HTTP refuse endpoint non HTTPS ou secret absent, normalise les erreurs et conserve la meme cle d'idempotence au retry.
+22. Webhook refuse signature invalide/expiree, ignore un rejeu et transforme bounce/complaint en suppression durable sans stocker l'email brut.

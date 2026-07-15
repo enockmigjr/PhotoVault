@@ -183,19 +183,21 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `{$wpdb->prefix}newsletter_campaign_queue` | `newsletter_campaign_kit_get_queue_table()` | File de livraison batch, tentatives et backoff | IDs campagne/abonne, statut, erreurs provider |
 | `{$wpdb->prefix}newsletter_campaign_audience_snapshots` | `newsletter_campaign_kit_get_audience_snapshots_table()` | Preuve immutable du ciblage au premier envoi | Type/ID/libelle audience, topic, regles JSON, volume |
 | `{$wpdb->prefix}newsletter_campaign_audience_snapshot_members` | `newsletter_campaign_kit_get_audience_snapshot_members_table()` | Membres figes du ciblage | ID abonne nullable et cle opaque propre au snapshot, sans email ni hash email |
+| `{$wpdb->prefix}newsletter_campaign_provider_events` | `newsletter_campaign_kit_get_provider_events_table()` | Anti-rejeu et preuve de traitement bounce/complaint | Cle evenement HMAC, type, statut, ID abonne nullable; aucun email brut |
 
 ### Options
 
 | Option | Usage | Remarque |
 | --- | --- | --- |
 | `newsletter_campaign_kit_version` | Version installee/migration | Mise a jour a l'activation/upgrade |
-| `newsletter_campaign_kit_provider_settings` | Provider livraison | `wp_mail` ou adaptateur externe, from name/from email, sans secret |
+| `newsletter_campaign_kit_provider_settings` | Provider livraison | `wp_mail`, HTTP generique ou adaptateur externe, from name/from email, sans secret |
 
 ### Filtres publics
 
 | Hook | Type | Usage |
 | --- | --- | --- |
 | `newsletter_campaign_kit_send_email` | Filter | Brancher/remplacer le provider de livraison; retourne `true` en succes ou `WP_Error` en echec |
+| `newsletter_campaign_kit_http_provider_config` | Filter | Injecter endpoint HTTPS, cle API, secret webhook et timeout depuis le serveur |
 
 ### Actions WordPress utilisees
 
@@ -226,6 +228,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_process_queue` | Traitement queue | Capability `newsletter_send_campaigns`, nonce |
 | `admin_post_newsletter_campaign_kit_save_provider_settings` | Reglages provider | Capability `newsletter_manage_settings`, nonce |
 | `newsletter_campaign_kit_run_scheduled` | Scheduler campagne | Reprise des verrous expires, campagnes echues, batch borne et finalisation |
+| `rest_api_init` | `newsletter_campaign_kit_register_provider_event_route` | Endpoint public de transport dont le callback exige timestamp et signature HMAC valides |
 
 ## Points de verification runtime
 

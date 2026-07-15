@@ -27,13 +27,14 @@ PhotoVault is being migrated from a theme-heavy implementation to a modular Word
 - Subscriber metadata stores hashed IP data instead of raw IP addresses.
 - Public unsubscribe uses a server-side token and does not expose the email address in the URL.
 - Admin subscriber management requires dedicated newsletter capabilities.
+- Campaign delivery supports `wp_mail` and a generic HTTPS API with server-side-only credentials and stable idempotency keys.
+- Bounce and complaint events require a timestamped HMAC signature, use a durable replay guard and never store the raw email in the event registry.
 
 ## Known Gaps
 - Existing originals uploaded before the private-storage migration must be processed from the PhotoVault admin workspace. Nginx deployments must still deny direct access to `wp-content/photovault-private/` explicitly.
-- Identity Kit implements email verification, but OTP, TOTP/MFA, recovery codes and grace-period enforcement are not yet implemented.
-- Newsletter Kit does not yet implement sending queue, campaign state machine, provider abstraction or per-campaign reporting.
-- Automated security tests are still missing.
-- Runtime activation could not be fully rechecked while MySQL/XAMPP was refusing connections.
+- Identity browser E2E, a real SMS provider, international phone-plan validation and multisite policy coverage remain incomplete.
+- Newsletter still needs a real provider staging validation, delivery monitoring, anti-abuse/double opt-in, tracking and advanced exports.
+- Automated authorization coverage is complete for Core media but remains partial for Identity, Newsletter and admin-post routes.
 
 ## Operational Rules
 - Do not commit secrets, SMTP credentials, provider tokens or database passwords.
