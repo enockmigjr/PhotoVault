@@ -5,160 +5,77 @@
  * @package PhotoVault
  */
 
-$message = '';
-$error   = '';
+$notice        = '';
+$notice_type   = '';
+$name          = '';
+$email         = '';
+$request_type  = 'general';
+$subject       = '';
+$collection    = '';
+$content       = '';
+$request_types = photovault_get_contact_request_types();
 
 if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_contact_nonce'] ) ) {
 	if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['photovault_contact_nonce'] ) ), 'photovault_contact_action' ) ) {
 		$name         = isset( $_POST['contact_name'] ) ? sanitize_text_field( wp_unslash( $_POST['contact_name'] ) ) : '';
 		$email        = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 		$request_type = isset( $_POST['request_type'] ) ? sanitize_key( wp_unslash( $_POST['request_type'] ) ) : 'general';
-		$request_types = photovault_get_contact_request_types();
 		$subject      = isset( $_POST['contact_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['contact_subject'] ) ) : '';
 		$collection   = isset( $_POST['collection_name'] ) ? sanitize_text_field( wp_unslash( $_POST['collection_name'] ) ) : '';
 		$content      = isset( $_POST['contact_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['contact_message'] ) ) : '';
 
 		if ( empty( $name ) || empty( $email ) || empty( $subject ) || empty( $content ) || ! is_email( $email ) || ! isset( $request_types[ $request_type ] ) ) {
-			$error = __( 'Veuillez remplir tous les champs obligatoires avec une adresse e-mail valide.', 'photovault' );
+			$notice      = __( 'Veuillez remplir les champs obligatoires avec une adresse e-mail valide.', 'photovault' );
+			$notice_type = 'error';
 		} elseif ( 'access' === $request_type && function_exists( 'photovault_create_access_request' ) ) {
-			$result = photovault_create_access_request(
-				array(
-					'name'       => $name,
-					'email'      => $email,
-					'subject'    => $subject ? $subject : __( 'Demande d acces protege', 'photovault' ),
-					'collection' => $collection,
-					'message'    => $content,
-				)
-			);
-
-			if ( is_wp_error( $result ) ) {
-				$error = $result->get_error_message();
-			} else {
-				$message = __( 'Votre demande d acces a ete enregistree. Elle sera examinee manuellement.', 'photovault' );
-			}
+			$result = photovault_create_access_request( array( 'name' => $name, 'email' => $email, 'subject' => $subject, 'collection' => $collection, 'message' => $content ) );
+			$notice      = is_wp_error( $result ) ? $result->get_error_message() : __( 'Votre demande d’accès a été enregistrée et sera examinée manuellement.', 'photovault' );
+			$notice_type = is_wp_error( $result ) ? 'error' : 'success';
 		} elseif ( function_exists( 'photovault_rate_limit' ) && ! photovault_rate_limit( 'contact_message', 5, HOUR_IN_SECONDS ) ) {
-			$error = __( 'Veuillez patienter avant d envoyer un nouveau message.', 'photovault' );
+			$notice      = __( 'Veuillez patienter avant d’envoyer un nouveau message.', 'photovault' );
+			$notice_type = 'error';
 		} else {
-			$sent = photovault_send_contact_notification(
-				array(
-					'name'         => $name,
-					'email'        => $email,
-					'request_type' => $request_type,
-					'subject'      => $subject,
-					'collection'   => $collection,
-					'message'      => $content,
-				)
-			);
-			if ( $sent ) {
-				$message = __( 'Votre message a ete envoye avec succes.', 'photovault' );
-			} else {
-				$error = __( 'Le message n a pas pu etre envoye. Veuillez reessayer plus tard.', 'photovault' );
-			}
+			$sent = photovault_send_contact_notification( array( 'name' => $name, 'email' => $email, 'request_type' => $request_type, 'subject' => $subject, 'collection' => $collection, 'message' => $content ) );
+			$notice      = $sent ? __( 'Votre message a été envoyé avec succès.', 'photovault' ) : __( 'Le message n’a pas pu être envoyé. Veuillez réessayer plus tard.', 'photovault' );
+			$notice_type = $sent ? 'success' : 'error';
 		}
 	} else {
-		$error = __( 'Echec de la verification de securite.', 'photovault' );
+		$notice      = __( 'La vérification de sécurité a échoué. Actualisez la page puis réessayez.', 'photovault' );
+		$notice_type = 'error';
 	}
 }
 
 get_header();
 ?>
+<main class="min-h-screen bg-[#0d0c0b] text-gray-100">
+	<header class="border-b border-white/10 py-20 sm:py-28">
+		<div class="mx-auto grid max-w-[90rem] gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:px-12"><div class="lg:col-span-8"><p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Contact / Accès', 'photovault' ); ?></p><h1 class="mt-7 max-w-5xl font-serif text-5xl leading-[1.04] text-white sm:text-7xl"><?php esc_html_e( 'Décrivez le projet, l’œuvre ou l’accès recherché.', 'photovault' ); ?></h1></div><p class="max-w-xl self-end text-base leading-8 text-gray-400 lg:col-span-4"><?php esc_html_e( 'Votre demande est orientée vers le bon parcours : collection protégée, shooting, licence, tirage ou question générale.', 'photovault' ); ?></p></div>
+	</header>
 
-<div class="py-20 bg-[#0d0c0b] min-h-screen">
-	<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-		<header class="text-center space-y-4">
-			<p class="text-xs font-bold uppercase tracking-[0.28em] text-indigo-300">Contact & acces</p>
-			<h1 class="text-4xl sm:text-6xl font-extrabold text-white">Parlez-nous de votre demande</h1>
-			<p class="text-gray-300 text-lg max-w-2xl mx-auto">Acces a une collection protegee, reservation de shooting, licence, tirage ou question generale: chaque demande arrive au bon endroit.</p>
-		</header>
+	<section class="mx-auto grid max-w-[90rem] gap-12 px-5 py-16 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-24" aria-labelledby="contact-form-title">
+		<aside class="lg:col-span-4">
+			<p class="text-xs font-extrabold uppercase text-gray-500"><?php esc_html_e( 'Avant d’écrire', 'photovault' ); ?></p>
+			<h2 class="mt-5 font-serif text-3xl leading-tight text-white"><?php esc_html_e( 'Quelques repères pour une réponse précise.', 'photovault' ); ?></h2>
+			<dl class="mt-8 divide-y divide-white/10 border-y border-white/10">
+				<div class="py-5"><dt class="text-sm font-bold text-white"><?php esc_html_e( 'Collection protégée', 'photovault' ); ?></dt><dd class="mt-2 text-sm leading-6 text-gray-400"><?php esc_html_e( 'Indiquez le nom de la série et la raison de votre demande.', 'photovault' ); ?></dd></div>
+				<div class="py-5"><dt class="text-sm font-bold text-white"><?php esc_html_e( 'Shooting', 'photovault' ); ?></dt><dd class="mt-2 text-sm leading-6 text-gray-400"><?php esc_html_e( 'Précisez la date, le lieu, les personnes et l’usage prévu.', 'photovault' ); ?></dd></div>
+				<div class="py-5"><dt class="text-sm font-bold text-white"><?php esc_html_e( 'Licence ou tirage', 'photovault' ); ?></dt><dd class="mt-2 text-sm leading-6 text-gray-400"><?php esc_html_e( 'Mentionnez l’œuvre, le format, la diffusion et le délai attendu.', 'photovault' ); ?></dd></div>
+			</dl>
+			<p class="mt-7 text-sm leading-6 text-gray-500"><?php echo esc_html( sprintf( __( 'Les notifications sont adressées à l’équipe du site (%s).', 'photovault' ), antispambot( get_option( 'admin_email' ) ) ) ); ?></p>
+		</aside>
 
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-			<div class="space-y-6 md:col-span-1">
-				<div class="glass-effect p-6 rounded-2xl border border-gray-800 space-y-4">
-					<h3 class="text-lg font-bold text-white">Archives protegees</h3>
-					<p class="text-sm text-gray-300 leading-relaxed">Les demandes d'acces sont enregistrees, examinees manuellement et conservees dans l'espace admin PhotoVault.</p>
-				</div>
-				<div class="glass-effect p-6 rounded-2xl border border-gray-800 space-y-4">
-					<h3 class="text-lg font-bold text-white">Contact direct</h3>
-					<p class="text-sm text-gray-300">support@photovault.local<br>Porto-Novo / Cotonou<br>Sur rendez-vous</p>
-				</div>
-			</div>
-
-			<div class="md:col-span-2">
-				<form class="glass-effect p-8 rounded-3xl border border-gray-800 shadow-xl space-y-4" action="" method="POST">
-					<?php wp_nonce_field( 'photovault_contact_action', 'photovault_contact_nonce' ); ?>
-
-					<?php if ( ! empty( $error ) ) : ?>
-						<div class="bg-red-900/30 border border-red-500 text-red-200 px-4 py-3 rounded-lg text-sm text-center">
-							<?php echo esc_html( $error ); ?>
-						</div>
-					<?php endif; ?>
-
-					<?php if ( ! empty( $message ) ) : ?>
-						<div class="bg-emerald-900/30 border border-emerald-500 text-emerald-200 px-4 py-3 rounded-lg text-sm text-center">
-							<?php echo esc_html( $message ); ?>
-						</div>
-					<?php endif; ?>
-
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						<div>
-							<label for="name" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Nom / Prenom</label>
-							<input id="name" name="contact_name" type="text" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-						</div>
-						<div>
-							<label for="email" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Adresse e-mail</label>
-							<input id="email" name="email" type="email" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-						</div>
-					</div>
-
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						<div>
-							<label for="request_type" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Type de demande</label>
-							<select id="request_type" name="request_type" class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-								<?php foreach ( photovault_get_contact_request_types() as $type_key => $type_label ) : ?>
-									<option value="<?php echo esc_attr( $type_key ); ?>"><?php echo esc_html( $type_label ); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-						<div>
-							<label for="collection_name" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Collection / oeuvre</label>
-							<input id="collection_name" name="collection_name" type="text" class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Nom de la serie, oeuvre ou projet">
-						</div>
-					</div>
-
-					<div>
-						<label for="subject" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Sujet</label>
-						<input id="subject" name="contact_subject" type="text" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-					</div>
-
-					<div>
-						<label for="message" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Message</label>
-						<textarea id="message" name="contact_message" rows="6" required class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Precisez votre besoin, le contexte, les dates ou les droits souhaites."></textarea>
-					</div>
-
-					<div class="pt-2">
-						<button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-center block transition-all shadow-lg cursor-pointer">
-							Envoyer la demande
-						</button>
-					</div>
-				</form>
-			</div>
+		<div class="lg:col-span-7 lg:col-start-6">
+			<h2 id="contact-form-title" class="text-2xl font-bold text-white"><?php esc_html_e( 'Envoyer une demande', 'photovault' ); ?></h2>
+			<?php if ( $notice ) : ?><div class="mt-6 flex items-start justify-between gap-4 border px-4 py-3 text-sm <?php echo 'success' === $notice_type ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100' : 'border-red-500/30 bg-red-500/10 text-red-100'; ?>" role="<?php echo 'success' === $notice_type ? 'status' : 'alert'; ?>" data-pv-toast><span><?php echo esc_html( $notice ); ?></span><button type="button" class="pv-header-icon h-8 w-8 shrink-0" aria-label="<?php esc_attr_e( 'Fermer la notification', 'photovault' ); ?>" data-pv-toast-close>&times;</button></div><?php endif; ?>
+			<form class="pv-public-form mt-8" action="<?php echo esc_url( get_permalink() ); ?>" method="post">
+				<?php wp_nonce_field( 'photovault_contact_action', 'photovault_contact_nonce' ); ?>
+				<div class="grid gap-5 sm:grid-cols-2"><label><span><?php esc_html_e( 'Nom et prénom', 'photovault' ); ?></span><input name="contact_name" type="text" autocomplete="name" maxlength="140" required value="<?php echo esc_attr( $name ); ?>"></label><label><span><?php esc_html_e( 'Adresse e-mail', 'photovault' ); ?></span><input name="email" type="email" autocomplete="email" maxlength="190" required value="<?php echo esc_attr( $email ); ?>"></label></div>
+				<div class="grid gap-5 sm:grid-cols-2"><label><span><?php esc_html_e( 'Type de demande', 'photovault' ); ?></span><select name="request_type" required><?php foreach ( $request_types as $type_key => $type_label ) : ?><option value="<?php echo esc_attr( $type_key ); ?>" <?php selected( $request_type, $type_key ); ?>><?php echo esc_html( $type_label ); ?></option><?php endforeach; ?></select></label><label><span><?php esc_html_e( 'Collection ou œuvre', 'photovault' ); ?></span><input name="collection_name" type="text" maxlength="190" value="<?php echo esc_attr( $collection ); ?>" placeholder="<?php esc_attr_e( 'Nom de la série ou du projet', 'photovault' ); ?>"></label></div>
+				<label><span><?php esc_html_e( 'Sujet', 'photovault' ); ?></span><input name="contact_subject" type="text" maxlength="190" required value="<?php echo esc_attr( $subject ); ?>"></label>
+				<label><span><?php esc_html_e( 'Message', 'photovault' ); ?></span><textarea name="contact_message" rows="7" minlength="10" maxlength="4000" required placeholder="<?php esc_attr_e( 'Contexte, dates, droits ou contraintes utiles.', 'photovault' ); ?>"><?php echo esc_textarea( $content ); ?></textarea></label>
+				<button class="pv-public-submit" type="submit"><?php esc_html_e( 'Envoyer la demande', 'photovault' ); ?></button>
+			</form>
 		</div>
-
-		<section class="grid grid-cols-1 md:grid-cols-3 gap-5 border-t border-gray-900 pt-10">
-			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
-				<h3 class="text-lg font-bold text-white mb-2">Demande d'acces</h3>
-				<p class="text-sm text-gray-300 leading-relaxed">Precisez la collection, le projet ou la serie protegee que vous souhaitez consulter.</p>
-			</div>
-			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
-				<h3 class="text-lg font-bold text-white mb-2">Reservation shooting</h3>
-				<p class="text-sm text-gray-300 leading-relaxed">Indiquez la date souhaitee, le lieu, le type de portraits et l'ambiance recherchee.</p>
-			</div>
-			<div class="p-6 rounded-3xl bg-gray-950/40 border border-gray-800">
-				<h3 class="text-lg font-bold text-white mb-2">Licence ou tirage</h3>
-				<p class="text-sm text-gray-300 leading-relaxed">Mentionnez l'oeuvre, le format, l'usage prevu et le delai de livraison attendu.</p>
-			</div>
-		</section>
-	</div>
-</div>
-
+	</section>
+</main>
 <?php get_footer(); ?>

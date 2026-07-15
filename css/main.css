@@ -304,6 +304,28 @@ h1, h2, h3, h4, h5, h6 {
 .pv-comment-submit { min-height: 3rem; border: 0; border-radius: 0.25rem; background: #fcd34d; padding: 0.75rem 1.15rem; color: #17120a; font-size: 0.78rem; font-weight: 800; cursor: pointer; }
 .pv-comment-submit:hover { background: #fde68a; }
 
+.pv-public-form { display: grid; gap: 1.25rem; }
+.pv-public-form label { display: grid; gap: 0.5rem; color: #a8a29e; font-size: 0.75rem; font-weight: 750; }
+.pv-public-form input,
+.pv-public-form select,
+.pv-public-form textarea {
+	width: 100%;
+	min-height: 3rem;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 0.25rem;
+	background: #131210;
+	padding: 0.8rem 0.9rem;
+	color: #f5f5f4;
+}
+.pv-public-form textarea { resize: vertical; }
+.pv-public-form input:focus,
+.pv-public-form select:focus,
+.pv-public-form textarea:focus { outline: 2px solid rgba(220, 192, 148, 0.5); outline-offset: 2px; border-color: #dcc094; }
+.pv-public-form input::placeholder,
+.pv-public-form textarea::placeholder { color: #57534e; }
+.pv-public-submit { min-height: 3rem; justify-self: start; border: 0; border-radius: 0.25rem; background: #fcd34d; padding: 0.75rem 1.2rem; color: #17120a; font-size: 0.78rem; font-weight: 800; cursor: pointer; }
+.pv-public-submit:hover { background: #fde68a; }
+
 @media (max-width: 639px) {
 	.pv-comment-form { grid-template-columns: minmax(0, 1fr); }
 	.pv-comment-form > p { grid-column: 1; }

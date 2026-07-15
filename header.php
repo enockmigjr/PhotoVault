@@ -25,7 +25,7 @@ $public_navigation    = array(
 	<header class="pv-site-header sticky top-0 z-50 border-b border-white/10 bg-[#0d0c0b]/95 backdrop-blur-xl">
 		<div class="mx-auto flex h-20 max-w-[90rem] items-center justify-between px-5 sm:px-8 lg:px-12">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex items-center text-2xl font-extrabold text-white" aria-label="<?php esc_attr_e( 'PhotoVault, accueil', 'photovault' ); ?>">
-				Photo<span class="text-indigo-500">Vault</span>
+				Photo<span class="text-amber-200">Vault</span>
 			</a>
 
 			<nav class="hidden items-center gap-8 lg:flex" aria-label="<?php esc_attr_e( 'Navigation principale', 'photovault' ); ?>">

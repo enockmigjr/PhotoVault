@@ -21,7 +21,7 @@ $terms_page           = get_page_by_path( 'conditions-generales' );
 		<div class="mx-auto max-w-[90rem] px-5 py-16 sm:px-8 lg:px-12 lg:py-20">
 			<div class="grid gap-14 lg:grid-cols-12 lg:gap-10">
 				<div class="lg:col-span-5">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex text-2xl font-extrabold text-white" aria-label="<?php esc_attr_e( 'PhotoVault, accueil', 'photovault' ); ?>">Photo<span class="text-indigo-500">Vault</span></a>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex text-2xl font-extrabold text-white" aria-label="<?php esc_attr_e( 'PhotoVault, accueil', 'photovault' ); ?>">Photo<span class="text-amber-200">Vault</span></a>
 					<p class="mt-6 max-w-md font-serif text-2xl leading-9 text-gray-200"><?php esc_html_e( 'Des archives visuelles pour ce qui mérite de rester.', 'photovault' ); ?></p>
 					<p class="mt-5 max-w-lg text-sm leading-7 text-gray-400"><?php esc_html_e( 'Portfolio officiel, collections protégées et créations photographiques sur mesure entre Porto-Novo, Cotonou et les territoires documentés.', 'photovault' ); ?></p>
 				</div>
@@ -53,6 +53,7 @@ $terms_page           = get_page_by_path( 'conditions-generales' );
 					<div class="col-span-2 sm:col-span-1">
 						<h2 class="pv-footer-heading"><?php esc_html_e( 'Informations', 'photovault' ); ?></h2>
 						<ul class="mt-5 space-y-3 text-sm">
+							<li><a class="pv-footer-link" href="<?php echo esc_url( home_url( '/fonctionnalites/' ) ); ?>"><?php esc_html_e( 'Fonctionnement', 'photovault' ); ?></a></li>
 							<?php if ( $privacy_url ) : ?><li><a class="pv-footer-link" href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Confidentialité', 'photovault' ); ?></a></li><?php endif; ?>
 							<?php if ( $legal_page instanceof WP_Post ) : ?><li><a class="pv-footer-link" href="<?php echo esc_url( get_permalink( $legal_page ) ); ?>"><?php esc_html_e( 'Mentions légales', 'photovault' ); ?></a></li><?php endif; ?>
 							<?php if ( $terms_page instanceof WP_Post ) : ?><li><a class="pv-footer-link" href="<?php echo esc_url( get_permalink( $terms_page ) ); ?>"><?php esc_html_e( 'Conditions générales', 'photovault' ); ?></a></li><?php endif; ?>
@@ -80,10 +81,10 @@ $terms_page           = get_page_by_path( 'conditions-generales' );
 							<input type="hidden" name="newsletter_source" value="front_footer">
 							<?php wp_nonce_field( 'newsletter_campaign_kit_subscribe', 'newsletter_campaign_kit_nonce' ); ?>
 							<label class="sr-only" for="footer-newsletter-email"><?php esc_html_e( 'Adresse e-mail', 'photovault' ); ?></label>
-							<input id="footer-newsletter-email" name="newsletter_email" type="email" autocomplete="email" placeholder="vous@exemple.com" class="min-h-12 w-full border border-white/15 bg-white/[0.03] px-4 text-sm text-white outline-none transition focus:border-indigo-500" required>
+							<input id="footer-newsletter-email" name="newsletter_email" type="email" autocomplete="email" placeholder="vous@exemple.com" class="min-h-12 w-full border border-white/15 bg-white/[0.03] px-4 text-sm text-white outline-none transition focus:border-amber-200" required>
 							<button type="submit" class="pv-header-cta min-h-12 justify-center px-6"><?php esc_html_e( 'S’inscrire', 'photovault' ); ?></button>
 							<label class="flex items-start gap-3 text-xs leading-5 text-gray-500 sm:col-span-2">
-								<input class="mt-1 h-4 w-4 shrink-0 border-gray-700 bg-gray-950 text-indigo-500" type="checkbox" name="newsletter_consent" value="1" required>
+								<input class="mt-1 h-4 w-4 shrink-0 border-gray-700 bg-gray-950 text-amber-200" type="checkbox" name="newsletter_consent" value="1" required>
 								<span><?php esc_html_e( 'J’accepte de recevoir les actualités éditoriales et je peux me désinscrire à tout moment.', 'photovault' ); ?></span>
 							</label>
 						</form>
