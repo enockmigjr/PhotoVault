@@ -1,6 +1,6 @@
 <?php
 /**
- * Template de gestion des commentaires (comments.php) de PhotoVault.
+ * Editorial comments template.
  *
  * @package PhotoVault
  */
@@ -8,53 +8,51 @@
 if ( post_password_required() ) {
 	return;
 }
+
+$commenter = wp_get_current_commenter();
+$required  = get_option( 'require_name_email' );
+$aria_req  = $required ? ' aria-required="true" required' : '';
 ?>
-
-<div id="comments" class="comments-area space-y-8 mt-10">
-
+<div id="comments" class="pv-comments">
 	<?php if ( have_comments() ) : ?>
-		<h2 class="text-xl font-bold text-white mb-6">
-			<?php
-			$comments_number = get_comments_number();
-			if ( '1' === $comments_number ) {
-				printf( esc_html__( 'Un commentaire', 'photovault' ) );
-			} else {
-				printf( esc_html( $comments_number ) . ' commentaires' );
-			}
-			?>
-		</h2>
+		<header class="mb-8 flex flex-wrap items-end justify-between gap-4">
+			<div>
+				<p class="text-xs font-extrabold uppercase text-gray-500"><?php esc_html_e( 'Conversation', 'photovault' ); ?></p>
+				<h2 class="mt-2 font-serif text-3xl text-white">
+					<?php echo esc_html( sprintf( _n( '%s commentaire', '%s commentaires', get_comments_number(), 'photovault' ), number_format_i18n( get_comments_number() ) ) ); ?>
+				</h2>
+			</div>
+		</header>
 
-		<ul class="comment-list space-y-6">
-			<?php
-			wp_list_comments( array(
-				'style'      => 'ol',
-				'short_ping' => true,
-				'avatar_size'=> 42,
-			) );
-			?>
-		</ul>
+		<ol class="comment-list space-y-6">
+			<?php wp_list_comments( array( 'style' => 'ol', 'short_ping' => true, 'avatar_size' => 44 ) ); ?>
+		</ol>
 
-		<?php the_comments_navigation(); ?>
+		<?php the_comments_navigation( array( 'prev_text' => __( 'Commentaires précédents', 'photovault' ), 'next_text' => __( 'Commentaires suivants', 'photovault' ) ) ); ?>
 
 		<?php if ( ! comments_open() ) : ?>
-			<p class="no-comments text-gray-300 text-sm"><?php esc_html_e( 'Les commentaires sont fermés.', 'photovault' ); ?></p>
+			<p class="mt-8 border-l-2 border-white/20 pl-4 text-sm text-gray-400"><?php esc_html_e( 'La conversation est désormais fermée.', 'photovault' ); ?></p>
 		<?php endif; ?>
-
 	<?php endif; ?>
 
 	<?php
-	// Formulaire de commentaire stylisé.
-	comment_form( array(
-		'class_form'         => 'space-y-4',
-		'title_reply_class'  => 'text-lg font-bold text-white mb-4',
-		'comment_field'      => '<div><label for="comment" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Votre commentaire</label><textarea id="comment" name="comment" rows="4" class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required></textarea></div>',
-		'fields'             => array(
-			'author' => '<div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label for="author" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Nom</label><input id="author" name="author" type="text" class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required /></div>',
-			'email'  => '<div><label for="email" class="block text-xs font-semibold text-gray-300 uppercase mb-1">E-mail</label><input id="email" name="email" type="email" class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required /></div></div>',
-		),
-		'class_submit'       => 'px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg cursor-pointer',
-		'label_submit'       => 'Publier le commentaire',
-	) );
+	comment_form(
+		array(
+			'class_form'           => 'pv-comment-form',
+			'class_submit'         => 'pv-comment-submit',
+			'title_reply'          => __( 'Laisser une trace', 'photovault' ),
+			'title_reply_before'   => '<h2 id="reply-title" class="comment-reply-title font-serif text-3xl text-white">',
+			'title_reply_after'    => '</h2>',
+			'comment_notes_before' => '<p class="mt-3 text-sm leading-6 text-gray-500">' . esc_html__( 'Votre adresse e-mail ne sera pas publiée. Les champs obligatoires sont indiqués.', 'photovault' ) . '</p>',
+			'comment_field'        => '<p class="comment-form-comment"><label for="comment">' . esc_html__( 'Commentaire', 'photovault' ) . '</label><textarea id="comment" name="comment" rows="6" required></textarea></p>',
+			'fields'               => array(
+				'author' => '<p class="comment-form-author"><label for="author">' . esc_html__( 'Nom', 'photovault' ) . ( $required ? ' <span aria-hidden="true">*</span>' : '' ) . '</label><input id="author" name="author" type="text" autocomplete="name" value="' . esc_attr( $commenter['comment_author'] ) . '"' . $aria_req . '></p>',
+				'email'  => '<p class="comment-form-email"><label for="email">' . esc_html__( 'E-mail', 'photovault' ) . ( $required ? ' <span aria-hidden="true">*</span>' : '' ) . '</label><input id="email" name="email" type="email" autocomplete="email" value="' . esc_attr( $commenter['comment_author_email'] ) . '"' . $aria_req . '></p>',
+				'url'    => '<p class="comment-form-url"><label for="url">' . esc_html__( 'Site web', 'photovault' ) . '</label><input id="url" name="url" type="url" autocomplete="url" value="' . esc_attr( $commenter['comment_author_url'] ) . '"></p>',
+			),
+			'label_submit'         => __( 'Publier le commentaire', 'photovault' ),
+			'submit_button'        => '<button name="%1$s" type="submit" id="%2$s" class="%3$s">%4$s</button>',
+		)
+	);
 	?>
-
 </div>

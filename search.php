@@ -1,67 +1,29 @@
 <?php
 /**
- * Template pour afficher les résultats de recherche (search.php).
+ * Public search results.
  *
  * @package PhotoVault
  */
 
+global $wp_query;
+$query_text = get_search_query();
+$has_media  = false;
+
 get_header();
 ?>
-
-<div class="py-12 bg-[#0d0c0b] min-h-screen">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<header class="mb-10 pb-6 border-b border-gray-900">
-			<h1 class="text-4xl font-extrabold text-white">
-				Résultats de recherche pour : <span class="text-indigo-400">"<?php echo get_search_query(); ?>"</span>
-			</h1>
-			<p class="text-gray-300 mt-2 text-sm">
-				<?php
-				global $wp_query;
-				printf( _n( '%d résultat trouvé.', '%d résultats trouvés.', $wp_query->found_posts, 'photovault' ), $wp_query->found_posts );
-				?>
-			</p>
-		</header>
-
+<main class="min-h-screen bg-[#0d0c0b] text-gray-100">
+	<header class="border-b border-white/10 py-20 sm:py-28"><div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12"><p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Recherche', 'photovault' ); ?></p><h1 class="mt-6 max-w-5xl font-serif text-5xl leading-[1.06] text-white sm:text-7xl"><?php echo esc_html( $query_text ? sprintf( __( 'Résultats pour « %s »', 'photovault' ), $query_text ) : __( 'Explorer les contenus', 'photovault' ) ); ?></h1><p class="mt-6 text-sm text-gray-400"><?php echo esc_html( sprintf( _n( '%d résultat', '%d résultats', (int) $wp_query->found_posts, 'photovault' ), (int) $wp_query->found_posts ) ); ?></p></div></header>
+	<section class="mx-auto max-w-[90rem] px-5 py-14 sm:px-8 lg:px-12 lg:py-20">
+		<div class="mb-10 max-w-lg"><?php get_search_form(); ?></div>
 		<?php if ( have_posts() ) : ?>
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			<div id="media-grid" class="grid gap-x-7 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
 				<?php while ( have_posts() ) : the_post(); ?>
-					<article class="glass-effect rounded-2xl overflow-hidden shadow-lg border border-gray-800/80 p-6 flex flex-col justify-between">
-						<div>
-							<div class="aspect-video w-full rounded-xl overflow-hidden mb-4 bg-gray-950 border border-gray-800/70">
-								<?php photovault_render_post_visual( 'medium_large', 'w-full h-full object-cover' ); ?>
-							</div>
-							<h2 class="text-xl font-bold text-white mb-2">
-								<a href="<?php the_permalink(); ?>" class="hover:text-indigo-400 transition-colors"><?php the_title(); ?></a>
-							</h2>
-							<p class="text-xs text-gray-300 mb-4"><?php echo get_the_date(); ?> | Par <?php the_author(); ?></p>
-							<div class="text-gray-300 text-sm leading-relaxed mb-6">
-								<?php the_excerpt(); ?>
-							</div>
-						</div>
-						<a href="<?php the_permalink(); ?>" class="text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition-colors flex items-center">
-							En savoir plus &rarr;
-						</a>
-					</article>
+					<?php if ( 'media_item' === get_post_type() ) : $has_media = true; get_template_part( 'templates/media-card' ); else : get_template_part( 'templates/post-card', null, array( 'heading_tag' => 'h2', 'cta' => __( 'Voir le contenu', 'photovault' ) ) ); endif; ?>
 				<?php endwhile; ?>
 			</div>
-
-			<!-- Pagination -->
-			<div class="mt-12 flex justify-center">
-				<?php 
-				echo paginate_links( array(
-					'prev_text' => '&larr; Précédent',
-					'next_text' => 'Suivant &rarr;',
-					'type'      => 'list',
-				) );
-				?>
-			</div>
-		<?php else : ?>
-			<div class="text-center py-20 glass-effect rounded-2xl max-w-md mx-auto space-y-6">
-				<p class="text-gray-300">Aucun résultat ne correspond à votre recherche. Veuillez réessayer avec d'autres mots-clés.</p>
-				<?php get_search_form(); ?>
-			</div>
-		<?php endif; ?>
-	</div>
-</div>
-
+			<?php if ( $wp_query->max_num_pages > 1 ) : ?><nav class="pv-pagination mt-16 border-t border-white/10 pt-8" aria-label="<?php esc_attr_e( 'Pagination des résultats', 'photovault' ); ?>"><?php echo wp_kses_post( paginate_links( array( 'total' => $wp_query->max_num_pages, 'prev_text' => __( 'Précédent', 'photovault' ), 'next_text' => __( 'Suivant', 'photovault' ) ) ) ); ?></nav><?php endif; ?>
+		<?php else : ?><div class="border-y border-white/10 py-20 text-center"><h2 class="font-serif text-3xl text-white"><?php esc_html_e( 'Aucun contenu ne correspond.', 'photovault' ); ?></h2><p class="mt-3 text-sm text-gray-400"><?php esc_html_e( 'Essayez un titre, une collection ou un autre mot-clé.', 'photovault' ); ?></p></div><?php endif; ?>
+	</section>
+</main>
+<?php if ( $has_media ) : get_template_part( 'templates/gallery-lightbox' ); endif; ?>
 <?php get_footer(); ?>

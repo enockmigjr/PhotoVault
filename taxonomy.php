@@ -1,56 +1,21 @@
 <?php
 /**
- * Template pour les archives de taxonomies personnalisées (Dossiers, Catégories) - taxonomy.php.
+ * Media taxonomy archive.
  *
  * @package PhotoVault
  */
 
-get_header();
-
 $term = get_queried_object();
+global $wp_query;
+
+get_header();
 ?>
-
-<div class="py-12 bg-[#0d0c0b] min-h-screen">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<header class="mb-10 pb-6 border-b border-gray-900 flex justify-between items-end">
-			<div>
-				<span class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Classification</span>
-				<h1 class="text-4xl font-extrabold text-white mt-1"><?php echo esc_html( $term->name ); ?></h1>
-				<?php if ( $term->description ) : ?>
-					<p class="text-gray-300 mt-2 text-sm max-w-xl"><?php echo esc_html( $term->description ); ?></p>
-				<?php endif; ?>
-			</div>
-			
-			<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors flex items-center">
-				<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-				Toutes les galeries
-			</a>
-		</header>
-
-		<?php if ( have_posts() ) : ?>
-			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-				<?php while ( have_posts() ) : the_post(); ?>
-					<?php get_template_part( 'templates/media-card' ); ?>
-				<?php endwhile; ?>
-			</div>
-
-			<!-- Pagination -->
-			<div class="mt-12 flex justify-center">
-				<?php 
-				echo paginate_links( array(
-					'prev_text' => '&larr; Précédent',
-					'next_text' => 'Suivant &rarr;',
-					'type'      => 'list',
-				) );
-				?>
-			</div>
-		<?php else : ?>
-			<div class="text-center py-20 glass-effect rounded-2xl">
-				<svg class="mx-auto h-12 w-12 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-				<p class="text-gray-300 mt-4">Aucun média public n'a encore été affecté à cette classification.</p>
-			</div>
-		<?php endif; ?>
-	</div>
-</div>
-
+<main class="min-h-screen bg-[#0d0c0b] text-gray-100">
+	<header class="border-b border-white/10 py-20 sm:py-28"><div class="mx-auto grid max-w-[90rem] gap-8 px-5 sm:px-8 lg:grid-cols-12 lg:px-12"><div class="lg:col-span-8"><p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Collection / Classification', 'photovault' ); ?></p><h1 class="mt-6 font-serif text-5xl text-white sm:text-7xl"><?php echo esc_html( $term->name ); ?></h1></div><div class="self-end lg:col-span-4"><?php if ( $term->description ) : ?><p class="text-sm leading-7 text-gray-400"><?php echo esc_html( $term->description ); ?></p><?php endif; ?><a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="mt-5 inline-flex min-h-11 items-center text-sm font-bold text-white hover:text-amber-200"><span class="mr-2" aria-hidden="true">&larr;</span><?php esc_html_e( 'Toutes les œuvres', 'photovault' ); ?></a></div></div></header>
+	<section class="mx-auto max-w-[90rem] px-5 py-14 sm:px-8 lg:px-12 lg:py-20"><p class="mb-8 border-b border-white/10 pb-5 text-xs font-bold uppercase text-gray-500"><?php echo esc_html( sprintf( _n( '%d œuvre visible', '%d œuvres visibles', (int) $wp_query->found_posts, 'photovault' ), (int) $wp_query->found_posts ) ); ?></p>
+		<?php if ( have_posts() ) : ?><div id="media-grid" class="columns-1 gap-6 sm:columns-2 lg:columns-3 xl:columns-4"><?php while ( have_posts() ) : the_post(); get_template_part( 'templates/media-card' ); endwhile; ?></div><?php if ( $wp_query->max_num_pages > 1 ) : ?><nav class="pv-pagination mt-16 border-t border-white/10 pt-8" aria-label="<?php esc_attr_e( 'Pagination de la collection', 'photovault' ); ?>"><?php echo wp_kses_post( paginate_links() ); ?></nav><?php endif; ?>
+		<?php else : ?><div class="border-y border-white/10 py-20 text-center"><h2 class="font-serif text-3xl text-white"><?php esc_html_e( 'Cette classification attend sa première œuvre.', 'photovault' ); ?></h2></div><?php endif; ?>
+	</section>
+</main>
+<?php get_template_part( 'templates/gallery-lightbox' ); ?>
 <?php get_footer(); ?>
