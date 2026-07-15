@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function openMobileMenu() {
         mobileMenu.classList.remove('hidden');
         document.body.classList.add('overflow-hidden');
+		menuButton.setAttribute('aria-expanded', 'true');
+		menuButton.setAttribute('aria-label', 'Fermer le menu');
         // Ajouter un léger délai pour la transition d'opacité et de scale
         setTimeout(() => {
             mobileMenu.classList.remove('opacity-0', 'scale-y-95');
@@ -53,6 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
         mobileMenu.classList.remove('opacity-100', 'scale-y-100');
         mobileMenu.classList.add('opacity-0', 'scale-y-95');
         document.body.classList.remove('overflow-hidden');
+		menuButton.setAttribute('aria-expanded', 'false');
+		menuButton.setAttribute('aria-label', 'Ouvrir le menu');
 
         if (hamburgerIcon && closeIcon) {
             hamburgerIcon.classList.remove('hidden');
@@ -118,6 +122,19 @@ document.addEventListener('DOMContentLoaded', function() {
             showNotice(guard.getAttribute('data-pv-message') || 'La sauvegarde directe est desactivee sur les apercus PhotoVault.');
         });
     });
+});
+
+/** Dismissible status messages shared by public and private surfaces. */
+document.addEventListener('click', function(event) {
+	const closeButton = event.target.closest('[data-pv-toast-close]');
+	if (!closeButton) {
+		return;
+	}
+
+	const toast = closeButton.closest('[data-pv-toast]');
+	if (toast) {
+		toast.remove();
+	}
 });
 
 /** Personal favorites backed by authenticated WordPress REST endpoints. */

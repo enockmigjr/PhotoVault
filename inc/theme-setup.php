@@ -74,6 +74,7 @@ function photovault_create_app_pages() {
 		'about'           => array( 'title' => 'À Propos', 'template' => 'page-about.php' ),
 		'contact'         => array( 'title' => 'Contact', 'template' => 'page-contact.php' ),
 		'fonctionnalites' => array( 'title' => 'Fonctionnalites', 'template' => 'page-features.php' ),
+		'journal'         => array( 'title' => 'Carnets visuels', 'template' => 'page-journal.php' ),
 	);
 
 	foreach ( $pages_to_create as $slug => $data ) {
@@ -95,13 +96,13 @@ function photovault_create_app_pages() {
 		}
 	}
 
-	update_option( 'photovault_app_pages_version', '1.2.0', false );
+	update_option( 'photovault_app_pages_version', '1.3.0', false );
 }
 add_action( 'after_switch_theme', 'photovault_create_app_pages' );
 
 /** Provision newly introduced system pages on already active installations. */
 function photovault_maybe_create_app_pages() {
-	if ( '1.2.0' !== get_option( 'photovault_app_pages_version' ) ) {
+	if ( '1.3.0' !== get_option( 'photovault_app_pages_version' ) ) {
 		photovault_create_app_pages();
 	}
 }

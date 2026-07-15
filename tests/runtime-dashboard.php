@@ -44,6 +44,8 @@ try {
 	photovault_dashboard_runtime_assert( $profile_page instanceof WP_Post && 'page-profile.php' === get_page_template_slug( $profile_page->ID ), 'The profile system page was not provisioned with its template.' );
 	$booking_page = get_page_by_path( 'booking' );
 	photovault_dashboard_runtime_assert( $booking_page instanceof WP_Post && 'page-booking.php' === get_page_template_slug( $booking_page->ID ), 'The booking system page was not provisioned with its template.' );
+	$journal_page = get_page_by_path( 'journal' );
+	photovault_dashboard_runtime_assert( $journal_page instanceof WP_Post && 'page-journal.php' === get_page_template_slug( $journal_page->ID ), 'The journal system page was not provisioned with its template.' );
 	photovault_core_activate();
 	$client_id = wp_insert_user(
 		array(
