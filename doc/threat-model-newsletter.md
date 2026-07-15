@@ -17,6 +17,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Journal audit newsletter sans IP brute, token ni email dans le contexte.
 - Brouillons de campagnes, sujets, contenus editoriaux, cibles listes et statuts.
 - Campagnes, templates, rapports d'import temporaires et futurs provider credentials.
+- Snapshots immuables de ciblage; ID membre detache en cle opaque propre au snapshot lors d'un effacement Privacy.
 
 ## Acteurs
 
@@ -57,6 +58,8 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 | Reporting exposure | Montrer des donnees de campagne a un role non autorise | Capability newsletter_view_reports | Tests roles reports |
 | Segment injection | Injecter champ, operateur ou valeur dans le ciblage | Champs fixes, IDs bornes, valeurs via placeholders `wpdb::prepare` | Tester charges SQL et IDs inexistants |
 | Audience tampering | Affecter un abonne ou cibler un segment sans droit | Capability manage_lists/create/send, nonces et existence serveur | Tests de role et nonce |
+| Audience drift | Une liste change apres le debut d'envoi et modifie les destinataires | Snapshot unique par campagne, membres immuables et queue transactionnelle | Runtime liste modifiee et relance valide |
+| Snapshot partiel | Une panne cree metadata, membres ou queue incomplets | Verrou campagne et transaction snapshot/membres/queue | Runtime cible manquante sans residu valide |
 | Envoi abusif | Campagne envoyee sans confirmation/audit | Transitions, capabilities, audit et queue bornee | Ajouter confirmation finale et limites par campagne |
 
 ## Controles existants
@@ -76,6 +79,8 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Queue batch protegee par newsletter_send_campaigns pour l'action manuelle, traitement cron borne, verrou atomique, contrainte campagne/abonne, reprise stale et retry/backoff.
 - Provider wp_mail configurable sans secret; providers API externes attendus via filtre et secrets hors Git.
 - Reports campagne limites aux totaux queue et proteges par newsletter_view_reports.
+- Le premier envoi capture type, libelle, regles, topic et membres; les membres ne stockent ni email brut ni hash email, et perdent leur ID abonne lors d'un effacement Privacy.
+- Envoi manuel et cron creent snapshot et queue dans une transaction, puis toute relance reutilise les memes IDs.
 
 ## Gaps prioritaires
 
@@ -85,7 +90,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 4. Ajouter exports robustes pour listes, segments et tags; l'import des abonnes et affectations est operationnel.
 5. Ajouter templates reutilisables avances et previsualisation email.
 6. Brancher provider API externe et superviser le cron de traitement queue.
-7. Ajouter snapshot d'audience, estimation avant envoi et journal de destinataires.
+7. Ajouter estimation/confirmation finale avant envoi et politique de retention des preuves de ciblage.
 
 ## Tests minimum avant production
 
@@ -108,3 +113,4 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 17. Affectation abonne refuse capability, nonce, abonne ou audience inconnus.
 18. Import CSV refuse capability/nonce/upload invalides et ne contourne ni suppression ni consentement.
 19. Preview d'import reste non mutative; une audience inconnue ne laisse aucune ecriture partielle.
+20. Une audience modifiee apres snapshot ne change ni membres ni queue; une cible disparue ne laisse aucune donnee partielle.

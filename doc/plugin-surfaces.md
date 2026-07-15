@@ -181,6 +181,8 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `{$wpdb->prefix}newsletter_campaign_audit` | `newsletter_campaign_kit_get_audit_table()` | Audit inscriptions, desinscriptions, statuts, exports et segments | IP hash, user-agent tronque, contexte nettoye |
 | `{$wpdb->prefix}newsletter_campaign_campaigns` | `newsletter_campaign_kit_get_campaigns_table()` | Brouillons, ciblage, statuts et transitions campagne | Sujet, contenu, cible liste, auteurs |
 | `{$wpdb->prefix}newsletter_campaign_queue` | `newsletter_campaign_kit_get_queue_table()` | File de livraison batch, tentatives et backoff | IDs campagne/abonne, statut, erreurs provider |
+| `{$wpdb->prefix}newsletter_campaign_audience_snapshots` | `newsletter_campaign_kit_get_audience_snapshots_table()` | Preuve immutable du ciblage au premier envoi | Type/ID/libelle audience, topic, regles JSON, volume |
+| `{$wpdb->prefix}newsletter_campaign_audience_snapshot_members` | `newsletter_campaign_kit_get_audience_snapshot_members_table()` | Membres figes du ciblage | ID abonne nullable et cle opaque propre au snapshot, sans email ni hash email |
 
 ### Options
 
