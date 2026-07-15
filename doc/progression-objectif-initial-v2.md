@@ -10,8 +10,8 @@ Le cahier initial contient 113 sections techniques ou fonctionnelles mesurables,
 
 La progression est desormais publiee avec deux mesures:
 
-- **implementation fonctionnelle: 71%**;
-- **preparation production stricte: 61%**.
+- **implementation fonctionnelle: 72%**;
+- **preparation production stricte: 62%**.
 
 Le premier chiffre mesure le code et le cablage reel deja presents. Le second retire les fonctions sans tests d'integration, sans validation WordPress runtime ou sans verification de l'environnement cible. Aucun simple fichier Markdown ne fait progresser la preparation production.
 
@@ -22,10 +22,10 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 | Audit, architecture, securite de base | 1-16 | 66% | 50% | Plugins separes, inventaires et matrice media Core presents; fallbacks, admin-post et audit transversal restent incomplets. |
 | Identity Security Kit | 17-33 | 72% | 67% | Verification, reset, changement email, OTP, TOTP, recovery, MFA multicanal, retrait, rappels et templates multipart testes; phone library, QR, SMS reel, multisite et E2E navigateur restent a faire. |
 | Newsletter Campaign Kit | 34-61 | 82% | 75% | Abonnes, segmentation, campagnes, programmation, templates multipart, one-click, preferences, suppression durable, Privacy et import CSV transactionnel valides; snapshots, tracking et webhooks/provider restent majeurs. |
-| PhotoVault metier et experience | 62-76 | 79% | 67% | Home, galerie, medias proteges, favoris, dashboard, reservations, import et autorisations media sont verifies en runtime; preuve multipart post-correction et validation navigateur restent incompletes. |
+| PhotoVault metier et experience | 62-76 | 81% | 70% | Home, galerie, medias proteges, favoris, dashboard, reservations, contact et demandes d'acces sont verifies en runtime; preuve multipart post-correction et validation navigateur restent incompletes. |
 | Docker et exploitation | 77-89 | 92% | 85% | Runtime, cron, mail, backup et restauration reelle avec rollback sont valides; chiffrement hors site, retention et image immutable restent a faire. |
 | Tests fonctionnels et securite | 90-96 | 45% | 40% | La matrice Core couvre roles, grants, ID guessing, pagination, nonces et refus download; Identity, Newsletter, admin-post, CSRF HTTP et E2E restent incomplets. |
-| Qualite, migrations, UI, a11y, i18n | 97-105 | 29% | 22% | Migrations versionnees, premieres UI et emails Identity/Newsletter multipart; PHPCS, analyse statique, lifecycle complet, accessibilite et i18n restent incomplets. |
+| Qualite, migrations, UI, a11y, i18n | 97-105 | 33% | 28% | Migrations versionnees et emails Identity/Newsletter/PhotoVault multipart; PHPCS, analyse statique, tests multi-clients, accessibilite et i18n restent incomplets. |
 | Threat models et durcissement transversal | 106-111 | 48% | 35% | Trois threat models, rate limits et preuve IDOR media; correlation, alertes, autres plugins et tests anti-abus restent incomplets. |
 | Compatibilite et documentation | 112-113 | 55% | 43% | Documentation centrale riche; compatibilite, multisite, hooks et guides providers encore incomplets. |
 
@@ -45,6 +45,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Runtime Identity valide sur vrais utilisateurs, tables et metadonnees: email lie et single-use, E.164 unique, OTP purpose/expiry/attempts/replay, TOTP, recovery, login email/SMS/TOTP et grace 15 jours.
 - Douze emails Identity remis a Mailpit avec reponse SMTP 250; le template fatal de verification/reset a ete corrige.
 - Les flux email Identity et les notices natives de changement email/mot de passe utilisent un layout professionnel responsive et `AltBody`; les regressions et remises SMTP 250 sont validees.
+- Contact general, shootings et demandes d'acces utilisent le layout multipart; `Reply-To` remplace le faux `From`, les decisions d'acces sont notifiees et les remises SMTP 250 sont validees.
 - Changement d'email differe valide: mot de passe actuel, adresse proposee chiffree, confirmation expirable/single-use, notification ancienne adresse et revocation des preuves email.
 - Abonnes newsletter, consentement, desinscription tokenisee, listes, tags, segments dynamiques, campagnes ciblees, queue batch, programmation WP-Cron idempotente et rapports.
 - One-click unsubscribe RFC 8058 avec endpoint POST idempotent, en-tetes HTTPS conditionnes a la confirmation DKIM, rotation des jetons et preuve Mailpit.
@@ -110,7 +111,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Externaliser et chiffrer les snapshots avec retention et alertes adaptees a l'hebergeur final.
 - Ajouter PHPCS WordPress Coding Standards et analyse statique adaptee.
 - Ajouter tests d'integration WordPress et parcours E2E critiques.
-- Verifier visuellement les templates email dans plusieurs clients et completer les notifications internes du theme.
+- Verifier visuellement les templates email dans plusieurs clients.
 - Completer i18n, compatibilite PHP/WordPress et politique multisite.
 
 ## Regle pour les prochaines mises a jour

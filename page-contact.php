@@ -13,11 +13,12 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_contact_
 		$name         = isset( $_POST['contact_name'] ) ? sanitize_text_field( wp_unslash( $_POST['contact_name'] ) ) : '';
 		$email        = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 		$request_type = isset( $_POST['request_type'] ) ? sanitize_key( wp_unslash( $_POST['request_type'] ) ) : 'general';
+		$request_types = photovault_get_contact_request_types();
 		$subject      = isset( $_POST['contact_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['contact_subject'] ) ) : '';
 		$collection   = isset( $_POST['collection_name'] ) ? sanitize_text_field( wp_unslash( $_POST['collection_name'] ) ) : '';
 		$content      = isset( $_POST['contact_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['contact_message'] ) ) : '';
 
-		if ( empty( $name ) || empty( $email ) || empty( $content ) || ! is_email( $email ) ) {
+		if ( empty( $name ) || empty( $email ) || empty( $subject ) || empty( $content ) || ! is_email( $email ) || ! isset( $request_types[ $request_type ] ) ) {
 			$error = __( 'Veuillez remplir tous les champs obligatoires avec une adresse e-mail valide.', 'photovault' );
 		} elseif ( 'access' === $request_type && function_exists( 'photovault_create_access_request' ) ) {
 			$result = photovault_create_access_request(
@@ -35,19 +36,24 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_contact_
 			} else {
 				$message = __( 'Votre demande d acces a ete enregistree. Elle sera examinee manuellement.', 'photovault' );
 			}
+		} elseif ( function_exists( 'photovault_rate_limit' ) && ! photovault_rate_limit( 'contact_message', 5, HOUR_IN_SECONDS ) ) {
+			$error = __( 'Veuillez patienter avant d envoyer un nouveau message.', 'photovault' );
 		} else {
-			$to      = get_option( 'admin_email' );
-			$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: ' . $name . ' <' . $email . '>' );
-			$body    = sprintf(
-				'<p><strong>Type:</strong> %1$s</p><p><strong>Sujet:</strong> %2$s</p><p><strong>Collection:</strong> %3$s</p><p><strong>Message:</strong><br>%4$s</p>',
-				esc_html( $request_type ),
-				esc_html( $subject ),
-				esc_html( $collection ),
-				nl2br( esc_html( $content ) )
+			$sent = photovault_send_contact_notification(
+				array(
+					'name'         => $name,
+					'email'        => $email,
+					'request_type' => $request_type,
+					'subject'      => $subject,
+					'collection'   => $collection,
+					'message'      => $content,
+				)
 			);
-
-			wp_mail( $to, 'PhotoVault Contact: ' . $subject, $body, $headers );
-			$message = __( 'Votre message a ete envoye avec succes.', 'photovault' );
+			if ( $sent ) {
+				$message = __( 'Votre message a ete envoye avec succes.', 'photovault' );
+			} else {
+				$error = __( 'Le message n a pas pu etre envoye. Veuillez reessayer plus tard.', 'photovault' );
+			}
 		}
 	} else {
 		$error = __( 'Echec de la verification de securite.', 'photovault' );
@@ -108,10 +114,9 @@ get_header();
 						<div>
 							<label for="request_type" class="block text-xs font-semibold text-gray-300 uppercase mb-1">Type de demande</label>
 							<select id="request_type" name="request_type" class="w-full px-4 py-3 border border-gray-800 rounded-xl bg-gray-900/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-								<option value="access">Acces a une collection protegee</option>
-								<option value="shooting">Reservation shooting</option>
-								<option value="license">Licence ou tirage</option>
-								<option value="general">Question generale</option>
+								<?php foreach ( photovault_get_contact_request_types() as $type_key => $type_label ) : ?>
+									<option value="<?php echo esc_attr( $type_key ); ?>"><?php echo esc_html( $type_label ); ?></option>
+								<?php endforeach; ?>
 							</select>
 						</div>
 						<div>

@@ -128,6 +128,7 @@ Legende:
 - [x] Ameliorer l'UX upload: selection visible, progression par fichier, nom, taille, statut et succes/erreur.
 - [x] Permettre edition rapide apres upload: titre, description, categorie, collection, confidentialite et tags, avec isolation owner/admin validee en runtime.
 - [x] Ajouter module `Shootings` avec types, dates, lieux, contact, statuts, ownership, e-mails professionnels et transitions serveur verifies en runtime.
+- [x] Professionnaliser les e-mails contact et acces: HTML/texte multipart, `Reply-To` sur l'adresse visiteur, accuse studio/client, decisions et preuve Mailpit.
 - [x] Ajouter dashboard utilisateur complet: overview, profil, favoris, downloads, acces, preferences, securite, newsletter et reservations avec isolation par compte.
 
 ## 9. Blog, header, profil, pages connues
@@ -179,7 +180,7 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 71% d'implementation fonctionnelle et 61% de preparation production stricte.
+Progression recalculee: 72% d'implementation fonctionnelle et 62% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 

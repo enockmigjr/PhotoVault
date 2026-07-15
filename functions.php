@@ -17,6 +17,7 @@ define( 'PHOTOVAULT_URI', get_template_directory_uri() );
 // Chargement des modules de presentation du theme.
 $photovault_includes = array(
 	'inc/theme-setup.php', // Configuration de base (menus, scripts, pages automatiques)
+	'inc/contact-email.php',
 );
 
 if ( defined( 'PHOTOVAULT_CORE_VERSION' ) ) {

@@ -131,6 +131,7 @@ PhotoVault
 - Dashboard role-aware avec overview, favoris persistants, historique des telechargements, demandes/grants, etats Identity et abonnement Newsletter.
 - Page profil provisionnee automatiquement sur les installations deja actives; navigation mobile du dashboard fermable par overlay et touche Echap.
 - Reservations de shootings avec formulaire authentifie, ownership, date/type/contact valides, cycle `pending/confirmed/cancelled/completed`, administration et e-mails multipart prouves dans Mailpit.
+- Contact general et demandes d'acces utilisent maintenant le layout transactionnel multipart; le studio recoit un `Reply-To` valide, le demandeur un accuse puis la decision, et l'approbation grant/statut est atomique.
 
 ### Observabilite
 
@@ -229,7 +230,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 71% d implementation fonctionnelle et 61% de preparation production stricte.
+Estimation recalculee: 72% d implementation fonctionnelle et 62% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
