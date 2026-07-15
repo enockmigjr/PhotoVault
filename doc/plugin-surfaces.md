@@ -191,6 +191,8 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | --- | --- | --- |
 | `newsletter_campaign_kit_version` | Version installee/migration | Mise a jour a l'activation/upgrade |
 | `newsletter_campaign_kit_provider_settings` | Provider livraison | `wp_mail`, HTTP generique ou adaptateur externe, from name/from email, sans secret |
+| `newsletter_campaign_kit_scheduler_state` | Heartbeat cron | Statut, dates, duree et compteurs agreges sans donnees abonne |
+| `newsletter_campaign_kit_maintenance_state` | Retention pending | Dernier passage, statut et nombre supprime |
 
 ### Filtres publics
 
@@ -228,7 +230,7 @@ Objectif: documenter les surfaces techniques exposees par les plugins PhotoVault
 | `admin_post_newsletter_campaign_kit_schedule_campaign` | Programmer campagne | Capability `newsletter_send_campaigns`, nonce par campagne, date future convertie en UTC |
 | `admin_post_newsletter_campaign_kit_process_queue` | Traitement queue | Capability `newsletter_send_campaigns`, nonce |
 | `admin_post_newsletter_campaign_kit_save_provider_settings` | Reglages provider | Capability `newsletter_manage_settings`, nonce |
-| `newsletter_campaign_kit_run_scheduled` | Scheduler campagne | Reprise des verrous expires, campagnes echues, batch borne et finalisation |
+| `newsletter_campaign_kit_run_scheduled` | Scheduler campagne | Verrou anti-chevauchement, reprise stale, campagnes echues, batch configurable, retention pending, heartbeat et finalisation |
 | `rest_api_init` | `newsletter_campaign_kit_register_provider_event_route` | Endpoint public de transport dont le callback exige timestamp et signature HMAC valides |
 
 ## Points de verification runtime

@@ -31,6 +31,7 @@ PhotoVault is being migrated from a theme-heavy implementation to a modular Word
 - Independent network and address rate limits reduce list bombing while public responses remain neutral for known or suppressed contacts.
 - Campaign delivery supports `wp_mail` and a generic HTTPS API with server-side-only credentials and stable idempotency keys.
 - Bounce and complaint events require a timestamped HMAC signature, use a durable replay guard and never store the raw email in the event registry.
+- Expired pending contacts are transactionally removed after bounded retention, and provider exceptions become retryable queue failures instead of stale locks.
 
 ## Known Gaps
 - Existing originals uploaded before the private-storage migration must be processed from the PhotoVault admin workspace. Nginx deployments must still deny direct access to `wp-content/photovault-private/` explicitly.

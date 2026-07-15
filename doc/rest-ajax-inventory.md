@@ -43,7 +43,7 @@ Objectif: classer les points d'entree publics, authentifies et privilegies afin 
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_segment_status` | Admin | `newsletter_manage_lists`, nonce par segment, archivage bloque si campagne non terminale | Runtime lifecycle valide; refus de role a automatiser |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_create_topic` | Admin | `newsletter_manage_lists`, nonce, nom/couleur nettoyes | A tester |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_update_assignment` | Admin | `newsletter_manage_lists`, nonce, abonne et audience existants | Helper/runtime valides; refus de role a automatiser |
-| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_process_queue` | Admin | `newsletter_send_campaigns`, nonce traitement queue | A tester |
+| Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_process_queue` | Admin | `newsletter_send_campaigns`, nonce traitement queue, batch admin borne 1-100 | Moteur batch/verrous/retry valide; refus HTTP de role/nonce restant |
 | Newsletter Campaign Kit | `admin_post_newsletter_campaign_kit_save_provider_settings` | Admin | `newsletter_manage_settings`, nonce reglages provider | A tester |
 | Newsletter Campaign Kit | `POST /newsletter-campaign-kit/v1/provider-events` | Public provider | Secret serveur >= 32 caracteres, HMAC-SHA256 du timestamp et corps brut, fenetre 5 min, anti-rejeu durable, payload bounce/complaint valide | Runtime signature, expiration, rejeu, suppression, queue et Privacy valide |
 

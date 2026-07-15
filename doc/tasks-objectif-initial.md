@@ -101,7 +101,8 @@ Legende:
 - [x] Documenter capabilities et tables newsletter.
 - [~] Ajouter listes, segments, tags et imports/exports. Fait: listes, tags, affectations admin, segments dynamiques all/any, lifecycle, volumes, import CSV et snapshots immuables valides en runtime. Reste: exports avances des audiences.
 - [~] Ajouter campagnes, templates, etats et transitions serveur. Campagnes ciblees editables en brouillon, duplication sure, programmation, templates reutilisables avec cycle de vie, preview protegee HTML/texte et multipart valides en runtime; bibliotheque de blocs editoriaux restante.
-- [~] Ajouter queue d'envoi batch + retry/backoff. Fait: queue idempotente, verrous atomiques, reprise stale, cron minute, provider HTTP et tests runtime. Reste: observabilite production et configuration des tailles de lot.
+- [x] Ajouter queue d'envoi batch + retry/backoff. Queue idempotente, verrous atomiques, reprise stale, batch configurable, cron minute supervise, exceptions provider retryables et tests runtime valides.
+- [~] Ajouter observabilite newsletter. Heartbeat, duree, compteurs, cinq etats de sante et retention pending sont dans l'admin; alertes externes et metriques fournisseur restent liees a l'hebergement final.
 - [x] Ajouter provider abstraction SMTP/API. Provider `wp_mail`, filtre externe et contrat HTTP JSON generique avec HTTPS, secrets serveur, idempotence et webhooks HMAC bounces/complaints valides en runtime.
 - [~] Ajouter reporting campagne. Fait: rapports de livraison et preuve du snapshot d'audience depuis la queue. Reste: tracking ouvertures/clics et exports avances.
 - [x] Ajouter audit newsletter.
@@ -181,7 +182,7 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 76% d'implementation fonctionnelle et 66% de preparation production stricte.
+Progression recalculee: 77% d'implementation fonctionnelle et 67% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 

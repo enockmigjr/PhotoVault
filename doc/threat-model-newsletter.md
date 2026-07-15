@@ -57,6 +57,9 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 | Audit exposure | Journaliser des donnees personnelles inutiles | Contexte nettoye, IP hash, user-agent tronque | Tester absence email/token/IP brute |
 | Campaign tampering | Passer une campagne en sending/sent sans droit | Transitions serveur + capabilities create/send + nonce | Tests roles create vs send |
 | Queue delivery abuse | Declencher un batch ou retenter trop vite | Capability send, nonce, limite batch, backoff | Tests role/nonce/backoff |
+| Cron silencieux | Scheduler absent, tardif ou bloque sans signal | Heartbeat persistant, cinq etats admin, prochain evenement et verrou DB expirable | Brancher alerte externe en production |
+| Pending retention | Conserver indefiniment des adresses non confirmees | Nettoyage horaire transactionnel, retention 1-90 jours, lot max 200 | Valider la duree legale finale |
+| Provider crash | Exception adapter laissant une remise processing | Exception bornee par item, retry/backoff et verrou libere | Valider avec provider staging |
 | Reporting exposure | Montrer des donnees de campagne a un role non autorise | Capability newsletter_view_reports | Tests roles reports |
 | Segment injection | Injecter champ, operateur ou valeur dans le ciblage | Champs fixes, IDs bornes, valeurs via placeholders `wpdb::prepare` | Tester charges SQL et IDs inexistants |
 | Audience tampering | Affecter un abonne ou cibler un segment sans droit | Capability manage_lists/create/send, nonces et existence serveur | Tests de role et nonce |
@@ -81,6 +84,7 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 - Audit newsletter protege par capability newsletter_view_reports, avec IP hash, user-agent tronque et contexte nettoye.
 - Campagnes protegees par capability newsletter_create_campaigns; transitions d'envoi protegees par newsletter_send_campaigns.
 - Queue batch protegee par newsletter_send_campaigns pour l'action manuelle, traitement cron borne, verrou atomique, contrainte campagne/abonne, reprise stale et retry/backoff.
+- Batch configurable 1-100, verrou scheduler DB expirable, heartbeat sans PII et retention des pending expires par lots transactionnels.
 - Provider wp_mail et provider HTTP JSON generique; HTTPS obligatoire, secret serveur, timeout borne, zero redirection et idempotence stable par remise.
 - Webhook bounce/complaint signe HMAC, fenetre de cinq minutes, anti-rejeu en table et suppression durable avec annulation de queue.
 - Les preuves provider ne stockent pas l'email brut et perdent leur lien `subscriber_id` lors d'un effacement Privacy.
@@ -90,12 +94,11 @@ Ce threat model couvre `newsletter-campaign-kit`: inscription consentie, stockag
 
 ## Gaps prioritaires
 
-1. Ajouter retention/suppression des donnees abonnes pending expirees.
-2. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
-3. Ajouter exports robustes pour listes, segments et tags; l'import des abonnes et affectations est operationnel.
-4. Ajouter templates reutilisables avances et previsualisation email.
-5. Brancher un fournisseur reel sur le contrat HTTP valide et superviser le cron de traitement queue.
-6. Ajouter estimation/confirmation finale avant envoi et politique de retention des preuves de ciblage.
+1. Ajouter neutralisation CSV contre formules si les exports sont ouverts a plus de roles.
+2. Ajouter exports robustes pour listes, segments et tags; l'import des abonnes et affectations est operationnel.
+3. Ajouter templates reutilisables avances et previsualisation email.
+4. Brancher un fournisseur reel sur le contrat HTTP valide et relier le heartbeat aux alertes externes.
+5. Ajouter estimation/confirmation finale avant envoi et politique de retention des preuves de ciblage.
 
 ## Tests minimum avant production
 
