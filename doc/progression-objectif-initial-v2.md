@@ -10,8 +10,8 @@ Le cahier initial contient 113 sections techniques ou fonctionnelles mesurables,
 
 La progression est desormais publiee avec deux mesures:
 
-- **implementation fonctionnelle: 69%**;
-- **preparation production stricte: 58%**.
+- **implementation fonctionnelle: 70%**;
+- **preparation production stricte: 60%**.
 
 Le premier chiffre mesure le code et le cablage reel deja presents. Le second retire les fonctions sans tests d'integration, sans validation WordPress runtime ou sans verification de l'environnement cible. Aucun simple fichier Markdown ne fait progresser la preparation production.
 
@@ -23,7 +23,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 | Identity Security Kit | 17-33 | 72% | 67% | Verification, reset, changement email, OTP, TOTP, recovery, MFA multicanal, retrait, rappels et templates multipart testes; phone library, QR, SMS reel, multisite et E2E navigateur restent a faire. |
 | Newsletter Campaign Kit | 34-61 | 78% | 70% | Abonnes, segmentation et lifecycle des segments, campagnes editables/duplicables, programmation, templates multipart, one-click, preferences, suppression durable et Privacy valides; imports, snapshots, tracking et webhooks/provider restent majeurs. |
 | PhotoVault metier et experience | 62-76 | 79% | 67% | Home, galerie, medias proteges, favoris, dashboard, reservations, import et autorisations media sont verifies en runtime; preuve multipart post-correction et validation navigateur restent incompletes. |
-| Docker et exploitation | 77-89 | 82% | 70% | WordPress initialise, services healthy, plugins/migrations valides, cron reel et expediteur wp_mail vers Mailpit testes; sauvegardes, restauration et image de production restent a faire. |
+| Docker et exploitation | 77-89 | 92% | 85% | Runtime, cron, mail, backup et restauration reelle avec rollback sont valides; chiffrement hors site, retention et image immutable restent a faire. |
 | Tests fonctionnels et securite | 90-96 | 45% | 40% | La matrice Core couvre roles, grants, ID guessing, pagination, nonces et refus download; Identity, Newsletter, admin-post, CSRF HTTP et E2E restent incomplets. |
 | Qualite, migrations, UI, a11y, i18n | 97-105 | 29% | 22% | Migrations versionnees, premieres UI et emails Identity/Newsletter multipart; PHPCS, analyse statique, lifecycle complet, accessibilite et i18n restent incomplets. |
 | Threat models et durcissement transversal | 106-111 | 48% | 35% | Trois threat models, rate limits et preuve IDOR media; correlation, alertes, autres plugins et tests anti-abus restent incomplets. |
@@ -57,6 +57,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - Environnement Docker Nginx, PHP-FPM, MariaDB, Mailpit, cron et WP-CLI versionne, WordPress initialise et trois plugins actifs.
 - Endpoint healthz Nginx sans redirection et expediteur WordPress global valides en runtime avec reponse SMTP 250.
 - Matrice media Core validee sur vrais comptes: anonyme, non verifie, verifie, owner, grant par collection, media manager et admin; enumeration d'ID et fuite de pagination privee fermees.
+- Snapshot Docker MariaDB/uploads/originaux prives valide par checksums, restauration temporaire de 33 tables puis restauration reelle avec maintenance et rollback prealable.
 
 ## Fonctionnalites partielles
 
@@ -64,7 +65,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 - MFA 15 jours: grace, rappels et changements de role/politique valides; cas multisite et modification directe des capabilities d'un role restent a couvrir.
 - Changement de facteur: activation, preference et desactivation re-authentifiees; le remplacement passe par retrait/re-enrolement, mais son parcours guide et les changements concurrents restent a valider en navigateur.
 - SMS: moteur, provider generique et fail-closed valides avec adapter controle; Twilio reel reste sans credential ni preuve staging.
-- Docker: runtime local valide et services healthy; sauvegardes, restauration, rotation des secrets et image immutable de production restent incomplets.
+- Docker: runtime, sauvegarde et restauration locale valides; chiffrement/copie hors site, retention, rotation des secrets et image immutable restent incomplets.
 - Newsletter: ciblage, lifecycles campagne/segment, cron, templates multipart, one-click, preferences, suppression durable et Privacy valides; imports, snapshots, providers/webhooks, bounces et observabilite restent incomplets.
 - Interfaces publiques: la home est enrichie, mais la verification responsive et clavier n'est pas terminee.
 - Import media: progression XHR, statuts, metadonnees, tags et permissions sont implementes et testes en runtime; le test multipart a revele puis fait corriger le controle `test_form`, sans qu'une quatrieme tentative HTTP soit lancee.
@@ -74,7 +75,6 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 ### P0 - Preuves de securite
 
 - Ajouter tests automatises de smoke Docker dans la CI.
-- Tester sauvegarde/restauration de MariaDB, uploads et stockage prive.
 - Etendre la matrice automatisee aux routes Identity, Newsletter et actions admin-post privilegiees.
 - Ajouter les preuves HTTP de nonce absent/invalide, CSRF et privilege escalation.
 - Tester l'acces direct serveur aux originaux et caches prives.
@@ -107,7 +107,7 @@ Le premier chiffre mesure le code et le cablage reel deja presents. Le second re
 
 ### P2 - Exploitation et qualite
 
-- Ajouter sauvegarde/restauration DB, uploads et stockage prive.
+- Externaliser et chiffrer les snapshots avec retention et alertes adaptees a l'hebergeur final.
 - Ajouter PHPCS WordPress Coding Standards et analyse statique adaptee.
 - Ajouter tests d'integration WordPress et parcours E2E critiques.
 - Verifier visuellement les templates email dans plusieurs clients et completer les notifications internes du theme.

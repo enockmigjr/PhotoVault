@@ -215,7 +215,7 @@ PhotoVault
 
 ### P2 - Exploitation
 
-1. Ajouter procedures de sauvegarde/restauration DB et medias, puis les tester.
+1. Externaliser/chiffrer les snapshots et definir retention/alertes sur l'hebergeur final.
 2. Documenter rotation des secrets et strategie d'image immutable de production.
 3. Ajouter un smoke test Docker automatise en CI.
 
@@ -228,7 +228,7 @@ PhotoVault
 
 ## Definition de progression
 
-Estimation recalculee: 69% d implementation fonctionnelle et 58% de preparation production stricte.
+Estimation recalculee: 70% d implementation fonctionnelle et 60% de preparation production stricte.
 
 L'ancienne checklist agregeait trop de sous-exigences et comptait la documentation comme une fonctionnalite terminee. La matrice de reference est maintenant [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md): elle couvre les 113 sections techniques du cahier initial et distingue implementation et preuve de production.
 
@@ -237,7 +237,7 @@ Les fondations les plus importantes sont posees: modularisation, securite media 
 Elle ne signifie pas encore "production ready". Les blocs qui empechent ce label sont:
 
 - verification serveur du stockage prive sur l'environnement cible;
-- sauvegarde/restauration et smoke tests automatises de l'environnement Docker;
+- externalisation chiffree des backups, retention et smoke tests automatises Docker;
 - matrices Identity/Newsletter/admin-post, CSRF HTTP et acces directs aux fichiers;
 - validation Identity restante: provider SMS reel, remplacement guide des facteurs et tests navigateur;
 - UX metier incomplete: preuve multipart post-correction et validation responsive de l'import, du dashboard et des reservations;

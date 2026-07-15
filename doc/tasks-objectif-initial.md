@@ -149,7 +149,7 @@ Legende:
 - [x] Initialiser un depot Git d'infrastructure a la racine WordPress et versionner Docker sans inclure le coeur, les uploads, `.env` ni les depots imbriques.
 - [x] Construire et lancer `docker compose up --build`; valider MariaDB, PHP-FPM, Nginx et Mailpit sains.
 - [x] Verifier installation WordPress, trois plugins actifs, migrations, Mailpit et cron dans Docker.
-- [ ] Ajouter procedures sauvegarde/restauration DB et medias.
+- [x] Ajouter et tester sauvegarde/restauration DB, uploads et stockage prive: checksums, manifeste, base temporaire, maintenance, rollback et restauration reelle valides Docker.
 - [~] Ajouter README principal installation/dev/prod: base complete ajoutee, a finaliser apres verification runtime/prod.
 
 ## 11. Tests et qualite
@@ -179,7 +179,7 @@ Legende:
 
 ## Statut global
 
-Progression recalculee: 69% d'implementation fonctionnelle et 58% de preparation production stricte.
+Progression recalculee: 70% d'implementation fonctionnelle et 60% de preparation production stricte.
 
 L'ancien calcul sur 125 lignes agregees surestimait fortement le resultat. La nouvelle matrice repart des 113 sections techniques du cahier initial et applique sa Definition of Done. Voir [progression-objectif-initial-v2.md](progression-objectif-initial-v2.md).
 
