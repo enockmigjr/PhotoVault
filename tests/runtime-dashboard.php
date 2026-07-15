@@ -32,6 +32,11 @@ $render_dashboard = static function ( $section ) {
 	include get_template_directory() . '/page-dashboard.php';
 	return ob_get_clean();
 };
+$render_profile = static function () {
+	ob_start();
+	include get_template_directory() . '/page-profile.php';
+	return ob_get_clean();
+};
 
 try {
 	photovault_create_app_pages();
@@ -105,6 +110,11 @@ try {
 	photovault_dashboard_runtime_assert( false !== strpos( $newsletter, 'Gerer mes thematiques' ), 'Newsletter section did not expose the owner preference center.' );
 	$bookings = $render_dashboard( 'bookings' );
 	photovault_dashboard_runtime_assert( false !== strpos( $bookings, 'Porto-Novo runtime studio' ) && false !== strpos( $bookings, 'Nouvelle reservation' ), 'Bookings section did not render the owner reservation.' );
+	$profile = $render_profile();
+	photovault_dashboard_runtime_assert( false !== strpos( $profile, 'templates/dashboard-sidebar' ) || false !== strpos( $profile, 'Informations et securite' ), 'The profile did not render inside the dashboard experience.' );
+	photovault_dashboard_runtime_assert( false !== strpos( $profile, 'profile-avatar-dialog' ) && false !== strpos( $profile, 'name="profile_action" value="avatar"' ), 'The independent avatar flow is missing.' );
+	photovault_dashboard_runtime_assert( false !== strpos( $profile, 'profile-phone-dialog' ) && false !== strpos( $profile, 'name="profile_action" value="phone"' ), 'The independent phone flow is missing.' );
+	photovault_dashboard_runtime_assert( false !== strpos( $profile, 'data-pv-toast-close' ), 'Profile notifications cannot be dismissed.' );
 
 	$administrator = get_users( array( 'role' => 'administrator', 'number' => 1, 'fields' => 'ids' ) );
 	photovault_dashboard_runtime_assert( ! empty( $administrator ), 'No administrator is available for dashboard analytics verification.' );
@@ -122,6 +132,7 @@ try {
 			'role_isolation'         => true,
 			'system_pages'           => true,
 			'bookings'               => true,
+			'profile_dialogs'         => true,
 		)
 	);
 } finally {

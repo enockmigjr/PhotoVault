@@ -11,201 +11,181 @@ if ( ! is_user_logged_in() ) {
 }
 
 $current_user   = wp_get_current_user();
-$avatar_id      = get_user_meta( $current_user->ID, 'photovault_avatar_id', true );
-$avatar_url     = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' ) : get_avatar_url( $current_user->ID, array( 'size' => 160 ) );
+$user_id        = (int) $current_user->ID;
+$avatar_id      = get_user_meta( $user_id, 'photovault_avatar_id', true );
+$avatar_url     = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' ) : get_avatar_url( $user_id, array( 'size' => 160 ) );
 $status         = isset( $_GET['profile'] ) ? sanitize_key( wp_unslash( $_GET['profile'] ) ) : '';
 $verify         = isset( $_GET['verify'] ) ? sanitize_key( wp_unslash( $_GET['verify'] ) ) : '';
-$email_verified = function_exists( 'identity_security_kit_is_email_verified' ) ? identity_security_kit_is_email_verified( $current_user->ID ) : true;
-$phone          = function_exists( 'identity_security_kit_phone_meta_key' ) ? (string) get_user_meta( $current_user->ID, identity_security_kit_phone_meta_key(), true ) : '';
 $email_change   = isset( $_GET['email_change'] ) ? sanitize_key( wp_unslash( $_GET['email_change'] ) ) : '';
-$pending_email  = function_exists( 'identity_security_kit_get_pending_email_change' ) ? identity_security_kit_get_pending_email_change( $current_user->ID ) : null;
-$messages       = array(
-	'success'                  => array( 'type' => 'success', 'text' => __( 'Profil mis a jour.', 'photovault' ) ),
-	'invalid_email'            => array( 'type' => 'error', 'text' => __( 'Adresse e-mail invalide.', 'photovault' ) ),
-	'email_exists'             => array( 'type' => 'error', 'text' => __( 'Cette adresse e-mail est deja utilisee.', 'photovault' ) ),
-	'email_change_invalid'     => array( 'type' => 'error', 'text' => __( 'La nouvelle adresse e-mail est invalide.', 'photovault' ) ),
-	'email_change_unchanged'   => array( 'type' => 'error', 'text' => __( 'La nouvelle adresse est identique a l\'adresse actuelle.', 'photovault' ) ),
-	'email_change_delivery_failed' => array( 'type' => 'error', 'text' => __( 'Le message de confirmation n\'a pas pu etre envoye.', 'photovault' ) ),
-	'email_change_rate_limited' => array( 'type' => 'error', 'text' => __( 'Veuillez patienter avant une nouvelle demande de changement.', 'photovault' ) ),
-	'phone_required'           => array( 'type' => 'error', 'text' => __( 'Le numero de telephone international est obligatoire.', 'photovault' ) ),
-	'phone_country_code_required' => array( 'type' => 'error', 'text' => __( 'Ajoutez le prefixe pays au numero de telephone.', 'photovault' ) ),
-	'phone_invalid'            => array( 'type' => 'error', 'text' => __( 'Numero de telephone international invalide.', 'photovault' ) ),
-	'phone_exists'             => array( 'type' => 'error', 'text' => __( 'Ce numero est deja associe a un autre compte.', 'photovault' ) ),
-	'phone_save_failed'        => array( 'type' => 'error', 'text' => __( 'Le numero de telephone n\'a pas pu etre enregistre.', 'photovault' ) ),
-	'current_password_invalid' => array( 'type' => 'error', 'text' => __( 'Mot de passe actuel incorrect.', 'photovault' ) ),
-	'weak_password'            => array( 'type' => 'error', 'text' => __( 'Le nouveau mot de passe doit contenir au moins 8 caracteres.', 'photovault' ) ),
-	'pwd_mismatch'             => array( 'type' => 'error', 'text' => __( 'Les nouveaux mots de passe ne correspondent pas.', 'photovault' ) ),
-	'file_too_large'           => array( 'type' => 'error', 'text' => __( 'L\'avatar est trop volumineux.', 'photovault' ) ),
-	'invalid_file_type'        => array( 'type' => 'error', 'text' => __( 'Type d\'image non autorise.', 'photovault' ) ),
-	'invalid_image'            => array( 'type' => 'error', 'text' => __( 'Le fichier envoye n\'est pas une image valide.', 'photovault' ) ),
-	'image_too_large'          => array( 'type' => 'error', 'text' => __( 'Les dimensions de l\'image sont trop grandes.', 'photovault' ) ),
-	'avatar_upload_failed'     => array( 'type' => 'error', 'text' => __( 'L\'avatar n\'a pas pu etre enregistre.', 'photovault' ) ),
-	'failed'                   => array( 'type' => 'error', 'text' => __( 'La mise a jour du profil a echoue.', 'photovault' ) ),
+$email_verified = function_exists( 'identity_security_kit_is_email_verified' ) ? identity_security_kit_is_email_verified( $user_id ) : true;
+$phone          = function_exists( 'identity_security_kit_phone_meta_key' ) ? (string) get_user_meta( $user_id, identity_security_kit_phone_meta_key(), true ) : '';
+$phone_verified = function_exists( 'identity_security_kit_is_phone_verified' ) ? identity_security_kit_is_phone_verified( $user_id ) : false;
+$pending_email  = function_exists( 'identity_security_kit_get_pending_email_change' ) ? identity_security_kit_get_pending_email_change( $user_id ) : null;
+$mfa_methods    = function_exists( 'identity_security_kit_get_user_mfa_methods' ) ? identity_security_kit_get_user_mfa_methods( $user_id ) : array();
+
+$messages = array(
+	'success'                       => array( 'type' => 'success', 'text' => __( 'Profil mis a jour.', 'photovault' ) ),
+	'identity_updated'              => array( 'type' => 'success', 'text' => __( 'Vos informations publiques ont ete mises a jour.', 'photovault' ) ),
+	'avatar_updated'                => array( 'type' => 'success', 'text' => __( 'Votre photo de profil a ete mise a jour.', 'photovault' ) ),
+	'phone_updated'                 => array( 'type' => 'success', 'text' => __( 'Votre numero a ete enregistre. Une nouvelle verification est requise.', 'photovault' ) ),
+	'password_updated'              => array( 'type' => 'success', 'text' => __( 'Votre mot de passe a ete modifie et les autres sessions ont ete fermees.', 'photovault' ) ),
+	'display_name_required'         => array( 'type' => 'error', 'text' => __( 'Le nom affiche est obligatoire.', 'photovault' ) ),
+	'avatar_required'               => array( 'type' => 'error', 'text' => __( 'Choisissez une image avant de continuer.', 'photovault' ) ),
+	'invalid_email'                 => array( 'type' => 'error', 'text' => __( 'Adresse e-mail invalide.', 'photovault' ) ),
+	'email_exists'                  => array( 'type' => 'error', 'text' => __( 'Cette adresse e-mail est deja utilisee.', 'photovault' ) ),
+	'email_change_invalid'          => array( 'type' => 'error', 'text' => __( 'La nouvelle adresse e-mail est invalide.', 'photovault' ) ),
+	'email_change_unchanged'        => array( 'type' => 'error', 'text' => __( 'La nouvelle adresse est identique a l adresse actuelle.', 'photovault' ) ),
+	'email_change_delivery_failed'  => array( 'type' => 'error', 'text' => __( 'Le message de confirmation n a pas pu etre envoye.', 'photovault' ) ),
+	'email_change_rate_limited'     => array( 'type' => 'error', 'text' => __( 'Veuillez patienter avant une nouvelle demande.', 'photovault' ) ),
+	'current_password_invalid'      => array( 'type' => 'error', 'text' => __( 'Le mot de passe actuel est incorrect.', 'photovault' ) ),
+	'phone_required'                => array( 'type' => 'error', 'text' => __( 'Le numero de telephone international est obligatoire.', 'photovault' ) ),
+	'phone_country_code_required'   => array( 'type' => 'error', 'text' => __( 'Ajoutez le prefixe pays au numero de telephone.', 'photovault' ) ),
+	'phone_invalid'                 => array( 'type' => 'error', 'text' => __( 'Numero de telephone international invalide.', 'photovault' ) ),
+	'phone_exists'                  => array( 'type' => 'error', 'text' => __( 'Ce numero est deja associe a un autre compte.', 'photovault' ) ),
+	'phone_save_failed'             => array( 'type' => 'error', 'text' => __( 'Le numero n a pas pu etre enregistre.', 'photovault' ) ),
+	'weak_password'                 => array( 'type' => 'error', 'text' => __( 'Le nouveau mot de passe ne respecte pas la longueur minimale.', 'photovault' ) ),
+	'pwd_mismatch'                  => array( 'type' => 'error', 'text' => __( 'Les nouveaux mots de passe ne correspondent pas.', 'photovault' ) ),
+	'file_too_large'                => array( 'type' => 'error', 'text' => __( 'L avatar est trop volumineux.', 'photovault' ) ),
+	'invalid_upload'                => array( 'type' => 'error', 'text' => __( 'Le fichier envoye est invalide.', 'photovault' ) ),
+	'invalid_file_type'             => array( 'type' => 'error', 'text' => __( 'Type d image non autorise.', 'photovault' ) ),
+	'invalid_image'                 => array( 'type' => 'error', 'text' => __( 'Le fichier envoye n est pas une image valide.', 'photovault' ) ),
+	'image_too_large'               => array( 'type' => 'error', 'text' => __( 'Les dimensions de l image sont trop grandes.', 'photovault' ) ),
+	'avatar_upload_failed'          => array( 'type' => 'error', 'text' => __( 'L avatar n a pas pu etre enregistre.', 'photovault' ) ),
+	'failed'                        => array( 'type' => 'error', 'text' => __( 'La modification a echoue.', 'photovault' ) ),
+);
+$verify_messages = array(
+	'pending'          => array( 'type' => 'info', 'text' => __( 'Un lien de verification vient d etre envoye.', 'photovault' ) ),
+	'success'          => array( 'type' => 'success', 'text' => __( 'Adresse e-mail verifiee.', 'photovault' ) ),
+	'invalid'          => array( 'type' => 'error', 'text' => __( 'Lien de verification invalide.', 'photovault' ) ),
+	'expired'          => array( 'type' => 'error', 'text' => __( 'Le lien de verification a expire.', 'photovault' ) ),
+	'deferred'         => array( 'type' => 'error', 'text' => __( 'Le message de verification n a pas pu etre envoye.', 'photovault' ) ),
+	'resent'           => array( 'type' => 'success', 'text' => __( 'Un nouveau lien de verification vient d etre envoye.', 'photovault' ) ),
+	'rate_limited'     => array( 'type' => 'info', 'text' => __( 'Veuillez patienter avant de demander un nouveau lien.', 'photovault' ) ),
+	'already_verified' => array( 'type' => 'success', 'text' => __( 'Votre adresse e-mail est deja verifiee.', 'photovault' ) ),
 );
 $email_change_messages = array(
-	'pending'   => array( 'type' => 'info', 'text' => __( 'La demande est en attente. Confirmez la nouvelle adresse depuis le message recu.', 'photovault' ) ),
-	'confirmed' => array( 'type' => 'success', 'text' => __( 'Votre nouvelle adresse e-mail est confirmee.', 'photovault' ) ),
-	'cancelled' => array( 'type' => 'success', 'text' => __( 'La demande de changement a ete annulee.', 'photovault' ) ),
+	'pending'              => array( 'type' => 'info', 'text' => __( 'Confirmez la nouvelle adresse depuis le message recu.', 'photovault' ) ),
+	'confirmed'            => array( 'type' => 'success', 'text' => __( 'Votre nouvelle adresse e-mail est confirmee.', 'photovault' ) ),
+	'cancelled'            => array( 'type' => 'success', 'text' => __( 'La demande de changement a ete annulee.', 'photovault' ) ),
 	'email_change_expired' => array( 'type' => 'error', 'text' => __( 'La demande de changement a expire.', 'photovault' ) ),
 	'email_change_invalid' => array( 'type' => 'error', 'text' => __( 'Le lien de changement est invalide ou deja utilise.', 'photovault' ) ),
 );
-$verify_messages = array(
-	'pending'  => array( 'type' => 'info', 'text' => __( 'Un lien de verification vient d\'etre envoye a votre adresse e-mail.', 'photovault' ) ),
-	'success'  => array( 'type' => 'success', 'text' => __( 'Adresse e-mail verifiee avec succes.', 'photovault' ) ),
-	'invalid'  => array( 'type' => 'error', 'text' => __( 'Lien de verification invalide.', 'photovault' ) ),
-	'expired'  => array( 'type' => 'error', 'text' => __( 'Lien de verification expire. Modifiez votre adresse ou contactez l\'administration pour recevoir un nouveau lien.', 'photovault' ) ),
-	'deferred'         => array( 'type' => 'error', 'text' => __( 'Le profil est enregistre, mais le message de verification n\'a pas pu etre envoye.', 'photovault' ) ),
-	'resent'           => array( 'type' => 'success', 'text' => __( 'Un nouveau lien de verification vient d\'etre envoye.', 'photovault' ) ),
-	'rate_limited'     => array( 'type' => 'info', 'text' => __( 'Veuillez patienter avant de demander un nouveau lien de verification.', 'photovault' ) ),
-	'already_verified' => array( 'type' => 'success', 'text' => __( 'Votre adresse e-mail est deja verifiee.', 'photovault' ) ),
-);
+
+$notice = null;
+if ( $status && isset( $messages[ $status ] ) ) {
+	$notice = $messages[ $status ];
+} elseif ( $verify && isset( $verify_messages[ $verify ] ) ) {
+	$notice = $verify_messages[ $verify ];
+} elseif ( $email_change && isset( $email_change_messages[ $email_change ] ) ) {
+	$notice = $email_change_messages[ $email_change ];
+}
 
 get_header();
 ?>
 
-<main class="min-h-screen bg-[#0d0c0b] px-4 py-12 text-white sm:px-6 lg:px-8">
-	<div class="mx-auto max-w-5xl space-y-8">
-		<header class="flex flex-col gap-6 border-b border-white/10 pb-8 md:flex-row md:items-end md:justify-between">
-			<div>
-				<p class="text-xs font-bold uppercase tracking-[0.28em] text-amber-300">Espace personnel</p>
-				<h1 class="mt-3 text-4xl font-black tracking-tight md:text-5xl">Mon profil</h1>
-				<p class="mt-3 max-w-2xl text-sm leading-7 text-gray-300">Gerez vos informations, votre avatar et vos parametres d'acces avec une validation serveur complete.</p>
-			</div>
-			<a class="inline-flex items-center justify-center rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:border-amber-300 hover:text-amber-200" href="<?php echo esc_url( home_url( '/dashboard/' ) ); ?>">
-				<?php esc_html_e( 'Retour au tableau de bord', 'photovault' ); ?>
-			</a>
-		</header>
-
-		<?php if ( ! $email_verified ) : ?>
-			<div class="flex flex-col gap-4 rounded-xl border border-amber-300/40 bg-amber-400/10 px-5 py-4 text-sm text-amber-100 sm:flex-row sm:items-center sm:justify-between">
-				<p><?php esc_html_e( 'Votre adresse e-mail est en attente de verification. Certaines protections avancees pourront exiger cette confirmation.', 'photovault' ); ?></p>
-				<?php if ( function_exists( 'identity_security_kit_can_request_email_verification' ) ) : ?>
-					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST">
-						<input type="hidden" name="action" value="identity_security_kit_resend_email_verification">
-						<?php wp_nonce_field( 'identity_security_kit_resend_email_verification' ); ?>
-						<button class="rounded-full border border-amber-200/60 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-amber-100 transition hover:bg-amber-200 hover:text-black" type="submit">
-							<?php esc_html_e( 'Renvoyer le lien', 'photovault' ); ?>
-						</button>
-					</form>
-				<?php endif; ?>
-			</div>
-		<?php endif; ?>
-
-		<?php if ( $verify && isset( $verify_messages[ $verify ] ) ) : ?>
-			<?php $notice = $verify_messages[ $verify ]; ?>
-			<div class="rounded-xl border px-5 py-4 text-sm <?php echo 'success' === $notice['type'] ? 'border-emerald-400/40 bg-emerald-500/10 text-emerald-100' : ( 'info' === $notice['type'] ? 'border-amber-300/40 bg-amber-400/10 text-amber-100' : 'border-red-400/40 bg-red-500/10 text-red-100' ); ?>">
-				<?php echo esc_html( $notice['text'] ); ?>
-			</div>
-		<?php endif; ?>
-
-		<?php if ( $status && isset( $messages[ $status ] ) ) : ?>
-			<?php $notice = $messages[ $status ]; ?>
-			<div class="rounded-xl border px-5 py-4 text-sm <?php echo 'success' === $notice['type'] ? 'border-emerald-400/40 bg-emerald-500/10 text-emerald-100' : 'border-red-400/40 bg-red-500/10 text-red-100'; ?>">
-				<?php echo esc_html( $notice['text'] ); ?>
-			</div>
-		<?php endif; ?>
-		<?php if ( $email_change && isset( $email_change_messages[ $email_change ] ) ) : ?>
-			<?php $notice = $email_change_messages[ $email_change ]; ?>
-			<div class="rounded-xl border px-5 py-4 text-sm <?php echo 'success' === $notice['type'] ? 'border-emerald-400/40 bg-emerald-500/10 text-emerald-100' : ( 'info' === $notice['type'] ? 'border-amber-300/40 bg-amber-400/10 text-amber-100' : 'border-red-400/40 bg-red-500/10 text-red-100' ); ?>">
-				<?php echo esc_html( $notice['text'] ); ?>
-			</div>
-		<?php endif; ?>
-
-		<section class="grid gap-8 lg:grid-cols-[320px,1fr]">
-			<aside class="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
-				<img class="h-40 w-40 rounded-full object-cover ring-1 ring-white/20" src="<?php echo esc_url( $avatar_url ); ?>" alt="<?php echo esc_attr( $current_user->display_name ); ?>">
-				<h2 class="mt-6 text-2xl font-bold"><?php echo esc_html( $current_user->display_name ? $current_user->display_name : $current_user->user_login ); ?></h2>
-				<p class="mt-2 text-sm text-gray-400"><?php echo esc_html( $current_user->user_email ); ?></p>
-				<p class="mt-6 text-xs uppercase tracking-[0.2em] text-gray-500">Identite</p>
-				<p class="mt-2 text-sm text-gray-300">Compte WordPress securise par Identity Security Kit.</p>
-			</aside>
-
-			<form class="rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8" action="<?php echo esc_url( home_url( '/profile/' ) ); ?>" method="POST" enctype="multipart/form-data">
-				<?php wp_nonce_field( 'photovault_profile_action', 'photovault_profile_nonce' ); ?>
-
-				<div class="grid gap-5 sm:grid-cols-2">
-					<div class="sm:col-span-2">
-						<label class="mb-2 block text-sm font-semibold text-gray-200" for="email"><?php esc_html_e( 'Adresse e-mail', 'photovault' ); ?></label>
-						<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-gray-400 outline-none" id="email" name="email" type="email" readonly value="<?php echo esc_attr( $current_user->user_email ); ?>">
-					</div>
-
-					<div class="sm:col-span-2">
-						<label class="mb-2 block text-sm font-semibold text-gray-200" for="phone"><?php esc_html_e( 'Telephone international', 'photovault' ); ?></label>
-						<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required value="<?php echo esc_attr( $phone ); ?>" placeholder="+229 01 23 45 67 89">
-						<p class="mt-2 text-xs text-gray-500"><?php esc_html_e( 'Le prefixe pays est obligatoire. Le numero ne permet pas de se connecter.', 'photovault' ); ?></p>
-					</div>
-					<div class="sm:col-span-2">
-						<label class="mb-2 block text-sm font-semibold text-gray-200" for="bio"><?php esc_html_e( 'Bio', 'photovault' ); ?></label>
-						<textarea class="min-h-32 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="bio" name="bio"><?php echo esc_textarea( $current_user->description ); ?></textarea>
-					</div>
-
-					<div class="sm:col-span-2">
-						<label class="mb-2 block text-sm font-semibold text-gray-200" for="profile_avatar"><?php esc_html_e( 'Avatar', 'photovault' ); ?></label>
-						<input class="block w-full cursor-pointer rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-gray-300 file:mr-4 file:rounded-full file:border-0 file:bg-amber-300 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-black" id="profile_avatar" name="profile_avatar" type="file" accept="image/jpeg,image/png,image/webp">
-						<p class="mt-2 text-xs text-gray-500"><?php esc_html_e( 'JPG, PNG ou WebP. Validation serveur obligatoire avant enregistrement.', 'photovault' ); ?></p>
-					</div>
+<div class="min-h-screen bg-[#0d0c0b] text-white lg:flex">
+	<?php get_template_part( 'templates/dashboard-sidebar', null, array( 'section' => 'profile' ) ); ?>
+	<main class="min-w-0 flex-1 px-4 py-8 sm:px-8 lg:px-10 lg:py-10">
+		<div class="mx-auto max-w-5xl">
+			<header class="mb-10 flex flex-col gap-5 border-b border-white/10 pb-8 md:flex-row md:items-end md:justify-between">
+				<div>
+					<p class="text-xs font-bold uppercase tracking-[0.24em] text-amber-300"><?php esc_html_e( 'Compte', 'photovault' ); ?></p>
+					<h1 class="mt-3 text-3xl font-black sm:text-4xl"><?php esc_html_e( 'Informations et securite', 'photovault' ); ?></h1>
 				</div>
+				<a class="inline-flex items-center justify-center rounded-md border border-white/15 px-5 py-3 text-sm font-bold text-gray-200 transition hover:border-amber-300 hover:text-amber-200" href="<?php echo esc_url( home_url( '/dashboard/' ) ); ?>"><?php esc_html_e( 'Retour au Dashboard', 'photovault' ); ?></a>
+			</header>
 
-				<details class="mt-8 rounded-2xl border border-white/10 bg-black/20 p-5">
-					<summary class="cursor-pointer text-sm font-bold text-amber-200"><?php esc_html_e( 'Modifier l\'adresse e-mail', 'photovault' ); ?></summary>
-					<div class="mt-5 grid gap-5 sm:grid-cols-2">
-						<div>
-							<label class="mb-2 block text-sm font-semibold text-gray-200" for="new_email"><?php esc_html_e( 'Nouvelle adresse', 'photovault' ); ?></label>
-							<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="new_email" name="new_email" type="email" autocomplete="email">
-						</div>
-						<div>
-							<label class="mb-2 block text-sm font-semibold text-gray-200" for="email_current_password"><?php esc_html_e( 'Mot de passe actuel', 'photovault' ); ?></label>
-							<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="email_current_password" name="email_current_password" type="password" autocomplete="current-password">
-						</div>
-					</div>
-					<p class="mt-3 text-xs text-gray-500"><?php esc_html_e( 'L\'adresse actuelle reste active jusqu\'a la confirmation de la nouvelle adresse.', 'photovault' ); ?></p>
-				</details>
-
-				<?php if ( $pending_email ) : ?>
-					<div class="mt-5 flex flex-col gap-3 rounded-xl border border-amber-300/30 bg-amber-400/10 p-4 text-sm text-amber-100 sm:flex-row sm:items-center sm:justify-between">
-						<p><?php echo esc_html( sprintf( __( 'Changement en attente vers %s.', 'photovault' ), $pending_email['email'] ) ); ?></p>
-						<button class="rounded-full border border-amber-200/50 px-4 py-2 text-xs font-bold" form="identity-cancel-email-change" type="submit"><?php esc_html_e( 'Annuler', 'photovault' ); ?></button>
-					</div>
-				<?php endif; ?>
-
-				<details class="mt-8 rounded-2xl border border-white/10 bg-black/20 p-5">
-					<summary class="cursor-pointer text-sm font-bold text-amber-200"><?php esc_html_e( 'Modifier le mot de passe', 'photovault' ); ?></summary>
-					<div class="mt-5 grid gap-5 sm:grid-cols-3">
-						<div>
-							<label class="mb-2 block text-sm font-semibold text-gray-200" for="current_password"><?php esc_html_e( 'Mot de passe actuel', 'photovault' ); ?></label>
-							<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="current_password" name="current_password" type="password" autocomplete="current-password">
-						</div>
-						<div>
-							<label class="mb-2 block text-sm font-semibold text-gray-200" for="password"><?php esc_html_e( 'Nouveau mot de passe', 'photovault' ); ?></label>
-							<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="password" name="password" type="password" autocomplete="new-password">
-						</div>
-						<div>
-							<label class="mb-2 block text-sm font-semibold text-gray-200" for="password_confirm"><?php esc_html_e( 'Confirmation', 'photovault' ); ?></label>
-							<input class="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-amber-300" id="password_confirm" name="password_confirm" type="password" autocomplete="new-password">
-						</div>
-					</div>
-				</details>
-
-				<div class="mt-8 flex justify-end">
-					<button class="rounded-full bg-amber-300 px-6 py-3 text-sm font-black text-black transition hover:bg-amber-200" type="submit">
-						<?php esc_html_e( 'Enregistrer les modifications', 'photovault' ); ?>
-					</button>
+			<?php if ( $notice ) : ?>
+				<div class="fixed right-4 top-24 z-[100] flex w-[min(420px,calc(100vw-2rem))] items-start gap-4 border px-5 py-4 shadow-2xl <?php echo 'success' === $notice['type'] ? 'border-emerald-400/40 bg-[#10221b] text-emerald-100' : ( 'info' === $notice['type'] ? 'border-amber-300/40 bg-[#28200f] text-amber-100' : 'border-red-400/40 bg-[#2a1212] text-red-100' ); ?>" role="<?php echo 'error' === $notice['type'] ? 'alert' : 'status'; ?>" data-pv-toast>
+					<p class="min-w-0 flex-1 text-sm leading-6"><?php echo esc_html( $notice['text'] ); ?></p>
+					<button class="inline-flex h-8 w-8 shrink-0 items-center justify-center border border-current/25" type="button" aria-label="<?php esc_attr_e( 'Fermer la notification', 'photovault' ); ?>" data-pv-toast-close><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M6 6l12 12M18 6L6 18" /></svg></button>
 				</div>
-			</form>
-			<?php if ( $pending_email ) : ?>
-				<form id="identity-cancel-email-change" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
-					<input type="hidden" name="action" value="identity_security_kit_cancel_email_change">
-					<?php wp_nonce_field( 'identity_security_kit_cancel_email_change' ); ?>
-				</form>
 			<?php endif; ?>
-		</section>
 
-		<?php if ( shortcode_exists( 'identity_security_mfa' ) ) : ?>
-			<section class="rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8 [&_form]:mt-4 [&_form]:space-y-4 [&_input]:rounded-lg [&_input]:border [&_input]:border-white/15 [&_input]:bg-black/40 [&_input]:px-3 [&_input]:py-2 [&_button]:rounded-full [&_button]:bg-amber-300 [&_button]:px-5 [&_button]:py-2 [&_button]:font-bold [&_button]:text-black">
-				<?php echo do_shortcode( '[identity_security_mfa]' ); ?>
+			<?php if ( ! $email_verified ) : ?>
+				<section class="mb-10 flex flex-col gap-4 border-l-4 border-amber-300 bg-amber-300/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+					<div><h2 class="font-bold text-amber-100"><?php esc_html_e( 'Adresse e-mail a verifier', 'photovault' ); ?></h2><p class="mt-1 text-sm text-amber-100/75"><?php echo esc_html( $current_user->user_email ); ?></p></div>
+					<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"><input type="hidden" name="action" value="identity_security_kit_resend_email_verification"><?php wp_nonce_field( 'identity_security_kit_resend_email_verification' ); ?><button class="text-sm font-bold text-amber-200 underline underline-offset-4" type="submit"><?php esc_html_e( 'Renvoyer le lien', 'photovault' ); ?></button></form>
+				</section>
+			<?php endif; ?>
+
+			<section class="border-b border-white/10 pb-10" aria-labelledby="profile-identity-title">
+				<div class="flex flex-col gap-7 sm:flex-row sm:items-center">
+					<div class="relative shrink-0"><img class="h-28 w-28 rounded-full object-cover ring-1 ring-white/20" src="<?php echo esc_url( $avatar_url ); ?>" alt="<?php echo esc_attr( $current_user->display_name ); ?>"><button class="absolute -bottom-1 -right-1 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-[#22201d] text-amber-200 shadow-xl" type="button" data-profile-open="profile-avatar-dialog" aria-label="<?php esc_attr_e( 'Modifier la photo', 'photovault' ); ?>"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7h3l2-2h6l2 2h3v12H4V7z"/><circle cx="12" cy="13" r="3"/></svg></button></div>
+					<div class="min-w-0 flex-1"><h2 id="profile-identity-title" class="text-2xl font-bold"><?php echo esc_html( $current_user->display_name ?: $current_user->user_login ); ?></h2><p class="mt-2 break-all text-sm text-gray-400"><?php echo esc_html( $current_user->user_email ); ?></p><p class="mt-3 max-w-2xl text-sm leading-6 text-gray-300"><?php echo esc_html( $current_user->description ?: __( 'Aucune biographie renseignee.', 'photovault' ) ); ?></p></div>
+					<button class="inline-flex shrink-0 items-center gap-2 text-sm font-bold text-amber-200" type="button" data-profile-open="profile-identity-dialog"><?php esc_html_e( 'Modifier', 'photovault' ); ?><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-width="2" d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L8 18l-4 1 1-4L16.5 3.5z"/></svg></button>
+				</div>
 			</section>
-		<?php endif; ?>
-	</div>
-</main>
+
+			<section class="py-10" aria-labelledby="profile-contact-title">
+				<div class="mb-4"><p class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500"><?php esc_html_e( 'Connexion', 'photovault' ); ?></p><h2 id="profile-contact-title" class="mt-2 text-2xl font-bold"><?php esc_html_e( 'Coordonnees et acces', 'photovault' ); ?></h2></div>
+				<div class="divide-y divide-white/10 border-y border-white/10">
+					<div class="grid gap-4 py-6 sm:grid-cols-[180px,1fr,auto] sm:items-center"><span class="text-sm font-semibold text-gray-400"><?php esc_html_e( 'Adresse e-mail', 'photovault' ); ?></span><div><strong class="break-all text-sm"><?php echo esc_html( $current_user->user_email ); ?></strong><span class="ml-2 text-xs font-bold <?php echo $email_verified ? 'text-emerald-300' : 'text-amber-200'; ?>"><?php echo esc_html( $email_verified ? __( 'Verifiee', 'photovault' ) : __( 'A verifier', 'photovault' ) ); ?></span><?php if ( $pending_email ) : ?><p class="mt-2 text-xs text-amber-200"><?php echo esc_html( sprintf( __( 'Changement en attente vers %s', 'photovault' ), $pending_email['email'] ) ); ?></p><?php endif; ?></div><button class="text-left text-sm font-bold text-amber-200" type="button" data-profile-open="profile-email-dialog"><?php esc_html_e( 'Modifier', 'photovault' ); ?></button></div>
+					<div class="grid gap-4 py-6 sm:grid-cols-[180px,1fr,auto] sm:items-center"><span class="text-sm font-semibold text-gray-400"><?php esc_html_e( 'Telephone', 'photovault' ); ?></span><div><strong class="text-sm"><?php echo esc_html( $phone ?: __( 'Non renseigne', 'photovault' ) ); ?></strong><?php if ( $phone ) : ?><span class="ml-2 text-xs font-bold <?php echo $phone_verified ? 'text-emerald-300' : 'text-amber-200'; ?>"><?php echo esc_html( $phone_verified ? __( 'Verifie', 'photovault' ) : __( 'A verifier', 'photovault' ) ); ?></span><?php endif; ?></div><button class="text-left text-sm font-bold text-amber-200" type="button" data-profile-open="profile-phone-dialog"><?php echo esc_html( $phone ? __( 'Modifier', 'photovault' ) : __( 'Ajouter', 'photovault' ) ); ?></button></div>
+					<div class="grid gap-4 py-6 sm:grid-cols-[180px,1fr,auto] sm:items-center"><span class="text-sm font-semibold text-gray-400"><?php esc_html_e( 'Mot de passe', 'photovault' ); ?></span><span class="text-sm text-gray-300"><?php esc_html_e( 'Derniere protection du compte', 'photovault' ); ?></span><button class="text-left text-sm font-bold text-amber-200" type="button" data-profile-open="profile-password-dialog"><?php esc_html_e( 'Modifier', 'photovault' ); ?></button></div>
+			</section>
+
+			<?php if ( shortcode_exists( 'identity_security_mfa' ) ) : ?>
+				<section class="border-t border-white/10 py-10 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-8 [&_h3]:text-lg [&_h3]:font-bold [&_p]:mt-3 [&_p]:text-sm [&_p]:leading-6 [&_p]:text-gray-400 [&_form]:mt-4 [&_form]:space-y-4 [&_input]:max-w-full [&_input]:rounded-md [&_input]:border [&_input]:border-white/15 [&_input]:bg-black/40 [&_input]:px-3 [&_input]:py-2 [&_input]:text-white [&_button]:rounded-md [&_button]:bg-amber-300 [&_button]:px-5 [&_button]:py-2.5 [&_button]:font-bold [&_button]:text-black">
+					<div class="mb-6 flex items-end justify-between gap-5"><div><p class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500"><?php esc_html_e( 'Securite', 'photovault' ); ?></p><h2 class="mt-2 text-2xl font-bold"><?php esc_html_e( 'Double authentification', 'photovault' ); ?></h2></div><span class="text-xs font-bold <?php echo $mfa_methods ? 'text-emerald-300' : 'text-amber-200'; ?>"><?php echo esc_html( $mfa_methods ? sprintf( __( '%d methode(s) active(s)', 'photovault' ), count( $mfa_methods ) ) : __( 'Aucune methode active', 'photovault' ) ); ?></span></div>
+					<?php echo do_shortcode( '[identity_security_mfa]' ); ?>
+				</section>
+			<?php endif; ?>
+		</div>
+	</main>
+</div>
+
+<dialog id="profile-avatar-dialog" class="m-auto w-[min(560px,calc(100vw-2rem))] border border-white/15 bg-[#171614] p-0 text-white shadow-2xl backdrop:bg-black/75">
+	<form class="p-6 sm:p-8" action="<?php echo esc_url( home_url( '/profile/' ) ); ?>" method="post" enctype="multipart/form-data"><input type="hidden" name="profile_action" value="avatar"><?php wp_nonce_field( 'photovault_profile_action', 'photovault_profile_nonce' ); ?><div class="flex items-center justify-between gap-5"><h2 class="text-xl font-bold"><?php esc_html_e( 'Photo de profil', 'photovault' ); ?></h2><button class="inline-flex h-9 w-9 items-center justify-center border border-white/15" type="button" data-profile-close aria-label="<?php esc_attr_e( 'Fermer', 'photovault' ); ?>">&times;</button></div><input class="mt-7 block w-full border border-white/15 bg-black/30 px-4 py-3 text-sm file:mr-4 file:border-0 file:bg-amber-300 file:px-4 file:py-2 file:font-bold file:text-black" name="profile_avatar" type="file" accept="image/jpeg,image/png,image/webp" required><div class="mt-8 flex justify-end gap-3"><button class="border border-white/15 px-5 py-2.5 text-sm font-bold" type="button" data-profile-close><?php esc_html_e( 'Annuler', 'photovault' ); ?></button><button class="bg-amber-300 px-5 py-2.5 text-sm font-black text-black" type="submit"><?php esc_html_e( 'Enregistrer', 'photovault' ); ?></button></div></form>
+</dialog>
+
+<dialog id="profile-identity-dialog" class="m-auto w-[min(620px,calc(100vw-2rem))] border border-white/15 bg-[#171614] p-0 text-white shadow-2xl backdrop:bg-black/75">
+	<form class="p-6 sm:p-8" action="<?php echo esc_url( home_url( '/profile/' ) ); ?>" method="post"><input type="hidden" name="profile_action" value="identity"><?php wp_nonce_field( 'photovault_profile_action', 'photovault_profile_nonce' ); ?><div class="flex items-center justify-between gap-5"><h2 class="text-xl font-bold"><?php esc_html_e( 'Informations publiques', 'photovault' ); ?></h2><button class="inline-flex h-9 w-9 items-center justify-center border border-white/15" type="button" data-profile-close aria-label="<?php esc_attr_e( 'Fermer', 'photovault' ); ?>">&times;</button></div><label class="mt-7 block text-sm font-semibold" for="profile-display-name"><?php esc_html_e( 'Nom affiche', 'photovault' ); ?></label><input id="profile-display-name" class="mt-2 w-full border border-white/15 bg-black/30 px-4 py-3" name="display_name" maxlength="250" required value="<?php echo esc_attr( $current_user->display_name ); ?>"><label class="mt-5 block text-sm font-semibold" for="profile-bio"><?php esc_html_e( 'Biographie', 'photovault' ); ?></label><textarea id="profile-bio" class="mt-2 min-h-32 w-full border border-white/15 bg-black/30 px-4 py-3" name="bio" maxlength="1000"><?php echo esc_textarea( $current_user->description ); ?></textarea><div class="mt-8 flex justify-end gap-3"><button class="border border-white/15 px-5 py-2.5 text-sm font-bold" type="button" data-profile-close><?php esc_html_e( 'Annuler', 'photovault' ); ?></button><button class="bg-amber-300 px-5 py-2.5 text-sm font-black text-black" type="submit"><?php esc_html_e( 'Enregistrer', 'photovault' ); ?></button></div></form>
+</dialog>
+
+<dialog id="profile-phone-dialog" class="m-auto w-[min(560px,calc(100vw-2rem))] border border-white/15 bg-[#171614] p-0 text-white shadow-2xl backdrop:bg-black/75">
+	<form class="p-6 sm:p-8" action="<?php echo esc_url( home_url( '/profile/' ) ); ?>" method="post"><input type="hidden" name="profile_action" value="phone"><?php wp_nonce_field( 'photovault_profile_action', 'photovault_profile_nonce' ); ?><div class="flex items-center justify-between gap-5"><h2 class="text-xl font-bold"><?php esc_html_e( 'Numero de telephone', 'photovault' ); ?></h2><button class="inline-flex h-9 w-9 items-center justify-center border border-white/15" type="button" data-profile-close aria-label="<?php esc_attr_e( 'Fermer', 'photovault' ); ?>">&times;</button></div><label class="mt-7 block text-sm font-semibold" for="profile-phone"><?php esc_html_e( 'Numero avec prefixe pays', 'photovault' ); ?></label><input id="profile-phone" class="mt-2 w-full border border-white/15 bg-black/30 px-4 py-3" name="phone" type="tel" inputmode="tel" autocomplete="tel" required value="<?php echo esc_attr( $phone ); ?>" placeholder="+229 01 23 45 67 89"><div class="mt-8 flex justify-end gap-3"><button class="border border-white/15 px-5 py-2.5 text-sm font-bold" type="button" data-profile-close><?php esc_html_e( 'Annuler', 'photovault' ); ?></button><button class="bg-amber-300 px-5 py-2.5 text-sm font-black text-black" type="submit"><?php esc_html_e( 'Enregistrer', 'photovault' ); ?></button></div></form>
+</dialog>
+
+<dialog id="profile-email-dialog" class="m-auto w-[min(580px,calc(100vw-2rem))] border border-white/15 bg-[#171614] p-0 text-white shadow-2xl backdrop:bg-black/75">
+	<form class="p-6 sm:p-8" action="<?php echo esc_url( home_url( '/profile/' ) ); ?>" method="post"><input type="hidden" name="profile_action" value="email"><?php wp_nonce_field( 'photovault_profile_action', 'photovault_profile_nonce' ); ?><div class="flex items-center justify-between gap-5"><h2 class="text-xl font-bold"><?php esc_html_e( 'Adresse e-mail', 'photovault' ); ?></h2><button class="inline-flex h-9 w-9 items-center justify-center border border-white/15" type="button" data-profile-close aria-label="<?php esc_attr_e( 'Fermer', 'photovault' ); ?>">&times;</button></div><label class="mt-7 block text-sm font-semibold" for="profile-new-email"><?php esc_html_e( 'Nouvelle adresse', 'photovault' ); ?></label><input id="profile-new-email" class="mt-2 w-full border border-white/15 bg-black/30 px-4 py-3" name="new_email" type="email" autocomplete="email" required><label class="mt-5 block text-sm font-semibold" for="profile-email-password"><?php esc_html_e( 'Mot de passe actuel', 'photovault' ); ?></label><input id="profile-email-password" class="mt-2 w-full border border-white/15 bg-black/30 px-4 py-3" name="email_current_password" type="password" autocomplete="current-password" required><div class="mt-8 flex justify-end gap-3"><button class="border border-white/15 px-5 py-2.5 text-sm font-bold" type="button" data-profile-close><?php esc_html_e( 'Annuler', 'photovault' ); ?></button><button class="bg-amber-300 px-5 py-2.5 text-sm font-black text-black" type="submit"><?php esc_html_e( 'Envoyer la confirmation', 'photovault' ); ?></button></div></form>
+	<?php if ( $pending_email ) : ?><form class="border-t border-white/10 px-6 py-5 sm:px-8" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"><input type="hidden" name="action" value="identity_security_kit_cancel_email_change"><?php wp_nonce_field( 'identity_security_kit_cancel_email_change' ); ?><button class="text-sm font-bold text-red-300 underline underline-offset-4" type="submit"><?php esc_html_e( 'Annuler le changement en attente', 'photovault' ); ?></button></form><?php endif; ?>
+</dialog>
+
+<dialog id="profile-password-dialog" class="m-auto w-[min(620px,calc(100vw-2rem))] border border-white/15 bg-[#171614] p-0 text-white shadow-2xl backdrop:bg-black/75">
+	<form class="p-6 sm:p-8" action="<?php echo esc_url( home_url( '/profile/' ) ); ?>" method="post"><input type="hidden" name="profile_action" value="password"><?php wp_nonce_field( 'photovault_profile_action', 'photovault_profile_nonce' ); ?><div class="flex items-center justify-between gap-5"><h2 class="text-xl font-bold"><?php esc_html_e( 'Modifier le mot de passe', 'photovault' ); ?></h2><button class="inline-flex h-9 w-9 items-center justify-center border border-white/15" type="button" data-profile-close aria-label="<?php esc_attr_e( 'Fermer', 'photovault' ); ?>">&times;</button></div><label class="mt-7 block text-sm font-semibold" for="profile-current-password"><?php esc_html_e( 'Mot de passe actuel', 'photovault' ); ?></label><input id="profile-current-password" class="mt-2 w-full border border-white/15 bg-black/30 px-4 py-3" name="current_password" type="password" autocomplete="current-password" required><label class="mt-5 block text-sm font-semibold" for="profile-new-password"><?php esc_html_e( 'Nouveau mot de passe', 'photovault' ); ?></label><input id="profile-new-password" class="mt-2 w-full border border-white/15 bg-black/30 px-4 py-3" name="password" type="password" autocomplete="new-password" required><label class="mt-5 block text-sm font-semibold" for="profile-confirm-password"><?php esc_html_e( 'Confirmation', 'photovault' ); ?></label><input id="profile-confirm-password" class="mt-2 w-full border border-white/15 bg-black/30 px-4 py-3" name="password_confirm" type="password" autocomplete="new-password" required><div class="mt-8 flex justify-end gap-3"><button class="border border-white/15 px-5 py-2.5 text-sm font-bold" type="button" data-profile-close><?php esc_html_e( 'Annuler', 'photovault' ); ?></button><button class="bg-amber-300 px-5 py-2.5 text-sm font-black text-black" type="submit"><?php esc_html_e( 'Modifier le mot de passe', 'photovault' ); ?></button></div></form>
+</dialog>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	document.querySelectorAll('[data-profile-open]').forEach(function(button) {
+		button.addEventListener('click', function() {
+			const dialog = document.getElementById(button.getAttribute('data-profile-open'));
+			if (dialog && typeof dialog.showModal === 'function') dialog.showModal();
+		});
+	});
+	document.querySelectorAll('dialog').forEach(function(dialog) {
+		dialog.querySelectorAll('[data-profile-close]').forEach(function(button) {
+			button.addEventListener('click', function() { dialog.close(); });
+		});
+		dialog.addEventListener('click', function(event) {
+			const rect = dialog.getBoundingClientRect();
+			if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+		});
+	});
+	const toast = document.querySelector('[data-pv-toast]');
+	if (toast) {
+		const dismiss = function() {
+			toast.remove();
+			const url = new URL(window.location.href);
+			['profile', 'verify', 'email_change'].forEach(function(key) { url.searchParams.delete(key); });
+			window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+		};
+		const close = toast.querySelector('[data-pv-toast-close]');
+		if (close) close.addEventListener('click', dismiss);
+		window.setTimeout(dismiss, 7000);
+	}
+});
+</script>
 
 <?php get_footer(); ?>
