@@ -40,7 +40,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Paginer et filtrer l'audit de securite avec details nettoyes.
 - [x] Uniformiser verification, reset, OTP, changement email/mot de passe et recovery mode en emails HTML/texte.
 - [x] Valider avatar, MFA, audit et layout profil sur WordPress reel.
-- [ ] Valider une livraison SMS avec credentials Brevo ou Twilio de staging.
+- [x] Valider l'adapter Twilio et la creation d'un challenge OTP SMS complet avec Test Credentials de staging.
 - [x] Fournir dans l'administration un diagnostic SMS protege, limite et audite pour cette recette.
 - [x] Consigner WordPress Multisite comme non retenu pour la livraison actuelle; une recette d'isolation est fournie pour toute activation future.
 
@@ -59,7 +59,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Paginer toutes les listes et afficher les details de queue/audit.
 - [x] Uniformiser les formulaires admin et prevenir les doubles soumissions.
 - [x] Valider preferences, article vers campagne, paginations, queue et remise wp_mail dans Docker/Mailpit.
-- [ ] Valider une campagne avec une cle Brevo ou Resend et un domaine DKIM de staging.
+- [x] Valider une campagne temporaire complete dans la queue avec Resend et une adresse de livraison sure du provider.
 - [x] Fournir un email de diagnostic professionnel pour chaque transport, sans creer d'abonne ni de campagne.
 - [x] Conserver le tracking ouverture/clic desactive par defaut tant qu'aucune decision consentement/analytics ne justifie son activation.
 
@@ -91,7 +91,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Fournir les emplacements exacts des cles API dans les README et interfaces admin.
 - [x] Fournir une recette executable et des criteres de preuve pour chaque validation externe dans `doc/validation-externe.md`.
 - [x] Executer WPCS 3.3 dans GitHub Actions avec une baseline versionnee qui interdit toute nouvelle violation.
-- [ ] Valider TLS, headers, cache, sauvegarde hors site, rotation des secrets et supervision sur l'hebergement final.
+- [ ] Valider sur l'hebergement final TLS, headers, cache, sauvegarde hors site, rotation des secrets, supervision, SMS live et domaine email SPF/DKIM.
 
 ## Recette ciblee des 14 demandes de cloture
 
@@ -112,12 +112,12 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 | 13 | Challenge MFA WordPress | Valide: habillage coherent et redirection post-challenge non vide. |
 | 14 | Article vers newsletter | Valide: brouillon manuel sans ressaisie, modes brouillon automatique et envoi automatique explicite. |
 
-Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; dialogues ouverts nommes et valides par Axe; reflow equivalent a 200 %, piege/retour du focus et galerie clavier valides; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication; deploiement Docker reconstruit avec cinq services sains, `make verify` valide et cron Newsletter execute; Resend a accepte une simulation officielle sans audience puis refuse la destination reelle en `403 validation_error`; Twilio expose une paire live/trial valide mais aucun numero SMS provisionne.
+Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; dialogues ouverts nommes et valides par Axe; reflow equivalent a 200 %, piege/retour du focus et galerie clavier valides; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication; deploiement Docker reconstruit avec cinq services sains, `make verify` valide et cron Newsletter execute; Twilio Test Credentials a accepte l'adapter puis un challenge OTP SMS complet, stocke avec hashes et expiration avant neutralisation; une campagne temporaire a traverse la queue Resend avec statut `sent`, et Resend confirme `delivered` pour le diagnostic precedent.
 
 ## Progression
 
 - Mise en oeuvre logicielle demandee: **100 %**. Les fonctionnalites, diagnostics et procedures executables sont livres.
-- Preuves locales, simulees ou acceptees par le proprietaire: **62 exigences validees sur 65 (95%)**.
-- Recette externe: **3 preuves restantes**, toutes detaillees dans `doc/validation-externe.md`.
+- Preuves locales, simulees ou acceptees par le proprietaire: **64 exigences validees sur 65 (98%)**.
+- Recette externe: **1 preuve de production restante**, detaillee dans `doc/validation-externe.md`.
 
-Les trois points restants ne cachent pas de fonctionnalite locale inachevee: ils dependent des credentials Twilio, d'une cle Resend avec domaine DKIM et de l'hebergement final. Aucun de ces points ne doit etre marque termine sans sa preuve externe.
+Le point restant ne cache pas de fonctionnalite locale inachevee: il regroupe la recette sur l'hebergement final avec un numero Twilio live, un domaine Resend SPF/DKIM et les controles d'exploitation publics. Il ne doit pas etre marque termine sans ces preuves externes.

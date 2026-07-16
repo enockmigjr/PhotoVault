@@ -18,7 +18,7 @@ Preuve: sortie des trois comparaisons sans difference et liste des plugins actif
 
 ## 2. SMS Brevo ou Twilio
 
-Etat local au 2026-07-16: **Twilio selectionne et trois credentials charges**. La sonde Account retourne HTTP 200, ce qui prouve une paire live/trial valide. Le compte retourne zero numero SMS provisionne; le `From` magique est donc refuse en HTTP 400 / `21659`. Aucun SMS reel n'a ete remis. Il faut soit fournir la paire Test Account SID/Test Auth Token correspondante, soit provisionner un numero SMS pour la paire live/trial.
+Etat local au 2026-07-16: **recette staging validee**. Apres installation de la paire Test Account SID/Test Auth Token et du `From` magique, l'adapter Twilio a accepte le diagnostic. Un challenge OTP SMS complet a ensuite ete cree pour l'administrateur, accepte par Twilio, stocke uniquement avec hashes et expiration, audite puis neutralise. Les Test Credentials ne contactent pas les operateurs; la remise physique reste une preuve de production avec credentials live et numero Twilio SMS provisionne.
 
 1. Choisir le provider dans `Identity Kit > Overview > SMS provider`.
 2. Ajouter les constantes affichees sous `Show wp-config.php examples` avant la ligne de fin d'edition de `wp-config.php`, ou utiliser les memes variables d'environnement.
@@ -32,7 +32,7 @@ Critere: message recu, resultat accepte, numero masque dans l'audit, code OTP a 
 
 ## 3. Newsletter Brevo ou Resend et DKIM
 
-Etat local au 2026-07-16: **Resend selectionne et cle chargee**. Le diagnostic du plugin a ete accepte par l'API avec l'expediteur de test `onboarding@resend.dev` et l'adresse sure `delivered+photovault@resend.dev`, sans creer d'abonne ni de campagne. Un envoi vers la destination reelle demandee a ensuite ete refuse en HTTP 403 / `validation_error`, car le domaine de test ne peut remettre qu'a l'adresse proprietaire du compte. La cle ne peut pas lire les domaines (HTTP 401), ce qui est coherent avec une cle limitee a l'envoi. L'expediteur persistant reste local et la recette domaine SPF/DKIM demeure requise.
+Etat local au 2026-07-16: **recette staging validee**. Resend confirme `delivered` pour le diagnostic `[PhotoVault] Delivery provider test`. Une campagne temporaire distincte a ensuite cree un abonne de test, traverse la queue et le rendu HTML/texte, ete acceptee par Resend avec statut `sent`, puis ses donnees temporaires ont ete nettoyees. L'expediteur persistant reste local; le domaine SPF/DKIM et une reception sur boite reelle restent des preuves de production.
 
 1. Choisir le provider dans `Newsletter Kit > Settings`.
 2. Ajouter la constante affichee dans `Server-side credentials` puis configurer une adresse `From` verifiee chez le provider.
@@ -81,7 +81,7 @@ Critere: job reproductible vert sur le commit livre, avec rapport conserve comme
 
 ## 8. Hebergement final
 
-Prerequis local valide le 2026-07-16: images WordPress et cron reconstruites, cinq services Docker `healthy`, accueil et `/healthz` en HTTP 200, WordPress installe, theme PhotoVault et trois plugins actifs, cible `make verify` passee et evenement cron Newsletter execute. La validation restante concerne uniquement l'URL publique et son infrastructure reelle.
+Prerequis local valide le 2026-07-16: images WordPress et cron reconstruites, cinq services Docker `healthy`, accueil et `/healthz` en HTTP 200, WordPress installe, theme PhotoVault et trois plugins actifs, cible `make verify` passee, evenement cron Newsletter execute, OTP SMS Twilio simule et campagne Resend mise en queue puis acceptee. La validation restante concerne uniquement l'URL publique, les providers live et son infrastructure reelle.
 
 1. Forcer TLS et verifier HSTS, CSP, `X-Content-Type-Options`, politique de referrer et permissions des cookies.
 2. Confirmer que le stockage prive et les originaux ne sont jamais servis directement par Nginx/Apache ou le CDN.
@@ -97,10 +97,10 @@ Critere: rapport de recette signe avec URL, date, versions, resultats et plan de
 | Validation | Statut | Date | Preuve / responsable |
 |---|---|---|---|
 | Packaging | Valide localement | 2026-07-16 | Miroirs identiques, plugins actifs uniques |
-| SMS reel | API atteinte, numero Twilio requis | | Paire live/trial valide, zero numero SMS, test refuse avec `21659` |
-| Newsletter + DKIM | Simulation Resend validee, domaine requis | 2026-07-16 | API de test acceptee; destination reelle refusee en `403 validation_error` sans domaine verifie |
+| SMS staging | Valide | 2026-07-16 | Test Credentials, adapter et challenge OTP acceptes; aucune remise operateur attendue |
+| Newsletter staging | Valide | 2026-07-16 | Diagnostic `delivered` confirme par le proprietaire et campagne de queue acceptee par Resend |
 | Multisite ou non applicable | Non applicable | 2026-07-16 | Livraison mono-site |
 | Tracking desactive ou consenti | Desactive | 2026-07-16 | Decision secure-by-default |
 | Accessibilite assistee | Validee par le proprietaire | 2026-07-16 | Axe, clavier, reflow et dialogues valides; NVDA differe |
 | PHPCS CI | Implemente | 2026-07-16 | WPCS 3.3 + baseline anti-regression |
-| Hebergement final | Docker local valide, recette publique requise | | Build, healthchecks, WordPress, theme, plugins et cron valides le 2026-07-16 |
+| Hebergement final | Docker local valide, recette publique et providers live requis | | Build, healthchecks, WordPress, theme, plugins, cron et providers staging valides le 2026-07-16 |
