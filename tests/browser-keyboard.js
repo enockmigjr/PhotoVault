@@ -52,6 +52,13 @@ async function assertOpenDialogAccessibility( page, selector ) {
 		if ( firstCount === nextCount ) {
 			throw new Error( 'Gallery keyboard navigation did not advance to the next work.' );
 		}
+		await lightbox.locator( '[data-pv-lightbox-fullscreen]' ).click();
+		await page.waitForFunction( () => {
+			const viewer = document.getElementById( 'pv-gallery-lightbox' );
+			return document.fullscreenElement === viewer || viewer.classList.contains( 'is-immersive' );
+		} );
+		await lightbox.locator( '[data-pv-lightbox-fullscreen]' ).click();
+		await page.waitForFunction( () => ! document.fullscreenElement && ! document.getElementById( 'pv-gallery-lightbox' ).classList.contains( 'is-immersive' ) );
 		await page.keyboard.press( 'Escape' );
 		await lightbox.waitFor( { state: 'hidden' } );
 		if ( ! await galleryOpener.evaluate( ( element ) => document.activeElement === element ) ) {
@@ -88,6 +95,7 @@ async function assertOpenDialogAccessibility( page, selector ) {
 		process.stdout.write( JSON.stringify( {
 			reflow_equivalent_200_percent: [ 'home', 'gallery', 'login', 'dashboard', 'profile' ],
 			gallery_keyboard_navigation: true,
+			gallery_fullscreen: true,
 			open_dialog_wcag: true,
 			focus_trap_and_restore: true,
 		} ) );

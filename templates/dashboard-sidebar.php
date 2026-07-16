@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $current_user = wp_get_current_user();
 $section      = isset( $args['section'] ) ? sanitize_key( $args['section'] ) : 'overview';
 $is_manager   = function_exists( 'photovault_current_user_can' ) ? photovault_current_user_can( 'photovault_manage_platform' ) : current_user_can( 'manage_options' );
+$can_access_admin = function_exists( 'photovault_current_user_can_access_admin' ) ? photovault_current_user_can_access_admin() : current_user_can( 'edit_posts' );
 $dashboard_url = home_url( '/dashboard/' );
 $menu_items    = array(
 	'overview' => array( 'label' => __( 'Apercu', 'photovault' ), 'url' => $dashboard_url, 'icon' => 'M4 13h6V4H4v9zm0 7h6v-5H4v5zm10 0h6v-9h-6v9zm0-16v5h6V4h-6z' ),
@@ -28,7 +29,9 @@ if ( $is_manager ) {
 
 $avatar_id  = get_user_meta( $current_user->ID, 'photovault_avatar_id', true );
 $avatar_url = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'thumbnail' ) : get_avatar_url( $current_user->ID );
-$role_label = $is_manager ? __( 'Administrateur', 'photovault' ) : __( 'Client', 'photovault' );
+$role_slug  = ! empty( $current_user->roles ) ? reset( $current_user->roles ) : '';
+$role_data  = $role_slug && isset( wp_roles()->roles[ $role_slug ] ) ? wp_roles()->roles[ $role_slug ] : array();
+$role_label = ! empty( $role_data['name'] ) ? translate_user_role( $role_data['name'] ) : __( 'Membre', 'photovault' );
 ?>
 
 <div class="sticky top-0 z-40 flex w-full items-center justify-between border-b border-white/10 bg-[#0d0c0b] p-4 lg:hidden">
@@ -64,7 +67,7 @@ $role_label = $is_manager ? __( 'Administrateur', 'photovault' ) : __( 'Client',
 				<svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 21a8 8 0 00-16 0m12-13a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
 				<?php esc_html_e( 'Profil', 'photovault' ); ?>
 			</a>
-			<?php if ( $is_manager ) : ?>
+			<?php if ( $can_access_admin ) : ?>
 				<a href="<?php echo esc_url( admin_url() ); ?>" class="flex items-center rounded-md px-4 py-3 text-sm font-semibold text-gray-300 transition hover:bg-white/[0.06] hover:text-white">
 					<svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15a3 3 0 100-6 3 3 0 000 6zm7-3a7 7 0 00-.1-1l2-1.5-2-3.4-2.4 1a8 8 0 00-1.7-1L14.5 3h-5l-.4 3.1a8 8 0 00-1.7 1l-2.4-1-2 3.4L5.1 11a7 7 0 000 2L3 14.5l2 3.4 2.4-1a8 8 0 001.7 1l.4 3.1h5l.4-3.1a8 8 0 001.7-1l2.4 1 2-3.4-2.1-1.5a7 7 0 00.1-1z"></path></svg>
 					<?php esc_html_e( 'Administration', 'photovault' ); ?>

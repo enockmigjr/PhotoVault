@@ -12,6 +12,7 @@ if ( is_user_logged_in() ) {
 
 $verify          = isset( $_GET['verify'] ) ? sanitize_key( wp_unslash( $_GET['verify'] ) ) : '';
 $login_status    = isset( $_GET['login'] ) ? sanitize_key( wp_unslash( $_GET['login'] ) ) : '';
+$password_status = isset( $_GET['password'] ) ? sanitize_key( wp_unslash( $_GET['password'] ) ) : '';
 $redirect_to     = isset( $_GET['redirect_to'] ) ? wp_validate_redirect( wp_unslash( $_GET['redirect_to'] ), '' ) : '';
 $verify_messages = array(
 	'success' => array( 'type' => 'success', 'text' => __( 'Votre adresse e-mail est vérifiée. Vous pouvez maintenant vous connecter.', 'photovault' ) ),
@@ -21,6 +22,8 @@ $verify_messages = array(
 $notice          = isset( $verify_messages[ $verify ] ) ? $verify_messages[ $verify ] : null;
 if ( 'failed' === $login_status ) {
 	$notice = array( 'type' => 'error', 'text' => __( 'L’identifiant ou le mot de passe est incorrect.', 'photovault' ) );
+} elseif ( 'reset' === $password_status ) {
+	$notice = array( 'type' => 'success', 'text' => __( 'Votre mot de passe a été modifié. Vous pouvez maintenant vous connecter.', 'photovault' ) );
 }
 
 get_header();

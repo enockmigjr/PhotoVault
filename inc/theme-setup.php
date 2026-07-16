@@ -71,6 +71,7 @@ function photovault_create_app_pages() {
 		'login'           => array( 'title' => 'Connexion', 'template' => 'page-login.php' ),
 		'register'        => array( 'title' => 'Inscription', 'template' => 'page-register.php' ),
 		'forgot-password' => array( 'title' => 'Mot de passe oublié', 'template' => 'page-forgot-password.php' ),
+		'reset-password'  => array( 'title' => 'Nouveau mot de passe', 'template' => 'page-reset-password.php' ),
 		'dashboard'       => array( 'title' => 'Dashboard', 'template' => 'page-dashboard.php' ),
 		'profile'         => array( 'title' => 'Profil', 'template' => 'page-profile.php' ),
 		'booking'         => array( 'title' => 'Reserver un shooting', 'template' => 'page-booking.php' ),
@@ -100,13 +101,13 @@ function photovault_create_app_pages() {
 		}
 	}
 
-	update_option( 'photovault_app_pages_version', '1.3.0', false );
+	update_option( 'photovault_app_pages_version', '1.4.0', false );
 }
 add_action( 'after_switch_theme', 'photovault_create_app_pages' );
 
 /** Provision newly introduced system pages on already active installations. */
 function photovault_maybe_create_app_pages() {
-	if ( '1.3.0' !== get_option( 'photovault_app_pages_version' ) ) {
+	if ( '1.4.0' !== get_option( 'photovault_app_pages_version' ) ) {
 		photovault_create_app_pages();
 	}
 }

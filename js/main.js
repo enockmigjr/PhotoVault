@@ -251,6 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const meta = dialog.querySelector('[data-pv-lightbox-meta]');
     const count = dialog.querySelector('[data-pv-lightbox-count]');
     const detail = dialog.querySelector('[data-pv-lightbox-detail]');
+    const fullscreenButton = dialog.querySelector('[data-pv-lightbox-fullscreen]');
     const navigationButtons = dialog.querySelectorAll('[data-pv-lightbox-prev], [data-pv-lightbox-next]');
     let currentIndex = 0;
     let pointerStart = null;
@@ -281,9 +282,52 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
     }
 
+    function resetViewerState() {
+        if (document.fullscreenElement && typeof document.exitFullscreen === 'function') {
+            document.exitFullscreen().catch(function() {});
+        }
+        dialog.classList.remove('is-immersive');
+        updateFullscreenState(false);
+        image.removeAttribute('src');
+    }
+
     function closeViewer() {
         dialog.close();
-        image.removeAttribute('src');
+    }
+
+    function updateFullscreenState(active) {
+        if (!fullscreenButton) {
+            return;
+        }
+
+        fullscreenButton.setAttribute('aria-pressed', active ? 'true' : 'false');
+        fullscreenButton.setAttribute('aria-label', active ? 'Quitter le plein écran' : 'Afficher en plein écran');
+        fullscreenButton.setAttribute('title', active ? 'Quitter le plein écran' : 'Plein écran');
+    }
+
+    async function toggleFullscreen() {
+        if (document.fullscreenElement && typeof document.exitFullscreen === 'function') {
+            await document.exitFullscreen();
+            return;
+        }
+
+        if (dialog.classList.contains('is-immersive')) {
+            dialog.classList.remove('is-immersive');
+            updateFullscreenState(false);
+            return;
+        }
+
+        if (typeof dialog.requestFullscreen === 'function') {
+            try {
+                await dialog.requestFullscreen({ navigationUI: 'hide' });
+                return;
+            } catch (error) {
+                // Some browsers deny the Fullscreen API while still allowing an immersive dialog.
+            }
+        }
+
+        dialog.classList.add('is-immersive');
+        updateFullscreenState(true);
     }
 
     document.addEventListener('click', function(event) {
@@ -301,9 +345,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.closest('[data-pv-lightbox-next]')) render(currentIndex + 1);
         if (event.target.closest('[data-pv-lightbox-close]')) closeViewer();
         if (event.target.closest('[data-pv-lightbox-fullscreen]')) {
-            if (document.fullscreenElement) document.exitFullscreen();
-            else dialog.requestFullscreen().catch(function() {});
+            toggleFullscreen();
         }
+    });
+
+    document.addEventListener('fullscreenchange', function() {
+        const active = document.fullscreenElement === dialog;
+        dialog.classList.toggle('is-browser-fullscreen', active);
+        updateFullscreenState(active || dialog.classList.contains('is-immersive'));
     });
 
     dialog.addEventListener('click', function(event) {
@@ -311,6 +360,8 @@ document.addEventListener('DOMContentLoaded', function() {
             closeViewer();
         }
     });
+
+    dialog.addEventListener('close', resetViewerState);
 
     dialog.addEventListener('keydown', function(event) {
         if (event.key === 'ArrowLeft') render(currentIndex - 1);

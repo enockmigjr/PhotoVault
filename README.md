@@ -26,6 +26,12 @@ Le runtime WordPress/MariaDB, le blocage Nginx, les tests critiques, l'accessibi
 5. Aller dans l'admin PhotoVault pour verifier les pages media, demandes d'acces, audit et reglages.
 6. Regenerer ou securiser les originaux existants si le site contient deja des medias.
 
+### Dossier `plugins` du theme
+
+WordPress execute uniquement les depots installes sous `wp-content/plugins`. Le dossier `PhotoVault/plugins` contient des miroirs de distribution et de validation; il n'est jamais charge par le runtime.
+
+Il peut etre exclu d'un artefact de deploiement lorsque les trois plugins actifs sont installes separement. Ne le supprimez toutefois pas du depot source actuel sans adapter aussi les controles de synchronisation, la baseline PHPCS et la strategie de packaging documentee dans `doc/validation-externe.md`.
+
 ## Installation Docker
 
 Une base Docker existe a la racine WordPress avec Nginx, PHP-FPM, MariaDB, Mailpit, cron et WP-CLI.

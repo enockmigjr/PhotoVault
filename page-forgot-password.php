@@ -11,12 +11,16 @@ if ( is_user_logged_in() ) {
 }
 
 $status   = isset( $_GET['forgot'] ) ? sanitize_key( wp_unslash( $_GET['forgot'] ) ) : '';
+$reset    = isset( $_GET['reset'] ) ? sanitize_key( wp_unslash( $_GET['reset'] ) ) : '';
 $messages = array(
 	'sent'            => array( 'type' => 'success', 'text' => __( 'Si un compte correspond, un e-mail de réinitialisation vient d’être envoyé.', 'photovault' ) ),
 	'fields_required' => array( 'type' => 'error', 'text' => __( 'Saisissez votre identifiant ou votre adresse e-mail.', 'photovault' ) ),
 	'security_failed' => array( 'type' => 'error', 'text' => __( 'La vérification de sécurité a échoué. Rechargez la page puis réessayez.', 'photovault' ) ),
 );
 $notice   = isset( $messages[ $status ] ) ? $messages[ $status ] : null;
+if ( 'invalid' === $reset ) {
+	$notice = array( 'type' => 'error', 'text' => __( 'Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un nouveau.', 'photovault' ) );
+}
 
 get_header();
 ?>

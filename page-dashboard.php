@@ -17,7 +17,8 @@ $sections     = array( 'overview', 'favorites', 'downloads', 'access', 'bookings
 if ( $is_manager ) {
 	$sections[] = 'analytics';
 }
-$section = isset( $_GET['section'] ) ? sanitize_key( wp_unslash( $_GET['section'] ) ) : 'overview';
+$default_section = function_exists( 'photovault_get_user_preference' ) ? photovault_get_user_preference( $user_id, 'dashboard_landing' ) : 'overview';
+$section = isset( $_GET['section'] ) ? sanitize_key( wp_unslash( $_GET['section'] ) ) : $default_section;
 $section = in_array( $section, $sections, true ) ? $section : 'overview';
 
 $favorite_ids = function_exists( 'photovault_get_user_favorite_ids' ) ? photovault_get_user_favorite_ids( $user_id, 100 ) : array();

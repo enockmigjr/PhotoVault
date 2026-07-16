@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="pv-gallery-lightbox__topbar">
 			<span data-pv-lightbox-count aria-live="polite"></span>
 			<div class="flex items-center gap-2">
-				<button type="button" data-pv-lightbox-fullscreen title="<?php esc_attr_e( 'Plein écran', 'photovault' ); ?>" aria-label="<?php esc_attr_e( 'Afficher en plein écran', 'photovault' ); ?>"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" /></svg></button>
+				<button type="button" data-pv-lightbox-fullscreen title="<?php esc_attr_e( 'Plein écran', 'photovault' ); ?>" aria-label="<?php esc_attr_e( 'Afficher en plein écran', 'photovault' ); ?>" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" /></svg></button>
 				<button type="button" data-pv-lightbox-close title="<?php esc_attr_e( 'Fermer', 'photovault' ); ?>" aria-label="<?php esc_attr_e( 'Fermer la visionneuse', 'photovault' ); ?>"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 5 14 14M19 5 5 19" /></svg></button>
 			</div>
 		</div>
