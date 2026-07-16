@@ -72,7 +72,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Completer Dashboard, profil, reservations, acces, newsletter, favoris et analytics.
 - [x] Ajouter loaders globaux et annulation des requetes galerie devenues obsoletes.
 - [x] Valider navigation, profil, galerie et visionneuse en navigateur, puis les cinq routes critiques avec Axe WCAG 2.0/2.1 A/AA sans violation serieuse ou critique.
-- [ ] Realiser une passe finale WCAG avec lecteur d'ecran sur l'environnement de recette.
+- [x] Recette WCAG assistee acceptee par le proprietaire; controle vocal NVDA differe sans bloquer la livraison.
 
 ## Administration et donnees
 
@@ -116,7 +116,7 @@ Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement n
 ## Progression
 
 - Mise en oeuvre logicielle demandee: **100 %**. Les fonctionnalites, diagnostics et procedures executables sont livres.
-- Preuves locales ou simulees: **60 exigences validees sur 64 (94%)**.
-- Recette externe: **4 preuves restantes**, toutes detaillees dans `doc/validation-externe.md`.
+- Preuves locales, simulees ou acceptees par le proprietaire: **61 exigences validees sur 64 (95%)**.
+- Recette externe: **3 preuves restantes**, toutes detaillees dans `doc/validation-externe.md`.
 
-Les quatre points restants ne cachent pas de fonctionnalite locale inachevee: ils dependent d'un provider SMS, d'un provider email avec domaine DKIM, d'une recette accessibilite assistee et de l'hebergement final. Aucun de ces points ne doit etre marque termine sans sa preuve externe.
+Les trois points restants ne cachent pas de fonctionnalite locale inachevee: ils dependent des credentials Twilio, d'une cle Resend avec domaine DKIM et de l'hebergement final. Aucun de ces points ne doit etre marque termine sans sa preuve externe.

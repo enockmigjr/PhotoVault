@@ -18,6 +18,8 @@ Preuve: sortie des trois comparaisons sans difference et liste des plugins actif
 
 ## 2. SMS Brevo ou Twilio
 
+Etat local au 2026-07-16: **Twilio selectionne**, mais WordPress ne charge pas encore `IDENTITY_SECURITY_TWILIO_ACCOUNT_SID`, `IDENTITY_SECURITY_TWILIO_AUTH_TOKEN` et `IDENTITY_SECURITY_TWILIO_FROM`. En Docker, les renseigner dans le fichier local ignore `docker/wp-config-secrets.php` cree depuis son exemple.
+
 1. Choisir le provider dans `Identity Kit > Overview > SMS provider`.
 2. Ajouter les constantes affichees sous `Show wp-config.php examples` avant la ligne de fin d'edition de `wp-config.php`, ou utiliser les memes variables d'environnement.
 3. Recharger PHP si les variables viennent de l'environnement.
@@ -29,6 +31,8 @@ Preuve: sortie des trois comparaisons sans difference et liste des plugins actif
 Critere: message recu, resultat accepte, numero masque dans l'audit, code OTP a usage unique et aucune valeur secrete en base ou dans les logs.
 
 ## 3. Newsletter Brevo ou Resend et DKIM
+
+Etat local au 2026-07-16: **Resend selectionne**, mais WordPress ne charge pas encore `NEWSLETTER_CAMPAIGN_KIT_RESEND_API_KEY`. En Docker, la renseigner dans le fichier local ignore `docker/wp-config-secrets.php` cree depuis son exemple.
 
 1. Choisir le provider dans `Newsletter Kit > Settings`.
 2. Ajouter la constante affichee dans `Server-side credentials` puis configurer une adresse `From` verifiee chez le provider.
@@ -58,9 +62,9 @@ Avant activation, documenter la finalite, la base legale, la duree de conservati
 
 Critere: decision signee `desactive` ou specification consentie avec recette Privacy et suppression.
 
-## 6. Accessibilite assistee
+## 6. Accessibilite assistee - acceptee
 
-Prerequis automatise valide le 2026-07-16: home, galerie, connexion, dashboard et profil ne presentent aucune violation Axe serieuse ou critique pour WCAG 2.0/2.1 A/AA. Le reflow equivalent a un zoom 200 %, les dialogues ouverts, le piege et le retour du focus ainsi que la navigation clavier de la galerie sont egalement valides par Playwright. La validation restante porte uniquement sur les annonces et l'usage vocal reel de NVDA.
+Prerequis automatise valide le 2026-07-16: home, galerie, connexion, dashboard et profil ne presentent aucune violation Axe serieuse ou critique pour WCAG 2.0/2.1 A/AA. Le reflow equivalent a un zoom 200 %, les dialogues ouverts, le piege et le retour du focus ainsi que la navigation clavier de la galerie sont egalement valides par Playwright. Le proprietaire accepte cette recette pour la livraison et realisera l'ecoute vocale NVDA ulterieurement.
 
 1. Naviguer au clavier sur home, galerie, lightbox, connexion, profil, preferences et demandes d'acces.
 2. Tester NVDA avec Firefox ou Chrome a 200 % de zoom.
@@ -91,10 +95,10 @@ Critere: rapport de recette signe avec URL, date, versions, resultats et plan de
 | Validation | Statut | Date | Preuve / responsable |
 |---|---|---|---|
 | Packaging | Valide localement | 2026-07-16 | Miroirs identiques, plugins actifs uniques |
-| SMS reel | A valider | | |
-| Newsletter + DKIM | A valider | | |
+| SMS reel | Provider choisi, credentials requis | | Twilio selectionne |
+| Newsletter + DKIM | Provider choisi, credentials requis | | Resend selectionne |
 | Multisite ou non applicable | Non applicable | 2026-07-16 | Livraison mono-site |
 | Tracking desactive ou consenti | Desactive | 2026-07-16 | Decision secure-by-default |
-| Accessibilite assistee | A valider | | |
+| Accessibilite assistee | Validee par le proprietaire | 2026-07-16 | Axe, clavier, reflow et dialogues valides; NVDA differe |
 | PHPCS CI | Implemente | 2026-07-16 | WPCS 3.3 + baseline anti-regression |
 | Hebergement final | A valider | | |
