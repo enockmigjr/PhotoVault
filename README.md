@@ -11,7 +11,7 @@ Le projet est organise autour d'un theme editorial et de trois plugins metier re
 
 ## Etat actuel
 
-Progression mesuree: 56 exigences validees sur 64 (88%). Les huit validations restantes dependent du packaging final, de providers et de l'environnement de recette/production. Voir la checklist canonique.
+Mise en oeuvre logicielle: 100 %. Cinquante-six preuves sur 64 sont reproductibles localement; les huit preuves externes dependent du packaging final, de providers et de l'environnement de recette/production. Voir la checklist canonique et la recette externe.
 
 Les fondations principales sont en place: separation theme/plugins, controles serveur sur les medias sensibles, previews/miniatures au lieu des originaux HD dans les vues ensemble, endpoint de telechargement controle, verification email, audit, campagnes newsletter, dashboard personnel, reservations de shootings et Docker.
 
@@ -44,6 +44,8 @@ pnpm run build:css
 ```
 
 Utiliser `pnpm run watch:css` pendant le developpement des templates. Le paquet natif optionnel `@parcel/watcher` reste desactive dans la configuration pnpm: le build CSS statique n'en depend pas.
+
+Les tests navigateur utilisent la dependance de developpement Playwright. Sur une nouvelle machine, installer son navigateur une fois avec `pnpm exec playwright install chromium`, puis fournir les variables `PHOTOVAULT_TEST_USERNAME` et `PHOTOVAULT_TEST_PASSWORD`. Le test `node tests/browser-provider-admin.js` controle les deux diagnostics provider et peut enregistrer des captures via `PHOTOVAULT_TEST_SCREENSHOT_DIR`.
 
 ## Documentation utile
 
@@ -96,4 +98,4 @@ Les secrets restent hors de WordPress et de Git. Les noms exacts et exemples wp-
 
 ## Reste externe
 
-La liste exhaustive et non surestimee est maintenue dans [doc/tasks-objectif-initial.md](doc/tasks-objectif-initial.md). Les points ouverts concernent principalement providers reels, DKIM, multisite/analytics si retenus, accessibilite de recette, CI et hebergement final.
+La liste exhaustive et non surestimee est maintenue dans [doc/tasks-objectif-initial.md](doc/tasks-objectif-initial.md). Les points ouverts concernent principalement providers reels, DKIM, multisite/analytics si retenus, accessibilite de recette, CI et hebergement final. Chaque recette, critere et preuve attendue est detaille dans [doc/validation-externe.md](doc/validation-externe.md).

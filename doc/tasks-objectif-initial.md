@@ -41,6 +41,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Uniformiser verification, reset, OTP, changement email/mot de passe et recovery mode en emails HTML/texte.
 - [x] Valider avatar, MFA, audit et layout profil sur WordPress reel.
 - [ ] Valider une livraison SMS avec credentials Brevo ou Twilio de staging.
+- [x] Fournir dans l'administration un diagnostic SMS protege, limite et audite pour cette recette.
 - [ ] Valider les politiques de roles dans un WordPress multisite si ce mode est retenu.
 
 ## Newsletter
@@ -59,6 +60,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Uniformiser les formulaires admin et prevenir les doubles soumissions.
 - [x] Valider preferences, article vers campagne, paginations, queue et remise wp_mail dans Docker/Mailpit.
 - [ ] Valider une campagne avec une cle Brevo ou Resend et un domaine DKIM de staging.
+- [x] Fournir un email de diagnostic professionnel pour chaque transport, sans creer d'abonne ni de campagne.
 - [ ] Activer le tracking ouverture/clic uniquement apres decision consentement/analytics.
 
 ## Experience publique
@@ -86,12 +88,14 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Bloquer le stockage prive dans Nginx et valider sauvegarde/restauration avec checksums.
 - [x] Executer lints PHP, git diff --check, tests runtime Identity/Newsletter/Core et tests navigateur critiques.
 - [x] Fournir les emplacements exacts des cles API dans les README et interfaces admin.
+- [x] Fournir une recette executable et des criteres de preuve pour chaque validation externe dans `doc/validation-externe.md`.
 - [ ] Executer PHPCS/WordPress Coding Standards dans une CI.
 - [ ] Valider TLS, headers, cache, sauvegarde hors site, rotation des secrets et supervision sur l'hebergement final.
 
 ## Progression
 
-- Fonctionnel local: **56 exigences validees sur 64 (88%)**.
-- Validation de production: **8 exigences externes restantes**.
+- Mise en oeuvre logicielle demandee: **100 %**. Les fonctionnalites, diagnostics et procedures executables sont livres.
+- Preuves locales ou simulees: **56 exigences validees sur 64 (88%)**.
+- Recette externe: **8 preuves restantes**, toutes detaillees dans `doc/validation-externe.md`.
 
 Les huit points restants ne cachent pas de fonctionnalite locale inachevee: ils dependent du packaging final, d'un provider SMS, d'un provider email et domaine DKIM, du choix multisite/analytics, d'une recette accessibilite, de la CI et de l'hebergement final. Aucun de ces points ne doit etre marque termine sans sa preuve externe.
