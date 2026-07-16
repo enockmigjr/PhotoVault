@@ -112,7 +112,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 | 13 | Challenge MFA WordPress | Valide: habillage coherent et redirection post-challenge non vide. |
 | 14 | Article vers newsletter | Valide: brouillon manuel sans ressaisie, modes brouillon automatique et envoi automatique explicite. |
 
-Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; dialogues ouverts nommes et valides par Axe; reflow equivalent a 200 %, piege/retour du focus et galerie clavier valides; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication; deploiement Docker reconstruit avec cinq services sains, `make verify` valide et cron Newsletter execute.
+Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; dialogues ouverts nommes et valides par Axe; reflow equivalent a 200 %, piege/retour du focus et galerie clavier valides; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication; deploiement Docker reconstruit avec cinq services sains, `make verify` valide et cron Newsletter execute; Resend a accepte une simulation officielle sans audience, tandis que Twilio a atteint l'API puis retourne `21659` avec le numero magique, ce qui exige la paire Test Credentials correspondante ou un expediteur live provisionne.
 
 ## Progression
 
