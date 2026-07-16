@@ -18,7 +18,7 @@ Preuve: sortie des trois comparaisons sans difference et liste des plugins actif
 
 ## 2. SMS Brevo ou Twilio
 
-Etat local au 2026-07-16: **Twilio selectionne et trois credentials charges**. L'adapter du plugin atteint l'API mais est refuse. Une seconde sonde avec le numero magique officiel `+15005550006` retourne HTTP 400 / `21659`; le SID/token charge ne correspond donc pas au contexte Test Credentials attendu, ou se comporte comme une paire live/trial sans expediteur provisionne. Aucun SMS reel n'a ete remis.
+Etat local au 2026-07-16: **Twilio selectionne et trois credentials charges**. La sonde Account retourne HTTP 200, ce qui prouve une paire live/trial valide. Le compte retourne zero numero SMS provisionne; le `From` magique est donc refuse en HTTP 400 / `21659`. Aucun SMS reel n'a ete remis. Il faut soit fournir la paire Test Account SID/Test Auth Token correspondante, soit provisionner un numero SMS pour la paire live/trial.
 
 1. Choisir le provider dans `Identity Kit > Overview > SMS provider`.
 2. Ajouter les constantes affichees sous `Show wp-config.php examples` avant la ligne de fin d'edition de `wp-config.php`, ou utiliser les memes variables d'environnement.
@@ -32,7 +32,7 @@ Critere: message recu, resultat accepte, numero masque dans l'audit, code OTP a 
 
 ## 3. Newsletter Brevo ou Resend et DKIM
 
-Etat local au 2026-07-16: **Resend selectionne et cle chargee**. Le diagnostic du plugin a ete accepte par l'API avec l'expediteur de test `onboarding@resend.dev` et l'adresse sure `delivered+photovault@resend.dev`, sans creer d'abonne ni de campagne. Cette simulation prouve la connectivite et la validite de la cle; l'expediteur persistant reste local et la recette domaine SPF/DKIM demeure requise.
+Etat local au 2026-07-16: **Resend selectionne et cle chargee**. Le diagnostic du plugin a ete accepte par l'API avec l'expediteur de test `onboarding@resend.dev` et l'adresse sure `delivered+photovault@resend.dev`, sans creer d'abonne ni de campagne. Un envoi vers la destination reelle demandee a ensuite ete refuse en HTTP 403 / `validation_error`, car le domaine de test ne peut remettre qu'a l'adresse proprietaire du compte. La cle ne peut pas lire les domaines (HTTP 401), ce qui est coherent avec une cle limitee a l'envoi. L'expediteur persistant reste local et la recette domaine SPF/DKIM demeure requise.
 
 1. Choisir le provider dans `Newsletter Kit > Settings`.
 2. Ajouter la constante affichee dans `Server-side credentials` puis configurer une adresse `From` verifiee chez le provider.
@@ -97,8 +97,8 @@ Critere: rapport de recette signe avec URL, date, versions, resultats et plan de
 | Validation | Statut | Date | Preuve / responsable |
 |---|---|---|---|
 | Packaging | Valide localement | 2026-07-16 | Miroirs identiques, plugins actifs uniques |
-| SMS reel | API atteinte, configuration Twilio a corriger | | Test refuse avec `21659`; paire Test Credentials coherente ou expediteur live requis |
-| Newsletter + DKIM | Simulation Resend validee, domaine requis | 2026-07-16 | API Resend acceptee avec adresses de test officielles; SPF/DKIM et reception reelle restent a valider |
+| SMS reel | API atteinte, numero Twilio requis | | Paire live/trial valide, zero numero SMS, test refuse avec `21659` |
+| Newsletter + DKIM | Simulation Resend validee, domaine requis | 2026-07-16 | API de test acceptee; destination reelle refusee en `403 validation_error` sans domaine verifie |
 | Multisite ou non applicable | Non applicable | 2026-07-16 | Livraison mono-site |
 | Tracking desactive ou consenti | Desactive | 2026-07-16 | Decision secure-by-default |
 | Accessibilite assistee | Validee par le proprietaire | 2026-07-16 | Axe, clavier, reflow et dialogues valides; NVDA differe |
