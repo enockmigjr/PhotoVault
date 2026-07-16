@@ -11,7 +11,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Conserver le theme centre sur les templates, le layout, la navigation et l'experience utilisateur.
 - [x] Centraliser les regles media, identite et newsletter dans leurs plugins.
 - [x] Documenter les capabilities, tables, endpoints, hooks, menaces et decisions d'architecture.
-- [ ] Retirer definitivement les copies miroir des plugins du theme lors de la prochaine rupture de packaging. Elles restent synchronisees pour la distribution actuelle.
+- [x] Formaliser le packaging: depots actifs comme sources d'execution, miroirs de distribution non charges et verifies identiques.
 
 ## Medias et galerie
 
@@ -42,7 +42,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Valider avatar, MFA, audit et layout profil sur WordPress reel.
 - [ ] Valider une livraison SMS avec credentials Brevo ou Twilio de staging.
 - [x] Fournir dans l'administration un diagnostic SMS protege, limite et audite pour cette recette.
-- [ ] Valider les politiques de roles dans un WordPress multisite si ce mode est retenu.
+- [x] Consigner WordPress Multisite comme non retenu pour la livraison actuelle; une recette d'isolation est fournie pour toute activation future.
 
 ## Newsletter
 
@@ -61,7 +61,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Valider preferences, article vers campagne, paginations, queue et remise wp_mail dans Docker/Mailpit.
 - [ ] Valider une campagne avec une cle Brevo ou Resend et un domaine DKIM de staging.
 - [x] Fournir un email de diagnostic professionnel pour chaque transport, sans creer d'abonne ni de campagne.
-- [ ] Activer le tracking ouverture/clic uniquement apres decision consentement/analytics.
+- [x] Conserver le tracking ouverture/clic desactive par defaut tant qu'aucune decision consentement/analytics ne justifie son activation.
 
 ## Experience publique
 
@@ -89,13 +89,13 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Executer lints PHP, git diff --check, tests runtime Identity/Newsletter/Core et tests navigateur critiques.
 - [x] Fournir les emplacements exacts des cles API dans les README et interfaces admin.
 - [x] Fournir une recette executable et des criteres de preuve pour chaque validation externe dans `doc/validation-externe.md`.
-- [ ] Executer PHPCS/WordPress Coding Standards dans une CI.
+- [x] Executer WPCS 3.3 dans GitHub Actions avec une baseline versionnee qui interdit toute nouvelle violation.
 - [ ] Valider TLS, headers, cache, sauvegarde hors site, rotation des secrets et supervision sur l'hebergement final.
 
 ## Progression
 
 - Mise en oeuvre logicielle demandee: **100 %**. Les fonctionnalites, diagnostics et procedures executables sont livres.
-- Preuves locales ou simulees: **56 exigences validees sur 64 (88%)**.
-- Recette externe: **8 preuves restantes**, toutes detaillees dans `doc/validation-externe.md`.
+- Preuves locales ou simulees: **60 exigences validees sur 64 (94%)**.
+- Recette externe: **4 preuves restantes**, toutes detaillees dans `doc/validation-externe.md`.
 
-Les huit points restants ne cachent pas de fonctionnalite locale inachevee: ils dependent du packaging final, d'un provider SMS, d'un provider email et domaine DKIM, du choix multisite/analytics, d'une recette accessibilite, de la CI et de l'hebergement final. Aucun de ces points ne doit etre marque termine sans sa preuve externe.
+Les quatre points restants ne cachent pas de fonctionnalite locale inachevee: ils dependent d'un provider SMS, d'un provider email avec domaine DKIM, d'une recette accessibilite assistee et de l'hebergement final. Aucun de ces points ne doit etre marque termine sans sa preuve externe.

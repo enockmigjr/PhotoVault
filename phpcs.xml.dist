@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<ruleset name="PhotoVault">
+	<description>WordPress coding standards for the PhotoVault theme and bundled plugins.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/.agents/*</exclude-pattern>
+
+	<arg name="basepath" value="."/>
+	<arg name="extensions" value="php"/>
+
+	<rule ref="WordPress-Extra"/>
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="photovault"/>
+				<element value="identity-security-kit"/>
+				<element value="newsletter-campaign-kit"/>
+				<element value="photovault-core"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>

@@ -1,0 +1,34 @@
+name: PHP coding standards
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  phpcs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install quality dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Validate PHP coding standards
+        shell: bash
+        run: |
+          mkdir -p build
+          vendor/bin/phpcs --standard=phpcs.xml.dist --report=json > build/phpcs.json || true
+          php tools/check-phpcs-baseline.php build/phpcs.json phpcs-baseline.json

@@ -1,0 +1,16 @@
+{
+  "name": "photovault/platform-quality",
+  "description": "Development tooling for the PhotoVault theme and bundled plugins.",
+  "type": "project",
+  "license": "proprietary",
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.1",
+    "wp-coding-standards/wpcs": "^3.3"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "sort-packages": true
+  }
+}

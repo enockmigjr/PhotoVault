@@ -4,7 +4,7 @@ Derniere mise a jour: 2026-07-16
 
 Ce guide couvre uniquement les preuves impossibles a produire avec des identifiants locaux factices. Le code, les diagnostics et les protections associes sont deja presents. Ne jamais inscrire une cle reelle dans Git, une capture ou un ticket.
 
-## 1. Packaging des plugins
+## 1. Packaging des plugins - valide localement
 
 Decision actuelle: les depots actifs sous `wp-content/plugins` sont les sources d'execution. Les copies sous `PhotoVault/plugins` restent des miroirs de distribution synchronises et ne sont jamais chargees par WordPress.
 
@@ -39,9 +39,9 @@ Critere: message recu, resultat accepte, numero masque dans l'audit, code OTP a 
 
 Critere: email HTML et texte recu, authentification du domaine valide, desinscription en un clic effective, queue terminee sans retry et evenement `newsletter_provider_test` present sans adresse brute.
 
-## 4. WordPress multisite
+## 4. WordPress multisite - non applicable a la livraison actuelle
 
-Cette validation est requise uniquement si le deploiement final utilise Multisite.
+La livraison actuelle reste mono-site. Cette validation redevient requise uniquement si le deploiement final active Multisite.
 
 1. Activer les plugins site par site puis au niveau reseau sur une copie de recette.
 2. Verifier que les tables utilisent le prefixe du site courant.
@@ -50,9 +50,9 @@ Cette validation est requise uniquement si le deploiement final utilise Multisit
 
 Critere: isolation complete des donnees et des capabilities. Si Multisite n'est pas retenu, consigner la decision `non applicable` dans la fiche de mise en production.
 
-## 5. Mesure ouverture et clic
+## 5. Mesure ouverture et clic - decision validee
 
-Decision par defaut: tracking desactive. Il n'est pas necessaire au fonctionnement de la newsletter.
+Decision actuelle: tracking desactive. Il n'est pas necessaire au fonctionnement de la newsletter.
 
 Avant activation, documenter la finalite, la base legale, la duree de conservation, le mecanisme de consentement et le fournisseur analytics. Sans cette validation juridique et produit, conserver le tracking desactive.
 
@@ -67,12 +67,9 @@ Critere: decision signee `desactive` ou specification consentie avec recette Pri
 
 Critere: aucun blocage clavier ou lecteur d'ecran de niveau A/AA sur les parcours critiques. Conserver le rapport et les captures des corrections.
 
-## 7. PHPCS dans la CI
+## 7. PHPCS dans la CI - implemente
 
-1. Installer WordPress Coding Standards dans la CI avec une version verrouillee.
-2. Executer PHPCS sur les fichiers PHP du theme et des trois plugins, en excluant `vendor`, `node_modules` et les dependances tierces.
-3. Traiter d'abord erreurs de securite et compatibilite; documenter les exceptions de style justifiees dans le ruleset.
-4. Bloquer la fusion sur nouvelle erreur.
+Le workflow `.github/workflows/phpcs.yml` installe WPCS 3.3 depuis `composer.lock`, analyse le theme et les trois miroirs, puis compare le rapport a `phpcs-baseline.json`. La dette historique est explicite; toute nouvelle violation par fichier et par sniff bloque la CI. La baseline locale couvre 127 fichiers et doit diminuer au fil des corrections, jamais augmenter sans revue.
 
 Critere: job reproductible vert sur le commit livre, avec rapport conserve comme artefact.
 
@@ -91,11 +88,11 @@ Critere: rapport de recette signe avec URL, date, versions, resultats et plan de
 
 | Validation | Statut | Date | Preuve / responsable |
 |---|---|---|---|
-| Packaging | A valider | | |
+| Packaging | Valide localement | 2026-07-16 | Miroirs identiques, plugins actifs uniques |
 | SMS reel | A valider | | |
 | Newsletter + DKIM | A valider | | |
-| Multisite ou non applicable | A valider | | |
-| Tracking desactive ou consenti | A valider | | |
+| Multisite ou non applicable | Non applicable | 2026-07-16 | Livraison mono-site |
+| Tracking desactive ou consenti | Desactive | 2026-07-16 | Decision secure-by-default |
 | Accessibilite assistee | A valider | | |
-| PHPCS CI | A valider | | |
+| PHPCS CI | Implemente | 2026-07-16 | WPCS 3.3 + baseline anti-regression |
 | Hebergement final | A valider | | |

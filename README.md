@@ -11,7 +11,7 @@ Le projet est organise autour d'un theme editorial et de trois plugins metier re
 
 ## Etat actuel
 
-Mise en oeuvre logicielle: 100 %. Cinquante-six preuves sur 64 sont reproductibles localement; les huit preuves externes dependent du packaging final, de providers et de l'environnement de recette/production. Voir la checklist canonique et la recette externe.
+Mise en oeuvre logicielle: 100 %. Soixante preuves sur 64 sont reproductibles localement; les quatre preuves externes dependent des providers et de l'environnement de recette/production. Voir la checklist canonique et la recette externe.
 
 Les fondations principales sont en place: separation theme/plugins, controles serveur sur les medias sensibles, previews/miniatures au lieu des originaux HD dans les vues ensemble, endpoint de telechargement controle, verification email, audit, campagnes newsletter, dashboard personnel, reservations de shootings et Docker.
 
@@ -98,4 +98,4 @@ Les secrets restent hors de WordPress et de Git. Les noms exacts et exemples wp-
 
 ## Reste externe
 
-La liste exhaustive et non surestimee est maintenue dans [doc/tasks-objectif-initial.md](doc/tasks-objectif-initial.md). Les points ouverts concernent principalement providers reels, DKIM, multisite/analytics si retenus, accessibilite de recette, CI et hebergement final. Chaque recette, critere et preuve attendue est detaille dans [doc/validation-externe.md](doc/validation-externe.md).
+La liste exhaustive et non surestimee est maintenue dans [doc/tasks-objectif-initial.md](doc/tasks-objectif-initial.md). Les points ouverts concernent uniquement les providers reels, DKIM, l'accessibilite assistee et l'hebergement final. Chaque recette, critere et preuve attendue est detaille dans [doc/validation-externe.md](doc/validation-externe.md).

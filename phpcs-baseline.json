@@ -1,0 +1,976 @@
+{
+    "version": 1,
+    "generated_at": "2026-07-16",
+    "files": {
+        "404.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1
+        },
+        "archive-media_item.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 3,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.Files.FileName.NotHyphenatedLowercase": 1,
+            "WordPress.WP.Capabilities.Unknown": 1
+        },
+        "archive.php": {
+            "Universal.Operators.DisallowShortTernary.Found": 1
+        },
+        "comments.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "footer.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 11,
+            "WordPress.Security.NonceVerification.Recommended": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "front-page.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 5,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 5,
+            "Generic.WhiteSpace.ScopeIndent.IncorrectExact": 2,
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 5,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 5,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 6,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 4,
+            "Universal.Operators.DisallowStandalonePostIncrementDecrement.PostIncrementFound": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 3
+        },
+        "functions.php": {
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "header.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 11,
+            "Universal.Operators.DisallowShortTernary.Found": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 10,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "inc/customizer.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 11,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 4
+        },
+        "inc/theme-setup.php": {
+            "Internal.LineEndings.Mixed": 1,
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 2,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 2,
+            "Squiz.WhiteSpace.SuperfluousWhitespace.EndLine": 4,
+            "Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 12,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 9,
+            "WordPress.WP.EnqueuedResourceParameters.MissingVersion": 1
+        },
+        "index.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1
+        },
+        "page-booking.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 7,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "page-contact.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 2,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "page-dashboard.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 8,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 6,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 24,
+            "Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace": 1,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 4,
+            "Universal.Operators.DisallowShortTernary.Found": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "WordPress.Security.NonceVerification.Recommended": 6,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "page-features.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 6
+        },
+        "page-forgot-password.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.Security.NonceVerification.Recommended": 2,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "page-journal.php": {
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 2
+        },
+        "page-login.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "WordPress.Security.NonceVerification.Recommended": 6
+        },
+        "page-pricing.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "page-profile.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 2,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 3,
+            "Universal.Operators.DisallowShortTernary.Found": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 42,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 29,
+            "WordPress.Security.NonceVerification.Recommended": 6,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "page-register.php": {
+            "WordPress.Security.NonceVerification.Recommended": 4
+        },
+        "page.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2
+        },
+        "plugins/identity-security-kit/identity-security-kit.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 21,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 19,
+            "WordPress.WP.Capabilities.Unknown": 1
+        },
+        "plugins/identity-security-kit/inc/admin.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1,
+            "Universal.Operators.DisallowShortTernary.Found": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 19,
+            "WordPress.Security.NonceVerification.Recommended": 6,
+            "WordPress.WP.Capabilities.Unknown": 7,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "plugins/identity-security-kit/inc/audit.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 10,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 6,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.Security.NonceVerification.Recommended": 8,
+            "WordPress.WP.Capabilities.Unknown": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "plugins/identity-security-kit/inc/auth-handlers.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 11,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 6,
+            "WordPress.PHP.NoSilencedErrors.Discouraged": 1,
+            "WordPress.Security.NonceVerification.Missing": 20,
+            "WordPress.WP.Capabilities.Unknown": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "plugins/identity-security-kit/inc/email-change.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 5,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 2,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 5
+        },
+        "plugins/identity-security-kit/inc/email-otp.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.Security.NonceVerification.Recommended": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 3
+        },
+        "plugins/identity-security-kit/inc/email-templates.php": {
+            "Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 17,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 6,
+            "Squiz.PHP.EmbeddedPhp.ContentBeforeOpen": 1,
+            "Universal.Operators.DisallowShortTernary.Found": 2,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 8
+        },
+        "plugins/identity-security-kit/inc/email-verification.php": {
+            "Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 4,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 3
+        },
+        "plugins/identity-security-kit/inc/mfa-channels-ui.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 11,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "WordPress.Security.NonceVerification.Recommended": 8,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 4
+        },
+        "plugins/identity-security-kit/inc/mfa-login.php": {
+            "Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 9,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.Security.NonceVerification.Missing": 1,
+            "WordPress.Security.NonceVerification.Recommended": 6
+        },
+        "plugins/identity-security-kit/inc/mfa-methods.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.PHP.YodaConditions.NotYoda": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2,
+            "WordPress.WhiteSpace.ControlStructureSpacing.BlankLineAfterEnd": 1
+        },
+        "plugins/identity-security-kit/inc/mfa-policy.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 5,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 5,
+            "PEAR.Functions.FunctionCallSignature.MultipleArguments": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.Security.NonceVerification.Recommended": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 5
+        },
+        "plugins/identity-security-kit/inc/mfa-ui.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 6,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 4,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 19,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/identity-security-kit/inc/mfa.php": {
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "plugins/identity-security-kit/inc/otp.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 10,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 12,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 9,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 4
+        },
+        "plugins/identity-security-kit/inc/phone-otp.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 4,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "plugins/identity-security-kit/inc/phone.php": {
+            "WordPress.PHP.YodaConditions.NotYoda": 1
+        },
+        "plugins/identity-security-kit/inc/secret-storage.php": {
+            "WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode": 1,
+            "WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode": 1
+        },
+        "plugins/identity-security-kit/inc/sms-provider.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode": 1
+        },
+        "plugins/identity-security-kit/tests/otp.php": {
+            "Generic.CodeAnalysis.UnusedFunctionParameter.Found": 1,
+            "Generic.Files.OneObjectStructurePerFile.MultipleFound": 1,
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 2,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 6,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace": 13,
+            "Universal.Files.SeparateFunctionsFromOO.Mixed": 1,
+            "Universal.Operators.DisallowStandalonePostIncrementDecrement.PostIncrementFound": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.Files.FileName.InvalidClassFileName": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 2,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "plugins/identity-security-kit/tests/run.php": {
+            "Generic.Classes.DuplicateClassName.Found": 1,
+            "Universal.Files.SeparateFunctionsFromOO.Mixed": 1,
+            "WordPress.Files.FileName.InvalidClassFileName": 1,
+            "WordPress.PHP.YodaConditions.NotYoda": 2,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fwrite": 2
+        },
+        "plugins/identity-security-kit/tests/runtime-email-change.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 1,
+            "WordPress.PHP.YodaConditions.NotYoda": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/identity-security-kit/tests/runtime-email-templates.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 2,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 8,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/identity-security-kit/tests/runtime-identity.php": {
+            "Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed": 5,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 12,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 5,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.PHP.YodaConditions.NotYoda": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.Security.NonceVerification.Missing": 1,
+            "WordPress.WP.Capabilities.Unknown": 1
+        },
+        "plugins/identity-security-kit/tests/runtime-mfa-ui.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/identity-security-kit/tests/runtime-totp-qr.php": {
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 4,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/identity-security-kit/tests/sms-provider.php": {
+            "Generic.Classes.DuplicateClassName.Found": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "Universal.Files.SeparateFunctionsFromOO.Mixed": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 5,
+            "WordPress.Files.FileName.InvalidClassFileName": 1,
+            "WordPress.PHP.DevelopmentFunctions.error_log_var_export": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 3,
+            "WordPress.WP.AlternativeFunctions.json_encode_json_encode": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/admin.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 8,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 5,
+            "Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 5,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.DB.PreparedSQL.NotPrepared": 3,
+            "WordPress.Security.NonceVerification.Recommended": 8,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fclose": 1,
+            "WordPress.WP.Capabilities.Unknown": 8
+        },
+        "plugins/newsletter-campaign-kit/inc/audience-snapshots.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 3,
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 4,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 4,
+            "PEAR.Functions.FunctionCallSignature.MultipleArguments": 4,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.DB.PreparedSQL.NotPrepared": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/audit.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 1,
+            "Internal.LineEndings.Mixed": 1,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 7,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 1,
+            "Squiz.WhiteSpace.SuperfluousWhitespace.EndLine": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 6,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 8,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 2,
+            "WordPress.DB.PreparedSQL.NotPrepared": 3,
+            "WordPress.Security.NonceVerification.Recommended": 6,
+            "WordPress.WP.Capabilities.Unknown": 2
+        },
+        "plugins/newsletter-campaign-kit/inc/blocks.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 8,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "Universal.Operators.DisallowShortTernary.Found": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 4,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.Capabilities.Unknown": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/campaigns.php": {
+            "Generic.Formatting.MultipleStatementAlignment.IncorrectWarning": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 23,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 7,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 10,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 1,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 4,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.Security.NonceVerification.Missing": 16,
+            "WordPress.Security.NonceVerification.Recommended": 8,
+            "WordPress.WP.Capabilities.Unknown": 11,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 6
+        },
+        "plugins/newsletter-campaign-kit/inc/double-opt-in.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 11,
+            "Squiz.PHP.EmbeddedPhp.ContentBeforeOpen": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 5,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 1,
+            "WordPress.Security.NonceVerification.Recommended": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 4
+        },
+        "plugins/newsletter-campaign-kit/inc/exports.php": {
+            "Squiz.PHP.DisallowSizeFunctionsInLoops.Found": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine": 16,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 7,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 2,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fclose": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fwrite": 2,
+            "WordPress.WP.Capabilities.Unknown": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/http-provider.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 5,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/import-admin.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 3,
+            "WordPress.Security.NonceVerification.Recommended": 3,
+            "WordPress.WP.Capabilities.Unknown": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "plugins/newsletter-campaign-kit/inc/import.php": {
+            "Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 5,
+            "Universal.Operators.DisallowStandalonePostIncrementDecrement.PostIncrementFound": 13,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 14,
+            "WordPress.DB.PreparedSQL.NotPrepared": 3,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fclose": 3,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fopen": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/native-providers.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/post-campaigns.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "WordPress.WP.Capabilities.Unknown": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/preferences.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 18,
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 10,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 10,
+            "PEAR.Functions.FunctionCallSignature.MultipleArguments": 9,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 4,
+            "Squiz.PHP.EmbeddedPhp.ContentBeforeOpen": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 7,
+            "WordPress.DB.PreparedSQL.NotPrepared": 3,
+            "WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare": 1,
+            "WordPress.Security.NonceVerification.Recommended": 4
+        },
+        "plugins/newsletter-campaign-kit/inc/privacy.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 5,
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 1,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 1,
+            "PEAR.Functions.FunctionCallSignature.MultipleArguments": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 19,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 11,
+            "WordPress.DB.PreparedSQL.NotPrepared": 3
+        },
+        "plugins/newsletter-campaign-kit/inc/providers.php": {
+            "Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 15,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "Squiz.PHP.EmbeddedPhp.ContentAfterEnd": 1,
+            "Squiz.PHP.EmbeddedPhp.ContentBeforeOpen": 1,
+            "Universal.Operators.DisallowShortTernary.Found": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 13,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 20,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 2,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.Capabilities.Unknown": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 5
+        },
+        "plugins/newsletter-campaign-kit/inc/queue.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 9,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 12,
+            "WordPress.DB.PreparedSQL.NotPrepared": 4,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.Capabilities.Unknown": 3,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/reports.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 9,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 3,
+            "Squiz.Strings.DoubleQuoteUsage.NotRequired": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 2,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.WP.Capabilities.Unknown": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/scheduler.php": {
+            "Generic.Formatting.MultipleStatementAlignment.IncorrectWarning": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 4,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 4,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 5,
+            "WordPress.WP.CronInterval.CronSchedulesInterval": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/segment-engine.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 5,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 5,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 11,
+            "WordPress.DB.PreparedSQL.NotPrepared": 6,
+            "WordPress.Security.NonceVerification.Missing": 16,
+            "WordPress.WP.Capabilities.Unknown": 6,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/segments.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 21,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 15,
+            "Universal.Operators.DisallowStandalonePostIncrementDecrement.PostIncrementFound": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 6,
+            "WordPress.DB.PreparedSQL.NotPrepared": 4,
+            "WordPress.Security.NonceVerification.Recommended": 10,
+            "WordPress.WP.Capabilities.Unknown": 4,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 3
+        },
+        "plugins/newsletter-campaign-kit/inc/subscribers.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 9,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 3,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.Security.NonceVerification.Missing": 2,
+            "WordPress.Security.NonceVerification.Recommended": 2
+        },
+        "plugins/newsletter-campaign-kit/inc/suppressions.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 7,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 6,
+            "WordPress.DB.PreparedSQL.NotPrepared": 2,
+            "WordPress.WP.Capabilities.Unknown": 1
+        },
+        "plugins/newsletter-campaign-kit/inc/templates.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 10,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1,
+            "Squiz.PHP.EmbeddedPhp.ContentAfterEnd": 1,
+            "Squiz.PHP.EmbeddedPhp.ContentBeforeOpen": 1,
+            "Universal.Operators.DisallowShortTernary.Found": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 7,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 3,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 6,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.Capabilities.Unknown": 5,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/newsletter-campaign-kit/newsletter-campaign-kit.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 6,
+            "Internal.LineEndings.Mixed": 1,
+            "Squiz.WhiteSpace.SuperfluousWhitespace.EndLine": 18
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-admin-pagination.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 5,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 17,
+            "Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace": 5,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 8,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 24,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 4,
+            "WordPress.DB.PreparedSQL.NotPrepared": 15,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.Security.NonceVerification.Recommended": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-advanced-exports.php": {
+            "Generic.ControlStructures.InlineControlStructure.NotAllowed": 4,
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 8,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 10,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fclose": 2,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fopen": 2,
+            "WordPress.WP.Capabilities.Unknown": 2,
+            "WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-audience-admin-pagination.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 3,
+            "Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 8,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 3,
+            "WordPress.DB.PreparedSQL.NotPrepared": 5,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.Security.NonceVerification.Recommended": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-audience-snapshots.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 23,
+            "Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 5,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 8,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 5,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.PHP.YodaConditions.NotYoda": 3,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-campaign-confirmation.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 17,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 6,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 3,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-double-opt-in-http.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 8,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 4,
+            "WordPress.PHP.YodaConditions.NotYoda": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-double-opt-in.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 20,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 7,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 1,
+            "WordPress.PHP.YodaConditions.NotYoda": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-editorial-blocks.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.Capabilities.Unknown": 2
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-http-provider.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 10,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 6,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 5,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-import.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents": 1,
+            "WordPress.WP.AlternativeFunctions.unlink_unlink": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 2
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-lifecycle.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-post-campaigns.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 8,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "WordPress.PHP.YodaConditions.NotYoda": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 2
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-preferences.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 7,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 13,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 4,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 7,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-scheduler-operations.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 22,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 10,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 14,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 8,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-templates.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 14,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/runtime-unsubscribe.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 12,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 5,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/schedule-date.php": {
+            "Generic.Classes.DuplicateClassName.Found": 1,
+            "Universal.Files.SeparateFunctionsFromOO.Mixed": 1,
+            "WordPress.Files.FileName.InvalidClassFileName": 1,
+            "WordPress.PHP.YodaConditions.NotYoda": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fwrite": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/segment-engine.php": {
+            "Generic.Classes.DuplicateClassName.Found": 1,
+            "Universal.Files.SeparateFunctionsFromOO.Mixed": 1,
+            "WordPress.Files.FileName.InvalidClassFileName": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fwrite": 1
+        },
+        "plugins/newsletter-campaign-kit/tests/unsubscribe.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fwrite": 1,
+            "WordPress.WP.AlternativeFunctions.parse_url_parse_url": 1
+        },
+        "plugins/photovault-core/inc/access-requests.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 6,
+            "Squiz.Strings.DoubleQuoteUsage.NotRequired": 3,
+            "Universal.Operators.DisallowShortTernary.Found": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 8,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 4,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 6,
+            "WordPress.DB.PreparedSQL.NotPrepared": 3,
+            "WordPress.Security.NonceVerification.Recommended": 6,
+            "WordPress.WP.Capabilities.Unknown": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 7
+        },
+        "plugins/photovault-core/inc/admin-access.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 5,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.Capabilities.Unknown": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "plugins/photovault-core/inc/admin-ui.php": {
+            "WordPress.Security.NonceVerification.Recommended": 2
+        },
+        "plugins/photovault-core/inc/admin-upload.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.WP.Capabilities.Unknown": 1
+        },
+        "plugins/photovault-core/inc/ajax-filters.php": {
+            "Generic.CodeAnalysis.UnusedFunctionParameter.Found": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 18,
+            "Internal.LineEndings.Mixed": 1,
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 2,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 2,
+            "PEAR.Functions.FunctionCallSignature.MultipleArguments": 4,
+            "Squiz.WhiteSpace.SuperfluousWhitespace.EndLine": 8,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 18,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.PHP.NoSilencedErrors.Discouraged": 10,
+            "WordPress.PHP.YodaConditions.NotYoda": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents": 2,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_readfile": 2,
+            "WordPress.WP.AlternativeFunctions.rename_rename": 1,
+            "WordPress.WP.AlternativeFunctions.unlink_unlink": 3
+        },
+        "plugins/photovault-core/inc/audit-log.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "Universal.Operators.DisallowShortTernary.Found": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.DB.PreparedSQL.NotPrepared": 3,
+            "WordPress.Security.NonceVerification.Recommended": 6,
+            "WordPress.WP.Capabilities.Unknown": 1
+        },
+        "plugins/photovault-core/inc/cli.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 12,
+            "Universal.Operators.DisallowStandalonePostIncrementDecrement.PostIncrementFound": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 10,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 8,
+            "WordPress.Files.FileName.InvalidClassFileName": 1
+        },
+        "plugins/photovault-core/inc/contact.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 3,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 9
+        },
+        "plugins/photovault-core/inc/emails.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 5,
+            "Squiz.PHP.EmbeddedPhp.ContentBeforeOpen": 1,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "plugins/photovault-core/inc/helpers.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 12,
+            "Internal.LineEndings.Mixed": 1,
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 2,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 2,
+            "Squiz.WhiteSpace.SuperfluousWhitespace.EndLine": 1,
+            "Universal.Operators.DisallowStandalonePostIncrementDecrement.PostIncrementFound": 3,
+            "Universal.WhiteSpace.PrecisionAlignment.Found": 2,
+            "WordPress.PHP.YodaConditions.NotYoda": 1
+        },
+        "plugins/photovault-core/inc/media-handlers.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 15,
+            "Internal.LineEndings.Mixed": 1,
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 1,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 1,
+            "PEAR.Functions.FunctionCallSignature.MultipleArguments": 1,
+            "Squiz.WhiteSpace.SuperfluousWhitespace.EndLine": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.PHP.NoSilencedErrors.Discouraged": 1,
+            "WordPress.Security.NonceVerification.Missing": 2,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents": 2
+        },
+        "plugins/photovault-core/inc/post-types.php": {
+            "Generic.Files.LineEndings.InvalidEOLChar": 1,
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 7,
+            "Internal.LineEndings.Mixed": 1,
+            "NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLine": 1,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 5,
+            "Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace": 2,
+            "Squiz.PHP.EmbeddedPhp.ContentAfterOpen": 1,
+            "Squiz.PHP.EmbeddedPhp.ContentBeforeOpen": 1,
+            "Universal.WhiteSpace.DisallowInlineTabs.NonIndentTabsUsed": 17,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 6,
+            "WordPress.Security.EscapeOutput.UnsafePrintingFunction": 7,
+            "WordPress.Security.NonceVerification.Recommended": 2,
+            "WordPress.WP.Capabilities.Unknown": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 2
+        },
+        "plugins/photovault-core/inc/private-storage.php": {
+            "PSR2.Files.EndFileNewline.NoneFound": 1,
+            "Universal.Operators.DisallowStandalonePostIncrementDecrement.PostIncrementFound": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 3,
+            "WordPress.PHP.NoSilencedErrors.Discouraged": 3,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents": 2,
+            "WordPress.WP.AlternativeFunctions.rename_rename": 1,
+            "WordPress.WP.AlternativeFunctions.unlink_unlink": 1,
+            "WordPress.WP.PostsPerPage.posts_per_page_posts_per_page": 1
+        },
+        "plugins/photovault-core/inc/roles.php": {
+            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 1,
+            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 1,
+            "PEAR.Functions.FunctionCallSignature.MultipleArguments": 2,
+            "Squiz.WhiteSpace.SuperfluousWhitespace.EndLine": 1,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 5,
+            "WordPress.PHP.YodaConditions.NotYoda": 1,
+            "WordPress.Security.NonceVerification.Recommended": 1,
+            "WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore": 1
+        },
+        "plugins/photovault-core/inc/shootings.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 26,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 4,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 1,
+            "Universal.Operators.DisallowShortTernary.Found": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 6,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 18,
+            "WordPress.Security.NonceVerification.Recommended": 4,
+            "WordPress.WP.Capabilities.Unknown": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 8,
+            "WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore": 2
+        },
+        "plugins/photovault-core/inc/taxonomies.php": {
+            "Squiz.PHP.CommentedOutCode.Found": 1
+        },
+        "plugins/photovault-core/inc/user-library.php": {
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.DB.PreparedSQL.NotPrepared": 5
+        },
+        "plugins/photovault-core/photovault-core.php": {
+            "Internal.LineEndings.Mixed": 1,
+            "Squiz.WhiteSpace.SuperfluousWhitespace.EndLine": 1
+        },
+        "plugins/photovault-core/tests/runtime-email-notifications.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 8,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.DB.PreparedSQL.NotPrepared": 2,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/photovault-core/tests/runtime-media-authorization.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 15,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 7,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 2,
+            "WordPress.DB.PreparedSQL.NotPrepared": 2,
+            "WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare": 2,
+            "WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode": 1,
+            "WordPress.PHP.YodaConditions.NotYoda": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 3
+        },
+        "plugins/photovault-core/tests/runtime-media-management.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/photovault-core/tests/runtime-shootings.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 7,
+            "Universal.NamingConventions.NoReservedKeywordParameterNames.returnFound": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 1,
+            "WordPress.DB.PreparedSQL.NotPrepared": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/photovault-core/tests/runtime-user-library.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 2,
+            "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 2,
+            "WordPress.DB.PreparedSQL.NotPrepared": 3,
+            "WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "search.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 4,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 6,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 2,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 2
+        },
+        "single-media_item.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 3,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 11,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 16,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.Files.FileName.NotHyphenatedLowercase": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "single.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 3
+        },
+        "taxonomy.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 2,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 5,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "templates/dashboard-sidebar.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 3,
+            "Universal.Operators.DisallowShortTernary.Found": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 8,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 6,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        },
+        "templates/media-card.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "templates/post-card.php": {
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1
+        },
+        "templates/post-listing.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 2,
+            "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 2,
+            "Squiz.PHP.EmbeddedPhp.MultipleStatements": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 2,
+            "WordPress.WP.I18n.MissingTranslatorsComment": 1
+        },
+        "tests/runtime-contact-email.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 3,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
+            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "tests/runtime-dashboard.php": {
+            "Generic.Formatting.DisallowMultipleStatements.SameLine": 1,
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 12,
+            "Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 1,
+            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "tests/runtime-gallery.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode": 1,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 3
+        },
+        "tools/check-phpcs-baseline.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 4,
+            "WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys": 4,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 2,
+            "WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fwrite": 5,
+            "WordPress.WP.AlternativeFunctions.json_encode_json_encode": 1,
+            "WordPress.WP.GlobalVariablesOverride.Prohibited": 1
+        }
+    }
+}
