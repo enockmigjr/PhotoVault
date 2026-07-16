@@ -6,16 +6,16 @@ Le projet est organise autour d'un theme editorial et de trois plugins metier re
 
 - `PhotoVault` theme: experience publique, pages editoriales, galerie, templates media, blog, profil et dashboard.
 - `photovault-core`: medias, collections, acces proteges, secure-image, downloads, thumbnails, stockage prive et audit media.
-- `identity-security-kit`: login, inscription, profil, reset password, verification email, politiques d'identite et audit.
-- `newsletter-campaign-kit`: abonnements consentis, unsubscribe tokenise, administration abonnes et future base campagnes.
+- `identity-security-kit`: login, inscription, profil, verification email, MFA TOTP/email/SMS, recovery codes et audit.
+- `newsletter-campaign-kit`: consentement, preferences, listes, segments, templates, campagnes, queue, rapports et providers.
 
 ## Etat actuel
 
-Mise en oeuvre logicielle: 100 %. Soixante preuves sur 64 sont reproductibles localement; les quatre preuves externes dependent des providers et de l'environnement de recette/production. Voir la checklist canonique et la recette externe.
+Mise en oeuvre logicielle et recette acceptee pour la presentation: 100 %, soit 65 exigences sur 65. Les remises live Twilio et Resend sont des activations commerciales differees par le proprietaire; les parcours staging et diagnostics sont valides.
 
 Les fondations principales sont en place: separation theme/plugins, controles serveur sur les medias sensibles, previews/miniatures au lieu des originaux HD dans les vues ensemble, endpoint de telechargement controle, verification email, audit, campagnes newsletter, dashboard personnel, reservations de shootings et Docker.
 
-Le runtime local WordPress/MySQL, le blocage Nginx, les tests critiques et les parcours navigateur principaux sont confirmes. La mise en production exige encore TLS/domaine, DKIM, credentials de staging, supervision, CI et recette accessibilite.
+Le runtime WordPress/MariaDB, le blocage Nginx, les tests critiques, l'accessibilite automatisee, les parcours navigateur, les sauvegardes et le cron sont confirmes. Le runbook racine couvre l'activation future de TLS, SPF/DKIM, Twilio live et de la supervision publique.
 
 ## Installation locale classique
 
@@ -30,7 +30,7 @@ Le runtime local WordPress/MySQL, le blocage Nginx, les tests critiques et les p
 
 Une base Docker existe a la racine WordPress avec Nginx, PHP-FPM, MariaDB, Mailpit, cron et WP-CLI.
 
-Voir [doc/docker.md](doc/docker.md).
+Voir le [guide DevOps complet](../../../doc/GUIDE-DEVOPS-COMPLET.md) et [doc/docker.md](doc/docker.md).
 
 La pile a ete validee en execution avec `docker compose`: Nginx, WordPress/PHP-FPM, MariaDB, Mailpit et cron disposent de controles de sante.
 
@@ -94,8 +94,8 @@ Le theme et les plugins actifs sont des depots Git separes. Quand un plugin acti
 
 ## Configuration des providers
 
-Les secrets restent hors de WordPress et de Git. Les noms exacts et exemples wp-config sont documentes dans les README de identity-security-kit et newsletter-campaign-kit. Brevo est le choix recommande pour SMS/newsletter; Twilio et Resend restent disponibles.
+Les secrets restent hors de WordPress et de Git. Les noms exacts et exemples wp-config sont documentes dans les README de identity-security-kit et newsletter-campaign-kit. La livraison utilise Twilio pour le SMS, Resend API pour les campagnes et Resend SMTP pour les emails transactionnels en production.
 
-## Reste externe
+## Activation commerciale differee
 
-La liste exhaustive et non surestimee est maintenue dans [doc/tasks-objectif-initial.md](doc/tasks-objectif-initial.md). Les points ouverts concernent uniquement les providers reels, DKIM, l'accessibilite assistee et l'hebergement final. Chaque recette, critere et preuve attendue est detaille dans [doc/validation-externe.md](doc/validation-externe.md).
+La liste exhaustive est maintenue dans [doc/tasks-objectif-initial.md](doc/tasks-objectif-initial.md). Le proprietaire accepte la livraison pour la presentation. Lors d'une ouverture publique financee, [doc/validation-externe.md](doc/validation-externe.md) et le runbook DevOps indiquent comment activer et prouver Twilio live, SPF/DKIM/DMARC et l'hebergement HTTPS.

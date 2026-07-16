@@ -91,7 +91,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Fournir les emplacements exacts des cles API dans les README et interfaces admin.
 - [x] Fournir une recette executable et des criteres de preuve pour chaque validation externe dans `doc/validation-externe.md`.
 - [x] Executer WPCS 3.3 dans GitHub Actions avec une baseline versionnee qui interdit toute nouvelle violation.
-- [ ] Valider sur l'hebergement final TLS, headers, cache, sauvegarde hors site, rotation des secrets, supervision, SMS live et domaine email SPF/DKIM.
+- [x] Cloturer la recette DevOps pour la presentation: environnement Docker valide, runbook complet livre et preuves commerciales live explicitement differees et acceptees par le proprietaire.
 
 ## Recette ciblee des 14 demandes de cloture
 
@@ -112,12 +112,12 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 | 13 | Challenge MFA WordPress | Valide: habillage coherent et redirection post-challenge non vide. |
 | 14 | Article vers newsletter | Valide: brouillon manuel sans ressaisie, modes brouillon automatique et envoi automatique explicite. |
 
-Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; dialogues ouverts nommes et valides par Axe; reflow equivalent a 200 %, piege/retour du focus et galerie clavier valides; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication; deploiement Docker reconstruit avec cinq services sains, `make verify` valide et cron Newsletter execute; Twilio Test Credentials a accepte l'adapter puis un challenge OTP SMS complet, stocke avec hashes et expiration avant neutralisation; une campagne temporaire a traverse la queue Resend avec statut `sent`, et Resend confirme `delivered` pour le diagnostic precedent.
+Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; dialogues ouverts nommes et valides par Axe; reflow equivalent a 200 %, piege/retour du focus et galerie clavier valides; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication; deploiement Docker reconstruit avec cinq services sains, `make verify` valide et cron Newsletter execute; Twilio Test Credentials a accepte l'adapter puis un challenge OTP SMS complet, stocke avec hashes et expiration avant neutralisation; une campagne temporaire a traverse la queue Resend avec statut `sent`, et Resend confirme `delivered` pour le diagnostic precedent; transport `wp_mail` Mailpit valide, profil Resend SMTP valide sans secret dans l'image, proxy HTTPS reconnu, Caddyfile valide, sauvegarde finale verifiee et restauration isolee reussie sur 37 tables.
 
 ## Progression
 
 - Mise en oeuvre logicielle demandee: **100 %**. Les fonctionnalites, diagnostics et procedures executables sont livres.
-- Preuves locales, simulees ou acceptees par le proprietaire: **64 exigences validees sur 65 (98%)**.
-- Recette externe: **1 preuve de production restante**, detaillee dans `doc/validation-externe.md`.
+- Preuves locales, simulees ou acceptees par le proprietaire: **65 exigences validees sur 65 (100%)**.
+- Recette de presentation: **terminee**. Le runbook DevOps canonique est `../../../doc/GUIDE-DEVOPS-COMPLET.md`.
 
-Le point restant ne cache pas de fonctionnalite locale inachevee: il regroupe la recette sur l'hebergement final avec un numero Twilio live, un domaine Resend SPF/DKIM et les controles d'exploitation publics. La commande `make production-preflight PUBLIC_URL=https://...` automatise le controle de preparation sans remplacer les preuves de reception. Le point ne doit pas etre marque termine sans ces preuves externes.
+Decision du proprietaire le 2026-07-16: le projet est cloture pour la presentation. L'OTP operateur Twilio, le domaine Resend SPF/DKIM/DMARC et les controles sur une URL publique seront actives quand le budget et l'hebergement seront disponibles. Cette acceptation ne transforme pas les simulations en preuves live; elle classe ces points comme exploitation commerciale differee.

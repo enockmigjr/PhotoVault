@@ -81,7 +81,9 @@ Critere: job reproductible vert sur le commit livre, avec rapport conserve comme
 
 ## 8. Hebergement final
 
-Prerequis local valide le 2026-07-16: images WordPress et cron reconstruites, cinq services Docker `healthy`, accueil et `/healthz` en HTTP 200, WordPress installe, theme PhotoVault et trois plugins actifs, cible `make verify` passee, evenement cron Newsletter execute, OTP SMS Twilio simule et campagne Resend mise en queue puis acceptee. La validation restante concerne uniquement l'URL publique, les providers live et son infrastructure reelle.
+Prerequis local valide le 2026-07-16: images WordPress et cron reconstruites, cinq services Docker `healthy`, accueil et `/healthz` en HTTP 200, WordPress installe, theme PhotoVault et trois plugins actifs, cible `make verify` passee, evenement cron Newsletter execute, OTP SMS Twilio simule et campagne Resend mise en queue puis acceptee. L'activation commerciale future concernera uniquement l'URL publique, les providers live et son infrastructure reelle.
+
+Decision de cloture du 2026-07-16: le proprietaire accepte ces preuves pour la presentation et differe les couts d'hebergement, de numero Twilio et de domaine expediteur. Le projet est donc termine dans son perimetre de presentation. Le transport transactionnel configurable, la reconnaissance HTTPS du reverse proxy, le Caddyfile, les cinq healthchecks, le cron, une sauvegarde avec checksums et sa restauration isolee sur 37 tables sont valides. Les etapes ci-dessous restent le gate obligatoire avant une ouverture commerciale publique.
 
 Apres avoir installe les credentials live et configure l'URL finale, lancer depuis la racine:
 
@@ -109,4 +111,4 @@ Critere: `production-preflight` vert, SMS OTP physiquement recu, message Resend 
 | Tracking desactive ou consenti | Desactive | 2026-07-16 | Decision secure-by-default |
 | Accessibilite assistee | Validee par le proprietaire | 2026-07-16 | Axe, clavier, reflow et dialogues valides; NVDA differe |
 | PHPCS CI | Implemente | 2026-07-16 | WPCS 3.3 + baseline anti-regression |
-| Hebergement final | Docker local valide, recette publique et providers live requis | | Build, healthchecks, WordPress, theme, plugins, cron et providers staging valides le 2026-07-16 |
+| Hebergement final | Accepte pour la presentation; activation commerciale differee | 2026-07-16 | Docker, healthchecks, WordPress, theme, plugins, cron, SMTP configurable et providers staging valides; runbook complet livre |
