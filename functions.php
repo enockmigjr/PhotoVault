@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Définir des constantes pour le thème.
-define( 'PHOTOVAULT_VERSION', '1.2.0' );
+define( 'PHOTOVAULT_VERSION', '1.3.0' );
 define( 'PHOTOVAULT_DIR', get_template_directory() );
 define( 'PHOTOVAULT_URI', get_template_directory_uri() );
 
@@ -19,6 +19,7 @@ define( 'PHOTOVAULT_URI', get_template_directory_uri() );
 $photovault_includes = array(
 	'inc/theme-setup.php',
 	'inc/presentation-helpers.php',
+	'inc/customizer.php',
 );
 foreach ( $photovault_includes as $file ) {
 	$filepath = PHOTOVAULT_DIR . '/' . $file;

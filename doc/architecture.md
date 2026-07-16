@@ -1,6 +1,6 @@
 # Architecture Technique - PhotoVault
 
-> Suivi global: voir aussi [progression-plateforme.md](progression-plateforme.md).
+> Suivi global: voir [tasks-objectif-initial.md](tasks-objectif-initial.md).
 
 Ce document décrit la structure modulaire et l'organisation du code du thème WordPress professionnel **PhotoVault**.
 

@@ -11,11 +11,11 @@ Le projet est organise autour d'un theme editorial et de trois plugins metier re
 
 ## Etat actuel
 
-Progression reelle estimee: 77% fonctionnel, 67% production stricte.
+Progression mesuree: 56 exigences validees sur 64 (88%). Les huit validations restantes dependent du packaging final, de providers et de l'environnement de recette/production. Voir la checklist canonique.
 
 Les fondations principales sont en place: separation theme/plugins, controles serveur sur les medias sensibles, previews/miniatures au lieu des originaux HD dans les vues ensemble, endpoint de telechargement controle, verification email, audit, campagnes newsletter, dashboard personnel, reservations de shootings et Docker.
 
-Le projet ne doit pas encore etre considere production-ready tant que la verification runtime WordPress/MySQL, les tests automatises et le blocage serveur du stockage prive n'ont pas ete confirmes.
+Le runtime local WordPress/MySQL, le blocage Nginx, les tests critiques et les parcours navigateur principaux sont confirmes. La mise en production exige encore TLS/domaine, DKIM, credentials de staging, supervision, CI et recette accessibilite.
 
 ## Installation locale classique
 
@@ -48,7 +48,6 @@ Utiliser `pnpm run watch:css` pendant le developpement des templates. Le paquet 
 ## Documentation utile
 
 - [Objectif initial et progression](doc/tasks-objectif-initial.md)
-- [Progression plateforme](doc/progression-plateforme.md)
 - [Architecture](doc/architecture.md)
 - [Securite](SECURITY.md)
 - [Inventaire REST/AJAX](doc/rest-ajax-inventory.md)
@@ -79,6 +78,9 @@ Les medias proteges/prives utilisent:
 # Securiser les originaux existants si WP-CLI est disponible
 wp photovault secure-originals --limit=25
 
+# Installer une base de demonstration idempotente
+wp photovault seed_demo
+
 # Verification Git basique
 git status --short
 git diff --check
@@ -88,12 +90,10 @@ git diff --check
 
 Le theme et les plugins actifs sont des depots Git separes. Quand un plugin actif est modifie, committer le plugin concerne dans son depot, puis committer le theme/projet principal si sa documentation ou ses copies sources ont ete modifiees.
 
-## Reste majeur
+## Configuration des providers
 
-- Completer les parcours HTTP/navigateur et la matrice de roles au-dela des validations runtime deja automatisees.
-- Etendre la matrice REST/IDOR Core aux actions admin-post, a Identity et a Newsletter.
-- Tests CSRF, privilege escalation HTTP et e2e.
-- Validation navigateur des parcours MFA, profil et dashboard responsive.
-- Provider SMS reel et providers newsletter API avec secrets hors Git.
-- Preuve multipart HTTP post-correction et validation navigateur de l'import media.
-- README plus oriente production lorsque l'environnement cible sera valide.
+Les secrets restent hors de WordPress et de Git. Les noms exacts et exemples wp-config sont documentes dans les README de identity-security-kit et newsletter-campaign-kit. Brevo est le choix recommande pour SMS/newsletter; Twilio et Resend restent disponibles.
+
+## Reste externe
+
+La liste exhaustive et non surestimee est maintenue dans [doc/tasks-objectif-initial.md](doc/tasks-objectif-initial.md). Les points ouverts concernent principalement providers reels, DKIM, multisite/analytics si retenus, accessibilite de recette, CI et hebergement final.

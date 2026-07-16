@@ -137,6 +137,37 @@ document.addEventListener('click', function(event) {
 	}
 });
 
+/** Prevent duplicate frontend submissions and expose a consistent busy state. */
+document.addEventListener('submit', function(event) {
+	const form = event.target.closest('form');
+	if (!form || form.hasAttribute('data-pv-no-loading')) {
+		return;
+	}
+
+	const submitter = event.submitter || form.querySelector('button[type="submit"], input[type="submit"]');
+	if (!submitter) {
+		return;
+	}
+	if (submitter.getAttribute('aria-busy') === 'true') {
+		event.preventDefault();
+		return;
+	}
+
+	submitter.setAttribute('aria-busy', 'true');
+	submitter.disabled = true;
+	form.setAttribute('aria-busy', 'true');
+});
+
+window.addEventListener('pageshow', function() {
+	document.querySelectorAll('form[aria-busy="true"]').forEach(function(form) {
+		form.removeAttribute('aria-busy');
+		form.querySelectorAll('[aria-busy="true"]').forEach(function(control) {
+			control.removeAttribute('aria-busy');
+			control.disabled = false;
+		});
+	});
+});
+
 /** Password visibility controls preserve labels and password-manager semantics. */
 document.addEventListener('click', function(event) {
 	const toggle = event.target.closest('[data-pv-password-toggle]');
@@ -172,6 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const isFavorite = button.getAttribute('aria-pressed') === 'true';
         const icon = button.querySelector('svg');
         button.disabled = true;
+		button.setAttribute('aria-busy', 'true');
 
         try {
             const response = await fetch(config.rest_url.replace(/\/$/, '') + '/favorites/' + encodeURIComponent(mediaId), {
@@ -201,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } finally {
             button.disabled = false;
+			button.removeAttribute('aria-busy');
         }
     });
 });

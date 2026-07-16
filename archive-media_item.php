@@ -95,19 +95,24 @@ document.addEventListener('DOMContentLoaded', function() {
 	let page = 1;
 	let pages = <?php echo absint( $query->max_num_pages ); ?>;
 	let debounce;
+	let requestController;
 
 	function emptyState() {
 		return '<div class="pv-gallery-empty"><strong>Aucune oeuvre ne correspond a cette recherche.</strong><span>Essayez une autre collection ou reinitialisez les filtres.</span></div>';
 	}
 
 	async function updateGallery(append) {
+		if (requestController) requestController.abort();
+		requestController = new AbortController();
+		const controller = requestController;
 		page = append ? page + 1 : 1;
 		const params = new URLSearchParams(new FormData(form));
 		params.set('page', String(page));
 		results.setAttribute('aria-busy', 'true');
 		more.disabled = true;
+		more.setAttribute('aria-busy', 'true');
 		try {
-			const response = await fetch(config.rest_url.replace(/\/$/, '') + '/media?' + params.toString(), { credentials: 'same-origin', headers: config.nonce ? { 'X-WP-Nonce': config.nonce } : {} });
+			const response = await fetch(config.rest_url.replace(/\/$/, '') + '/media?' + params.toString(), { credentials: 'same-origin', headers: config.nonce ? { 'X-WP-Nonce': config.nonce } : {}, signal: controller.signal });
 			if (!response.ok) throw new Error('gallery_request_failed');
 			const payload = await response.json();
 			pages = Number(payload.pages || 0);
@@ -118,11 +123,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			more.classList.toggle('hidden', !pages || page >= pages);
 			document.dispatchEvent(new CustomEvent('photovault:gallery-updated'));
 		} catch (error) {
+			if (error.name === 'AbortError') return;
 			page = append ? Math.max(1, page - 1) : page;
 			if (window.PhotoVaultProtectionNotice) window.PhotoVaultProtectionNotice('La galerie ne peut pas etre actualisee pour le moment.');
 		} finally {
+			if (requestController !== controller) return;
 			results.setAttribute('aria-busy', 'false');
 			more.disabled = false;
+			more.removeAttribute('aria-busy');
 		}
 	}
 
