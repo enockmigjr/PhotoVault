@@ -60,6 +60,8 @@ Critere: decision signee `desactive` ou specification consentie avec recette Pri
 
 ## 6. Accessibilite assistee
 
+Prerequis automatise valide le 2026-07-16: home, galerie, connexion, dashboard et profil ne presentent aucune violation Axe serieuse ou critique pour WCAG 2.0/2.1 A/AA. La validation restante porte donc sur l'usage assiste reel, pas sur un audit automatique supplementaire.
+
 1. Naviguer au clavier sur home, galerie, lightbox, connexion, profil, preferences et demandes d'acces.
 2. Tester NVDA avec Firefox ou Chrome a 200 % de zoom.
 3. Confirmer ordre de focus, nom accessible des boutons icones, annonces des erreurs/toasts, piege de focus des modales et retour du focus a la fermeture.

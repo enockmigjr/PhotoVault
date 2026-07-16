@@ -45,7 +45,7 @@ pnpm run build:css
 
 Utiliser `pnpm run watch:css` pendant le developpement des templates. Le paquet natif optionnel `@parcel/watcher` reste desactive dans la configuration pnpm: le build CSS statique n'en depend pas.
 
-Les tests navigateur utilisent la dependance de developpement Playwright. Sur une nouvelle machine, installer son navigateur une fois avec `pnpm exec playwright install chromium`, puis fournir les variables `PHOTOVAULT_TEST_USERNAME` et `PHOTOVAULT_TEST_PASSWORD`. Le test `node tests/browser-provider-admin.js` controle les deux diagnostics provider et peut enregistrer des captures via `PHOTOVAULT_TEST_SCREENSHOT_DIR`.
+Les tests navigateur utilisent la dependance de developpement Playwright. Sur une nouvelle machine, installer son navigateur une fois avec `pnpm exec playwright install chromium`, puis fournir les variables `PHOTOVAULT_TEST_USERNAME` et `PHOTOVAULT_TEST_PASSWORD`. `pnpm run test:providers-ui` controle les deux diagnostics provider et peut enregistrer des captures via `PHOTOVAULT_TEST_SCREENSHOT_DIR`. `pnpm run test:a11y` analyse home, galerie, connexion, dashboard et profil avec Axe selon WCAG 2.0/2.1 A/AA.
 
 ## Documentation utile
 

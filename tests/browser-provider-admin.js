@@ -13,12 +13,12 @@ const path = require( 'path' );
 	const browser = await chromium.launch( { headless: true } );
 	const page = await browser.newPage( { viewport: { width: 1440, height: 1000 } } );
 	try {
-		await page.goto( `${ baseUrl }/wp-login.php`, { waitUntil: 'networkidle' } );
-		await page.fill( '#user_login', username );
-		await page.fill( '#user_pass', password );
+		await page.goto( `${ baseUrl }/login/`, { waitUntil: 'domcontentloaded' } );
+		await page.fill( '#username', username );
+		await page.fill( '#password', password );
 		await Promise.all( [
-			page.waitForLoadState( 'networkidle' ),
-			page.click( '#wp-submit' ),
+			page.waitForNavigation( { waitUntil: 'domcontentloaded' } ),
+			page.locator( 'form' ).filter( { has: page.locator( '#username' ) } ).locator( 'button[type="submit"]' ).click(),
 		] );
 
 		const pages = [

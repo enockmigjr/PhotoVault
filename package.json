@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "build:css": "tailwindcss -i ./assets/css/tailwind.css -o ./css/tailwind.css --minify",
+    "test:a11y": "node tests/browser-accessibility.js",
     "test:providers-ui": "node tests/browser-provider-admin.js",
     "watch:css": "tailwindcss -i ./assets/css/tailwind.css -o ./css/tailwind.css --watch"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@tailwindcss/cli": "^4.1.0",
     "playwright": "^1.61.1",
     "tailwindcss": "^4.1.0"

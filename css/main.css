@@ -332,7 +332,7 @@ h1, h2, h3, h4, h5, h6 {
 	align-items: center;
 	gap: 0.75rem;
 	font-size: 0.72rem;
-	color: #78716c;
+	color: #96908a;
 }
 
 .pv-comments .comment-author {
@@ -393,7 +393,7 @@ h1, h2, h3, h4, h5, h6 {
 .pv-public-form select:focus,
 .pv-public-form textarea:focus { outline: 2px solid rgba(220, 192, 148, 0.5); outline-offset: 2px; border-color: #dcc094; }
 .pv-public-form input::placeholder,
-.pv-public-form textarea::placeholder { color: #57534e; }
+.pv-public-form textarea::placeholder { color: #8f8983; }
 .pv-public-submit { min-height: 3rem; justify-self: start; border: 0; border-radius: 0.25rem; background: #fcd34d; padding: 0.75rem 1.2rem; color: #17120a; font-size: 0.78rem; font-weight: 800; cursor: pointer; }
 .pv-public-submit:hover { background: #fde68a; }
 
@@ -512,7 +512,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pv-auth-input::placeholder {
-	color: #57534e;
+	color: #8f8983;
 }
 
 .pv-auth-input:focus {
@@ -558,7 +558,7 @@ h1, h2, h3, h4, h5, h6 {
 	border: 0;
 	border-radius: 0.25rem;
 	background: transparent;
-	color: #78716c;
+	color: #96908a;
 	cursor: pointer;
 }
 
@@ -889,7 +889,7 @@ ul.page-numbers .next {
 }
 
 .pv-gallery-filters label { display: grid; min-width: 0; gap: 0.45rem; }
-.pv-gallery-filter-label { color: #78716c; font-size: 0.62rem; font-weight: 800; line-height: 1; text-transform: uppercase; }
+.pv-gallery-filter-label { color: #96908a; font-size: 0.62rem; font-weight: 800; line-height: 1; text-transform: uppercase; }
 
 .pv-gallery-filters select,
 .pv-gallery-filters input {
@@ -925,7 +925,7 @@ ul.page-numbers .next {
 	height: 1rem !important;
 	max-width: 1rem;
 	max-height: 1rem;
-	color: #78716c;
+	color: #96908a;
 	pointer-events: none;
 }
 
@@ -1022,7 +1022,7 @@ ul.page-numbers .next {
 	border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 .pv-gallery-lightbox figcaption h2 { margin: 0; font-family: Georgia, serif; font-size: 1.35rem; font-weight: 400; }
-.pv-gallery-lightbox figcaption p { margin: 0.25rem 0 0; color: #78716c; font-size: 0.7rem; text-transform: uppercase; }
+.pv-gallery-lightbox figcaption p { margin: 0.25rem 0 0; color: #96908a; font-size: 0.7rem; text-transform: uppercase; }
 .pv-gallery-lightbox figcaption a { color: #dcc094; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; }
 .pv-gallery-lightbox__nav { position: absolute; top: 50%; z-index: 4; width: 3rem; height: 3rem; border-radius: 50%; transform: translateY(-50%); background: rgba(18, 18, 16, 0.78) !important; }
 .pv-gallery-lightbox__nav--prev { left: 1rem; }
@@ -1064,11 +1064,11 @@ ul.page-numbers .next {
 .pv-profile-mfa .identity-security-mfa-method__header > div { min-width: 0; }
 .pv-profile-mfa .identity-security-mfa-method h3,
 .pv-profile-mfa .identity-security-mfa-method h4 { margin: 0; color: #f5f5f4; font-size: 0.98rem; font-weight: 750; }
-.pv-profile-mfa .identity-security-mfa-method__header p { margin: 0.45rem 0 0; color: #78716c; font-size: 0.78rem; line-height: 1.55; overflow-wrap: anywhere; }
+.pv-profile-mfa .identity-security-mfa-method__header p { margin: 0.45rem 0 0; color: #96908a; font-size: 0.78rem; line-height: 1.55; overflow-wrap: anywhere; }
 .pv-profile-mfa .identity-security-mfa-status { flex: none; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 999px; padding: 0.35rem 0.65rem; color: #a8a29e; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; }
 .pv-profile-mfa .identity-security-mfa-status.is-enabled { border-color: rgba(110, 231, 183, 0.28); background: rgba(16, 185, 129, 0.08); color: #6ee7b7; }
 .pv-profile-mfa .identity-security-mfa-status.is-pending { border-color: rgba(252, 211, 77, 0.28); color: #fcd34d; }
-.pv-profile-mfa .identity-security-mfa-status.is-unavailable { color: #57534e; }
+.pv-profile-mfa .identity-security-mfa-status.is-unavailable { color: #8f8983; }
 .pv-profile-mfa .identity-security-mfa-method__body { margin-top: 0.9rem; }
 .pv-profile-mfa .identity-security-mfa-method__body > p,
 .pv-profile-mfa details p { margin: 0.75rem 0; color: #a8a29e; font-size: 0.82rem; line-height: 1.6; }
@@ -1076,7 +1076,7 @@ ul.page-numbers .next {
 .pv-profile-mfa details + details { margin-top: 0; }
 .pv-profile-mfa summary { position: relative; cursor: pointer; list-style: none; padding: 0.85rem 1.75rem 0.85rem 0; color: #dcc094; font-size: 0.78rem; font-weight: 750; }
 .pv-profile-mfa summary::-webkit-details-marker { display: none; }
-.pv-profile-mfa summary::after { position: absolute; top: 0.78rem; right: 0.2rem; content: "+"; color: #78716c; font-size: 1rem; }
+.pv-profile-mfa summary::after { position: absolute; top: 0.78rem; right: 0.2rem; content: "+"; color: #96908a; font-size: 1rem; }
 .pv-profile-mfa details[open] summary::after { content: "-"; }
 .pv-profile-mfa form { display: grid; width: 100%; max-width: 32rem; gap: 0.9rem; margin: 0.35rem 0 1rem; }
 .pv-profile-mfa label { display: grid; gap: 0.45rem; color: #d6d3d1; font-size: 0.75rem; font-weight: 700; }

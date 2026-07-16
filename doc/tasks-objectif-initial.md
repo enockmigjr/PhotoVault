@@ -71,7 +71,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Corriger l'etat actif Journal sur la home et supporter les sous-menus.
 - [x] Completer Dashboard, profil, reservations, acces, newsletter, favoris et analytics.
 - [x] Ajouter loaders globaux et annulation des requetes galerie devenues obsoletes.
-- [x] Valider navigation, profil, galerie et visionneuse en navigateur.
+- [x] Valider navigation, profil, galerie et visionneuse en navigateur, puis les cinq routes critiques avec Axe WCAG 2.0/2.1 A/AA sans violation serieuse ou critique.
 - [ ] Realiser une passe finale WCAG avec lecteur d'ecran sur l'environnement de recette.
 
 ## Administration et donnees
@@ -80,7 +80,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Fournir demandes d'acces, grants, shootings, audit et securisation par lots.
 - [x] Unifier les ecrans PhotoVault avec tableaux responsives, pagination, details et loaders.
 - [x] Fournir wp photovault seed_demo, idempotent, pour installer des donnees de demonstration riches.
-- [x] Installer localement 48 medias, 12 articles, 15 visiteurs, 45 demandes, 36 shootings, 80 abonnes, 30 campagnes et des journaux volumineux.
+- [x] Installer localement 48 medias, 12 articles, 15 visiteurs, 45 demandes, 10 grants, 36 shootings, 80 abonnes, 30 campagnes et des journaux volumineux.
 
 ## Exploitation et preuves
 
@@ -91,6 +91,27 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 - [x] Fournir une recette executable et des criteres de preuve pour chaque validation externe dans `doc/validation-externe.md`.
 - [x] Executer WPCS 3.3 dans GitHub Actions avec une baseline versionnee qui interdit toute nouvelle violation.
 - [ ] Valider TLS, headers, cache, sauvegarde hors site, rotation des secrets et supervision sur l'hebergement final.
+
+## Recette ciblee des 14 demandes de cloture
+
+| # | Demande | Statut et preuve locale |
+|---:|---|---|
+| 1 | Header et footer configurables | Valide: controles et valeurs par defaut dans `inc/customizer.php`. |
+| 2 | Methode MFA preferee masquee | Valide: section repliee avec `details` dans Identity Kit. |
+| 3 | README et documentation d'integration | Valide: README des quatre depots et guides canoniques actualises. |
+| 4 | Emplacements des cles API | Valide: exemples `wp-config.php` affiches dans les deux interfaces provider et documentes. |
+| 5 | Pagination des logs Identity | Valide: filtres, pagination serveur et details nettoyes testes en runtime. |
+| 6 | Formulaires et listes Newsletter | Valide: styles communs, largeurs responsives et pagination sur abonnes, campagnes, segments, listes, tags, sujets, templates, blocs, queue et audit. |
+| 7 | Administration PhotoVault et acces proteges | Valide: tableaux responsives, actions securisees, demandes, grants et journal media. |
+| 8 | Loaders et doubles soumissions | Valide: etats globaux publics/admin et annulation des requetes galerie obsoletes. |
+| 9 | Avatar independant du telephone | Valide: upload multipart reel et profil mis a jour sans exiger un numero. |
+| 10 | Navigation active et sous-menus | Valide: etat Journal corrige, sous-menus desktop/mobile et libelles personnalisables. |
+| 11 | Filtres galerie sur petit ecran | Valide: barre compacte horizontalement defilable et visionneuse plein ecran. |
+| 12 | Parcours verification et newsletter | Valide: redirections PhotoVault, preferences, footer/dashboard et multi-thematiques. |
+| 13 | Challenge MFA WordPress | Valide: habillage coherent et redirection post-challenge non vide. |
+| 14 | Article vers newsletter | Valide: brouillon manuel sans ressaisie, modes brouillon automatique et envoi automatique explicite. |
+
+Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication.
 
 ## Progression
 
