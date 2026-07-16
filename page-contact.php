@@ -49,7 +49,7 @@ get_header();
 ?>
 <main class="min-h-screen bg-[#0d0c0b] text-gray-100">
 	<header class="border-b border-white/10 py-20 sm:py-28">
-		<div class="mx-auto grid max-w-[90rem] gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:px-12"><div class="lg:col-span-8"><p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Contact / Accès', 'photovault' ); ?></p><h1 class="mt-7 max-w-5xl font-serif text-5xl leading-[1.04] text-white sm:text-7xl"><?php esc_html_e( 'Décrivez le projet, l’œuvre ou l’accès recherché.', 'photovault' ); ?></h1></div><p class="max-w-xl self-end text-base leading-8 text-gray-400 lg:col-span-4"><?php esc_html_e( 'Votre demande est orientée vers le bon parcours : collection protégée, shooting, licence, tirage ou question générale.', 'photovault' ); ?></p></div>
+		<div class="mx-auto grid max-w-[90rem] gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:px-12"><div class="lg:col-span-8"><p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Contact / Accès', 'photovault' ); ?></p><h1 class="mt-5 max-w-5xl font-serif text-4xl leading-[1.04] text-white sm:text-5xl"><?php esc_html_e( 'Décrivez le projet, l’œuvre ou l’accès recherché.', 'photovault' ); ?></h1></div><p class="max-w-xl self-end text-base leading-8 text-gray-400 lg:col-span-4"><?php esc_html_e( 'Votre demande est orientée vers le bon parcours : collection protégée, shooting, licence, tirage ou question générale.', 'photovault' ); ?></p></div>
 	</header>
 
 	<section class="mx-auto grid max-w-[90rem] gap-12 px-5 py-16 sm:px-8 lg:grid-cols-12 lg:px-12 lg:py-24" aria-labelledby="contact-form-title">

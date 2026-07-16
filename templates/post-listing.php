@@ -19,7 +19,7 @@ $paged         = max( 1, get_query_var( 'paged' ), get_query_var( 'page' ) );
 <main class="min-h-screen bg-[#0d0c0b] text-gray-100">
 	<header class="border-b border-white/10 py-20 sm:py-28">
 		<div class="mx-auto grid max-w-[90rem] gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:px-12">
-			<div class="lg:col-span-8"><p class="text-xs font-extrabold uppercase text-amber-200"><?php echo esc_html( $eyebrow ); ?></p><h1 class="mt-7 max-w-4xl font-serif text-5xl leading-[1.05] text-white sm:text-7xl"><?php echo esc_html( $title ); ?></h1></div>
+			<div class="lg:col-span-8"><p class="text-xs font-extrabold uppercase text-amber-200"><?php echo esc_html( $eyebrow ); ?></p><h1 class="mt-5 max-w-4xl font-serif text-4xl leading-[1.04] text-white sm:text-5xl"><?php echo esc_html( $title ); ?></h1></div>
 			<p class="max-w-xl self-end text-sm leading-7 text-gray-400 lg:col-span-4"><?php echo esc_html( $copy ); ?></p>
 		</div>
 	</header>

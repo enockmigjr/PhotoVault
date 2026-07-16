@@ -84,7 +84,7 @@ $publication_posts = new WP_Query(
 	<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-16 pt-32">
 		<div class="max-w-5xl">
 			<p class="mb-6 text-xs font-extrabold uppercase text-amber-200 sm:text-sm">PhotoVault / Archives visuelles</p>
-			<h1 class="max-w-4xl font-serif text-5xl leading-[0.96] text-white sm:text-7xl lg:text-8xl">L’art de capturer <span class="block text-amber-200">le temps suspendu</span></h1>
+			<h1 class="max-w-4xl font-serif text-4xl leading-[1.04] text-white sm:text-7xl">L’art de capturer <span class="block text-amber-200">le temps suspendu</span></h1>
 			<p class="mt-8 max-w-2xl text-base sm:text-xl text-gray-200 leading-relaxed">Le cabinet de curiosites visuelles et le portfolio officiel de l'artiste. Explorez les cliches libres en haute definition, accedez aux collections privees ou reservez une creation photographique sur mesure.</p>
 			<div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-md sm:max-w-none">
 				<a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="pv-header-cta min-h-12 justify-center px-7">Explorer la galerie</a>
@@ -342,8 +342,8 @@ $publication_posts = new WP_Query(
 <section class="relative py-28 bg-[#0d0c0b] overflow-hidden border-t border-gray-900">
 	<?php if ( $hero_image ) : ?><div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image:url('<?php echo esc_url( $hero_image ); ?>');"></div><?php endif; ?>
 	<div class="absolute inset-0 bg-[#0d0c0b]/70"></div>
-	<div class="relative max-w-5xl mx-auto px-4 text-center">
-		<h2 class="text-4xl sm:text-6xl font-black text-white leading-tight">Certains instants passent. D'autres meritent de rester.</h2>
+	<div class="relative max-w-4xl mx-auto px-4 text-center">
+		<h2 class="text-4xl sm:text-5xl font-black text-white leading-tight">Certains instants passent. D'autres meritent de rester.</h2>
 		<p class="text-gray-200 text-lg mt-6 max-w-2xl mx-auto">Explorez les archives existantes ou creons ensemble les prochaines images.</p>
 		<div class="mt-10 flex flex-col justify-center gap-4 sm:flex-row"><a href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>" class="pv-header-cta min-h-12 justify-center px-7">Explorer la galerie</a><a href="<?php echo esc_url( home_url( '/booking/' ) ); ?>" class="inline-flex min-h-12 items-center justify-center border border-white/20 bg-black/20 px-7 font-bold text-white transition hover:border-amber-200/60 hover:text-amber-100">Réserver un shooting</a></div>
 	</div>

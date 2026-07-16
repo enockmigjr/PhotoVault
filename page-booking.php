@@ -30,7 +30,7 @@ get_header();
 ?>
 <main class="min-h-screen bg-[#0d0c0b] text-white">
 	<header class="border-b border-white/10 px-5 pb-16 pt-20 sm:px-8 lg:pb-20 lg:pt-28">
-		<div class="mx-auto max-w-6xl"><p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Création sur mesure', 'photovault' ); ?></p><h1 class="mt-5 max-w-4xl font-serif text-4xl leading-tight sm:text-6xl"><?php esc_html_e( 'Commençons par l’intention, la lumière et le temps.', 'photovault' ); ?></h1><p class="mt-6 max-w-2xl text-base leading-8 text-gray-400"><?php esc_html_e( 'Cette demande ouvre la conversation. La date devient définitive après confirmation du studio.', 'photovault' ); ?></p></div>
+		<div class="mx-auto max-w-5xl"><p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Création sur mesure', 'photovault' ); ?></p><h1 class="mt-5 max-w-3xl font-serif text-4xl leading-tight sm:text-5xl"><?php esc_html_e( 'Commençons par l’intention, la lumière et le temps.', 'photovault' ); ?></h1><p class="mt-6 max-w-2xl text-base leading-8 text-gray-400"><?php esc_html_e( 'Cette demande ouvre la conversation. La date devient définitive après confirmation du studio.', 'photovault' ); ?></p></div>
 	</header>
 
 	<section class="px-5 py-16 sm:px-8 lg:py-20">

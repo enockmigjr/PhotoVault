@@ -12,7 +12,7 @@ get_header();
 		<article>
 			<header class="mx-auto max-w-5xl px-5 pb-12 pt-20 text-center sm:px-8 sm:pb-16 sm:pt-28">
 				<a href="<?php echo esc_url( home_url( '/journal/' ) ); ?>" class="inline-flex min-h-11 items-center text-xs font-extrabold uppercase text-amber-200 hover:text-white"><span class="mr-2" aria-hidden="true">&larr;</span><?php esc_html_e( 'Carnets visuels', 'photovault' ); ?></a>
-				<h1 class="mt-6 font-serif text-5xl leading-[1.06] text-white sm:text-7xl"><?php the_title(); ?></h1>
+				<h1 class="mt-5 font-serif text-4xl leading-[1.04] text-white sm:text-5xl"><?php the_title(); ?></h1>
 				<div class="mt-7 flex flex-wrap items-center justify-center gap-2 text-xs font-semibold uppercase text-gray-500"><time datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time><span aria-hidden="true">/</span><span><?php echo esc_html( get_the_author() ); ?></span><?php if ( get_the_category() ) : ?><span aria-hidden="true">/</span><span><?php echo esc_html( get_the_category()[0]->name ); ?></span><?php endif; ?></div>
 			</header>
 

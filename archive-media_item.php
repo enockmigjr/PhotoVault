@@ -43,7 +43,7 @@ try {
 		<div class="mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
 			<p class="text-xs font-bold uppercase text-amber-200">PhotoVault / Archives visuelles</p>
 			<div class="mt-5 grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-end">
-				<h1 class="max-w-5xl font-serif text-5xl leading-[1.02] text-white sm:text-7xl lg:text-8xl">Des fragments de temps, sans ordre impose.</h1>
+				<h1 class="max-w-5xl font-serif text-4xl leading-[1.02] text-white sm:text-5xl">Des fragments de temps, sans ordre impose.</h1>
 				<p class="max-w-xl text-sm leading-7 text-gray-400 sm:text-base">Parcourez les series publiques et les collections auxquelles vous avez acces. Les apercus sont optimises pour l'ecran; l'original n'est remis que lorsqu'une oeuvre autorise son telechargement.</p>
 			</div>
 		</div>

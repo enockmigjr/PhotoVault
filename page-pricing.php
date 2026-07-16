@@ -44,7 +44,7 @@ get_header();
 		<div class="mx-auto grid max-w-[90rem] gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:px-12">
 			<div class="lg:col-span-8">
 				<p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Prestations / Devis', 'photovault' ); ?></p>
-				<h1 class="mt-7 max-w-5xl font-serif text-5xl leading-[1.04] text-white sm:text-7xl"><?php esc_html_e( 'Le prix vient après une intention clairement posée.', 'photovault' ); ?></h1>
+				<h1 class="mt-5 max-w-5xl font-serif text-4xl leading-[1.04] text-white sm:text-5xl"><?php esc_html_e( 'Le prix vient après une intention clairement posée.', 'photovault' ); ?></h1>
 			</div>
 			<div class="self-end lg:col-span-4">
 				<p class="text-sm leading-7 text-gray-400"><?php esc_html_e( 'Chaque devis dépend du temps de prise de vue, du lieu, du nombre d’images finales, de la retouche et des droits d’utilisation. Aucun faux tarif standardisé n’est affiché.', 'photovault' ); ?></p>
@@ -82,7 +82,7 @@ get_header();
 	</section>
 
 	<section class="px-5 py-20 text-center sm:px-8 lg:py-28">
-		<h2 class="mx-auto max-w-3xl font-serif text-4xl text-white sm:text-6xl"><?php esc_html_e( 'Une demande suffit pour commencer la conversation.', 'photovault' ); ?></h2>
+		<h2 class="mx-auto max-w-3xl font-serif text-4xl text-white sm:text-5xl"><?php esc_html_e( 'Une demande suffit pour commencer la conversation.', 'photovault' ); ?></h2>
 		<p class="mx-auto mt-6 max-w-xl text-sm leading-7 text-gray-400"><?php esc_html_e( 'La réservation devient définitive uniquement après échange, devis et confirmation de la date.', 'photovault' ); ?></p>
 		<a href="<?php echo esc_url( home_url( '/booking/' ) ); ?>" class="mt-9 inline-flex min-h-12 items-center bg-white px-7 text-sm font-extrabold text-black transition hover:bg-amber-200"><?php esc_html_e( 'Préparer ma demande', 'photovault' ); ?></a>
 	</section>

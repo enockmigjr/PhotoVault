@@ -19,7 +19,7 @@ $capabilities = array(
 <main class="min-h-screen bg-[#0d0c0b] text-gray-100">
 	<header class="border-b border-white/10 py-20 sm:py-28">
 		<div class="mx-auto grid max-w-[90rem] gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:px-12">
-			<div class="lg:col-span-8"><p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Plateforme / Fonctionnement', 'photovault' ); ?></p><h1 class="mt-7 max-w-5xl font-serif text-5xl leading-[1.04] text-white sm:text-7xl"><?php esc_html_e( 'Une galerie rapide pour regarder. Rigoureuse pour livrer.', 'photovault' ); ?></h1></div>
+			<div class="lg:col-span-8"><p class="text-xs font-extrabold uppercase text-amber-200"><?php esc_html_e( 'Plateforme / Fonctionnement', 'photovault' ); ?></p><h1 class="mt-5 max-w-5xl font-serif text-4xl leading-[1.04] text-white sm:text-5xl"><?php esc_html_e( 'Une galerie rapide pour regarder. Rigoureuse pour livrer.', 'photovault' ); ?></h1></div>
 			<p class="max-w-xl self-end text-base leading-8 text-gray-400 lg:col-span-4"><?php esc_html_e( 'Le niveau de qualité servi dépend de l’action : aperçu léger pour naviguer, version protégée pour examiner, original uniquement lorsque le téléchargement est autorisé.', 'photovault' ); ?></p>
 		</div>
 	</header>
@@ -49,6 +49,6 @@ $capabilities = array(
 		</div>
 	</section>
 
-	<section class="mx-auto flex max-w-[90rem] flex-col items-start justify-between gap-8 px-5 py-20 sm:px-8 lg:flex-row lg:items-end lg:px-12 lg:py-28"><h2 class="max-w-4xl font-serif text-4xl leading-tight text-white sm:text-6xl"><?php esc_html_e( 'Explorez sans charger ce que vous n’avez pas demandé.', 'photovault' ); ?></h2><a class="pv-header-cta min-h-12 shrink-0 px-6" href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>"><?php esc_html_e( 'Ouvrir la galerie', 'photovault' ); ?></a></section>
+	<section class="mx-auto flex max-w-[90rem] flex-col items-start justify-between gap-8 px-5 py-20 sm:px-8 lg:flex-row lg:items-end lg:px-12 lg:py-28"><h2 class="max-w-4xl font-serif text-4xl leading-tight text-white sm:text-5xl"><?php esc_html_e( 'Explorez sans charger ce que vous n’avez pas demandé.', 'photovault' ); ?></h2><a class="pv-header-cta min-h-12 shrink-0 px-6" href="<?php echo esc_url( get_post_type_archive_link( 'media_item' ) ); ?>"><?php esc_html_e( 'Ouvrir la galerie', 'photovault' ); ?></a></section>
 </main>
 <?php get_footer(); ?>
