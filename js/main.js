@@ -83,8 +83,9 @@ document.addEventListener('DOMContentLoaded', function() {
         notice.id = 'photovault-protection-notice';
         notice.className = 'pv-protection-notice';
         notice.setAttribute('role', 'dialog');
+        notice.setAttribute('aria-labelledby', 'photovault-protection-notice-title');
         notice.setAttribute('aria-live', 'polite');
-        notice.innerHTML = '<div class="pv-protection-notice__panel"><button type="button" class="pv-protection-notice__close" aria-label="Fermer">&times;</button><span class="pv-protection-notice__eyebrow">PhotoVault</span><strong>Image protegee</strong><p>La sauvegarde directe est desactivee ici. Ouvrez la fiche de l\'oeuvre pour consulter les options disponibles.</p></div>';
+        notice.innerHTML = '<div class="pv-protection-notice__panel"><button type="button" class="pv-protection-notice__close" aria-label="Fermer">&times;</button><span class="pv-protection-notice__eyebrow">PhotoVault</span><strong id="photovault-protection-notice-title">Image protegee</strong><p>La sauvegarde directe est desactivee ici. Ouvrez la fiche de l\'oeuvre pour consulter les options disponibles.</p></div>';
         document.body.appendChild(notice);
     }
 

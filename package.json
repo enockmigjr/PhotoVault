@@ -5,6 +5,7 @@
   "scripts": {
     "build:css": "tailwindcss -i ./assets/css/tailwind.css -o ./css/tailwind.css --minify",
     "test:a11y": "node tests/browser-accessibility.js",
+    "test:keyboard": "node tests/browser-keyboard.js",
     "test:providers-ui": "node tests/browser-provider-admin.js",
     "watch:css": "tailwindcss -i ./assets/css/tailwind.css -o ./css/tailwind.css --watch"
   },
