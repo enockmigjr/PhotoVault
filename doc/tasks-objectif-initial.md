@@ -120,4 +120,4 @@ Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement n
 - Preuves locales, simulees ou acceptees par le proprietaire: **64 exigences validees sur 65 (98%)**.
 - Recette externe: **1 preuve de production restante**, detaillee dans `doc/validation-externe.md`.
 
-Le point restant ne cache pas de fonctionnalite locale inachevee: il regroupe la recette sur l'hebergement final avec un numero Twilio live, un domaine Resend SPF/DKIM et les controles d'exploitation publics. Il ne doit pas etre marque termine sans ces preuves externes.
+Le point restant ne cache pas de fonctionnalite locale inachevee: il regroupe la recette sur l'hebergement final avec un numero Twilio live, un domaine Resend SPF/DKIM et les controles d'exploitation publics. La commande `make production-preflight PUBLIC_URL=https://...` automatise le controle de preparation sans remplacer les preuves de reception. Le point ne doit pas etre marque termine sans ces preuves externes.

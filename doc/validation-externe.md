@@ -83,6 +83,12 @@ Critere: job reproductible vert sur le commit livre, avec rapport conserve comme
 
 Prerequis local valide le 2026-07-16: images WordPress et cron reconstruites, cinq services Docker `healthy`, accueil et `/healthz` en HTTP 200, WordPress installe, theme PhotoVault et trois plugins actifs, cible `make verify` passee, evenement cron Newsletter execute, OTP SMS Twilio simule et campagne Resend mise en queue puis acceptee. La validation restante concerne uniquement l'URL publique, les providers live et son infrastructure reelle.
 
+Apres avoir installe les credentials live et configure l'URL finale, lancer depuis la racine:
+
+    make production-preflight PUBLIC_URL=https://votre-domaine.example
+
+Cette commande verifie l'etat Docker/applicatif, refuse le numero magique Twilio, les expediteurs Resend de test ou locaux et une home WordPress non HTTPS, puis controle sur la reponse publique HSTS, CSP, `X-Content-Type-Options` et `Referrer-Policy`. Elle qualifie une configuration candidate au live; elle ne remplace pas les preuves de reception et d'authentification des fournisseurs.
+
 1. Forcer TLS et verifier HSTS, CSP, `X-Content-Type-Options`, politique de referrer et permissions des cookies.
 2. Confirmer que le stockage prive et les originaux ne sont jamais servis directement par Nginx/Apache ou le CDN.
 3. Valider cache des miniatures et absence de cache public sur previews protegees, profil et endpoints autorises.
@@ -90,7 +96,7 @@ Prerequis local valide le 2026-07-16: images WordPress et cron reconstruites, ci
 5. Tester rotation des cles SMS/newsletter sans indisponibilite prolongee.
 6. Configurer alertes cron, queue, erreurs PHP, espace disque, sauvegardes et expiration TLS.
 
-Critere: rapport de recette signe avec URL, date, versions, resultats et plan de retour arriere.
+Critere: `production-preflight` vert, SMS OTP physiquement recu, message Resend avec SPF/DKIM/DMARC valides, puis rapport de recette signe avec URL, date, versions, resultats et plan de retour arriere.
 
 ## Fiche de cloture
 
