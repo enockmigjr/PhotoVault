@@ -18,7 +18,7 @@ Preuve: sortie des trois comparaisons sans difference et liste des plugins actif
 
 ## 2. SMS Brevo ou Twilio
 
-Etat local au 2026-07-16: **Twilio selectionne**, mais WordPress ne charge pas encore `IDENTITY_SECURITY_TWILIO_ACCOUNT_SID`, `IDENTITY_SECURITY_TWILIO_AUTH_TOKEN` et `IDENTITY_SECURITY_TWILIO_FROM`. En Docker, les renseigner dans le fichier local ignore `docker/wp-config-secrets.php` cree depuis son exemple.
+Etat local au 2026-07-16: **Twilio selectionne**. WordPress charge `IDENTITY_SECURITY_TWILIO_ACCOUNT_SID`, `IDENTITY_SECURITY_TWILIO_AUTH_TOKEN` et `IDENTITY_SECURITY_TWILIO_FROM` depuis le fichier local ignore `docker/wp-config-secrets.php`, mais les trois valeurs sont encore vides. `make provider-status` permet de le verifier sans afficher les secrets.
 
 1. Choisir le provider dans `Identity Kit > Overview > SMS provider`.
 2. Ajouter les constantes affichees sous `Show wp-config.php examples` avant la ligne de fin d'edition de `wp-config.php`, ou utiliser les memes variables d'environnement.
@@ -32,7 +32,7 @@ Critere: message recu, resultat accepte, numero masque dans l'audit, code OTP a 
 
 ## 3. Newsletter Brevo ou Resend et DKIM
 
-Etat local au 2026-07-16: **Resend selectionne**, mais WordPress ne charge pas encore `NEWSLETTER_CAMPAIGN_KIT_RESEND_API_KEY`. En Docker, la renseigner dans le fichier local ignore `docker/wp-config-secrets.php` cree depuis son exemple.
+Etat local au 2026-07-16: **Resend selectionne**. WordPress charge `NEWSLETTER_CAMPAIGN_KIT_RESEND_API_KEY` depuis le fichier local ignore `docker/wp-config-secrets.php`, mais sa valeur est encore vide. `make provider-status` permet de le verifier sans afficher la cle.
 
 1. Choisir le provider dans `Newsletter Kit > Settings`.
 2. Ajouter la constante affichee dans `Server-side credentials` puis configurer une adresse `From` verifiee chez le provider.
@@ -81,6 +81,8 @@ Critere: job reproductible vert sur le commit livre, avec rapport conserve comme
 
 ## 8. Hebergement final
 
+Prerequis local valide le 2026-07-16: images WordPress et cron reconstruites, cinq services Docker `healthy`, accueil et `/healthz` en HTTP 200, WordPress installe, theme PhotoVault et trois plugins actifs, cible `make verify` passee et evenement cron Newsletter execute. La validation restante concerne uniquement l'URL publique et son infrastructure reelle.
+
 1. Forcer TLS et verifier HSTS, CSP, `X-Content-Type-Options`, politique de referrer et permissions des cookies.
 2. Confirmer que le stockage prive et les originaux ne sont jamais servis directement par Nginx/Apache ou le CDN.
 3. Valider cache des miniatures et absence de cache public sur previews protegees, profil et endpoints autorises.
@@ -101,4 +103,4 @@ Critere: rapport de recette signe avec URL, date, versions, resultats et plan de
 | Tracking desactive ou consenti | Desactive | 2026-07-16 | Decision secure-by-default |
 | Accessibilite assistee | Validee par le proprietaire | 2026-07-16 | Axe, clavier, reflow et dialogues valides; NVDA differe |
 | PHPCS CI | Implemente | 2026-07-16 | WPCS 3.3 + baseline anti-regression |
-| Hebergement final | A valider | | |
+| Hebergement final | Docker local valide, recette publique requise | | Build, healthchecks, WordPress, theme, plugins et cron valides le 2026-07-16 |

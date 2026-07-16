@@ -85,6 +85,7 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 ## Exploitation et preuves
 
 - [x] Fournir Docker Nginx, PHP-FPM, MariaDB, Mailpit, cron et WP-CLI avec healthchecks.
+- [x] Fournir un Makefile d'exploitation, documenter le deploiement mono-hote et valider build, healthchecks, WordPress, theme, plugins et cron.
 - [x] Bloquer le stockage prive dans Nginx et valider sauvegarde/restauration avec checksums.
 - [x] Executer lints PHP, git diff --check, tests runtime Identity/Newsletter/Core et tests navigateur critiques.
 - [x] Fournir les emplacements exacts des cles API dans les README et interfaces admin.
@@ -111,12 +112,12 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 | 13 | Challenge MFA WordPress | Valide: habillage coherent et redirection post-challenge non vide. |
 | 14 | Article vers newsletter | Valide: brouillon manuel sans ressaisie, modes brouillon automatique et envoi automatique explicite. |
 
-Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; dialogues ouverts nommes et valides par Axe; reflow equivalent a 200 %, piege/retour du focus et galerie clavier valides; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication.
+Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; dialogues ouverts nommes et valides par Axe; reflow equivalent a 200 %, piege/retour du focus et galerie clavier valides; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication; deploiement Docker reconstruit avec cinq services sains, `make verify` valide et cron Newsletter execute.
 
 ## Progression
 
 - Mise en oeuvre logicielle demandee: **100 %**. Les fonctionnalites, diagnostics et procedures executables sont livres.
-- Preuves locales, simulees ou acceptees par le proprietaire: **61 exigences validees sur 64 (95%)**.
+- Preuves locales, simulees ou acceptees par le proprietaire: **62 exigences validees sur 65 (95%)**.
 - Recette externe: **3 preuves restantes**, toutes detaillees dans `doc/validation-externe.md`.
 
 Les trois points restants ne cachent pas de fonctionnalite locale inachevee: ils dependent des credentials Twilio, d'une cle Resend avec domaine DKIM et de l'hebergement final. Aucun de ces points ne doit etre marque termine sans sa preuve externe.
