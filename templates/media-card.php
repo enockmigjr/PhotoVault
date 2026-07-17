@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $media_id       = get_the_ID();
 $is_protected   = '1' === get_post_meta( $media_id, 'is_protected', true );
 $is_private     = 'private' === get_post_status( $media_id );
-$is_admin       = current_user_can( 'manage_options' );
+$is_admin       = function_exists( 'photovault_current_user_can' ) ? photovault_current_user_can( 'photovault_manage_media' ) : current_user_can( 'manage_options' );
 $author_name    = get_the_author();
 $card_url       = photovault_get_secure_image_url( $media_id, 'card' );
 $preview_url    = photovault_get_secure_image_url( $media_id, 'preview' );
@@ -46,7 +46,7 @@ $category_label = ! empty( $terms ) && ! is_wp_error( $terms ) ? $terms[0]->name
 		<?php endif; ?>
 	</div>
 	<div class="flex items-start justify-between gap-5 pt-3">
-		<div class="min-w-0"><h2 class="truncate text-base font-bold text-white"><?php the_title(); ?></h2><p class="mt-1 text-xs text-gray-500"><?php echo esc_html( $category_label ); ?> / <?php echo esc_html( get_the_date( 'Y' ) ); ?></p></div>
+		<div class="min-w-0"><h2 class="truncate text-base font-bold text-white"><?php the_title(); ?></h2><p class="mt-1 text-xs text-gray-500"><?php echo esc_html( $category_label ); ?> / <?php echo esc_html( get_the_date( 'Y' ) ); ?><?php if ( $is_admin ) : ?> / <?php echo esc_html( $author_name ); ?> / <?php echo esc_html( $is_private ? __( 'Privée', 'photovault' ) : __( 'Publique', 'photovault' ) ); ?><?php endif; ?></p></div>
 		<a class="relative z-30 shrink-0 text-xs font-bold text-amber-200 hover:text-white" href="<?php the_permalink(); ?>"><?php esc_html_e( 'Details', 'photovault' ); ?></a>
 	</div>
 </article>

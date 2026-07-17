@@ -983,13 +983,13 @@ ul.page-numbers .next {
 .pv-gallery-more.hidden { display: none; }
 
 .pv-gallery-lightbox {
-	width: 100vw;
-	max-width: none;
-	height: 100vh;
-	max-height: none;
-	margin: 0;
+	width: min(94vw, 90rem);
+	max-width: 90rem;
+	height: min(90dvh, 60rem);
+	max-height: 90dvh;
+	margin: auto;
 	padding: 0;
-	border: 0;
+	border: 1px solid rgba(255, 255, 255, 0.12);
 	background: #080807;
 	color: #f5f5f4;
 }

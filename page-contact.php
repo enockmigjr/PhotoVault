@@ -9,11 +9,16 @@ $notice        = '';
 $notice_type   = '';
 $name          = '';
 $email         = '';
-$request_type  = 'general';
+$request_type  = isset( $_GET['type'] ) ? sanitize_key( wp_unslash( $_GET['type'] ) ) : 'general';
 $subject       = '';
 $collection    = '';
 $content       = '';
 $request_types = photovault_get_contact_request_types();
+$collections   = get_terms( array( 'taxonomy' => 'media_folder', 'hide_empty' => false ) );
+$collections   = is_wp_error( $collections ) ? array() : $collections;
+if ( ! isset( $request_types[ $request_type ] ) ) {
+	$request_type = 'general';
+}
 
 if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_contact_nonce'] ) ) {
 	if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['photovault_contact_nonce'] ) ), 'photovault_contact_action' ) ) {
@@ -28,7 +33,10 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['photovault_contact_
 			$notice      = __( 'Veuillez remplir les champs obligatoires avec une adresse e-mail valide.', 'photovault' );
 			$notice_type = 'error';
 		} elseif ( 'access' === $request_type && function_exists( 'photovault_create_access_request' ) ) {
-			$result = photovault_create_access_request( array( 'name' => $name, 'email' => $email, 'subject' => $subject, 'collection' => $collection, 'message' => $content ) );
+			$folder = get_term_by( 'name', $collection, 'media_folder' );
+			$result = $folder && ! is_wp_error( $folder )
+				? photovault_create_access_request( array( 'name' => $name, 'email' => $email, 'subject' => $subject, 'collection' => $folder->name, 'message' => $content ) )
+				: new WP_Error( 'invalid_collection', __( 'Sélectionnez une collection PhotoVault existante.', 'photovault' ) );
 			$notice      = is_wp_error( $result ) ? $result->get_error_message() : __( 'Votre demande d’accès a été enregistrée et sera examinée manuellement.', 'photovault' );
 			$notice_type = is_wp_error( $result ) ? 'error' : 'success';
 		} elseif ( function_exists( 'photovault_rate_limit' ) && ! photovault_rate_limit( 'contact_message', 5, HOUR_IN_SECONDS ) ) {
@@ -70,7 +78,8 @@ get_header();
 			<form class="pv-public-form mt-8" action="<?php echo esc_url( get_permalink() ); ?>" method="post">
 				<?php wp_nonce_field( 'photovault_contact_action', 'photovault_contact_nonce' ); ?>
 				<div class="grid gap-5 sm:grid-cols-2"><label><span><?php esc_html_e( 'Nom et prénom', 'photovault' ); ?></span><input name="contact_name" type="text" autocomplete="name" maxlength="140" required value="<?php echo esc_attr( $name ); ?>"></label><label><span><?php esc_html_e( 'Adresse e-mail', 'photovault' ); ?></span><input name="email" type="email" autocomplete="email" maxlength="190" required value="<?php echo esc_attr( $email ); ?>"></label></div>
-				<div class="grid gap-5 sm:grid-cols-2"><label><span><?php esc_html_e( 'Type de demande', 'photovault' ); ?></span><select name="request_type" required><?php foreach ( $request_types as $type_key => $type_label ) : ?><option value="<?php echo esc_attr( $type_key ); ?>" <?php selected( $request_type, $type_key ); ?>><?php echo esc_html( $type_label ); ?></option><?php endforeach; ?></select></label><label><span><?php esc_html_e( 'Collection ou œuvre', 'photovault' ); ?></span><input name="collection_name" type="text" maxlength="190" value="<?php echo esc_attr( $collection ); ?>" placeholder="<?php esc_attr_e( 'Nom de la série ou du projet', 'photovault' ); ?>"></label></div>
+				<label><span><?php esc_html_e( 'Type de demande', 'photovault' ); ?></span><select name="request_type" required><?php foreach ( $request_types as $type_key => $type_label ) : ?><option value="<?php echo esc_attr( $type_key ); ?>" <?php selected( $request_type, $type_key ); ?>><?php echo esc_html( $type_label ); ?></option><?php endforeach; ?></select></label>
+				<label><span><?php esc_html_e( 'Collection protégée', 'photovault' ); ?></span><select name="collection_name"><option value=""><?php esc_html_e( 'Sélectionner une collection', 'photovault' ); ?></option><?php foreach ( $collections as $folder ) : ?><option value="<?php echo esc_attr( $folder->name ); ?>" <?php selected( $collection, $folder->name ); ?>><?php echo esc_html( $folder->name ); ?></option><?php endforeach; ?></select></label>
 				<label><span><?php esc_html_e( 'Sujet', 'photovault' ); ?></span><input name="contact_subject" type="text" maxlength="190" required value="<?php echo esc_attr( $subject ); ?>"></label>
 				<label><span><?php esc_html_e( 'Message', 'photovault' ); ?></span><textarea name="contact_message" rows="7" minlength="10" maxlength="4000" required placeholder="<?php esc_attr_e( 'Contexte, dates, droits ou contraintes utiles.', 'photovault' ); ?>"><?php echo esc_textarea( $content ); ?></textarea></label>
 				<button class="pv-public-submit" type="submit"><?php esc_html_e( 'Envoyer la demande', 'photovault' ); ?></button>

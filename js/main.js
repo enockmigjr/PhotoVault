@@ -320,6 +320,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof dialog.requestFullscreen === 'function') {
             try {
                 await dialog.requestFullscreen({ navigationUI: 'hide' });
+				dialog.classList.add('is-browser-fullscreen');
+				updateFullscreenState(true);
                 return;
             } catch (error) {
                 // Some browsers deny the Fullscreen API while still allowing an immersive dialog.
@@ -345,7 +347,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.closest('[data-pv-lightbox-next]')) render(currentIndex + 1);
         if (event.target.closest('[data-pv-lightbox-close]')) closeViewer();
         if (event.target.closest('[data-pv-lightbox-fullscreen]')) {
-            toggleFullscreen();
+			event.preventDefault();
+            toggleFullscreen().catch(function() {
+				dialog.classList.add('is-immersive');
+				updateFullscreenState(true);
+			});
         }
     });
 
