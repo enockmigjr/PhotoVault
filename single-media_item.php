@@ -76,7 +76,7 @@ if ( have_posts() ) :
 					<p class="mt-4 text-xs leading-6 text-gray-500"><?php esc_html_e( 'Cliquez sur l’image pour l’ouvrir dans la visionneuse. L’aperçu reste distinct du fichier haute définition.', 'photovault' ); ?></p>
 				</div>
 
-				<aside class="lg:col-span-4">
+				<aside class="pv-media-detail min-w-0 lg:col-span-4">
 					<div class="flex flex-wrap gap-2 text-[0.65rem] font-extrabold uppercase"><span class="border border-white/15 px-2.5 py-1 text-gray-300"><?php echo esc_html( $is_private ? __( 'Accès privé', 'photovault' ) : __( 'Galerie publique', 'photovault' ) ); ?></span><?php if ( $is_protected ) : ?><span class="border border-amber-200/30 px-2.5 py-1 text-amber-200"><?php esc_html_e( 'Aperçu protégé', 'photovault' ); ?></span><?php endif; ?></div>
 					<h1 class="mt-6 font-serif text-4xl leading-tight text-white sm:text-5xl"><?php the_title(); ?></h1>
 					<p class="mt-4 text-xs font-semibold uppercase text-gray-500"><time datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time> / <?php the_author(); ?></p>

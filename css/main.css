@@ -982,6 +982,10 @@ ul.page-numbers .next {
 .pv-gallery-more:disabled { opacity: 0.5; cursor: wait; }
 .pv-gallery-more.hidden { display: none; }
 
+.pv-media-detail,
+.pv-media-detail h1,
+.pv-media-detail .pv-editorial-content { overflow-wrap: anywhere; word-break: break-word; }
+
 .pv-gallery-lightbox {
 	width: min(94vw, 90rem);
 	max-width: 90rem;

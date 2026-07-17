@@ -125,6 +125,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+/** Only expose the protected-collection field for access requests. */
+document.addEventListener('DOMContentLoaded', function() {
+	const requestType = document.querySelector('.pv-public-form select[name="request_type"]');
+	const collectionField = document.querySelector('[data-pv-access-collection]');
+	if (!requestType || !collectionField) return;
+	const collectionSelect = collectionField.querySelector('select');
+	function syncCollectionField() {
+		const isAccessRequest = requestType.value === 'access';
+		collectionField.hidden = !isAccessRequest;
+		if (collectionSelect) collectionSelect.required = isAccessRequest;
+	}
+	requestType.addEventListener('change', syncCollectionField);
+	syncCollectionField();
+});
+
 /** Dismissible status messages shared by public and private surfaces. */
 document.addEventListener('click', function(event) {
 	const closeButton = event.target.closest('[data-pv-toast-close]');

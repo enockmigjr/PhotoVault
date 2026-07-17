@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Définir des constantes pour le thème.
-define( 'PHOTOVAULT_VERSION', '1.4.1' );
+define( 'PHOTOVAULT_VERSION', '1.4.2' );
 define( 'PHOTOVAULT_DIR', get_template_directory() );
 define( 'PHOTOVAULT_URI', get_template_directory_uri() );
 
