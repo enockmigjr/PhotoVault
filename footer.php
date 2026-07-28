@@ -65,7 +65,7 @@ $footer_credit        = photovault_theme_text( 'photovault_footer_credit', __( '
 
 					<?php if ( function_exists( 'newsletter_campaign_kit_handle_subscribe' ) ) : ?>
 						<?php $newsletter_topics = function_exists( 'newsletter_campaign_kit_get_topics' ) ? newsletter_campaign_kit_get_topics( 8, 0 ) : array(); ?>
-						<form class="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
+						<form id="footer-newsletter-form" class="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]" action="<?php echo esc_url( home_url( '/newsletter/subscribe/' ) ); ?>" method="post" data-pv-async-form data-pv-endpoint="<?php echo esc_url( rest_url( 'newsletter-campaign-kit/v1/subscriptions' ) ); ?>" data-pv-success="reset" <?php echo $newsletter_topics ? 'data-pv-modal-step="footer-newsletter-topics"' : ''; ?>>
 							<input type="hidden" name="action" value="newsletter_campaign_kit_subscribe">
 							<input type="hidden" name="newsletter_source" value="front_footer">
 							<input type="hidden" name="newsletter_return_url" value="<?php echo esc_url( home_url( '/' ) ); ?>">
@@ -77,12 +77,16 @@ $footer_credit        = photovault_theme_text( 'photovault_footer_credit', __( '
 								<input class="mt-1 h-4 w-4 shrink-0 border-gray-700 bg-gray-950 text-amber-200" type="checkbox" name="newsletter_consent" value="1" required>
 								<span><?php esc_html_e( 'J’accepte de recevoir les actualités éditoriales et je peux me désinscrire à tout moment.', 'photovault' ); ?></span>
 							</label>
-							<?php if ( $newsletter_topics ) : ?>
-								<fieldset class="sm:col-span-2"><legend class="mb-2 text-xs font-bold uppercase text-gray-500"><?php esc_html_e( 'Thématiques', 'photovault' ); ?></legend><div class="flex flex-wrap gap-x-5 gap-y-2">
-									<?php foreach ( $newsletter_topics as $topic ) : ?><label class="inline-flex items-center gap-2 text-xs text-gray-400"><input type="checkbox" name="newsletter_topic_ids[]" value="<?php echo esc_attr( $topic['id'] ); ?>" checked><span><?php echo esc_html( $topic['name'] ); ?></span></label><?php endforeach; ?>
-								</div></fieldset>
-							<?php endif; ?>
 						</form>
+						<?php if ( $newsletter_topics ) : ?>
+							<dialog id="footer-newsletter-topics" class="pv-newsletter-dialog">
+								<div class="pv-newsletter-dialog__header"><div><p class="pv-footer-heading"><?php esc_html_e( 'Vos centres d interet', 'photovault' ); ?></p><h2><?php esc_html_e( 'Choisissez les carnets que vous souhaitez recevoir.', 'photovault' ); ?></h2></div><button type="button" class="pv-newsletter-dialog__close" aria-label="<?php esc_attr_e( 'Fermer', 'photovault' ); ?>" data-pv-step-cancel>&times;</button></div>
+								<div class="pv-newsletter-dialog__topics">
+									<?php foreach ( $newsletter_topics as $topic ) : ?><label><input form="footer-newsletter-form" type="checkbox" name="newsletter_topic_ids[]" value="<?php echo esc_attr( $topic['id'] ); ?>" checked><span><strong><?php echo esc_html( $topic['name'] ); ?></strong><?php if ( $topic['description'] ) : ?><small><?php echo esc_html( $topic['description'] ); ?></small><?php endif; ?></span></label><?php endforeach; ?>
+								</div>
+								<div class="pv-newsletter-dialog__actions"><button type="button" class="pv-newsletter-dialog__secondary" data-pv-step-cancel><?php esc_html_e( 'Retour', 'photovault' ); ?></button><button type="button" class="pv-header-cta" data-pv-step-confirm="footer-newsletter-form"><?php esc_html_e( 'Confirmer mon inscription', 'photovault' ); ?></button></div>
+							</dialog>
+						<?php endif; ?>
 					<?php else : ?>
 						<p class="text-sm text-amber-100"><?php esc_html_e( 'La lettre des archives est momentanément indisponible.', 'photovault' ); ?></p>
 					<?php endif; ?>
