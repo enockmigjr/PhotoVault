@@ -1153,3 +1153,64 @@ ul.page-numbers .next {
 @media (min-width: 1024px) {
 	#main-sidebar { transform: translateX(0); }
 }
+.pv-async-feedback {
+	position: relative;
+	grid-column: 1 / -1;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	padding: 0.9rem 3rem 0.9rem 1rem;
+	font-size: 0.875rem;
+	line-height: 1.5;
+}
+
+.pv-async-feedback[hidden] {
+	display: none;
+}
+
+.pv-async-feedback.is-success {
+	border-color: rgba(52, 211, 153, 0.35);
+	background: rgba(16, 185, 129, 0.1);
+	color: #d1fae5;
+}
+
+.pv-async-feedback.is-error {
+	border-color: rgba(248, 113, 113, 0.35);
+	background: rgba(239, 68, 68, 0.1);
+	color: #fee2e2;
+}
+
+.pv-async-feedback a {
+	font-weight: 700;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.pv-async-feedback-close {
+	position: absolute;
+	top: 0.55rem;
+	right: 0.65rem;
+	width: 2rem;
+	height: 2rem;
+	border: 0;
+	background: transparent;
+	color: currentColor;
+	font-size: 1.4rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.pv-async-field-error {
+	display: block;
+	margin-top: 0.45rem;
+	color: #fecaca;
+	font-size: 0.75rem;
+	line-height: 1.4;
+}
+
+[data-pv-async-form][aria-busy="true"] {
+	opacity: 0.72;
+}

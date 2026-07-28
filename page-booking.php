@@ -43,7 +43,7 @@ get_header();
 				<?php if ( ! $types ) : ?>
 					<p class="border-y border-white/10 py-8 text-gray-400"><?php esc_html_e( 'Le module de réservation est temporairement indisponible.', 'photovault' ); ?></p>
 				<?php else : ?>
-					<form class="pv-public-form grid gap-6 sm:grid-cols-2" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" <?php echo isset( $messages[ $status ] ) ? 'aria-describedby="booking-error"' : ''; ?>>
+					<form class="pv-public-form grid gap-6 sm:grid-cols-2" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" data-pv-async-form data-pv-endpoint="<?php echo esc_url( rest_url( 'photovault/v1/application/shootings' ) ); ?>" data-pv-success="reset" <?php echo isset( $messages[ $status ] ) ? 'aria-describedby="booking-error"' : ''; ?>>
 						<input type="hidden" name="action" value="photovault_create_shooting">
 						<?php wp_nonce_field( 'photovault_create_shooting', 'photovault_shooting_nonce' ); ?>
 						<label class="sm:col-span-2"><span><?php esc_html_e( 'Type de shooting', 'photovault' ); ?></span><select name="shooting_type" required><option value=""><?php esc_html_e( 'Choisir', 'photovault' ); ?></option><?php foreach ( $types as $key => $label ) : ?><option value="<?php echo esc_attr( $key ); ?>" <?php selected( $selected, $key ); ?>><?php echo esc_html( $label ); ?></option><?php endforeach; ?></select></label>

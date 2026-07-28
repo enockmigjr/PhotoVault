@@ -48,6 +48,8 @@ function photovault_scripts() {
 	// Script JS principal global.
 	$script_version = file_exists( PHOTOVAULT_DIR . '/js/main.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/main.js' ) : PHOTOVAULT_VERSION;
 	wp_enqueue_script( 'photovault-main-js', PHOTOVAULT_URI . '/js/main.js', array(), $script_version, true );
+	$application_runtime_version = file_exists( PHOTOVAULT_DIR . '/js/application-runtime.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/application-runtime.js' ) : PHOTOVAULT_VERSION;
+	wp_enqueue_script( 'photovault-application-runtime', PHOTOVAULT_URI . '/js/application-runtime.js', array( 'photovault-main-js' ), $application_runtime_version, true );
 	
 	// Configuration REST disponible avant le script principal et les scripts inline.
 	$photovault_frontend_config = array(

@@ -156,7 +156,7 @@ document.addEventListener('click', function(event) {
 /** Prevent duplicate frontend submissions and expose a consistent busy state. */
 document.addEventListener('submit', function(event) {
 	const form = event.target.closest('form');
-	if (!form || form.hasAttribute('data-pv-no-loading')) {
+	if (!form || form.hasAttribute('data-pv-no-loading') || form.hasAttribute('data-pv-async-form')) {
 		return;
 	}
 
