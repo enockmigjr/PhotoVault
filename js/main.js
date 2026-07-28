@@ -173,6 +173,10 @@ document.addEventListener('submit', function(event) {
 
 	submitter.setAttribute('aria-busy', 'true');
 	submitter.disabled = true;
+	if (submitter instanceof HTMLInputElement) {
+		submitter.dataset.pvIdleValue = submitter.value;
+		submitter.value = 'Chargement...';
+	}
 	form.setAttribute('aria-busy', 'true');
 });
 
@@ -182,6 +186,10 @@ window.addEventListener('pageshow', function() {
 		form.querySelectorAll('[aria-busy="true"]').forEach(function(control) {
 			control.removeAttribute('aria-busy');
 			control.disabled = false;
+			if (control instanceof HTMLInputElement && control.dataset.pvIdleValue) {
+				control.value = control.dataset.pvIdleValue;
+				delete control.dataset.pvIdleValue;
+			}
 		});
 	});
 });

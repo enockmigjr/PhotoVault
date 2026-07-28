@@ -5,6 +5,8 @@
 	let currentIndex = 0;
 	let activeScope = null;
 	let pointerStart = null;
+	let filterController = null;
+	let filterDebounce = null;
 
 	function dialog() {
 		return document.getElementById('pv-gallery-lightbox');
@@ -107,10 +109,108 @@
 		});
 	}
 
+	function galleryEmptyState() {
+		return '<div class="pv-gallery-empty"><strong>Aucune oeuvre ne correspond a cette recherche.</strong><span>Essayez une autre collection ou reinitialisez les filtres.</span></div>';
+	}
+
+	function initializeFilters(root) {
+		const form = (root || document).querySelector('[data-pv-gallery-filters]');
+		if (!form || form.dataset.pvGalleryFiltersBound === '1') return;
+		const grid = document.getElementById('media-grid');
+		const results = document.getElementById('gallery-results');
+		const resetButton = form.querySelector('#reset-filters');
+		const moreButton = document.getElementById('load-more-media');
+		if (!grid || !results || !moreButton || !form.dataset.endpoint) return;
+
+		form.dataset.pvGalleryFiltersBound = '1';
+		let page = 1;
+		let pages = Number(form.dataset.pages || 0);
+
+		async function updateGallery(append) {
+			if (filterController) filterController.abort();
+			filterController = new AbortController();
+			const controller = filterController;
+			const requestedPage = append ? page + 1 : 1;
+			const params = new URLSearchParams(new FormData(form));
+			const settings = window.photovault_ajax || {};
+			params.set('page', String(requestedPage));
+			results.setAttribute('aria-busy', 'true');
+			moreButton.disabled = true;
+			moreButton.setAttribute('aria-busy', 'true');
+
+			try {
+				const response = await fetch(form.dataset.endpoint + '?' + params.toString(), {
+					credentials: 'same-origin',
+					headers: settings.nonce ? { 'X-WP-Nonce': settings.nonce } : {},
+					signal: controller.signal
+				});
+				if (!response.ok) throw new Error('gallery_request_failed');
+				const payload = await response.json();
+				const entries = payload.success && Array.isArray(payload.data) ? payload.data : [];
+				pages = Number(payload.pages || 0);
+				page = requestedPage;
+				const html = entries.length ? entries.map(function(item) { return item.html; }).join('') : galleryEmptyState();
+				if (append && entries.length) {
+					grid.insertAdjacentHTML('beforeend', html);
+				} else {
+					grid.innerHTML = html;
+				}
+				grid.classList.toggle('is-empty', !entries.length && !append);
+				moreButton.classList.toggle('hidden', !pages || page >= pages);
+				activeScope = null;
+				document.dispatchEvent(new CustomEvent('photovault:gallery-updated'));
+			} catch (error) {
+				if (error.name === 'AbortError') return;
+				if (window.PhotoVaultProtectionNotice) {
+					window.PhotoVaultProtectionNotice('La galerie ne peut pas etre actualisee pour le moment.');
+				}
+			} finally {
+				if (filterController !== controller) return;
+				results.setAttribute('aria-busy', 'false');
+				moreButton.disabled = false;
+				moreButton.removeAttribute('aria-busy');
+			}
+		}
+
+		form.addEventListener('submit', function(event) {
+			event.preventDefault();
+			updateGallery(false);
+		});
+		form.querySelectorAll('select').forEach(function(field) {
+			field.addEventListener('change', function() {
+				updateGallery(false);
+			});
+		});
+		const search = form.querySelector('input[type="search"]');
+		if (search) {
+			search.addEventListener('input', function() {
+				window.clearTimeout(filterDebounce);
+				filterDebounce = window.setTimeout(function() {
+					updateGallery(false);
+				}, 320);
+			});
+		}
+		if (resetButton) {
+			resetButton.addEventListener('click', function() {
+				window.setTimeout(function() {
+					updateGallery(false);
+				}, 0);
+			});
+		}
+		moreButton.addEventListener('click', function() {
+			updateGallery(true);
+		});
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		initializeFilters(document);
+	});
+
 	document.addEventListener('photovault:page-ready', function() {
 		enabled = true;
 		activeScope = null;
 		bindDialog();
+		initializeFilters(document);
 	});
 
 	document.addEventListener('click', function(event) {

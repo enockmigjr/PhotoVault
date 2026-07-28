@@ -14,6 +14,15 @@
 		}
 		submitter.toggleAttribute('aria-busy', busy);
 		submitter.disabled = busy;
+		if (submitter instanceof HTMLInputElement) {
+			if (busy) {
+				submitter.dataset.pvIdleValue = submitter.value;
+				submitter.value = 'Chargement...';
+			} else if (submitter.dataset.pvIdleValue) {
+				submitter.value = submitter.dataset.pvIdleValue;
+				delete submitter.dataset.pvIdleValue;
+			}
+		}
 	}
 
 	function clearErrors(form) {

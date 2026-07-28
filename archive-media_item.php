@@ -51,7 +51,13 @@ try {
 
 	<section class="sticky top-0 z-40 border-b border-white/10 bg-[#0d0c0b]/95 backdrop-blur-xl" aria-label="Filtres de la galerie">
 		<div class="mx-auto max-w-[90rem] px-5 py-4 sm:px-8 lg:px-12">
-			<form id="filters-form" class="pv-gallery-filters" onsubmit="return false;">
+			<form
+				id="filters-form"
+				class="pv-gallery-filters"
+				data-pv-gallery-filters
+				data-endpoint="<?php echo esc_url( rest_url( 'photovault/v1/media' ) ); ?>"
+				data-pages="<?php echo esc_attr( absint( $query->max_num_pages ) ); ?>"
+			>
 				<label class="pv-gallery-search">
 					<span class="pv-gallery-filter-label"><?php esc_html_e( 'Recherche', 'photovault' ); ?></span>
 					<svg width="18" height="18" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
@@ -83,62 +89,5 @@ try {
 </main>
 
 <?php get_template_part( 'templates/gallery-lightbox' ); ?>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-	const form = document.getElementById('filters-form');
-	const grid = document.getElementById('media-grid');
-	const results = document.getElementById('gallery-results');
-	const reset = document.getElementById('reset-filters');
-	const more = document.getElementById('load-more-media');
-	const config = window.photovault_ajax || <?php echo wp_json_encode( array( 'rest_url' => esc_url_raw( rest_url( 'photovault/v1' ) ), 'nonce' => wp_create_nonce( 'wp_rest' ) ) ); ?>;
-	let page = 1;
-	let pages = <?php echo absint( $query->max_num_pages ); ?>;
-	let debounce;
-	let requestController;
-
-	function emptyState() {
-		return '<div class="pv-gallery-empty"><strong>Aucune oeuvre ne correspond a cette recherche.</strong><span>Essayez une autre collection ou reinitialisez les filtres.</span></div>';
-	}
-
-	async function updateGallery(append) {
-		if (requestController) requestController.abort();
-		requestController = new AbortController();
-		const controller = requestController;
-		page = append ? page + 1 : 1;
-		const params = new URLSearchParams(new FormData(form));
-		params.set('page', String(page));
-		results.setAttribute('aria-busy', 'true');
-		more.disabled = true;
-		more.setAttribute('aria-busy', 'true');
-		try {
-			const response = await fetch(config.rest_url.replace(/\/$/, '') + '/media?' + params.toString(), { credentials: 'same-origin', headers: config.nonce ? { 'X-WP-Nonce': config.nonce } : {}, signal: controller.signal });
-			if (!response.ok) throw new Error('gallery_request_failed');
-			const payload = await response.json();
-			pages = Number(payload.pages || 0);
-			const hasItems = Boolean(payload.success && payload.data.length);
-			const html = hasItems ? payload.data.map(item => item.html).join('') : emptyState();
-			if (append && payload.data.length) grid.insertAdjacentHTML('beforeend', html); else grid.innerHTML = html;
-			grid.classList.toggle('is-empty', !hasItems && !append);
-			more.classList.toggle('hidden', !pages || page >= pages);
-			document.dispatchEvent(new CustomEvent('photovault:gallery-updated'));
-		} catch (error) {
-			if (error.name === 'AbortError') return;
-			page = append ? Math.max(1, page - 1) : page;
-			if (window.PhotoVaultProtectionNotice) window.PhotoVaultProtectionNotice('La galerie ne peut pas etre actualisee pour le moment.');
-		} finally {
-			if (requestController !== controller) return;
-			results.setAttribute('aria-busy', 'false');
-			more.disabled = false;
-			more.removeAttribute('aria-busy');
-		}
-	}
-
-	form.querySelectorAll('select').forEach(field => field.addEventListener('change', () => updateGallery(false)));
-	document.getElementById('filter-search').addEventListener('input', function() { window.clearTimeout(debounce); debounce = window.setTimeout(() => updateGallery(false), 320); });
-	reset.addEventListener('click', function() { window.setTimeout(() => updateGallery(false), 0); });
-	more.addEventListener('click', function() { updateGallery(true); });
-});
-</script>
 
 <?php get_footer(); ?>

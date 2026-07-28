@@ -5,6 +5,16 @@
 		form.toggleAttribute('aria-busy', busy);
 		form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function(control) {
 			control.disabled = busy;
+			control.toggleAttribute('aria-busy', busy);
+			if (control instanceof HTMLInputElement) {
+				if (busy) {
+					control.dataset.pvIdleValue = control.value;
+					control.value = 'Chargement...';
+				} else if (control.dataset.pvIdleValue) {
+					control.value = control.dataset.pvIdleValue;
+					delete control.dataset.pvIdleValue;
+				}
+			}
 		});
 	}
 
