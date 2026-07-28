@@ -103,6 +103,7 @@ $whatsapp_url         = esc_url( get_theme_mod( 'photovault_whatsapp_url', '' ) 
 		</div>
 	</footer>
 <?php endif; ?>
+</div>
 
 <?php wp_footer(); ?>
 </body>

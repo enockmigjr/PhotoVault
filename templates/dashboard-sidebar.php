@@ -88,12 +88,14 @@ $role_label = ! empty( $role_data['name'] ) ? translate_user_role( $role_data['n
 </aside>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+(function () {
 	const toggle = document.getElementById('toggle-sidebar');
 	const close = document.getElementById('close-sidebar');
 	const sidebar = document.getElementById('main-sidebar');
 	const overlay = document.getElementById('sidebar-overlay');
 	if (!toggle || !sidebar || !overlay) return;
+	if (sidebar.dataset.pvSidebarReady === '1') return;
+	sidebar.dataset.pvSidebarReady = '1';
 	function setOpen(open) {
 		sidebar.setAttribute('data-sidebar-open', open ? 'true' : 'false');
 		sidebar.classList.toggle('-translate-x-full', !open);
@@ -107,5 +109,5 @@ document.addEventListener('DOMContentLoaded', function () {
 	if (close) close.addEventListener('click', function () { setOpen(false); });
 	overlay.addEventListener('click', function () { setOpen(false); });
 	document.addEventListener('keydown', function (event) { if (event.key === 'Escape') setOpen(false); });
-});
+}());
 </script>

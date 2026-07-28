@@ -184,7 +184,7 @@ get_header();
 </dialog>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+(function() {
 	document.querySelectorAll('[data-profile-open]').forEach(function(button) {
 		button.addEventListener('click', function() {
 			const dialog = document.getElementById(button.getAttribute('data-profile-open'));
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (close) close.addEventListener('click', dismiss);
 		window.setTimeout(dismiss, 7000);
 	}
-});
+}());
 </script>
 
 <?php get_footer(); ?>

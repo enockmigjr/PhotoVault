@@ -48,8 +48,12 @@ function photovault_scripts() {
 	// Script JS principal global.
 	$script_version = file_exists( PHOTOVAULT_DIR . '/js/main.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/main.js' ) : PHOTOVAULT_VERSION;
 	wp_enqueue_script( 'photovault-main-js', PHOTOVAULT_URI . '/js/main.js', array(), $script_version, true );
+	$gallery_runtime_version = file_exists( PHOTOVAULT_DIR . '/js/gallery-runtime.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/gallery-runtime.js' ) : PHOTOVAULT_VERSION;
+	wp_enqueue_script( 'photovault-gallery-runtime', PHOTOVAULT_URI . '/js/gallery-runtime.js', array( 'photovault-main-js' ), $gallery_runtime_version, true );
 	$application_runtime_version = file_exists( PHOTOVAULT_DIR . '/js/application-runtime.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/application-runtime.js' ) : PHOTOVAULT_VERSION;
-	wp_enqueue_script( 'photovault-application-runtime', PHOTOVAULT_URI . '/js/application-runtime.js', array( 'photovault-main-js' ), $application_runtime_version, true );
+	wp_enqueue_script( 'photovault-application-runtime', PHOTOVAULT_URI . '/js/application-runtime.js', array( 'photovault-gallery-runtime' ), $application_runtime_version, true );
+	$navigation_runtime_version = file_exists( PHOTOVAULT_DIR . '/js/navigation-runtime.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/navigation-runtime.js' ) : PHOTOVAULT_VERSION;
+	wp_enqueue_script( 'photovault-navigation-runtime', PHOTOVAULT_URI . '/js/navigation-runtime.js', array( 'photovault-application-runtime' ), $navigation_runtime_version, true );
 	if ( is_page_template( 'page-profile.php' ) ) {
 		$profile_runtime_version = file_exists( PHOTOVAULT_DIR . '/js/profile-runtime.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/profile-runtime.js' ) : PHOTOVAULT_VERSION;
 		wp_enqueue_script( 'photovault-profile-runtime', PHOTOVAULT_URI . '/js/profile-runtime.js', array( 'photovault-application-runtime' ), $profile_runtime_version, true );
@@ -68,7 +72,7 @@ function photovault_scripts() {
 	);
 	wp_add_inline_script(
 		'photovault-main-js',
-		'window.photovault_ajax = window.photovault_ajax || ' . wp_json_encode( $photovault_frontend_config ) . ';',
+		'window.photovault_ajax = ' . wp_json_encode( $photovault_frontend_config ) . ';',
 		'before'
 	);
 }

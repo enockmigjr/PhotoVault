@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /** Only expose the protected-collection field for access requests. */
-document.addEventListener('DOMContentLoaded', function() {
+function photovaultSyncRequestTypeField() {
 	const requestType = document.querySelector('.pv-public-form select[name="request_type"]');
 	const collectionField = document.querySelector('[data-pv-access-collection]');
 	if (!requestType || !collectionField) return;
@@ -138,7 +138,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	requestType.addEventListener('change', syncCollectionField);
 	syncCollectionField();
-});
+}
+document.addEventListener('DOMContentLoaded', photovaultSyncRequestTypeField);
+document.addEventListener('photovault:page-ready', photovaultSyncRequestTypeField);
 
 /** Dismissible status messages shared by public and private surfaces. */
 document.addEventListener('click', function(event) {
@@ -348,6 +350,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     document.addEventListener('click', function(event) {
+		if (dialog !== document.getElementById('pv-gallery-lightbox')) {
+			return;
+		}
         const opener = event.target.closest('[data-pv-lightbox-open]');
         if (opener) {
 			activeScope = opener.closest('[data-pv-lightbox-scope]') || document.getElementById('media-grid');
@@ -371,6 +376,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('fullscreenchange', function() {
+		if (dialog !== document.getElementById('pv-gallery-lightbox')) {
+			return;
+		}
         const active = document.fullscreenElement === dialog;
         dialog.classList.toggle('is-browser-fullscreen', active);
         updateFullscreenState(active || dialog.classList.contains('is-immersive'));

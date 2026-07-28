@@ -143,6 +143,12 @@
 
 			if (form.dataset.pvSuccess === 'reset') {
 				form.reset();
+				const newsletterTopics = form.querySelector('[data-pv-newsletter-topics]');
+				if (newsletterTopics) newsletterTopics.hidden = true;
+				const newsletterSubmit = form.querySelector('[data-pv-newsletter-submit]');
+				if (newsletterSubmit && newsletterSubmit.dataset.pvInitialLabel) {
+					newsletterSubmit.textContent = newsletterSubmit.dataset.pvInitialLabel;
+				}
 			}
 			form.dataset.pvStepReady = '0';
 			const modalId = form.dataset.pvModalStep;
@@ -170,6 +176,23 @@
 	document.addEventListener('submit', function(event) {
 		const form = event.target.closest('form[data-pv-async-form]');
 		if (form) {
+			const newsletterTopics = form.querySelector('[data-pv-newsletter-topics]');
+			if (form.hasAttribute('data-pv-newsletter-steps') && newsletterTopics && newsletterTopics.hidden) {
+				event.preventDefault();
+				if (!form.reportValidity()) return;
+				newsletterTopics.hidden = false;
+				const submit = form.querySelector('[data-pv-newsletter-submit]');
+				if (submit) {
+					if (!submit.dataset.pvInitialLabel) submit.dataset.pvInitialLabel = submit.textContent;
+					submit.textContent = 'Confirmer mon inscription';
+				}
+				const legend = newsletterTopics.querySelector('legend');
+				if (legend) {
+					legend.tabIndex = -1;
+					legend.focus();
+				}
+				return;
+			}
 			const modalId = form.dataset.pvModalStep;
 			if (modalId && form.dataset.pvStepReady !== '1') {
 				event.preventDefault();
@@ -211,6 +234,12 @@
 		}
 	});
 
+	document.addEventListener('photovault:favorite-changed', function(event) {
+		if (!event.detail || event.detail.favorite) return;
+		const card = document.querySelector('[data-pv-favorite-card="' + event.detail.mediaId + '"]');
+		if (card) card.remove();
+	});
+
 	let dashboardController = null;
 
 	function isDashboardUrl(url) {
@@ -235,6 +264,20 @@
 			}
 		});
 		window.history.replaceState(Object.assign({}, window.history.state, { photovaultDashboard: true }), '', url.href);
+	}
+
+	function closeDashboardSidebar() {
+		const sidebar = document.getElementById('main-sidebar');
+		const overlay = document.getElementById('sidebar-overlay');
+		const toggle = document.getElementById('toggle-sidebar');
+		if (!sidebar || !overlay || !toggle) return;
+		sidebar.setAttribute('data-sidebar-open', 'false');
+		sidebar.classList.add('-translate-x-full');
+		overlay.hidden = true;
+		overlay.classList.add('hidden');
+		overlay.classList.remove('opacity-100');
+		toggle.setAttribute('aria-expanded', 'false');
+		document.body.classList.remove('overflow-hidden');
 	}
 
 	async function navigateDashboard(url, pushState) {
@@ -262,6 +305,7 @@
 				window.history.pushState({ photovaultDashboard: true }, '', url.href);
 			}
 			syncDashboardNavigation(nextDocument, url);
+			closeDashboardSidebar();
 			const heading = next.querySelector('h1');
 			if (heading) {
 				heading.tabIndex = -1;

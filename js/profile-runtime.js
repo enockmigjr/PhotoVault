@@ -114,4 +114,5 @@
 	} else {
 		prepareAsyncForms();
 	}
+	document.addEventListener('photovault:page-ready', prepareAsyncForms);
 })();

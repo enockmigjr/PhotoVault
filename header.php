@@ -7,6 +7,7 @@
 </head>
 <body <?php body_class( 'bg-[#0d0c0b] text-gray-100 min-h-screen flex flex-col' ); ?>>
 <?php wp_body_open(); ?>
+<div id="photovault-app-shell" data-pv-app-shell>
 
 <?php
 $is_dashboard_surface = function_exists( 'photovault_is_dashboard_surface' ) ? photovault_is_dashboard_surface() : is_page_template( 'page-dashboard.php' );

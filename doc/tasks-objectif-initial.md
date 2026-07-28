@@ -1,6 +1,6 @@
 # Objectif initial PhotoVault - suivi canonique
 
-Derniere mise a jour: 2026-07-16
+Derniere mise a jour: 2026-07-28
 
 Ce document est l'unique source de verite pour la progression. Une tache est cochee seulement quand le code est cable et qu'une preuve locale existe. Les validations exigeant un fournisseur ou un environnement de production restent explicitement separees.
 
@@ -112,12 +112,34 @@ Ce document est l'unique source de verite pour la progression. Une tache est coc
 | 13 | Challenge MFA WordPress | Valide: habillage coherent et redirection post-challenge non vide. |
 | 14 | Article vers newsletter | Valide: brouillon manuel sans ressaisie, modes brouillon automatique et envoi automatique explicite. |
 
+## Lot asynchrone et pilotage 2026-07-28
+
+Ce lot prolonge les 65 exigences deja cloturees. Il couvre la navigation sans rechargement perceptible, les retours d'action, la consolidation MFA et une administration Newsletter plus exploitable.
+
+- [x] Ajouter une barre de progression jaune globale et des etats occupes accessibles aux actions asynchrones.
+- [x] Naviguer entre les pages publiques et privees compatibles avec un shell PJAX, historique, titre, assets et repli natif.
+- [x] Reinitialiser proprement galerie, profil, formulaires et menu apres une navigation partielle.
+- [x] Fermer le tiroir mobile du Dashboard apres navigation et conserver les actions Dashboard en AJAX.
+- [x] Stabiliser les navigations admin asynchrones de Core, Identity et Newsletter.
+- [x] Afficher toutes les methodes MFA disponibles, y compris l'ancienne methode preferee apres un changement.
+- [x] Fournir des etats occupes et un retour cible sur les parcours MFA et profil.
+- [x] Regrouper securite et reset dans la derniere colonne utilisateurs, avec reset protege, limite et audite.
+- [x] Demander le consentement Newsletter avant les thematiques et envoyer la selection dans le Dashboard.
+- [x] Transformer les longs formulaires Newsletter en dialogues et fournir un exemple CSV genere cote serveur.
+- [x] Alimenter une campagne depuis les articles ou les oeuvres publiques, avec apercus media non proteges.
+- [x] Ajouter filtres et pagination des campagnes, definitions KPI, echecs/reprises, cohorts, sources et attribution explicite aux rapports.
+- [x] Diversifier le jeu de demonstration: 18 images distinctes pour 48 oeuvres et 12 illustrations distinctes pour 12 articles.
+- [x] Valider les parcours navigateur critiques, les miroirs et la reconstruction Docker; conserver des commits independants par depot.
+
 Preuves du 2026-07-16: diagnostics providers rendus a 1440 px sans debordement ni erreur fatale; cinq routes Axe sans violation serieuse ou critique; dialogues ouverts nommes et valides par Axe; reflow equivalent a 200 %, piege/retour du focus et galerie clavier valides; seed version 2 rejoue deux fois avec 10 grants distincts sans duplication; deploiement Docker reconstruit avec cinq services sains, `make verify` valide et cron Newsletter execute; Twilio Test Credentials a accepte l'adapter puis un challenge OTP SMS complet, stocke avec hashes et expiration avant neutralisation; une campagne temporaire a traverse la queue Resend avec statut `sent`, et Resend confirme `delivered` pour le diagnostic precedent; transport `wp_mail` Mailpit valide, profil Resend SMTP valide sans secret dans l'image, proxy HTTPS reconnu, Caddyfile valide, sauvegarde finale verifiee et restauration isolee reussie sur 37 tables.
+
+Preuves du 2026-07-28: navigation PJAX sans requete document et evenement `photovault:page-ready`; barre jaune correctement terminee; galerie apres PJAX, precedent/suivant et plein ecran immersif valides; reflow home, galerie, connexion, Dashboard et profil, focus et dialogues valides avec un utilisateur ephemere; aucun probleme Axe serieux ou critique sur les surfaces controlees; runtimes Identity, Core, galerie, Dashboard et Newsletter valides; 18 visuels distincts sur 48 oeuvres et 12 illustrations distinctes sur 12 articles; trois miroirs strictement identiques; images Docker WordPress/cron reconstruites; cinq services sains, home HTTP 200 et evenement cron Newsletter execute.
 
 ## Progression
 
 - Mise en oeuvre logicielle demandee: **100 %**. Les fonctionnalites, diagnostics et procedures executables sont livres.
 - Preuves locales, simulees ou acceptees par le proprietaire: **65 exigences validees sur 65 (100%)**.
 - Recette de presentation: **terminee**. Le runbook DevOps canonique est `../../../doc/GUIDE-DEVOPS-COMPLET.md`.
+- Lot asynchrone du 2026-07-28: **14 groupes implementes et valides sur 14 (100%)**.
 
 Decision du proprietaire le 2026-07-16: le projet est cloture pour la presentation. L'OTP operateur Twilio, le domaine Resend SPF/DKIM/DMARC et les controles sur une URL publique seront actives quand le budget et l'hebergement seront disponibles. Cette acceptation ne transforme pas les simulations en preuves live; elle classe ces points comme exploitation commerciale differee.

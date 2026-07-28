@@ -85,6 +85,7 @@
 			form.dispatchEvent(new CustomEvent('photovault:auth-success', { bubbles: true, detail: result }));
 			if (result.data && result.data.redirect_url) {
 				window.setTimeout(function() {
+					// Authentication changes the session and every REST nonce.
 					window.location.assign(result.data.redirect_url);
 				}, 250);
 				return;

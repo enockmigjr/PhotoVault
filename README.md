@@ -26,8 +26,10 @@ publique. Les parcours navigateur doivent etre rejoues avec un compte de
 recette avant chaque livraison.
 
 Les formulaires d'authentification utilisent un runtime AJAX avec fallback
-serveur. Les sections du Dashboard utilisent l'History API et remplacent
-uniquement leur contenu principal. Les mutations de profil, MFA, galerie,
+serveur. La navigation publique et privee utilise une couche PJAX/History API,
+une progression jaune globale et conserve les actions WordPress natives hors
+de ce runtime. Les sections du Dashboard remplacent uniquement leur contenu
+principal et referment le tiroir mobile. Les mutations de profil, MFA, galerie,
 contact, shootings et newsletter conservent leurs retours accessibles sans
 rechargement complet.
 
