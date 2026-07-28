@@ -46,7 +46,7 @@ rechargement complet.
 
 WordPress execute uniquement les depots installes sous `wp-content/plugins`. Le dossier `PhotoVault/plugins` contient des miroirs de distribution et de validation; il n'est jamais charge par le runtime.
 
-Il peut etre exclu d'un artefact de deploiement lorsque les trois plugins actifs sont installes separement. Ne le supprimez toutefois pas du depot source actuel sans adapter aussi les controles de synchronisation, la baseline PHPCS et la strategie de packaging documentee dans `doc/validation-externe.md`.
+Il peut etre exclu d'un artefact de deploiement lorsque les trois plugins actifs sont installes separement. Ne le supprimez toutefois pas du depot source actuel sans adapter aussi les controles de synchronisation et la strategie de packaging.
 
 ## Installation Docker
 
@@ -71,12 +71,9 @@ Les tests navigateur utilisent la dependance de developpement Playwright. Sur un
 
 ## Documentation utile
 
-- [Objectif initial et progression](doc/tasks-objectif-initial.md)
-- [Architecture](doc/architecture.md)
+- [Etat fonctionnel](doc/etat-projet.md)
+- [Exploitation Docker](doc/docker.md)
 - [Securite](SECURITY.md)
-- [Inventaire REST/AJAX](doc/rest-ajax-inventory.md)
-- [Matrice capabilities](doc/capabilities-matrix.md)
-- [Tables, options et hooks](doc/plugin-surfaces.md)
 - [Threat model media](doc/threat-model-media.md)
 - [Threat model identity](doc/threat-model-identity.md)
 - [Threat model newsletter](doc/threat-model-newsletter.md)
@@ -118,6 +115,6 @@ Le theme et les plugins actifs sont des depots Git separes. Quand un plugin acti
 
 Les secrets restent hors de WordPress et de Git. Les noms exacts et exemples wp-config sont documentes dans les README de identity-security-kit et newsletter-campaign-kit. La livraison utilise Twilio pour le SMS, Resend API pour les campagnes et Resend SMTP pour les emails transactionnels en production.
 
-## Activation commerciale differee
+## Activation publique
 
-La liste exhaustive est maintenue dans [doc/tasks-objectif-initial.md](doc/tasks-objectif-initial.md). Le proprietaire accepte la livraison pour la presentation. Lors d'une ouverture publique financee, [doc/validation-externe.md](doc/validation-externe.md) et le runbook DevOps indiquent comment activer et prouver Twilio live, SPF/DKIM/DMARC et l'hebergement HTTPS.
+Le guide DevOps racine et `doc/docker.md` decrivent le deploiement, les secrets, TLS, SPF/DKIM/DMARC, Twilio et la supervision.
