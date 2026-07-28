@@ -50,11 +50,16 @@ function photovault_scripts() {
 	wp_enqueue_script( 'photovault-main-js', PHOTOVAULT_URI . '/js/main.js', array(), $script_version, true );
 	$application_runtime_version = file_exists( PHOTOVAULT_DIR . '/js/application-runtime.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/application-runtime.js' ) : PHOTOVAULT_VERSION;
 	wp_enqueue_script( 'photovault-application-runtime', PHOTOVAULT_URI . '/js/application-runtime.js', array( 'photovault-main-js' ), $application_runtime_version, true );
+	if ( is_page_template( 'page-profile.php' ) ) {
+		$profile_runtime_version = file_exists( PHOTOVAULT_DIR . '/js/profile-runtime.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/profile-runtime.js' ) : PHOTOVAULT_VERSION;
+		wp_enqueue_script( 'photovault-profile-runtime', PHOTOVAULT_URI . '/js/profile-runtime.js', array( 'photovault-application-runtime' ), $profile_runtime_version, true );
+	}
 	
 	// Configuration REST disponible avant le script principal et les scripts inline.
 	$photovault_frontend_config = array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'rest_url' => esc_url_raw( rest_url( 'photovault/v1' ) ),
+		'identity_rest_url' => esc_url_raw( rest_url( 'identity-security-kit/v1' ) ),
 		'nonce'    => wp_create_nonce( 'wp_rest' ),
 	);
 	wp_add_inline_script(

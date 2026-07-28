@@ -97,6 +97,24 @@
 		return payload;
 	}
 
+	function requestOptions(form) {
+		const options = {
+			method: form.method || 'POST',
+			credentials: 'same-origin',
+			headers: { 'X-WP-Nonce': config.nonce || '' }
+		};
+		const hasFile = Array.from(form.querySelectorAll('input[type="file"]')).some(function(input) {
+			return input.files && input.files.length;
+		});
+		if (hasFile) {
+			options.body = new FormData(form);
+			return options;
+		}
+		options.headers['Content-Type'] = 'application/json';
+		options.body = JSON.stringify(formPayload(form));
+		return options;
+	}
+
 	async function submitForm(form, event) {
 		const endpoint = form.dataset.pvEndpoint;
 		const submitter = getSubmitter(form, event);
@@ -109,15 +127,7 @@
 		setBusy(form, submitter, true);
 
 		try {
-			const response = await fetch(endpoint, {
-				method: form.method || 'POST',
-				credentials: 'same-origin',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': config.nonce || ''
-				},
-				body: JSON.stringify(formPayload(form))
-			});
+			const response = await fetch(endpoint, requestOptions(form));
 			const result = await response.json().catch(function() {
 				return {};
 			});
