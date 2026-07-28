@@ -40,6 +40,27 @@ function photovault_customize_register( $customizer ) {
 		$customizer->add_setting( $setting, array( 'default' => $field[1], 'sanitize_callback' => 'sanitize_textarea_field', 'transport' => 'refresh' ) );
 		$customizer->add_control( $setting, array( 'section' => 'photovault_footer', 'label' => $field[0], 'type' => $field[2] ) );
 	}
+
+	$customizer->add_section(
+		'photovault_studio',
+		array(
+			'title'       => __( 'PhotoVault studio', 'photovault' ),
+			'description' => __( 'Coordonnees publiques affichees sur la page Contact et dans le pied de page.', 'photovault' ),
+			'priority'    => 33,
+		)
+	);
+	$studio_fields = array(
+		'photovault_studio_email'    => array( __( 'Public email', 'photovault' ), get_option( 'admin_email' ), 'email', 'sanitize_email' ),
+		'photovault_studio_phone'    => array( __( 'Public phone', 'photovault' ), '', 'text', 'sanitize_text_field' ),
+		'photovault_studio_location' => array( __( 'Studio location', 'photovault' ), __( 'Porto-Novo, Benin', 'photovault' ), 'text', 'sanitize_text_field' ),
+		'photovault_studio_hours'    => array( __( 'Response hours', 'photovault' ), __( 'Monday to Friday, by appointment', 'photovault' ), 'text', 'sanitize_text_field' ),
+		'photovault_instagram_url'   => array( __( 'Instagram URL', 'photovault' ), '', 'url', 'esc_url_raw' ),
+		'photovault_whatsapp_url'    => array( __( 'WhatsApp URL', 'photovault' ), '', 'url', 'esc_url_raw' ),
+	);
+	foreach ( $studio_fields as $setting => $field ) {
+		$customizer->add_setting( $setting, array( 'default' => $field[1], 'sanitize_callback' => $field[3], 'transport' => 'refresh' ) );
+		$customizer->add_control( $setting, array( 'section' => 'photovault_studio', 'label' => $field[0], 'type' => $field[2] ) );
+	}
 }
 add_action( 'customize_register', 'photovault_customize_register' );
 

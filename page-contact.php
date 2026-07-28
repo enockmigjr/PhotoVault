@@ -16,6 +16,10 @@ $content       = '';
 $request_types = photovault_get_contact_request_types();
 $collections   = get_terms( array( 'taxonomy' => 'media_folder', 'hide_empty' => false ) );
 $collections   = is_wp_error( $collections ) ? array() : $collections;
+$studio_email  = sanitize_email( get_theme_mod( 'photovault_studio_email', get_option( 'admin_email' ) ) );
+$studio_phone  = trim( (string) get_theme_mod( 'photovault_studio_phone', '' ) );
+$studio_place  = trim( (string) get_theme_mod( 'photovault_studio_location', __( 'Porto-Novo, Benin', 'photovault' ) ) );
+$studio_hours  = trim( (string) get_theme_mod( 'photovault_studio_hours', __( 'Monday to Friday, by appointment', 'photovault' ) ) );
 if ( ! isset( $request_types[ $request_type ] ) ) {
 	$request_type = 'general';
 }
@@ -69,7 +73,12 @@ get_header();
 				<div class="py-5"><dt class="text-sm font-bold text-white"><?php esc_html_e( 'Shooting', 'photovault' ); ?></dt><dd class="mt-2 text-sm leading-6 text-gray-400"><?php esc_html_e( 'Précisez la date, le lieu, les personnes et l’usage prévu.', 'photovault' ); ?></dd></div>
 				<div class="py-5"><dt class="text-sm font-bold text-white"><?php esc_html_e( 'Licence ou tirage', 'photovault' ); ?></dt><dd class="mt-2 text-sm leading-6 text-gray-400"><?php esc_html_e( 'Mentionnez l’œuvre, le format, la diffusion et le délai attendu.', 'photovault' ); ?></dd></div>
 			</dl>
-			<p class="mt-7 text-sm leading-6 text-gray-500"><?php echo esc_html( sprintf( __( 'Les notifications sont adressées à l’équipe du site (%s).', 'photovault' ), antispambot( get_option( 'admin_email' ) ) ) ); ?></p>
+			<dl class="mt-8 space-y-4 text-sm">
+				<?php if ( $studio_place ) : ?><div><dt class="text-xs font-bold uppercase text-gray-500"><?php esc_html_e( 'Studio', 'photovault' ); ?></dt><dd class="mt-1 text-gray-300"><?php echo esc_html( $studio_place ); ?></dd></div><?php endif; ?>
+				<?php if ( $studio_hours ) : ?><div><dt class="text-xs font-bold uppercase text-gray-500"><?php esc_html_e( 'Disponibilite', 'photovault' ); ?></dt><dd class="mt-1 text-gray-300"><?php echo esc_html( $studio_hours ); ?></dd></div><?php endif; ?>
+				<?php if ( $studio_email ) : ?><div><dt class="text-xs font-bold uppercase text-gray-500"><?php esc_html_e( 'E-mail', 'photovault' ); ?></dt><dd class="mt-1"><a class="text-amber-200 underline underline-offset-4" href="mailto:<?php echo esc_attr( antispambot( $studio_email ) ); ?>"><?php echo esc_html( antispambot( $studio_email ) ); ?></a></dd></div><?php endif; ?>
+				<?php if ( $studio_phone ) : ?><div><dt class="text-xs font-bold uppercase text-gray-500"><?php esc_html_e( 'Telephone', 'photovault' ); ?></dt><dd class="mt-1"><a class="text-amber-200 underline underline-offset-4" href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $studio_phone ) ); ?>"><?php echo esc_html( $studio_phone ); ?></a></dd></div><?php endif; ?>
+			</dl>
 		</aside>
 
 		<div class="lg:col-span-7 lg:col-start-6">

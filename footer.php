@@ -20,6 +20,8 @@ $footer_description   = photovault_theme_text( 'photovault_footer_description', 
 $newsletter_title     = photovault_theme_text( 'photovault_footer_newsletter_title', __( 'Lettre des archives', 'photovault' ) );
 $newsletter_copy      = photovault_theme_text( 'photovault_footer_newsletter_description', __( 'Nouvelles séries, carnets d’atelier et invitations privées, avec votre consentement.', 'photovault' ) );
 $footer_credit        = photovault_theme_text( 'photovault_footer_credit', __( 'Direction artistique et développement par Enok Junior MIGNANWANDE.', 'photovault' ) );
+$instagram_url        = esc_url( get_theme_mod( 'photovault_instagram_url', '' ) );
+$whatsapp_url         = esc_url( get_theme_mod( 'photovault_whatsapp_url', '' ) );
 ?>
 
 <?php if ( ! $is_dashboard_surface ) : ?>
@@ -30,6 +32,7 @@ $footer_credit        = photovault_theme_text( 'photovault_footer_credit', __( '
 					<?php if ( has_custom_logo() ) : ?><div class="pv-footer-logo"><?php the_custom_logo(); ?></div><?php else : ?><a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-flex text-2xl font-extrabold text-white" aria-label="<?php echo esc_attr( sprintf( __( '%s, accueil', 'photovault' ), $brand_name ) ); ?>"><?php echo esc_html( $brand_name ); ?></a><?php endif; ?>
 					<p class="mt-6 max-w-md font-serif text-2xl leading-9 text-gray-200"><?php echo esc_html( $footer_tagline ); ?></p>
 					<p class="mt-5 max-w-lg text-sm leading-7 text-gray-400"><?php echo esc_html( $footer_description ); ?></p>
+					<?php if ( $instagram_url || $whatsapp_url ) : ?><div class="mt-6 flex flex-wrap gap-5 text-sm font-bold text-amber-200"><?php if ( $instagram_url ) : ?><a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener noreferrer">Instagram</a><?php endif; ?><?php if ( $whatsapp_url ) : ?><a href="<?php echo esc_url( $whatsapp_url ); ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a><?php endif; ?></div><?php endif; ?>
 				</div>
 
 				<div class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7">
