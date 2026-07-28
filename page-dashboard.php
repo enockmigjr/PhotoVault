@@ -51,7 +51,7 @@ get_header();
 <div class="min-h-screen bg-[#0d0c0b] text-white lg:flex">
 	<?php get_template_part( 'templates/dashboard-sidebar', null, array( 'section' => $section ) ); ?>
 
-	<main class="min-w-0 flex-1 px-4 py-8 sm:px-8 lg:px-10 lg:py-10">
+	<main class="min-w-0 flex-1 px-4 py-8 sm:px-8 lg:px-10 lg:py-10" data-pv-dashboard-content>
 		<div class="mx-auto max-w-7xl">
 			<header class="mb-10 flex flex-col gap-5 border-b border-white/10 pb-8 md:flex-row md:items-end md:justify-between">
 				<div>

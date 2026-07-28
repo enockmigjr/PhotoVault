@@ -46,7 +46,7 @@ get_header();
 			<?php else : ?>
 				<p class="mt-3 text-sm leading-6 text-gray-400"><?php echo esc_html( sprintf( __( 'Utilisez au moins %d caractères, idéalement une phrase de passe.', 'photovault' ), $min_password_length ) ); ?></p>
 				<?php if ( $notice ) : ?><div class="pv-auth-notice is-error" role="alert" data-pv-toast><span><?php echo esc_html( $notice ); ?></span><button type="button" class="pv-auth-notice__close" aria-label="<?php esc_attr_e( 'Fermer la notification', 'photovault' ); ?>" data-pv-toast-close>&times;</button></div><?php endif; ?>
-				<form class="mt-9 space-y-6" action="<?php echo esc_url( add_query_arg( array( 'key' => $key, 'login' => $login ), home_url( '/reset-password/' ) ) ); ?>" method="post">
+				<form class="mt-9 space-y-6" action="<?php echo esc_url( add_query_arg( array( 'key' => $key, 'login' => $login ), home_url( '/reset-password/' ) ) ); ?>" method="post" data-pv-auth-form data-pv-async-form>
 					<?php wp_nonce_field( 'photovault_reset_action', 'photovault_reset_nonce' ); ?>
 					<input type="hidden" name="rp_key" value="<?php echo esc_attr( $key ); ?>">
 					<input type="hidden" name="rp_login" value="<?php echo esc_attr( $login ); ?>">

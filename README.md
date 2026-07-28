@@ -11,11 +11,25 @@ Le projet est organise autour d'un theme editorial et de trois plugins metier re
 
 ## Etat actuel
 
-Mise en oeuvre logicielle et recette acceptee pour la presentation: 100 %, soit 65 exigences sur 65. Les remises live Twilio et Resend sont des activations commerciales differees par le proprietaire; les parcours staging et diagnostics sont valides.
+La mise en oeuvre couvre les 65 exigences historiques acceptees pour la
+presentation. La revue de cloture de la refonte asynchrone reste suivie
+separement: le code, Docker et les suites runtime sont valides, tandis que les
+preuves navigateur authentifiees et la baseline PHPCS sont des controles
+distincts qui ne doivent pas etre presentes comme acquis sans execution.
 
 Les fondations principales sont en place: separation theme/plugins, controles serveur sur les medias sensibles, previews/miniatures au lieu des originaux HD dans les vues ensemble, endpoint de telechargement controle, verification email, audit, campagnes newsletter, dashboard personnel, reservations de shootings et Docker.
 
-Le runtime WordPress/MariaDB, le blocage Nginx, les tests critiques, l'accessibilite automatisee, les parcours navigateur, les sauvegardes et le cron sont confirmes. Le runbook racine couvre l'activation future de TLS, SPF/DKIM, Twilio live et de la supervision publique.
+Le runtime WordPress/MariaDB, le blocage Nginx, les tests critiques serveur,
+les sauvegardes et le cron sont confirmes. Le runbook racine couvre
+l'activation future de TLS, SPF/DKIM, Twilio live et de la supervision
+publique. Les parcours navigateur doivent etre rejoues avec un compte de
+recette avant chaque livraison.
+
+Les formulaires d'authentification utilisent un runtime AJAX avec fallback
+serveur. Les sections du Dashboard utilisent l'History API et remplacent
+uniquement leur contenu principal. Les mutations de profil, MFA, galerie,
+contact, shootings et newsletter conservent leurs retours accessibles sans
+rechargement complet.
 
 ## Installation locale classique
 

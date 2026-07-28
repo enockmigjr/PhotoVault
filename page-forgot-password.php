@@ -48,7 +48,7 @@ get_header();
 				</div>
 			<?php endif; ?>
 
-			<form class="mt-9 space-y-6" action="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" method="post">
+			<form class="mt-9 space-y-6" action="<?php echo esc_url( home_url( '/forgot-password/' ) ); ?>" method="post" data-pv-auth-form data-pv-async-form data-pv-auth-success="reset">
 				<?php wp_nonce_field( 'photovault_forgot_action', 'photovault_forgot_nonce' ); ?>
 				<div>
 					<label for="user_login" class="pv-auth-label"><?php esc_html_e( 'Identifiant ou e-mail', 'photovault' ); ?></label>

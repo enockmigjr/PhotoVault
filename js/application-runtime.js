@@ -210,4 +210,92 @@
 			modal.hidden = true;
 		}
 	});
+
+	let dashboardController = null;
+
+	function isDashboardUrl(url) {
+		const current = document.querySelector('[data-pv-dashboard-content]');
+		if (!current || url.origin !== window.location.origin) {
+			return false;
+		}
+		return url.pathname.replace(/\/+$/, '') === window.location.pathname.replace(/\/+$/, '');
+	}
+
+	function syncDashboardNavigation(documentFragment, url) {
+		document.querySelectorAll('#main-sidebar nav a[href]').forEach(function(link) {
+			const source = Array.from(documentFragment.querySelectorAll('#main-sidebar nav a[href]')).find(function(candidate) {
+				return candidate.href === link.href;
+			});
+			if (!source) return;
+			link.className = source.className;
+			if (source.hasAttribute('aria-current')) {
+				link.setAttribute('aria-current', source.getAttribute('aria-current'));
+			} else {
+				link.removeAttribute('aria-current');
+			}
+		});
+		window.history.replaceState(Object.assign({}, window.history.state, { photovaultDashboard: true }), '', url.href);
+	}
+
+	async function navigateDashboard(url, pushState) {
+		const current = document.querySelector('[data-pv-dashboard-content]');
+		if (!current || current.getAttribute('aria-busy') === 'true') return;
+		if (dashboardController) dashboardController.abort();
+		dashboardController = new AbortController();
+		current.setAttribute('aria-busy', 'true');
+
+		try {
+			const response = await fetch(url.href, {
+				credentials: 'same-origin',
+				headers: { 'X-Requested-With': 'XMLHttpRequest' },
+				signal: dashboardController.signal
+			});
+			if (!response.ok) throw new Error('dashboard_navigation_failed');
+			const html = await response.text();
+			const nextDocument = new DOMParser().parseFromString(html, 'text/html');
+			const next = nextDocument.querySelector('[data-pv-dashboard-content]');
+			if (!next) throw new Error('dashboard_surface_missing');
+
+			current.replaceWith(next);
+			document.title = nextDocument.title || document.title;
+			if (pushState) {
+				window.history.pushState({ photovaultDashboard: true }, '', url.href);
+			}
+			syncDashboardNavigation(nextDocument, url);
+			const heading = next.querySelector('h1');
+			if (heading) {
+				heading.tabIndex = -1;
+				heading.focus({ preventScroll: true });
+			}
+			next.dispatchEvent(new CustomEvent('photovault:navigation', { bubbles: true, detail: { url: url.href } }));
+		} catch (error) {
+			if (error.name !== 'AbortError') {
+				window.location.assign(url.href);
+			}
+		} finally {
+			const active = document.querySelector('[data-pv-dashboard-content]');
+			if (active) active.removeAttribute('aria-busy');
+		}
+	}
+
+	document.addEventListener('click', function(event) {
+		if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+			return;
+		}
+		const link = event.target.closest('a[href]');
+		if (!link || link.target || link.hasAttribute('download')) return;
+		const url = new URL(link.href, window.location.href);
+		if (!isDashboardUrl(url)) return;
+		event.preventDefault();
+		navigateDashboard(url, true);
+	});
+
+	window.addEventListener('popstate', function() {
+		const url = new URL(window.location.href);
+		if (isDashboardUrl(url)) {
+			navigateDashboard(url, false);
+		} else if (document.querySelector('[data-pv-dashboard-content]')) {
+			window.location.assign(url.href);
+		}
+	});
 })();

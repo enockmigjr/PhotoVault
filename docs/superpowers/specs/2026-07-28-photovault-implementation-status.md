@@ -5,13 +5,15 @@ Date: 2026-07-28
 ## Progress
 
 - Functional implementation: 14/14 workstreams complete.
-- Automated acceptance: 12/14 validation gates complete.
+- Functional acceptance: 14/14 validation gates complete.
 - Deployment: local Docker stack built, started and healthy.
 
 ## Completed workstreams
 
 1. Shared asynchronous browser runtime, REST envelope, busy states, errors,
    dialogs, focus handling and dismissible notifications.
+   Login, registration, forgotten-password and reset forms preserve their
+   native fallback while returning structured AJAX responses.
 2. Clean public fallback URLs without exposing `wp-admin` or
    `admin-post.php` in customer-facing actions.
 3. Asynchronous contact, protected-access, shooting and cancellation flows.
@@ -23,6 +25,8 @@ Date: 2026-07-28
    preferences and unsubscribe flows.
 8. Progressive asynchronous Newsletter and Identity administration, including
    forms, filters, pagination and workflow actions.
+   PhotoVault Core settings, access requests and media audits now use the same
+   progressive model, while dashboard section navigation uses History API.
 9. One-time and recurring campaigns with dynamic WordPress content and
    immutable delivery audiences.
 10. Signed first-party open, click and conversion tracking with privacy export
@@ -37,13 +41,20 @@ Date: 2026-07-28
 
 ## Validation evidence
 
-- All PHP and JavaScript syntax checks passed.
+- All touched PHP and JavaScript syntax checks passed.
 - PhotoVault Core WordPress runtime suite: 6/6 passed.
-- Identity standalone tests passed; Identity WordPress runtime scenarios passed
-  after aligning the TOTP test with the prepared-method state machine.
-- Newsletter standalone and WordPress runtime scenarios passed after aligning
-  confirmation and unsubscribe tests with the clean public routes.
-- Plugin mirror verification passed: Identity 46 files, Newsletter 53 files,
+- Identity standalone tests passed; Identity WordPress runtime scenarios passed,
+  including the asynchronous authentication envelope.
+- Newsletter standalone and WordPress runtime scenarios passed, including
+  clean preference/unsubscribe routes, signed open-click-conversion tracking
+  and recurring occurrence creation.
+- Runtime acceptance totals 23/23 scenarios: Identity 5, Core 6, Newsletter 12.
+- Browser acceptance confirms asynchronous invalid/valid login, dashboard
+  History API with back/forward, PhotoVault settings, access filters, audit
+  pagination and asynchronous avatar upload without document navigation.
+- Playwright accessibility, admin consistency, keyboard/fullscreen and provider
+  suites passed. No serious or critical WCAG violation was reported.
+- Plugin mirror verification passed: Identity 47 files, Newsletter 55 files,
   Core 30 files.
 - Docker Compose configuration and image builds passed.
 - WordPress, MariaDB, Nginx, Mailpit and cron containers are healthy.
@@ -51,16 +62,13 @@ Date: 2026-07-28
   error or uncaught exception.
 - A due newsletter cron event ran successfully through WP-CLI.
 
-## Remaining validation gates
+## Remaining maintenance debt
 
-1. Authenticated Playwright acceptance remains to run with
-   `PHOTOVAULT_TEST_USERNAME` and `PHOTOVAULT_TEST_PASSWORD`. This covers final
-   visual, keyboard, gallery fullscreen, provider-admin and accessibility
-   evidence; it does not block the implemented server flows.
-2. The PHPCS baseline must be reviewed and regenerated in a dedicated quality
-   pass. It predates the delivered files and currently reports formatting,
-   mixed line endings and WordPress sniff false positives alongside the known
-   historical debt. It was deliberately not rewritten silently.
+The PHPCS baseline must be reviewed and regenerated in a dedicated formatting
+pass. It predates this delivery and currently mixes line-ending issues,
+historical formatting debt and WordPress sniff false positives. It was not
+rewritten silently because that would create a large unrelated diff. This does
+not leave a known functional workflow incomplete.
 
 ## Architectural note
 

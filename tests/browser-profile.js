@@ -28,21 +28,34 @@ const { chromium } = require( 'playwright' );
 		if ( await dialog.locator( 'input[name="phone"]' ).count() ) {
 			throw new Error( 'The avatar flow still contains the phone field.' );
 		}
+		const avatar = page.locator( '[data-profile-avatar-image]' );
+		const previousAvatar = await avatar.getAttribute( 'src' );
+		let documentRequests = 0;
+		page.on( 'request', ( request ) => {
+			if ( request.resourceType() === 'document' ) documentRequests++;
+		} );
 		await dialog.locator( 'input[name="profile_avatar"]' ).setInputFiles( avatarPath );
 		await Promise.all( [
-			page.waitForURL( /profile=avatar_updated/, { waitUntil: 'domcontentloaded', timeout: 20000 } ),
+			page.waitForResponse( ( response ) => response.request().method() === 'POST' && response.url().includes( '/account' ) && response.ok(), { timeout: 20000 } ),
 			dialog.locator( 'button[type="submit"]' ).click(),
 		] );
 
-		const toast = page.locator( '[data-pv-toast]' );
+		const toast = page.locator( '[data-pv-runtime-toast]' );
 		await toast.waitFor( { state: 'visible' } );
-		await toast.locator( '[data-pv-toast-close]' ).click();
+		await page.waitForFunction( ( initial ) => {
+			const image = document.querySelector( '[data-profile-avatar-image]' );
+			return image && image.getAttribute( 'src' ) !== initial;
+		}, previousAvatar );
+		if ( documentRequests !== 0 ) {
+			throw new Error( 'The avatar flow triggered a document navigation.' );
+		}
+		await toast.locator( 'button' ).click();
 		await toast.waitFor( { state: 'detached' } );
-		if ( new URL( page.url() ).searchParams.has( 'profile' ) ) {
-			throw new Error( 'Dismissed profile status remained in the URL.' );
+		if ( new URL( page.url() ).pathname !== '/profile/' ) {
+			throw new Error( 'The asynchronous profile flow changed the public route.' );
 		}
 
-		process.stdout.write( JSON.stringify( { dashboard_layout: true, avatar_without_phone: true, dialogs: true, dismissible_toast: true } ) );
+		process.stdout.write( JSON.stringify( { dashboard_layout: true, avatar_without_phone: true, async_upload: true, dialogs: true, dismissible_toast: true } ) );
 	} finally {
 		await browser.close();
 	}

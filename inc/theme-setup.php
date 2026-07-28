@@ -54,6 +54,10 @@ function photovault_scripts() {
 		$profile_runtime_version = file_exists( PHOTOVAULT_DIR . '/js/profile-runtime.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/profile-runtime.js' ) : PHOTOVAULT_VERSION;
 		wp_enqueue_script( 'photovault-profile-runtime', PHOTOVAULT_URI . '/js/profile-runtime.js', array( 'photovault-application-runtime' ), $profile_runtime_version, true );
 	}
+	if ( is_page_template( array( 'page-login.php', 'page-register.php', 'page-forgot-password.php', 'page-reset-password.php' ) ) ) {
+		$auth_runtime_version = file_exists( PHOTOVAULT_DIR . '/js/auth-runtime.js' ) ? (string) filemtime( PHOTOVAULT_DIR . '/js/auth-runtime.js' ) : PHOTOVAULT_VERSION;
+		wp_enqueue_script( 'photovault-auth-runtime', PHOTOVAULT_URI . '/js/auth-runtime.js', array( 'photovault-main-js' ), $auth_runtime_version, true );
+	}
 	
 	// Configuration REST disponible avant le script principal et les scripts inline.
 	$photovault_frontend_config = array(

@@ -53,7 +53,7 @@ get_header();
 				</div>
 			<?php endif; ?>
 
-			<form class="mt-9 space-y-5" action="<?php echo esc_url( home_url( '/register/' ) ); ?>" method="post">
+			<form class="mt-9 space-y-5" action="<?php echo esc_url( home_url( '/register/' ) ); ?>" method="post" data-pv-auth-form data-pv-async-form>
 				<?php wp_nonce_field( 'photovault_register_action', 'photovault_register_nonce' ); ?>
 				<div class="grid gap-5 sm:grid-cols-2">
 					<div><label for="first_name" class="pv-auth-label"><?php esc_html_e( 'Prénom', 'photovault' ); ?></label><input id="first_name" name="first_name" type="text" autocomplete="given-name" required class="pv-auth-input" placeholder="Aïcha"></div>
