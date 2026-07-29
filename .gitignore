@@ -5,3 +5,4 @@ plans/
 .codex/
 node_modules/
 vendor/
+build/

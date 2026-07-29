@@ -22,7 +22,7 @@ const path = require( 'path' );
 		] );
 
 		await page.goto( `${ baseUrl }/wp-admin/edit.php?post_type=media_item&page=photovault-access-requests&request_status=pending`, { waitUntil: 'networkidle' } );
-		await page.locator( '.pv-access-status-tabs' ).waitFor();
+		await page.getByRole( 'navigation', { name: 'Filtrer les demandes par statut' } ).waitFor();
 		const accessLayout = await page.evaluate( () => {
 			const tabs = document.querySelector( '.pv-access-status-tabs' );
 			const table = document.querySelector( '.pv-access-status-tabs + .pv-table-wrap' );
