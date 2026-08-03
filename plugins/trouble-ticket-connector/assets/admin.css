@@ -1,0 +1,5 @@
+.ttc-admin { max-width: 980px; }
+.ttc-admin .form-table { background: #fff; border: 1px solid #dcdcde; margin-top: 20px; }
+.ttc-admin .form-table th { padding-left: 20px; }
+.ttc-admin .ttc-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.ttc-admin .ttc-actions form { margin: 0; }
