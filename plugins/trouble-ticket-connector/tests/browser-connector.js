@@ -1,15 +1,20 @@
-const { chromium } = require( 'playwright' );
+const { chromium, firefox, webkit } = require( 'playwright' );
 
 const baseUrl = ( process.env.PHOTOVAULT_TEST_BASE_URL || 'http://localhost:8080' ).replace( /\/$/, '' );
 const username = process.env.PHOTOVAULT_TEST_USERNAME;
 const password = process.env.PHOTOVAULT_TEST_PASSWORD;
+const engine = process.env.PHOTOVAULT_TEST_BROWSER || 'chromium';
 
 if ( ! username || ! password ) {
 	throw new Error( 'Missing PHOTOVAULT_TEST_USERNAME or PHOTOVAULT_TEST_PASSWORD.' );
 }
 
 ( async () => {
-	const browser = await chromium.launch( { headless: true } );
+	const launch = { chromium, firefox, webkit }[ engine ];
+	if ( ! launch ) {
+		throw new Error( `Unsupported browser engine: ${ engine }` );
+	}
+	const browser = await launch.launch( { headless: true } );
 	try {
 		const anonymous = await browser.newPage();
 		await anonymous.goto( `${ baseUrl }/`, { waitUntil: 'domcontentloaded', timeout: 30000 } );
@@ -30,7 +35,7 @@ if ( ! username || ! password ) {
 		const memberFrame = member.frameLocator( 'iframe[title="Assistance et suivi des demandes"]' );
 		await memberFrame.getByRole( 'button', { name: 'Nouvelle demande' } ).waitFor( { timeout: 30000 } );
 
-		process.stdout.write( JSON.stringify( { anonymous_verification: true, verified_member_without_otp: true } ) );
+		process.stdout.write( JSON.stringify( { engine, anonymous_verification: true, verified_member_without_otp: true } ) );
 	} finally {
 		await browser.close();
 	}

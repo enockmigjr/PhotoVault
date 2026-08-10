@@ -61,4 +61,5 @@ node ..\..\plugins\trouble-ticket-connector\tests\browser-connector.js
 ```
 
 Elle vérifie que le widget s'ouvre pour un visiteur anonyme (parcours email) et qu'un membre PhotoVault dont l'email
-est vérifié accède directement au widget sans nouvel OTP.
+est vérifié accède directement au widget sans nouvel OTP. Le moteur est sélectionnable avec
+`PHOTOVAULT_TEST_BROWSER` (`chromium`, `firefox` ou `webkit`) ; les trois moteurs sont validés.
