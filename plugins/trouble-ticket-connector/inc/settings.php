@@ -83,15 +83,16 @@ function trouble_ticket_connector_sanitize_settings( $input ) {
  */
 function trouble_ticket_connector_normalize_support_url( $value ) {
 	$url = untrailingslashit( esc_url_raw( (string) $value ) );
-	if ( ! wp_http_validate_url( $url ) ) {
-		return '';
-	}
 	$parts = wp_parse_url( $url );
 	if ( ! is_array( $parts ) || empty( $parts['scheme'] ) || empty( $parts['host'] ) || ! empty( $parts['path'] ) || isset( $parts['query'] ) || isset( $parts['fragment'] ) ) {
 		return '';
 	}
 	$host  = isset( $parts['host'] ) ? strtolower( $parts['host'] ) : '';
-	if ( 'https' !== ( $parts['scheme'] ?? '' ) && ! in_array( $host, array( 'localhost', 'support.localhost' ), true ) ) {
+	$local = in_array( $host, array( 'localhost', 'support.localhost' ), true );
+	if ( ! $local && ! wp_http_validate_url( $url ) ) {
+		return '';
+	}
+	if ( 'https' !== ( $parts['scheme'] ?? '' ) && ! $local ) {
 		return '';
 	}
 	$origin = trouble_ticket_connector_origin_from_parts( $parts );

@@ -27,6 +27,7 @@ try {
 	ttc_runtime_assert( function_exists( 'trouble_ticket_connector_create_assertion' ), 'Connector is not active.' );
 	ttc_runtime_assert( '' === trouble_ticket_connector_normalize_origin( 'https://evil.test/path' ), 'Origin with path accepted.' );
 	ttc_runtime_assert( '' === trouble_ticket_connector_normalize_support_url( 'http://evil.test' ), 'Insecure remote URL accepted.' );
+	ttc_runtime_assert( 'http://localhost:3005' === trouble_ticket_connector_normalize_support_url( 'http://localhost:3005' ), 'Local development URL rejected.' );
 
 	$settings = trouble_ticket_connector_sanitize_settings(
 		array(
