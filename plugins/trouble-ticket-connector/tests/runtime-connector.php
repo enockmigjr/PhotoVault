@@ -77,6 +77,22 @@ try {
 	$invalid_request->set_header( 'X-WP-Nonce', 'invalid' );
 	ttc_runtime_assert( is_wp_error( trouble_ticket_connector_rest_permission( $invalid_request ) ), 'Invalid REST nonce accepted.' );
 
+	$anchor = trouble_ticket_connector_shortcode();
+	ttc_runtime_assert( false !== strpos( $anchor, 'trouble-ticket-connector-anchor' ), 'Shortcode anchor missing.' );
+	update_option(
+		'trouble_ticket_connector_settings',
+		array_merge( $settings, array( 'display_mode' => 'auto', 'page_ids' => array() ) ),
+		false
+	);
+	ttc_runtime_assert( true === trouble_ticket_connector_should_auto_render(), 'Automatic injection refused for all pages.' );
+	update_option(
+		'trouble_ticket_connector_settings',
+		array_merge( $settings, array( 'display_mode' => 'auto', 'page_ids' => array( 999999 ) ) ),
+		false
+	);
+	ttc_runtime_assert( false === trouble_ticket_connector_should_auto_render(), 'Automatic injection ignored page restriction.' );
+	update_option( 'trouble_ticket_connector_settings', $settings, false );
+
 	trouble_ticket_connector_revoke_local_secret();
 	ttc_runtime_assert( '' === trouble_ticket_connector_get_secret(), 'Local secret revocation failed.' );
 	WP_CLI::success( 'Trouble Ticket Connector runtime checks passed.' );
