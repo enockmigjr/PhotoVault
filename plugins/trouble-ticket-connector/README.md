@@ -50,3 +50,15 @@ Depuis WP-CLI :
 ```sh
 wp eval-file wp-content/plugins/trouble-ticket-connector/tests/runtime-connector.php
 ```
+
+Recette navigateur PhotoVault (depuis le thème, qui contient Playwright) :
+
+```sh
+$env:PHOTOVAULT_TEST_BASE_URL = "http://localhost:8080"
+$env:PHOTOVAULT_TEST_USERNAME = "membre-verifie"
+$env:PHOTOVAULT_TEST_PASSWORD = "mot-de-passe"
+node ..\..\plugins\trouble-ticket-connector\tests\browser-connector.js
+```
+
+Elle vérifie que le widget s'ouvre pour un visiteur anonyme (parcours email) et qu'un membre PhotoVault dont l'email
+est vérifié accède directement au widget sans nouvel OTP.
