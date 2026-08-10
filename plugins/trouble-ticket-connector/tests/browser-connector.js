@@ -27,15 +27,22 @@ if ( ! username || ! password ) {
 		await member.fill( '#username', username );
 		await member.fill( '#password', password );
 		await Promise.all( [
-			member.waitForNavigation( { waitUntil: 'domcontentloaded', timeout: 30000 } ),
+			member.waitForURL( ( url ) => ! url.pathname.startsWith( '/login' ), { timeout: 30000 } ),
 			member.locator( 'form' ).filter( { has: member.locator( '#username' ) } ).locator( 'button[type="submit"]' ).click(),
 		] );
 		await member.goto( `${ baseUrl }/`, { waitUntil: 'domcontentloaded', timeout: 30000 } );
 		await member.getByRole( 'button', { name: 'Assistance' } ).click();
 		const memberFrame = member.frameLocator( 'iframe[title="Assistance et suivi des demandes"]' );
 		await memberFrame.getByRole( 'button', { name: 'Nouvelle demande' } ).waitFor( { timeout: 30000 } );
+		await memberFrame.getByRole( 'button', { name: 'Nouvelle demande' } ).click();
+		await memberFrame.locator( '#widget-category' ).waitFor( { timeout: 30000 } );
+		await memberFrame.locator( '#widget-category option' ).nth( 1 ).waitFor( { state: 'attached', timeout: 30000 } );
+		const categories = await memberFrame.locator( '#widget-category option' ).count();
+		if ( categories < 2 ) {
+			throw new Error( 'Public catalog did not expose backend categories.' );
+		}
 
-		process.stdout.write( JSON.stringify( { engine, anonymous_verification: true, verified_member_without_otp: true } ) );
+		process.stdout.write( JSON.stringify( { engine, anonymous_verification: true, verified_member_without_otp: true, public_catalog_categories: true } ) );
 	} finally {
 		await browser.close();
 	}
