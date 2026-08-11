@@ -229,11 +229,7 @@ function photovault_render_protected_preview_to_cache( $source_path, $cache_path
 					imagecopymerge( $img, $scaled, $x, $y, 0, 0, imagesx( $scaled ), imagesy( $scaled ), $opacity );
 				}
 			}
-			if ( $scaled !== $watermark_img ) {
-				imagedestroy( $scaled );
-			}
 		}
-		imagedestroy( $watermark_img );
 	} else {
 		for ( $y = -30, $row = 0; $y < $h + 60; $y += $spacing, $row++ ) {
 			$offset = ( $row % 4 ) * (int) round( $spacing * 0.72 );
@@ -252,8 +248,6 @@ function photovault_render_protected_preview_to_cache( $source_path, $cache_path
 	} else {
 		$written = imagejpeg( $img, $tmp_path, max( 60, min( 95, absint( $watermark_settings['quality'] ) ) ) );
 	}
-
-	imagedestroy( $img );
 
 	if ( ! $written || ! file_exists( $tmp_path ) ) {
 		@unlink( $tmp_path );
