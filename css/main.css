@@ -1235,6 +1235,15 @@ ul.page-numbers .next {
 	line-height: 1.4;
 }
 
+.pv-auth-input[aria-invalid="true"] {
+	border-color: rgba(248, 113, 113, 0.65);
+}
+
+.pv-auth-input[aria-invalid="true"]:focus {
+	border-color: #f87171;
+	box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.14);
+}
+
 [data-pv-async-form][aria-busy="true"] {
 	opacity: 0.72;
 }

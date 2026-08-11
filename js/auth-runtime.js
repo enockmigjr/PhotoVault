@@ -1,6 +1,8 @@
 (function() {
 	'use strict';
 
+	const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 	function setBusy(form, busy) {
 		form.toggleAttribute('aria-busy', busy);
 		form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function(control) {
@@ -16,6 +18,36 @@
 				}
 			}
 		});
+	}
+
+	/**
+	 * Validate the login form before any request is sent.
+	 * Returns null for non-login forms and a field => message map otherwise.
+	 */
+	function validateLogin(form) {
+		const loginField = form.elements.namedItem('log');
+		const passwordField = form.elements.namedItem('pwd');
+		if (!loginField || !passwordField) return null;
+
+		const errors = {};
+		const loginValue = loginField.value.trim();
+
+		if (loginValue === '') {
+			errors.log = 'Saisissez votre identifiant ou votre adresse e-mail.';
+		} else if (loginValue.indexOf('@') !== -1 && !EMAIL_PATTERN.test(loginValue)) {
+			errors.log = 'Saisissez une adresse e-mail valide.';
+		}
+
+		if (passwordField.value === '') {
+			errors.pwd = 'Saisissez votre mot de passe.';
+		}
+
+		return errors;
+	}
+
+	function focusFirstInvalid(form) {
+		const field = form.querySelector('[aria-invalid="true"]');
+		if (field) field.focus({ preventScroll: false });
 	}
 
 	function clearErrors(form) {
@@ -71,6 +103,14 @@
 	async function submit(form) {
 		if (form.getAttribute('aria-busy') === 'true') return;
 		clearErrors(form);
+
+		const validationErrors = validateLogin(form);
+		if (validationErrors && Object.keys(validationErrors).length > 0) {
+			showErrors(form, validationErrors);
+			focusFirstInvalid(form);
+			return;
+		}
+
 		const payload = new FormData(form);
 		setBusy(form, true);
 

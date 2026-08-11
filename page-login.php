@@ -51,7 +51,7 @@ get_header();
 				</div>
 			<?php endif; ?>
 
-			<form class="mt-9 space-y-6" action="<?php echo esc_url( home_url( '/login/' ) ); ?>" method="post" data-pv-auth-form data-pv-async-form>
+			<form class="mt-9 space-y-6" action="<?php echo esc_url( home_url( '/login/' ) ); ?>" method="post" data-pv-auth-form data-pv-async-form novalidate>
 				<?php wp_nonce_field( 'photovault_login_action', 'photovault_login_nonce' ); ?>
 				<?php if ( $redirect_to ) : ?><input type="hidden" name="redirect_to" value="<?php echo esc_attr( $redirect_to ); ?>"><?php endif; ?>
 				<div>
