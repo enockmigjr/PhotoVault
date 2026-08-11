@@ -64,6 +64,24 @@ try {
 	$scheduled_created = newsletter_campaign_kit_get_campaign( $scheduled_id );
 	newsletter_recurrence_runtime_assert( 'ready' === $scheduled_created['status'] && ! empty( $scheduled_created['scheduled_at'] ), 'Scheduled campaign was not created ready.' );
 	newsletter_recurrence_runtime_assert( 2 === absint( $scheduled_created['recurrence_interval_days'] ) && ! empty( $scheduled_created['recurrence_until'] ), 'Recurring options were not persisted at creation.' );
+	$missing_until = newsletter_campaign_kit_prepare_campaign_schedule(
+		array(
+			'campaign_recurrence_enabled'  => true,
+			'scheduled_at'                 => wp_date( 'Y-m-d\\TH:i', time() + HOUR_IN_SECONDS ),
+			'recurrence_interval_days'     => 2,
+			'recurrence_until'             => '',
+		)
+	);
+	newsletter_recurrence_runtime_assert( is_wp_error( $missing_until ) && 'newsletter_invalid_recurrence' === $missing_until->get_error_code(), 'Missing recurrence end date was not rejected.' );
+	$missing_date = newsletter_campaign_kit_prepare_campaign_schedule(
+		array(
+			'campaign_recurrence_enabled'  => true,
+			'scheduled_at'                 => '',
+			'recurrence_interval_days'     => 2,
+			'recurrence_until'             => gmdate( 'Y-m-d', time() + ( 3 * DAY_IN_SECONDS ) ),
+		)
+	);
+	newsletter_recurrence_runtime_assert( is_wp_error( $missing_date ) && 'newsletter_invalid_schedule' === $missing_date->get_error_code(), 'Missing first delivery date was not rejected.' );
 
 	$launch_master_id = newsletter_campaign_kit_create_campaign(
 		array(

@@ -931,12 +931,16 @@ function newsletter_campaign_kit_render_campaigns_page() {
 	$edit_id   = isset( $_GET['edit'] ) ? absint( $_GET['edit'] ) : 0;
 	$editing   = $edit_id ? newsletter_campaign_kit_get_campaign( $edit_id ) : null;
 	$editing   = $editing && 'draft' === $editing['status'] ? $editing : null;
-	$created_status = isset( $_GET['created'] ) ? sanitize_key( wp_unslash( $_GET['created'] ) ) : '';
+	$query_status = array_map( 'sanitize_key', wp_unslash( $_GET ) );
+	$created_status = $query_status['created'] ?? '';
 	$creation_errors = array(
 		'newsletter_invalid_content_source'           => __( 'Choose a valid WordPress content source.', 'newsletter-campaign-kit' ),
 		'newsletter_invalid_content_source_post_type' => __( 'The selected content type is unavailable.', 'newsletter-campaign-kit' ),
 		'newsletter_invalid_source_category'          => __( 'Choose a category matching the selected content type.', 'newsletter-campaign-kit' ),
 		'newsletter_empty_source_selection'           => __( 'Choose at least one published item for the hand-picked source.', 'newsletter-campaign-kit' ),
+		'newsletter_invalid_schedule'                 => __( 'Choose a valid future first delivery date.', 'newsletter-campaign-kit' ),
+		'newsletter_schedule_in_past'                 => __( 'The first delivery date must be in the future.', 'newsletter-campaign-kit' ),
+		'newsletter_invalid_recurrence'               => __( 'Choose a valid interval and end date for the recurring campaign.', 'newsletter-campaign-kit' ),
 		'newsletter_invalid_audience'                  => __( 'Choose an available campaign audience.', 'newsletter-campaign-kit' ),
 		'newsletter_invalid_campaign_topic'           => __( 'Choose an active campaign topic or use no topic.', 'newsletter-campaign-kit' ),
 		'newsletter_invalid_campaign'                 => __( 'The internal campaign title is required.', 'newsletter-campaign-kit' ),
@@ -1002,7 +1006,11 @@ function newsletter_campaign_kit_render_campaigns_page() {
 			<div class="notice notice-warning"><p><?php esc_html_e( 'Campaign tables are not installed yet. Reactivate or upgrade the plugin with the database available.', 'newsletter-campaign-kit' ); ?></p></div>
 		<?php endif; ?>
 		<?php if ( isset( $creation_errors[ $created_status ] ) ) : ?><div class="notice notice-error is-dismissible"><p><?php echo esc_html( $creation_errors[ $created_status ] ); ?></p></div><?php endif; ?>
-		<?php if ( isset( $_GET['launched'] ) && 'success' === sanitize_key( wp_unslash( $_GET['launched'] ) ) ) : ?><div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'The next recurring occurrence was launched and the following delivery dates were recalculated.', 'newsletter-campaign-kit' ); ?></p></div><?php endif; ?>
+		<?php if ( 'success' === ( $query_status['scheduled'] ?? '' ) ) : ?><div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'The campaign was scheduled.', 'newsletter-campaign-kit' ); ?></p></div><?php elseif ( 'invalid' === ( $query_status['scheduled'] ?? '' ) ) : ?><div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'The delivery schedule is invalid. Check the date, interval and end date.', 'newsletter-campaign-kit' ); ?></p></div><?php endif; ?>
+		<?php if ( 'success' === ( $query_status['updated'] ?? '' ) ) : ?><div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Campaign draft saved.', 'newsletter-campaign-kit' ); ?></p></div><?php elseif ( 'invalid' === ( $query_status['updated'] ?? '' ) ) : ?><div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'The campaign could not be saved. Check the required fields and delivery schedule.', 'newsletter-campaign-kit' ); ?></p></div><?php endif; ?>
+		<?php if ( 'success' === ( $query_status['transition'] ?? '' ) ) : ?><div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Campaign status updated.', 'newsletter-campaign-kit' ); ?></p></div><?php elseif ( in_array( ( $query_status['transition'] ?? '' ), array( 'invalid', 'failed' ), true ) ) : ?><div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'The campaign status could not be changed.', 'newsletter-campaign-kit' ); ?></p></div><?php endif; ?>
+		<?php if ( 'success' === ( $query_status['duplicated'] ?? '' ) ) : ?><div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Campaign duplicated.', 'newsletter-campaign-kit' ); ?></p></div><?php elseif ( 'invalid' === ( $query_status['duplicated'] ?? '' ) ) : ?><div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'The campaign could not be duplicated.', 'newsletter-campaign-kit' ); ?></p></div><?php endif; ?>
+		<?php if ( 'success' === ( $query_status['launched'] ?? '' ) ) : ?><div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'The next recurring occurrence was launched and the following delivery dates were recalculated.', 'newsletter-campaign-kit' ); ?></p></div><?php elseif ( 'invalid' === ( $query_status['launched'] ?? '' ) ) : ?><div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'The recurring occurrence could not be launched.', 'newsletter-campaign-kit' ); ?></p></div><?php endif; ?>
 
 		<dialog id="nck-campaign-editor" class="nck-admin-dialog"<?php echo $editing ? ' data-nck-dialog-auto-open' : ''; ?>>
 			<header class="nck-admin-dialog__header"><div><h2><?php echo esc_html( $editing ? __( 'Edit campaign draft', 'newsletter-campaign-kit' ) : __( 'Create campaign draft', 'newsletter-campaign-kit' ) ); ?></h2><p><?php esc_html_e( 'Compose the message, audience and optional WordPress content source.', 'newsletter-campaign-kit' ); ?></p></div><button class="nck-admin-dialog__close" type="button" data-nck-dialog-close aria-label="<?php esc_attr_e( 'Close', 'newsletter-campaign-kit' ); ?>">&times;</button></header>

@@ -61,8 +61,11 @@
 	}
 
 	function responseNotice(root) {
-		const notice = root.querySelector('.notice p, .updated p, .error p');
-		return notice ? notice.textContent.trim() : 'Changes saved.';
+		const error = root.querySelector('.notice-error p, .error p');
+		const success = root.querySelector('.notice-success p, .updated p');
+		if (error) return { message: error.textContent.trim(), success: false };
+		if (success) return { message: success.textContent.trim(), success: true };
+		return { message: 'Changes saved.', success: true };
 	}
 
 	function confirmAction(message) {
@@ -285,8 +288,8 @@
 			} else {
 				options = { method: method, body: new FormData(form) };
 			}
-			const message = await updateSurface(url, options, historyMode);
-			toast(message, true);
+			const result = await updateSurface(url, options, historyMode);
+			toast(result.message, result.success);
 		} catch (error) {
 			setBusy(form, false);
 			toast(error.message || 'The operation could not be completed.', false);
