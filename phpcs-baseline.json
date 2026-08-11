@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "generated_at": "2026-07-29",
+    "generated_at": "2026-08-11",
     "files": {
         "404.php": {
             "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 1
@@ -20,75 +20,6 @@
         "comments.php": {
             "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 2,
             "WordPress.WP.I18n.MissingTranslatorsComment": 1
-        },
-        "composer-setup.php": {
-            "Generic.Classes.OpeningBraceSameLine.BraceOnNewLine": 3,
-            "Generic.CodeAnalysis.AssignmentInCondition.Found": 8,
-            "Generic.CodeAnalysis.RequireExplicitBooleanOperatorPrecedence.MissingParentheses": 1,
-            "Generic.Files.OneObjectStructurePerFile.MultipleFound": 3,
-            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 37,
-            "Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine": 51,
-            "Generic.PHP.DeprecatedFunctions.Deprecated": 1,
-            "Generic.Strings.UnnecessaryHeredoc.Found": 4,
-            "Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceAfterOpen": 16,
-            "Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceBeforeClose": 16,
-            "Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed": 1280,
-            "Generic.WhiteSpace.ScopeIndent.Incorrect": 2,
-            "NormalizedArrays.Arrays.ArrayBraceSpacing.SpaceAfterArrayOpenerSingleLine": 5,
-            "NormalizedArrays.Arrays.ArrayBraceSpacing.SpaceBeforeArrayCloserSingleLine": 5,
-            "NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLine": 24,
-            "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 2,
-            "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 2,
-            "PEAR.Functions.FunctionCallSignature.MultipleArguments": 1,
-            "PEAR.Functions.FunctionCallSignature.SpaceAfterOpenBracket": 345,
-            "PEAR.Functions.FunctionCallSignature.SpaceBeforeCloseBracket": 345,
-            "Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterOpen": 34,
-            "Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingBeforeClose": 34,
-            "Squiz.PHP.CommentedOutCode.Found": 1,
-            "Squiz.PHP.DisallowMultipleAssignments.Found": 8,
-            "Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure": 8,
-            "Squiz.Strings.ConcatenationSpacing.PaddingFound": 53,
-            "Squiz.Strings.DoubleQuoteUsage.NotRequired": 4,
-            "Universal.Files.SeparateFunctionsFromOO.Mixed": 1,
-            "Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound": 1,
-            "Universal.WhiteSpace.PrecisionAlignment.Found": 2,
-            "WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys": 8,
-            "WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 6,
-            "WordPress.Files.FileName.InvalidClassFileName": 1,
-            "WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid": 16,
-            "WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid": 23,
-            "WordPress.NamingConventions.ValidVariableName.InterpolatedVariableNotSnakeCase": 1,
-            "WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase": 12,
-            "WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase": 64,
-            "WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase": 127,
-            "WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler": 1,
-            "WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_phpinfo": 1,
-            "WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode": 1,
-            "WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode": 2,
-            "WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec": 1,
-            "WordPress.PHP.IniSet.display_errors_Disallowed": 1,
-            "WordPress.PHP.NoSilencedErrors.Discouraged": 8,
-            "WordPress.PHP.StrictInArray.MissingTrueStrict": 16,
-            "WordPress.PHP.YodaConditions.NotYoda": 11,
-            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 8,
-            "WordPress.Security.EscapeOutput.OutputNotEscaped": 2,
-            "WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents": 7,
-            "WordPress.WP.AlternativeFunctions.file_system_operations_chmod": 2,
-            "WordPress.WP.AlternativeFunctions.file_system_operations_fclose": 1,
-            "WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents": 1,
-            "WordPress.WP.AlternativeFunctions.file_system_operations_fopen": 1,
-            "WordPress.WP.AlternativeFunctions.file_system_operations_fwrite": 1,
-            "WordPress.WP.AlternativeFunctions.file_system_operations_is_writeable": 1,
-            "WordPress.WP.AlternativeFunctions.file_system_operations_mkdir": 1,
-            "WordPress.WP.AlternativeFunctions.file_system_operations_rmdir": 1,
-            "WordPress.WP.AlternativeFunctions.parse_url_parse_url": 6,
-            "WordPress.WP.AlternativeFunctions.rename_rename": 1,
-            "WordPress.WP.AlternativeFunctions.unlink_unlink": 3,
-            "WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis": 2,
-            "WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis": 183,
-            "WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis": 183,
-            "WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter": 79,
-            "WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore": 57
         },
         "footer.php": {
             "Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace": 7,
@@ -895,7 +826,6 @@
         "plugins/photovault-core/inc/ajax-filters.php": {
             "Generic.CodeAnalysis.UnusedFunctionParameter.Found": 1,
             "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 18,
-            "Generic.PHP.DeprecatedFunctions.Deprecated": 3,
             "PEAR.Functions.FunctionCallSignature.CloseBracketLine": 2,
             "PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 2,
             "PEAR.Functions.FunctionCallSignature.MultipleArguments": 4,
@@ -1049,6 +979,40 @@
             "WordPress.DB.PreparedSQL.InterpolatedNotPrepared": 2,
             "WordPress.DB.PreparedSQL.NotPrepared": 3,
             "WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare": 2,
+            "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
+        },
+        "plugins/trouble-ticket-connector/inc/admin-actions.php": {
+            "WordPress.WP.Capabilities.Unknown": 1,
+            "WordPress.WP.I18n.TextDomainMismatch": 1
+        },
+        "plugins/trouble-ticket-connector/inc/admin-page.php": {
+            "WordPress.WP.Capabilities.Unknown": 2,
+            "WordPress.WP.I18n.TextDomainMismatch": 30
+        },
+        "plugins/trouble-ticket-connector/inc/assertion-service.php": {
+            "WordPress.WP.I18n.TextDomainMismatch": 3
+        },
+        "plugins/trouble-ticket-connector/inc/rest-routes.php": {
+            "WordPress.WP.I18n.TextDomainMismatch": 3
+        },
+        "plugins/trouble-ticket-connector/inc/secret-storage.php": {
+            "WordPress.WP.I18n.TextDomainMismatch": 2
+        },
+        "plugins/trouble-ticket-connector/inc/settings.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "WordPress.PHP.YodaConditions.NotYoda": 1,
+            "WordPress.WP.I18n.TextDomainMismatch": 1
+        },
+        "plugins/trouble-ticket-connector/tests/assertion-service.php": {
+            "Generic.Classes.DuplicateClassName.Found": 1,
+            "Universal.Files.SeparateFunctionsFromOO.Mixed": 1,
+            "WordPress.Files.FileName.InvalidClassFileName": 1,
+            "WordPress.WP.AlternativeFunctions.file_system_operations_fwrite": 2
+        },
+        "plugins/trouble-ticket-connector/tests/runtime-connector.php": {
+            "Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 1,
+            "WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode": 1,
             "WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1
         },
         "search.php": {
