@@ -593,6 +593,17 @@
 	margin-bottom: 0;
 }
 
+.newsletter-campaign-kit-admin .nck-recurrence-now {
+	margin: 18px 0;
+	border: 1px solid #dcdcde;
+	background: #f6f7f7;
+	padding: 14px 16px;
+}
+
+.newsletter-campaign-kit-admin .nck-recurrence-now h3 {
+	margin-top: 0;
+}
+
 .newsletter-campaign-kit-admin .nck-review-action {
 	display: grid;
 	gap: 12px;

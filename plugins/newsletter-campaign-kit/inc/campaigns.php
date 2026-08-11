@@ -158,8 +158,10 @@ function newsletter_campaign_kit_create_campaign( $input, $actor_user_id = 0 ) {
 	global $wpdb;
 
 	$data = newsletter_campaign_kit_prepare_campaign_data( $input );
-	if ( is_wp_error( $data ) || ! newsletter_campaign_kit_campaigns_table_exists() ) {
+	$schedule = newsletter_campaign_kit_prepare_campaign_schedule( $input );
+	if ( is_wp_error( $data ) || is_wp_error( $schedule ) || ! newsletter_campaign_kit_campaigns_table_exists() ) {
 		$error = is_wp_error( $data ) ? $data : new WP_Error( 'newsletter_campaign_storage_unavailable', __( 'Campaign storage is unavailable.', 'newsletter-campaign-kit' ) );
+		$error = is_wp_error( $schedule ) ? $schedule : $error;
 		if ( function_exists( 'newsletter_campaign_kit_log_event' ) ) {
 			newsletter_campaign_kit_log_event( 'newsletter_campaign_create_failed', 'failure', 0, array( 'title' => sanitize_text_field( $input['title'] ?? '' ), 'reason' => $error->get_error_code() ) );
 		}
@@ -168,13 +170,15 @@ function newsletter_campaign_kit_create_campaign( $input, $actor_user_id = 0 ) {
 
 	$table = newsletter_campaign_kit_get_campaigns_table();
 	$now   = current_time( 'mysql', true );
+	$status = ! empty( $schedule['scheduled_at'] ) ? 'ready' : 'draft';
 	$ok    = $wpdb->insert(
 		$table,
 		array_merge(
 			$data,
+			$schedule,
 			array(
 				'slug'       => newsletter_campaign_kit_generate_unique_slug( $table, $data['title'] ),
-				'status'     => 'draft',
+				'status'     => $status,
 				'created_by' => absint( $actor_user_id ),
 				'updated_by' => absint( $actor_user_id ),
 				'created_at' => $now,
@@ -202,9 +206,15 @@ function newsletter_campaign_kit_update_campaign( $campaign_id, $input, $actor_u
 	}
 
 	$data = newsletter_campaign_kit_prepare_campaign_data( $input );
-	if ( is_wp_error( $data ) ) {
+	$schedule = newsletter_campaign_kit_prepare_campaign_schedule( $input );
+	if ( is_wp_error( $data ) || is_wp_error( $schedule ) ) {
+		if ( is_wp_error( $schedule ) ) {
+			return $schedule;
+		}
 		return $data;
 	}
+	$data                = array_merge( $data, $schedule );
+	$data['status']      = ! empty( $schedule['scheduled_at'] ) ? 'ready' : 'draft';
 	$data['updated_by'] = absint( $actor_user_id );
 	$data['updated_at'] = current_time( 'mysql', true );
 	$updated            = $wpdb->update( newsletter_campaign_kit_get_campaigns_table(), $data, array( 'id' => absint( $campaign_id ), 'status' => 'draft' ) );
@@ -354,6 +364,10 @@ function newsletter_campaign_kit_get_campaign_input_from_request() {
 		'source_category_id' => isset( $_POST['source_category_id'] ) ? absint( $_POST['source_category_id'] ) : 0,
 		'source_post_ids' => isset( $_POST['source_post_ids'] ) && is_array( $_POST['source_post_ids'] ) ? array_map( 'absint', wp_unslash( $_POST['source_post_ids'] ) ) : array(),
 		'source_layout'   => isset( $_POST['source_layout'] ) ? sanitize_key( wp_unslash( $_POST['source_layout'] ) ) : 'editorial',
+		'scheduled_at'    => isset( $_POST['scheduled_at'] ) ? wp_unslash( $_POST['scheduled_at'] ) : '',
+		'campaign_recurrence_enabled' => ! empty( $_POST['campaign_recurrence_enabled'] ),
+		'recurrence_interval_days' => isset( $_POST['campaign_recurrence_interval_days'] ) ? absint( $_POST['campaign_recurrence_interval_days'] ) : 0,
+		'recurrence_until' => isset( $_POST['campaign_recurrence_until'] ) ? wp_unslash( $_POST['campaign_recurrence_until'] ) : '',
 	);
 }
 
@@ -553,6 +567,49 @@ function newsletter_campaign_kit_parse_schedule_datetime( $value ) {
 	return $date->setTimezone( new DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' );
 }
 
+/** Validate optional scheduling chosen while the campaign is created or edited. */
+function newsletter_campaign_kit_prepare_campaign_schedule( $input ) {
+	$is_recurring  = ! empty( $input['campaign_recurrence_enabled'] );
+	$scheduled_at  = isset( $input['scheduled_at'] ) ? trim( (string) $input['scheduled_at'] ) : '';
+	$interval_days = max( 1, min( 365, absint( $input['recurrence_interval_days'] ?? 7 ) ) );
+	$until         = sanitize_text_field( $input['recurrence_until'] ?? '' );
+
+	if ( '' === $scheduled_at ) {
+		if ( ! $is_recurring ) {
+			return array(
+				'scheduled_at'             => null,
+				'recurrence_interval_days' => null,
+				'recurrence_until'         => null,
+			);
+		}
+		return new WP_Error( 'newsletter_invalid_schedule', __( 'Choose a future first delivery date.', 'newsletter-campaign-kit' ) );
+	}
+
+	$date = newsletter_campaign_kit_parse_schedule_datetime( $scheduled_at );
+	if ( is_wp_error( $date ) ) {
+		return $date;
+	}
+	if ( ! $is_recurring ) {
+		return array(
+			'scheduled_at'             => $date,
+			'recurrence_interval_days' => null,
+			'recurrence_until'         => null,
+		);
+	}
+
+	$until_date = DateTimeImmutable::createFromFormat( '!Y-m-d', $until, new DateTimeZone( 'UTC' ) );
+	$errors     = DateTimeImmutable::getLastErrors();
+	if ( ! $until_date || ( is_array( $errors ) && ( $errors['warning_count'] || $errors['error_count'] ) ) || $until_date < ( new DateTimeImmutable( $date, new DateTimeZone( 'UTC' ) ) )->setTime( 0, 0 ) ) {
+		return new WP_Error( 'newsletter_invalid_recurrence', __( 'Choose a valid interval and end date on or after the first delivery.', 'newsletter-campaign-kit' ) );
+	}
+
+	return array(
+		'scheduled_at'             => $date,
+		'recurrence_interval_days' => $interval_days,
+		'recurrence_until'         => $until_date->format( 'Y-m-d' ),
+	);
+}
+
 /** Schedule a reviewed campaign and freeze its audience atomically. */
 function newsletter_campaign_kit_schedule_confirmed_campaign( $campaign_id, $scheduled_at, $confirmed_title, $fingerprint, $actor_user_id = 0 ) {
 	global $wpdb;
@@ -610,19 +667,24 @@ function newsletter_campaign_kit_handle_schedule_campaign() {
 
 	$campaign = newsletter_campaign_kit_get_campaign( $campaign_id );
 	$value    = isset( $_POST['scheduled_at'] ) ? wp_unslash( $_POST['scheduled_at'] ) : '';
-	$date     = newsletter_campaign_kit_parse_schedule_datetime( $value );
-	if ( ! $campaign || ! in_array( $campaign['status'], array( 'ready', 'scheduled' ), true ) || is_wp_error( $date ) ) {
+	$is_recurring = ! empty( $_POST['campaign_recurrence_enabled'] );
+	$launch_now   = $is_recurring && ! empty( $_POST['campaign_recurrence_launch_now'] );
+	$date         = $launch_now ? null : newsletter_campaign_kit_parse_schedule_datetime( $value );
+	if ( ! $campaign || ! in_array( $campaign['status'], array( 'ready', 'scheduled' ), true ) || ( ! $launch_now && is_wp_error( $date ) ) ) {
 		wp_safe_redirect( admin_url( 'admin.php?page=newsletter-campaign-kit-campaigns&scheduled=invalid' ) );
 		exit;
 	}
 	$confirmed_title = isset( $_POST['campaign_confirmation_title'] ) ? wp_unslash( $_POST['campaign_confirmation_title'] ) : '';
 	$fingerprint     = isset( $_POST['campaign_confirmation_fingerprint'] ) ? wp_unslash( $_POST['campaign_confirmation_fingerprint'] ) : '';
-	$is_recurring    = ! empty( $_POST['campaign_recurrence_enabled'] );
 	$interval_days   = isset( $_POST['campaign_recurrence_interval_days'] ) ? absint( $_POST['campaign_recurrence_interval_days'] ) : 7;
 	$until           = isset( $_POST['campaign_recurrence_until'] ) ? wp_unslash( $_POST['campaign_recurrence_until'] ) : '';
-	$result          = $is_recurring
-		? newsletter_campaign_kit_schedule_confirmed_recurrence( $campaign_id, $date, $interval_days, $until, $confirmed_title, $fingerprint, get_current_user_id() )
-		: newsletter_campaign_kit_schedule_confirmed_campaign( $campaign_id, $date, $confirmed_title, $fingerprint, get_current_user_id() );
+	if ( $is_recurring && $launch_now ) {
+		$result = newsletter_campaign_kit_launch_confirmed_recurrence_now( $campaign_id, $interval_days, $until, $confirmed_title, $fingerprint, get_current_user_id() );
+	} elseif ( $is_recurring ) {
+		$result = newsletter_campaign_kit_schedule_confirmed_recurrence( $campaign_id, $date, $interval_days, $until, $confirmed_title, $fingerprint, get_current_user_id() );
+	} else {
+		$result = newsletter_campaign_kit_schedule_confirmed_campaign( $campaign_id, $date, $confirmed_title, $fingerprint, get_current_user_id() );
+	}
 	$updated = ! is_wp_error( $result );
 
 	if ( function_exists( 'newsletter_campaign_kit_log_event' ) ) {
@@ -630,7 +692,7 @@ function newsletter_campaign_kit_handle_schedule_campaign() {
 			! $updated ? 'newsletter_campaign_schedule_failed' : 'newsletter_campaign_scheduled',
 			! $updated ? 'failure' : 'success',
 			0,
-			array( 'campaign_id' => $campaign_id, 'scheduled_at' => $date, 'recurring' => $is_recurring, 'interval_days' => $is_recurring ? $interval_days : 0 )
+			array( 'campaign_id' => $campaign_id, 'scheduled_at' => $launch_now ? 'now' : $date, 'recurring' => $is_recurring, 'interval_days' => $is_recurring ? $interval_days : 0 )
 		);
 	}
 
@@ -642,6 +704,34 @@ function newsletter_campaign_kit_handle_schedule_campaign() {
 	exit;
 }
 add_action( 'admin_post_newsletter_campaign_kit_schedule_campaign', 'newsletter_campaign_kit_handle_schedule_campaign' );
+
+/** Launch the next occurrence of an active recurring master immediately. */
+function newsletter_campaign_kit_handle_launch_recurring_occurrence() {
+	if ( ! current_user_can( 'newsletter_send_campaigns' ) ) {
+		wp_die( esc_html__( 'You are not allowed to send newsletter campaigns.', 'newsletter-campaign-kit' ) );
+	}
+	$campaign_id = isset( $_POST['campaign_id'] ) ? absint( $_POST['campaign_id'] ) : 0;
+	check_admin_referer( 'newsletter_campaign_kit_launch_recurring_occurrence_' . $campaign_id );
+
+	$result = newsletter_campaign_kit_launch_recurring_occurrence_now( $campaign_id, get_current_user_id() );
+	if ( function_exists( 'newsletter_campaign_kit_log_event' ) ) {
+		newsletter_campaign_kit_log_event(
+			is_wp_error( $result ) ? 'newsletter_recurrence_launch_failed' : 'newsletter_recurrence_launched',
+			is_wp_error( $result ) ? 'failure' : 'success',
+			0,
+			is_wp_error( $result )
+				? array( 'campaign_id' => $campaign_id, 'reason' => $result->get_error_code() )
+				: array( 'campaign_id' => $campaign_id, 'occurrence_id' => absint( $result['occurrence_id'] ), 'next_occurrence_at' => $result['next_occurrence_at'] )
+		);
+	}
+	if ( is_wp_error( $result ) ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=newsletter-campaign-kit-campaign-review&campaign_id=' . $campaign_id . '&review=' . $result->get_error_code() ) );
+		exit;
+	}
+	wp_safe_redirect( admin_url( 'admin.php?page=newsletter-campaign-kit-campaigns&launched=success' ) );
+	exit;
+}
+add_action( 'admin_post_newsletter_campaign_kit_launch_recurring_occurrence', 'newsletter_campaign_kit_handle_launch_recurring_occurrence' );
 
 function newsletter_campaign_kit_register_campaigns_menu() {
 	add_submenu_page(
@@ -707,15 +797,22 @@ function newsletter_campaign_kit_render_campaign_review_page() {
 	$report   = $reports ? $reports[0] : array();
 	$error_code = isset( $_GET['review'] ) ? sanitize_key( wp_unslash( $_GET['review'] ) ) : '';
 	$error_messages = array(
-		'newsletter_campaign_title_mismatch' => __( 'The confirmation title did not match.', 'newsletter-campaign-kit' ),
-		'newsletter_campaign_review_stale'   => __( 'The campaign or audience changed. Check the updated review before confirming again.', 'newsletter-campaign-kit' ),
-		'newsletter_campaign_audience_empty' => __( 'No eligible recipient is currently available.', 'newsletter-campaign-kit' ),
-		'newsletter_invalid_schedule'         => __( 'Choose a valid future delivery date.', 'newsletter-campaign-kit' ),
+		'newsletter_campaign_title_mismatch'    => __( 'The confirmation title did not match.', 'newsletter-campaign-kit' ),
+		'newsletter_campaign_review_stale'      => __( 'The campaign or audience changed. Check the updated review before confirming again.', 'newsletter-campaign-kit' ),
+		'newsletter_campaign_audience_empty'    => __( 'No eligible recipient is currently available.', 'newsletter-campaign-kit' ),
+		'newsletter_invalid_schedule'           => __( 'Choose a valid future delivery date.', 'newsletter-campaign-kit' ),
+		'newsletter_invalid_recurrence'         => __( 'Choose a valid interval and end date.', 'newsletter-campaign-kit' ),
+		'newsletter_campaign_recurrence_failed' => __( 'The recurring campaign could not be started.', 'newsletter-campaign-kit' ),
+		'newsletter_recurrence_invalid'         => __( 'This campaign is not an active recurring master.', 'newsletter-campaign-kit' ),
+		'newsletter_recurrence_occurrence_failed' => __( 'The recurring occurrence could not be launched.', 'newsletter-campaign-kit' ),
 	);
 	if ( $error_code && ! isset( $error_messages[ $error_code ] ) ) {
 		$error_messages[ $error_code ] = __( 'Delivery could not be confirmed. Review the campaign and try again.', 'newsletter-campaign-kit' );
 	}
 	$scheduled_value = ! empty( $campaign['scheduled_at'] ) ? get_date_from_gmt( $campaign['scheduled_at'], 'Y-m-d\\TH:i' ) : '';
+	$recurring_enabled = ! empty( $campaign['recurrence_interval_days'] );
+	$recurrence_interval = $recurring_enabled ? absint( $campaign['recurrence_interval_days'] ) : 7;
+	$recurrence_until = (string) ( $campaign['recurrence_until'] ?? '' );
 	?>
 	<div class="wrap newsletter-campaign-kit-admin">
 		<div class="nck-review-header">
@@ -751,6 +848,18 @@ function newsletter_campaign_kit_render_campaign_review_page() {
 				</dl>
 				<?php if ( ! $deliverable ) : ?>
 					<div class="nck-immutable-note"><strong><?php esc_html_e( 'This delivery is immutable.', 'newsletter-campaign-kit' ); ?></strong><p><?php esc_html_e( 'To protect its audit trail and statistics, create a new draft from this campaign before changing its content or audience.', 'newsletter-campaign-kit' ); ?></p></div>
+					<?php if ( 'recurring' === $campaign['status'] && ! empty( $campaign['next_occurrence_at'] ) ) : ?>
+						<div class="nck-recurrence-now">
+							<h3><?php esc_html_e( 'Launch the next occurrence now', 'newsletter-campaign-kit' ); ?></h3>
+							<p><?php esc_html_e( 'Starts the next occurrence immediately and recalculates the following delivery dates automatically.', 'newsletter-campaign-kit' ); ?></p>
+							<form method="POST" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+								<input type="hidden" name="action" value="newsletter_campaign_kit_launch_recurring_occurrence">
+								<input type="hidden" name="campaign_id" value="<?php echo esc_attr( $campaign_id ); ?>">
+								<?php wp_nonce_field( 'newsletter_campaign_kit_launch_recurring_occurrence_' . $campaign_id ); ?>
+								<button class="button button-primary" type="submit"><?php esc_html_e( 'Launch next occurrence now', 'newsletter-campaign-kit' ); ?></button>
+							</form>
+						</div>
+					<?php endif; ?>
 					<form method="POST" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<input type="hidden" name="action" value="newsletter_campaign_kit_duplicate_campaign">
 						<input type="hidden" name="campaign_id" value="<?php echo esc_attr( $campaign_id ); ?>">
@@ -786,9 +895,10 @@ function newsletter_campaign_kit_render_campaign_review_page() {
 						<label><?php esc_html_e( 'Delivery date and time', 'newsletter-campaign-kit' ); ?><input class="large-text" type="datetime-local" name="scheduled_at" value="<?php echo esc_attr( $scheduled_value ); ?>" required></label>
 						<details class="nck-recurrence-options">
 							<summary><?php esc_html_e( 'Repeat this campaign', 'newsletter-campaign-kit' ); ?></summary>
-							<label><input type="checkbox" name="campaign_recurrence_enabled" value="1"> <?php esc_html_e( 'Create recurring occurrences', 'newsletter-campaign-kit' ); ?></label>
-							<label><?php esc_html_e( 'Repeat every', 'newsletter-campaign-kit' ); ?> <input type="number" name="campaign_recurrence_interval_days" min="1" max="365" value="7"> <?php esc_html_e( 'day(s)', 'newsletter-campaign-kit' ); ?></label>
-							<label><?php esc_html_e( 'Stop after', 'newsletter-campaign-kit' ); ?> <input type="date" name="campaign_recurrence_until" min="<?php echo esc_attr( wp_date( 'Y-m-d', strtotime( '+1 day' ) ) ); ?>"></label>
+							<label><input type="checkbox" name="campaign_recurrence_enabled" value="1" <?php checked( $recurring_enabled ); ?>> <?php esc_html_e( 'Create recurring occurrences', 'newsletter-campaign-kit' ); ?></label>
+							<label><?php esc_html_e( 'Repeat every', 'newsletter-campaign-kit' ); ?> <input type="number" name="campaign_recurrence_interval_days" min="1" max="365" value="<?php echo esc_attr( $recurrence_interval ); ?>"> <?php esc_html_e( 'day(s)', 'newsletter-campaign-kit' ); ?></label>
+							<label><?php esc_html_e( 'Stop after', 'newsletter-campaign-kit' ); ?> <input type="date" name="campaign_recurrence_until" value="<?php echo esc_attr( $recurrence_until ); ?>" min="<?php echo esc_attr( wp_date( 'Y-m-d', strtotime( '+1 day' ) ) ); ?>"></label>
+							<label><input type="checkbox" name="campaign_recurrence_launch_now" value="1" data-nck-launch-now-toggle> <?php esc_html_e( 'Launch the first occurrence now and recalculate the next dates', 'newsletter-campaign-kit' ); ?></label>
 						</details>
 						<label><?php echo esc_html( sprintf( __( 'Type "%s" to schedule', 'newsletter-campaign-kit' ), $campaign['title'] ) ); ?><input class="large-text" name="campaign_confirmation_title" required autocomplete="off"></label>
 						<button class="button" type="submit"><?php esc_html_e( 'Confirm and schedule', 'newsletter-campaign-kit' ); ?></button>
@@ -835,6 +945,10 @@ function newsletter_campaign_kit_render_campaigns_page() {
 	);
 	$source_config = newsletter_campaign_kit_get_campaign_source_config( $editing ?: array() );
 	$source_type   = sanitize_key( $editing['source_type'] ?? 'manual' );
+	$schedule_value     = $editing && ! empty( $editing['scheduled_at'] ) ? get_date_from_gmt( $editing['scheduled_at'], 'Y-m-d\\TH:i' ) : '';
+	$schedule_recurring = $editing && ! empty( $editing['recurrence_interval_days'] );
+	$schedule_interval  = $schedule_recurring ? absint( $editing['recurrence_interval_days'] ) : 7;
+	$schedule_until     = $editing ? (string) ( $editing['recurrence_until'] ?? '' ) : '';
 	$source_post_types = newsletter_campaign_kit_get_content_source_post_type_labels();
 	$source_categories = array();
 	foreach ( array_keys( $source_post_types ) as $source_post_type ) {
@@ -888,6 +1002,7 @@ function newsletter_campaign_kit_render_campaigns_page() {
 			<div class="notice notice-warning"><p><?php esc_html_e( 'Campaign tables are not installed yet. Reactivate or upgrade the plugin with the database available.', 'newsletter-campaign-kit' ); ?></p></div>
 		<?php endif; ?>
 		<?php if ( isset( $creation_errors[ $created_status ] ) ) : ?><div class="notice notice-error is-dismissible"><p><?php echo esc_html( $creation_errors[ $created_status ] ); ?></p></div><?php endif; ?>
+		<?php if ( isset( $_GET['launched'] ) && 'success' === sanitize_key( wp_unslash( $_GET['launched'] ) ) ) : ?><div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'The next recurring occurrence was launched and the following delivery dates were recalculated.', 'newsletter-campaign-kit' ); ?></p></div><?php endif; ?>
 
 		<dialog id="nck-campaign-editor" class="nck-admin-dialog"<?php echo $editing ? ' data-nck-dialog-auto-open' : ''; ?>>
 			<header class="nck-admin-dialog__header"><div><h2><?php echo esc_html( $editing ? __( 'Edit campaign draft', 'newsletter-campaign-kit' ) : __( 'Create campaign draft', 'newsletter-campaign-kit' ) ); ?></h2><p><?php esc_html_e( 'Compose the message, audience and optional WordPress content source.', 'newsletter-campaign-kit' ); ?></p></div><button class="nck-admin-dialog__close" type="button" data-nck-dialog-close aria-label="<?php esc_attr_e( 'Close', 'newsletter-campaign-kit' ); ?>">&times;</button></header>
@@ -935,6 +1050,14 @@ function newsletter_campaign_kit_render_campaigns_page() {
 					<p data-nck-source-for="category_posts"><label><?php esc_html_e( 'Content category', 'newsletter-campaign-kit' ); ?><br><select name="source_category_id" data-nck-source-content-categories><option value="0"><?php esc_html_e( 'All categories', 'newsletter-campaign-kit' ); ?></option><?php foreach ( $source_categories as $category_post_type => $categories ) : ?><?php foreach ( $categories as $category ) : ?><option value="<?php echo esc_attr( $category->term_id ); ?>" data-nck-post-type="<?php echo esc_attr( $category_post_type ); ?>" <?php selected( $source_config['post_type'] === $category_post_type && absint( $source_config['category_id'] ) === (int) $category->term_id ); ?>><?php echo esc_html( '[' . $source_post_types[ $category_post_type ] . '] ' . $category->name ); ?></option><?php endforeach; ?><?php endforeach; ?></select></label></p>
 					<fieldset data-nck-source-for="selected_posts"><legend><?php esc_html_e( 'Hand-picked content', 'newsletter-campaign-kit' ); ?></legend><div class="nck-check-list" data-nck-source-content-items><?php foreach ( $source_posts as $source_post ) : ?><label data-nck-post-type="<?php echo esc_attr( $source_post->post_type ); ?>"><input type="checkbox" name="source_post_ids[]" value="<?php echo esc_attr( $source_post->ID ); ?>" <?php checked( in_array( $source_post->ID, array_map( 'absint', (array) $source_config['post_ids'] ), true ) ); ?>> <span><?php echo esc_html( '[' . ( $source_post_types[ $source_post->post_type ] ?? $source_post->post_type ) . '] ' . get_the_date( 'Y-m-d', $source_post ) . ' - ' . get_the_title( $source_post ) ); ?></span></label><?php endforeach; ?></div></fieldset>
 				</fieldset>
+				<details class="nck-recurrence-options">
+					<summary><?php esc_html_e( 'Delivery schedule', 'newsletter-campaign-kit' ); ?></summary>
+					<p class="description"><?php esc_html_e( 'Plan the first delivery while creating the campaign. The date is finalized on the protected review screen.', 'newsletter-campaign-kit' ); ?></p>
+					<label><?php esc_html_e( 'First delivery date and time', 'newsletter-campaign-kit' ); ?><input type="datetime-local" name="scheduled_at" value="<?php echo esc_attr( $schedule_value ); ?>"></label>
+					<label><input type="checkbox" name="campaign_recurrence_enabled" value="1" <?php checked( $schedule_recurring ); ?>> <?php esc_html_e( 'Create recurring occurrences', 'newsletter-campaign-kit' ); ?></label>
+					<label><?php esc_html_e( 'Repeat every', 'newsletter-campaign-kit' ); ?> <input type="number" name="campaign_recurrence_interval_days" min="1" max="365" value="<?php echo esc_attr( $schedule_interval ); ?>"> <?php esc_html_e( 'day(s)', 'newsletter-campaign-kit' ); ?></label>
+					<label><?php esc_html_e( 'Stop after', 'newsletter-campaign-kit' ); ?> <input type="date" name="campaign_recurrence_until" value="<?php echo esc_attr( $schedule_until ); ?>" min="<?php echo esc_attr( wp_date( 'Y-m-d', strtotime( '+1 day' ) ) ); ?>"></label>
+				</details>
 				<?php if ( $blocks ) : ?>
 					<div class="nck-block-inserter">
 						<label for="nck-editorial-block"><?php esc_html_e( 'Editorial block', 'newsletter-campaign-kit' ); ?></label>

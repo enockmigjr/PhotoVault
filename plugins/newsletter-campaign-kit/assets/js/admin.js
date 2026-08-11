@@ -132,6 +132,7 @@
 
 	function validateHandPicked(container) {
 		container.querySelectorAll('[data-nck-source-content-items]').forEach(function(list) {
+			if (list.closest('[hidden]')) return;
 			const checkboxes = Array.from(list.querySelectorAll('input[type="checkbox"]:not(:disabled)'));
 			checkboxes.forEach(function(checkbox) {
 				checkbox.setCustomValidity('');
@@ -174,8 +175,8 @@
 			const contentSelects = form ? form.querySelectorAll('[data-nck-source-content-items], [data-nck-source-content-categories]') : [];
 			if (!contentSelects.length) return;
 			function syncContentItems() {
-				const sourceActive = !select.disabled;
 				contentSelects.forEach(function(contentSelect) {
+					const sourceActive = !select.disabled && contentSelect.closest('[hidden]') === null;
 					contentSelect.querySelectorAll('[data-nck-post-type]').forEach(function(item) {
 						const matches = item.dataset.nckPostType === select.value;
 						const control = item.matches('option') ? item : item.querySelector('input');
@@ -206,6 +207,19 @@
 				const form = checkbox.closest('form');
 				if (form) validateHandPicked(form);
 			});
+		});
+		scope.querySelectorAll('[data-nck-launch-now-toggle]').forEach(function(toggle) {
+			if (toggle.dataset.nckLaunchNowBound === '1') return;
+			toggle.dataset.nckLaunchNowBound = '1';
+			const form = toggle.closest('form');
+			const dateInput = form ? form.querySelector('[name="scheduled_at"]') : null;
+			function syncLaunchNow() {
+				if (!dateInput) return;
+				dateInput.required = !toggle.checked;
+				dateInput.disabled = toggle.checked;
+			}
+			toggle.addEventListener('change', syncLaunchNow);
+			syncLaunchNow();
 		});
 		scope.querySelectorAll('[data-nck-check-filter]').forEach(function(input) {
 			const list = document.getElementById(input.dataset.nckCheckFilter);

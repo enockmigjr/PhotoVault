@@ -49,6 +49,120 @@ function newsletter_campaign_kit_schedule_confirmed_recurrence( $campaign_id, $f
 	return false === $updated ? new WP_Error( 'newsletter_campaign_recurrence_failed', __( 'The recurring campaign could not be scheduled.', 'newsletter-campaign-kit' ) ) : true;
 }
 
+/** Launch the first occurrence immediately and advance the recurring calendar. */
+function newsletter_campaign_kit_launch_confirmed_recurrence_now( $campaign_id, $interval_days, $until, $confirmed_title, $fingerprint, $actor_user_id = 0 ) {
+	global $wpdb;
+
+	$campaign_id   = absint( $campaign_id );
+	$interval_days = max( 1, min( 365, absint( $interval_days ) ) );
+	$until_date    = DateTimeImmutable::createFromFormat( '!Y-m-d', sanitize_text_field( $until ), new DateTimeZone( 'UTC' ) );
+	$errors        = DateTimeImmutable::getLastErrors();
+	$now           = new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) );
+	if ( ! $until_date || ( is_array( $errors ) && ( $errors['warning_count'] || $errors['error_count'] ) ) || $until_date < $now->setTime( 0, 0 ) ) {
+		return new WP_Error( 'newsletter_invalid_recurrence', __( 'Choose a valid interval and end date.', 'newsletter-campaign-kit' ) );
+	}
+
+	$table    = newsletter_campaign_kit_get_campaigns_table();
+	$wpdb->query( 'START TRANSACTION' );
+	$campaign = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d FOR UPDATE", $campaign_id ), ARRAY_A );
+	if ( ! $campaign || ! in_array( $campaign['status'], array( 'ready', 'scheduled' ), true ) ) {
+		$wpdb->query( 'ROLLBACK' );
+		return new WP_Error( 'newsletter_campaign_recurrence_invalid', __( 'This campaign cannot become recurring from its current state.', 'newsletter-campaign-kit' ) );
+	}
+	$confirmation = newsletter_campaign_kit_validate_campaign_delivery_confirmation( $campaign, $confirmed_title, $fingerprint );
+	if ( is_wp_error( $confirmation ) ) {
+		$wpdb->query( 'ROLLBACK' );
+		return $confirmation;
+	}
+	$occurrence_id = newsletter_campaign_kit_create_recurrence_occurrence( $campaign );
+	if ( is_wp_error( $occurrence_id ) ) {
+		$wpdb->query( 'ROLLBACK' );
+		return $occurrence_id;
+	}
+	$enqueued = newsletter_campaign_kit_enqueue_campaign( $occurrence_id, false );
+	if ( is_wp_error( $enqueued ) ) {
+		$wpdb->query( 'ROLLBACK' );
+		return $enqueued;
+	}
+
+	$now_mysql   = $now->format( 'Y-m-d H:i:s' );
+	$next        = $now->modify( '+' . $interval_days . ' days' );
+	$next_status = $next > $until_date ? 'completed' : 'recurring';
+	$updated     = $wpdb->update(
+		$table,
+		array(
+			'status'                   => $next_status,
+			'scheduled_at'             => null,
+			'recurrence_interval_days' => $interval_days,
+			'recurrence_until'         => $until_date->format( 'Y-m-d' ),
+			'next_occurrence_at'       => 'completed' === $next_status ? null : $next->format( 'Y-m-d H:i:s' ),
+			'updated_by'               => absint( $actor_user_id ),
+			'updated_at'               => $now_mysql,
+		),
+		array( 'id' => $campaign_id, 'status' => $campaign['status'] )
+	);
+	if ( false === $updated ) {
+		$wpdb->query( 'ROLLBACK' );
+		return new WP_Error( 'newsletter_campaign_recurrence_failed', __( 'The recurring campaign could not be started.', 'newsletter-campaign-kit' ) );
+	}
+	$wpdb->query( 'COMMIT' );
+
+	return array(
+		'occurrence_id'      => $occurrence_id,
+		'next_occurrence_at' => 'completed' === $next_status ? '' : $next->format( 'Y-m-d H:i:s' ),
+	);
+}
+
+/** Launch the next occurrence of an active recurring master and advance its calendar. */
+function newsletter_campaign_kit_launch_recurring_occurrence_now( $campaign_id, $actor_user_id = 0 ) {
+	global $wpdb;
+
+	$campaign_id = absint( $campaign_id );
+	$table       = newsletter_campaign_kit_get_campaigns_table();
+	$wpdb->query( 'START TRANSACTION' );
+	$master = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d AND status = 'recurring' FOR UPDATE", $campaign_id ), ARRAY_A );
+	if ( ! $master ) {
+		$wpdb->query( 'ROLLBACK' );
+		return new WP_Error( 'newsletter_recurrence_invalid', __( 'This campaign is not an active recurring master.', 'newsletter-campaign-kit' ) );
+	}
+	$occurrence_id = newsletter_campaign_kit_create_recurrence_occurrence( $master );
+	if ( is_wp_error( $occurrence_id ) ) {
+		$wpdb->query( 'ROLLBACK' );
+		return $occurrence_id;
+	}
+	$enqueued = newsletter_campaign_kit_enqueue_campaign( $occurrence_id, false );
+	if ( is_wp_error( $enqueued ) ) {
+		$wpdb->query( 'ROLLBACK' );
+		return $enqueued;
+	}
+
+	$interval_days = max( 1, absint( $master['recurrence_interval_days'] ) );
+	$until_date    = new DateTimeImmutable( $master['recurrence_until'] . ' 23:59:59', new DateTimeZone( 'UTC' ) );
+	$now           = current_time( 'mysql', true );
+	$next          = ( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) )->modify( '+' . $interval_days . ' days' );
+	$next_status   = $next > $until_date ? 'completed' : 'recurring';
+	$updated       = $wpdb->update(
+		$table,
+		array(
+			'status'             => $next_status,
+			'next_occurrence_at' => 'completed' === $next_status ? null : $next->format( 'Y-m-d H:i:s' ),
+			'updated_by'         => absint( $actor_user_id ),
+			'updated_at'         => $now,
+		),
+		array( 'id' => $campaign_id, 'status' => 'recurring' )
+	);
+	if ( false === $updated ) {
+		$wpdb->query( 'ROLLBACK' );
+		return new WP_Error( 'newsletter_recurrence_occurrence_failed', __( 'The recurring occurrence could not be launched.', 'newsletter-campaign-kit' ) );
+	}
+	$wpdb->query( 'COMMIT' );
+
+	return array(
+		'occurrence_id'      => $occurrence_id,
+		'next_occurrence_at' => 'completed' === $next_status ? '' : $next->format( 'Y-m-d H:i:s' ),
+	);
+}
+
 /** Create an immutable sending occurrence from one recurring master. */
 function newsletter_campaign_kit_create_recurrence_occurrence( $master ) {
 	global $wpdb;
