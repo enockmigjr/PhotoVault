@@ -25,7 +25,7 @@ function trouble_ticket_connector_default_settings() {
 		'page_ids'         => array(),
 		'position'         => 'right',
 		'label'            => __( 'Assistance', 'trouble-ticket-connector' ),
-		'loader_integrity' => 'sha384-63HovOBBVveI4gTSPtMyLyAmo64gADN020jaBKjd1vzmlRh3aVqe3+HX/nJ2eHq7',
+		'loader_integrity' => 'sha384-W+9QEWxA/dg+o6dEwgf52siu1BbYS2sIcH4kMJKI8NtBeDeT+v9rgVqx71KWiqXo',
 	);
 }
 
